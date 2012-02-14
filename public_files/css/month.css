@@ -1,0 +1,43 @@
+#calendar
+{
+    border: 1px solid #000;
+    border-collapse: collapse;
+}
+
+#calendar a
+{
+    text-decoration: none;
+}
+
+#calendar a:hover
+{
+    text-decoration: underline;
+}
+
+#calendar_header
+{
+    background-color: #FC9;
+    border-bottom: 1px solid #000;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+#calendar td
+{
+    border: 1px solid #000;
+    text-align: center;
+}
+
+
+#calendar tr.calendar_dates td
+{
+    width: 1in;
+    height: 1in;
+    text-align: right;
+    vertical-align: top;
+}
+
+#calendar td.empty
+{
+    background-color: #DDD;
+}
