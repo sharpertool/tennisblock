@@ -1,0 +1,73 @@
+
+a {
+    color: #06C;
+}
+
+a img {
+    border: none;
+}
+
+td {
+    vertical-align: top;
+}
+
+
+.datagrid {
+    border: 1px solid #999;
+    height: 250px;
+    overflow: auto;
+    width: 530px;
+}
+
+.datagrid table {
+    border-collapse: collapse;
+    font-size: 80%;
+    width: 100%;
+}
+.datagrid thead {
+    background: #EEE;
+}
+
+.datagrid thead th {
+    border-bottom: 1px solid #000;
+}
+
+.datagrid tbody tr {
+    cursor: pointer;
+}
+
+.oddrow {
+    background-color: #EFEFFF;
+}
+
+.evenrow td {
+    border-left: 1px solid  #EFEFFF;
+
+}
+
+.datagrid tbody td {
+    padding:1px 5px;
+}
+
+.datagrid a {
+  display: block;
+  text-decoration: none;
+}
+
+.selectedRow {
+  background-color: #C3C3FE;
+}
+
+#toolbar {
+    margin-top: 5px;
+}
+
+#toolbar img {
+    cursor: pointer;
+}
+
+#toolbar * {
+    float: left;
+    padding-right: 3px;
+}
+

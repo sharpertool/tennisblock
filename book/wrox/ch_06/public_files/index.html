@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <title>File Manager</title>
+  <script type="text/javascript" src="js/ajax.js"></script>
+  <script type="text/javascript" src="js/filemanager.js"></script>
+  <link rel="stylesheet" href="css/styles.css"/>
+ </head>
+ <body>
+  <div class="datagrid" id="file_datagrid"></div>
+  <div id="toolbar">
+   <img src="img/open.gif" id="btn_open" title="Download/Open" 
+    alt="Download/Open"/>
+   <img src="img/new.gif" id="btn_new_folder" title="New" alt="New"/>
+   <img src="img/upload.gif" id="btn_upload" title="Upload" alt="Upload"/>
+   <img src="img/rename.gif" id="btn_rename" title="Rename" alt="Rename"/>
+   <img src="img/delete.gif" id="btn_delete" title="Delete" alt="Delete"/>
+   <form action="process.php?new" id="form_new" method="post"
+    style="display:none;">
+    <div>
+     <input type="text" name="name" id="form_new_name"/>
+     <input type="submit" id="form_new_submit" value="Ok"/>
+     <input type="reset" id="form_new_reset" value="Cancel"/>
+    </div>
+   </form>
+   <form action="process.php?rename" id="form_rename" method="post"
+    style="display:none;">
+    <div>
+     <input type="text" name="name" id="form_rename_name"/>
+     <input type="submit" id="form_rename_submit" value="Ok"/>
+     <input type="reset" id="form_rename_reset" value="Cancel"/>
+    </div>
+   </form>
+   <form action="upload.php" id="form_upload" method="post"
+    enctype="multipart/form-data" style="display:none;">
+    <div>
+     <input type="file" name="file" id="form_upload_name" />
+     <input type="hidden" name="directory" id="form_upload_directory" value=""/>
+     <input type="submit" id="form_upload_submit" value="Ok"/>
+     <input type="reset" id="form_upload_reset" value="Cancel"/>
+    </div>
+   </form>
+   <iframe id="my_iframe" name="my_iframe" style="display:none;"></iframe>
+  </div>
+ </body>
+</html>
