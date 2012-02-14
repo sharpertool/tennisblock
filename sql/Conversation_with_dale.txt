@@ -1,0 +1,54 @@
+> I just have a hard time figuring out how to calculate the "repeats..
+> maybe I should concentrate there.
+> in the end, it apperas there are "millions" of solutions...
+<13:35 vtrtl> maybe you should concentrate ongetting the answer you need
+> not having your math background... I've been trying (for six months)... to
++fiure out how to "brute force this"..
+<13:35 vtrtl> if you wanted a heurisitc for making several good pairings
+<13:36 vtrtl> do the thing with the diagonals
+<13:36 vtrtl> (first sort the players by ability)
+<13:36 vtrtl> or maybe interleave th eplayers by ability....
+<13:36 vtrtl> 15 26 37 48
+<13:37 vtrtl> then you could build a nice portfolio of good matchups for a
++bunch of fridays
+<13:37 vtrtl> also
+<13:37 vtrtl> the problem is really sensitive to ratings... and ratings are
++probably only so good...
+<13:37 vtrtl> if everyone has a rating in the range 3.9 to 4.1 than who
++cares..
+<13:38 vtrtl> if most people are 4+ and a couple of them are 1.3 or
++something... then the problem is reallly "who plays with the partner who
++sucks this friday?
+> there is a fair bit of variation in the ratings actually.
+> we have 3.5 men, and 5.0 men..
+<13:39 vtrtl> there is a microsoft solver foundation that is open source you
++could make a asp .net web app and use that as the back end solver
+> 3.5 women that are probaly more like "3.0" and 4.0 women that are higher..
+<13:40 vtrtl> welll then given that the optimization is probably a good thing
++to have...
+<13:40 vtrtl> even if you just get an optimal pairing every once in awhle
++(when membership and ratings change)
+<13:40 vtrtl> that gives you something to go on...
+<13:41 vtrtl> it tells you "the best possbile" combnation - even if you are
++not doing that this friday... you know how far from theoretical optimality
++you are...
+<13:41 vtrtl> also...
+<13:41 vtrtl> you need to ask people whether they thought the experience is
++better or worse under this program...
+<13:41 vtrtl> what really constitues the "best" paring is way different that
++what th eobjective function says...
+<13:42 vtrtl> some dude may want a great workout and he may get it with a weak
++partner...
+<13:42 vtrtl> have to run around a lot more...
+<13:42 vtrtl> some people may prize winning over all else... they would be
++happy with weak opponents every friday...
+<13:42 vtrtl> is mokus around?
+<13:43 vtrtl> i hve to get back to work on my project
+<13:43 vtrtl> (my realy project)
+<13:43 donnarona> bye guys
+<13:44 vtrtl> bye
+<13:44 donnarona> we will let you know about dads test
+> thanks for all the hel.. I need to think about your info..
+<13:44 vtrtl> yes do
+<13:44 donnarona> k
+
