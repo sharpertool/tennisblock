@@ -69,10 +69,14 @@ def main():
 
     fp = sys.stdout
 
-    if options.matchid:
-        dbTeams = DBTeams(options.matchid)
-    else:
-        dbTeams = DBTeams()
+    try:
+        if options.matchid:
+            dbTeams = DBTeams(options.matchid)
+        else:
+            dbTeams = DBTeams()
+    except:
+        print("Could not open a DB Connection.")
+        sys.exit(2)
 
     fp.write("Scheduling for Matchid:%s\n" % dbTeams.matchid)
 

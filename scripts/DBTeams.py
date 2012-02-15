@@ -42,6 +42,7 @@ class DBTeams(DBConnection):
             from
                 blockmeetings
             where
+                holdout = 0 and
                 date > date_sub(curdate(),interval 1 day)
                      """
 
