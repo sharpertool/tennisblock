@@ -145,7 +145,9 @@ class DBConnection:
 
         if dest == 'prod':
             self.hosts = [
-                {'host':'192.168.1.150','port':3306},
+                {'host':'127.0.0.1','port':3316},
+                {'host':'tennisblock.net','port':3306},
+                {'host':'192.168.1.150','port':3306}
             ]
 
             self.user = 'kutenai'

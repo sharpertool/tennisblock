@@ -29,8 +29,10 @@ class MeetingStats:
         self.women = women
         self.nCurrSetCount = 0
 
+        self.maxIterations = 100
+
         self.seeGirlsOnlyOnce = False
-        if self.nCourts == 4:
+        if self.nCourts == 3:
             self.seeGirlsOnlyOnce = False
 
         self.chkMatchups = 0
@@ -48,12 +50,19 @@ class MeetingStats:
 
         self.minDiffHistory = []
 
-        self.maxIterations = 100
 
         # Need a reverse lookup table
         self.pbyname = {}
         for p in self.men+self.women:
             self.pbyname[p.Name()] = p
+
+    def setSeeGirlsOnce(self,bTrue):
+        if bTrue:
+            print("Setting the see Girls seeting to True")
+            self.maxIterations *= 10
+        else:
+            print("Setting the see Girls seeting to False")
+        self.seeGirlsOnlyOnce = bTrue
 
     def setMaxIteration(self,n):
 

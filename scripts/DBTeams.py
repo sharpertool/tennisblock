@@ -55,7 +55,7 @@ class DBTeams(DBConnection):
 
         return results[0]
 
-    def getPlayers(self):
+    def getPlayers(self,filter=None):
 
         curs = self.getCursor()
 
@@ -75,6 +75,9 @@ class DBTeams(DBConnection):
             and s.pid = p.pid
 
                      """ % (self.matchid)
+
+        if filter:
+            sql = sql + filter
 
         curs.execute(sql)
 

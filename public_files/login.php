@@ -23,9 +23,16 @@
         //set the database connection variables
         include_once '../inc/dbauth.inc';
         
-        //connet to the database
+        //connect to the database
         
-        $db = mysql_connect("$dbHost", "$dbUser", "$dbPass") or die ("Error connecting to database.");
+        $db = mysql_connect("$dbHost", "$dbUser", "$dbPass");
+
+        //`or die ("Error connecting to database.");
+        if (!$db) {
+            $err = mysql_error();
+            echo $err;
+
+        }
         
         mysql_select_db("$dbDatabase", $db) or die ("Couldn't select the database.");
         

@@ -18,10 +18,12 @@ class TeamGen:
         self.nSequences = nSeqs
         self.iterLimit = 1000
 
-    def GenerateSetSequences(self):
+    def GenerateSetSequences(self,dups):
         retries = 0
         self.meeting.Restart()
         diffMax = 0.1
+
+        self.meeting.ms.setSeeGirlsOnce(dups)
 
         while (self.meeting.SetCount() < self.nSequences):
             set = None

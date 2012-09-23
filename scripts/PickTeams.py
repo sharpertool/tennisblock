@@ -18,12 +18,12 @@ from optparse import OptionParser
 
 from DBTeams import *
 
-def PickTeams(fp,dbTeam,nCourts,nSequences,testing=False):
+def PickTeams(fp,dbTeam,nCourts,nSequences,dups,testing=False):
 
     men,women = dbTeam.getPlayers()
 
     tg = TeamGen(nCourts,nSequences,men,women)
-    sequences = tg.GenerateSetSequences()
+    sequences = tg.GenerateSetSequences(dups)
 
     if sequences == None or len(sequences) < nSequences:
         fp.write("Could not generate the required sequences.")
@@ -62,6 +62,10 @@ def main():
                        type="string",
                        default="/tmp/schedule.log",
                        help="File to output debug data to")
+    parser.add_option('-n', dest='nodups',
+                        action="store_true",
+                        default=False,
+                        help="Option to disable seeing an opponent 2 times.")
     parser.add_option("-v",action="store_false",dest="verbose")
     parser.add_option("-t",action="store_true",dest="test")
 
@@ -84,6 +88,7 @@ def main():
         dbTeams,
         options.courts,
         options.sequences,
+        options.nodups,
         options.test)
 
     fp.close()
