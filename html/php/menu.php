@@ -23,8 +23,8 @@
         $season = "Unknown Season";
     }
     echo "<center><h2>";
-    if ($season == "2012 Spring") {
-        echo "Spring, 2012";
+    if ($season == "2012 Fall") {
+        echo "Fall, 2012";
     }
     echo "</h2></center>\n";
     echo "<center><h2>";

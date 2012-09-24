@@ -10,7 +10,7 @@
     if (isset($_SESSION['season'])) {
         $season = $_SESSION['season'];
     } else {
-        $season = "2012 Spring";
+        $season = "2012 Fall";
     }
     $schmgr->setSeason($season);
     
@@ -19,9 +19,9 @@
 
     // Insert the first block date
     $dates = array();
-    if ($season == '2012 Spring') {
+    if ($season == '2012 Fall') {
         #hr, min, sec, mo, day, year
-        $t = mktime(12,0,0,1,13,2012);
+        $t = mktime(12,0,0,9,21,2012);
     }
     $dates[] = $t;
     $t = strtotime('+1 week', $t);
@@ -144,8 +144,8 @@
         $season = "Unknown Season";
     }
     echo "<center><h2>";
-    if ($season == "2012 Spring") {
-        $season_text =  "Spring, 2012 ";
+    if ($season == "2012 Fall") {
+        $season_text =  "Fall, 2012 ";
     }
 
     $GLOBALS['TEMPLATE']['title'] = "<h2>Member Availability for $season_text</h2>";
