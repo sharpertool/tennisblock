@@ -108,8 +108,8 @@
         $season = "Unknown Season";
     }
     echo "<center><h2>";
-    if ($season == "2012 Spring") {
-        $season_text =  "Spring, 2012 ";
+    if ($season == "2012 Fall") {
+        $season_text =  "Fall, 2012 ";
     }
 
     $GLOBALS['TEMPLATE']['title'] = "<h2>Member List for $season_text</h2>";

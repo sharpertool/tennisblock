@@ -11,7 +11,7 @@
     if (isset($_SESSION['season'])) {
         $schmgr->setSeason($_SESSION['season']);
     } else {
-        $schmgr->setSeason("2012 Spring");
+        $schmgr->setSeason("2012 Fall");
     }
     
     $firstdate = $schmgr->getFirstMatchDate();
@@ -228,11 +228,11 @@
     if (isset($_SESSION['season'])) {
         $season = $_SESSION['season'];
     } else {
-        $season = "2012 Spring";
+        $season = "2012 Fall";
     }
     echo "<center><h2>";
-    if ($season == "2012 Spring") {
-        $season_text =  "Spring, 2012 ";
+    if ($season == "2012 Fall") {
+        $season_text =  "Fall, 2012 ";
     } else {
         $season_text = $season;
     }

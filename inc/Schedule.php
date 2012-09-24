@@ -123,7 +123,7 @@ class ScheduleManager
         {
             ScheduleManager::$s_schManager = new ScheduleManager();
             /* Set the default season */
-            ScheduleManager::$s_season = "2012 Spring";
+            ScheduleManager::$s_season = "2012 Fall";
             ScheduleManager::$s_ncourts= 3;
         }
     

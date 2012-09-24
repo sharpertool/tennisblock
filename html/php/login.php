@@ -51,7 +51,7 @@
                 if (isset($_POST['season'])) {
                     $_SESSION['season'] = $_POST['season'];
                 } else {
-                    $_SESSION['season'] = "2012 Spring (default)";
+                    $_SESSION['season'] = "2012 Fall (default)";
                 }
               
                 //we will redirect the user to another page where we will make sure they're logged in
