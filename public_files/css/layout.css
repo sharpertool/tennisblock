@@ -1,0 +1,179 @@
+/** LAYOUT **
+ ****************************************
+ All of the main layout is here. I am using absolute positioning, based on things I learned
+ from the book "CSS: The Missing Manual"
+
+ There are 2 main areas. top_bar and tool_body
+ Within the tool_body, there is a fixed width sidebar. This fills the left of the tool_body and is
+ 336px width, to accommodate a display ad. On the right is an optional vendor bar, or digikey_bar.
+ This bar is 226px (?) wide when displayed.
+ In the center of the tool body is the schematic-wrapper. This fills the space in the tool_body. It uses
+ a left margin of 336 to pull it away from the left sidebar, and a right margin of 0 or 226px (?) depending
+ on if the right bar is displayed or not. That margin is adjusted in code when the right sidebar is shown/hidden.
+
+ All three layout areas in the tool_body are fixed to the bottom of the tool_body. The tool_body itself is
+ fixed to the bottom of the window.
+
+ I have moved all layout code to this area, to make it more clear what is done with layout. Only the layout
+ specifications are here, other parts of the css, such as color, font, etc. are located elsewhere. This means
+ there might be two #<id> sections for a div.
+
+ */
+
+/* Top bar contains the projectBar, tabs, and toolbar
+ If you sum up the vertical:
+    #projectBar: 36+1px bottom border = 37px
+    #tabs: 36+1px bottom border = 37px;
+     - total = 74px;
+    #toolbar: 64+2px bottom = 66px
+     - total = 74+66 = 140px;
+*/
+#top_bar { position : absolute; top : 0; left : 0; right : 0; height : 148px; }
+
+#projectBar {
+    position      : absolute;
+    top           : 0;
+    left          : 0;
+    right         : 0;
+    height        : 36px;
+    min-width     : 700px;
+    /*
+    width         : expression(document.body.clientWidth < 702? "700px": "auto" );
+    */
+    border-bottom : 1px;
+}
+
+#tabs {
+    position      : absolute;
+    top           : 32px;
+    left          : 0;
+    right         : 0;
+    /* margin-top: 36px;*/
+    margin-left   : 0px;
+    height        : 40px;
+    min-width     : 700px;
+    /*
+    width         : expression(document.body.clientWidth < 702? "700px": "auto" );
+    */
+    border-bottom : 1px;
+}
+
+#toolbar_bg {
+    position : absolute;
+    top      : 70px;
+    left     : 0;
+    right    : 0;
+    bottom   : 0;
+}
+
+#toolbar {
+    position           : absolute;
+    top                : 0px;
+    left               : 0px;
+    right              : 0;
+    /* margin-top: 76px; */
+    margin-top         : 2px;
+    margin-left        : 7px;
+    height             : 64px;
+    border-left        : 1px;
+    border-botom-width : 2px;
+    padding-top:2px;
+}
+
+/* margin top is 145 = 140+3px spacing */
+#tool_body {
+    position  : absolute;
+    left      : 0;
+    top       : 0px;
+    bottom    : 0px;
+    right     : 0;
+    margin    : 142px 0px 0px 0px;
+    min-width : 500px;
+}
+
+#sidebar { position : absolute; left : 0; top : 0; bottom : 0; margin : 1px 1px 1px 1px; width : 336px; min-height : 350px; }
+
+#sidebar_stuff {
+    position : absolute;
+    left     : 0; top : 0; right : 0; bottom : 0;
+    margin   : 0px 0px 0px 5px;
+    background-color:#f9f9f9;
+}
+
+#sidebar_content { position:absolute; left:0px; right:0; top:0; bottom:0; padding:0px 0 0 0; margin:32px 0 0 0; }
+#sb_symbols { position: absolute; margin-top:10px; left:0; right:0; top:0; bottom:0; }
+
+#sidebar_components { position: absolute; left:0; top:0; bottom:0; right:0; }
+
+#schematic-wrapper {
+    position : absolute;
+    top : 0;
+    left : 336px;
+    right : 0;
+    bottom : 0;
+    margin : 0px 5px 0px 5px;
+    overflow : scroll;
+    padding: 1px;
+    border : 1px;
+}
+
+#schematic { position : absolute; left : 0; top : 0; width:1920px; height: 1200px; }
+
+#digikey_bar { position : absolute; right : 0; top : 0; bottom : 0; margin : 5px 5px 5px 5px; width : 248px; z-index : 900; padding-top : 50px; }
+#digikey_splitcontainer {
+    position: absolute;
+    min-height: 200px;
+    top:0; right:0; bottom:0; left:0;
+    margin: 50px 0 34px 0; padding: 1px;
+    border-top:1px; overflow-x: hidden; overflow-y: auto; }
+#digikey_splitter {
+    min-height:300px;
+    max-height:900px;
+}
+
+#digikey_btnbar { position: absolute; left:0; right:0; bottom:0; height: 32px; padding: 1px; border-top:1px;}
+#close_box { position:absolute; bottom:0px; right:0px; width:248px; height:20px; }
+
+#bom_page {
+    position : absolute;
+    left     : 0;
+    top      : 149px;
+    bottom   : 0px;
+    right    : 0;
+    margin   : 0px 0px 5px 0px;
+    padding  : 1px;
+}
+
+/* ---- Report Page ----
+    Report page contains two sub-pages.
+        - sim_report is the output from the ngspice simulator
+        - circuit_file is the spice deck.
+*/
+#report_page {position: absolute; left:0; top:0; bottom:0; right:0; margin: 149px 0px 40px 0px; padding: 1px; min-width:500px; }
+#sim_report { float:left; position:relative; width:45%;height:90%; margin:1%; padding:1%; border: 1px; }
+#circuit_file { float:left; position:relative; width:45%;height:90%; margin:1%;  padding:1%;border: 1px; }
+#sim_report textarea,#circuit_file textarea { width:98%; height:98%; padding:1%; }
+
+/* --- Simulation Charts ---
+    - container for the sim plot
+    - multiple charts, so layout specified with a class.
+*/
+.chart_page { position: absolute; left:0; top:0; bottom:0; right:0; margin: 149px 0px 0px 0px; padding: 1px; display:none; }
+/* ---- Simulation Plots ---
+    - sim_plot lives inside of the chart_page.
+    - multiple plots, so layout specified with a class.
+*/
+.sim_plot { position:absolute; left:0; top:0; bottom:0; right:0; margin: 5px 5px 5px 5px; padding: 1px; }
+
+/* Two options on the status_window.. one is it's a child of the schematic_wrapper, and the other is it's not.
+   A) Part of schemaitc wrapper, then align with left or right edge. When sim is done, we switch to a tab and it's gone
+#status_window { position: absolute; bottom:20px; right: 20px; width: 650px; height: 65px; border: 1px; }
+   B) Part of top level. Align to be right of the left sidebar. It stays up when we switch to the sim tab, but soon fades out.
+#status_window { position: absolute; bottom:20px; left: 350px; width: 650px; height: 65px; border: 1px; z-index:100; }
+
+Currently B is in operation.
+*/
+#status_window { position: absolute; bottom:20px; left: 350px; width: 650px; height: 65px; border: 1px; z-index:100; }
+#simstatus { position: absolute; top:3px; left:20px; height:43px; }
+#simstatus_btn { position: absolute; bottom:0px; left:20px; height:14px; }
+

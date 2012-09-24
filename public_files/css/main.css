@@ -1,0 +1,492 @@
+html { overflow: hidden; }
+
+/* Main */
+body { margin:0px; padding:0px; font-size:14px; font-family: arial, Helvetica,sans-serif; overflow: hidden; height: 100%; width: 100%; background-color:#f9f9f9;}
+
+#splash { position: absolute; width: 100%; height: 100%; background: #e1e1e1; color: #000; z-index: 3000; top: 0; left: 0; padding:10px; }
+#splash p.status { font-style: italic; font-size: smaller; }
+
+/* Modals */
+#welcome { display: none; text-align:center; margin: 0 auto; }
+#welcome a { display:block; margin-top:10px; font-style:italic; }
+#welcome a:hover { color:#000; }
+#help_dialog { display:none; }
+#share_link_wrapper { margin-top:10px; }
+
+#share_top { padding: 18px;}
+#share_link_wrapper { margin-top:10px; padding-bottom: 10px; }
+#share_radio { font-weight: bold; padding-bottom: 15px; }
+
+/* @import url("layout.css");*/
+
+/* Project Bar */
+#projectBar { border-bottom:solid #777777; background-color:#282828; }
+
+/* Class that all float:right buttons share. */
+.projectbar_button {float:right; color:#fff; line-height:36px; padding-right:15px; padding-left:15px; font-size:12px; cursor: pointer;}
+#help_button { border-left:1px solid #ccc; }
+#help_button:hover, #login:hover { text-decoration: underline; }
+#project_button { position: relative; height:20px; line-height:20px; color:#4d4d4d; padding-left:20px; padding-right:25px; border:1px solid #b3b3b3; background-color:#f9f9f9; margin-top: 7px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;}
+#project_button:hover { background-color: #fff; color:#000; }
+#project_button span { font-weight:bold; }
+#project_button #arrow { position: absolute; width:9px; height:6px; right:12px; top:8px; }
+#logo_header { float:left; padding-top:10px; padding-left:18px; }
+
+
+/* Tabs */
+#tabs { /* border-bottom: solid #b3b3b3; */ background-color:#f9f9f9; }
+#tabs p { display:none;}
+
+#tabs ul {  position:absolute; bottom:-1px; left:7px; right:7px; }
+#tabs li .ui-icon-close { float: right; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+/* It is okay to float and set relative. Setting relative just makes contained items position relative to me */
+#tabs li { position: relative; float:left; margin-left:0px; margin-right:2px; color:#333; font-weight:bold; position:relative; cursor:pointer;  border:1px solid #b3b3b3; line-height:23px; padding-top:2px; padding-left:20px; padding-right:20px; height:24px; text-align:center; font-size:11px; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;background-color:#e6e6e6;
+-webkit-border-top-left-radius: 3px;
+-webkit-border-top-right-radius: 3px;
+-moz-border-radius-topleft: 3px;
+-moz-border-radius-topright: 3px;
+border-top-left-radius: 3px;
+border-top-right-radius: 3px;}
+
+/* Positioned relative to the #tabs li - upper right-hand corner */
+#tabs li .ui-icon-close { position:absolute; top: 3px; right:3px; cursor: pointer; }
+
+/* Open up some space to the right of the text for the 'close' icon */
+#tabs li.tab_charts { padding-right: 30px; }
+#tabs li.tab_report { padding-right: 30px; }
+
+#tabs li.tab_hot { background-color: #fff; z-index:999; color:#242424; border-bottom:none; height:25px; }
+#tabs li.tab_first { display:inline;  border-left:1px solid #b3b3b3; }
+#tabs li.tab_hover { background-color: #ccc }
+
+/*
+.sb_tab_name { font-size:18px; background-color: #d0d0d0; }
+*/
+/*
+.sb_tab { font-size:10px; background-color:#fff; padding-left:3px; padding-right:3px;
+*/
+
+/* Toolbar */
+/* Note: I am not declaring the border sizes here.. those are in layout.css.. since they affect the size of the div */
+#toolbar { background: #fff url(../img/button_hover.png) bottom left repeat-x; border-top:1px solid #ccc; border-left: 1px solid #b3b3b3; border-bottom: 1px solid #666; }
+.menu_sub_group { float:left; padding-right: 4px; background: transparent url(../img/menu_wrap_left.png) top right no-repeat; position:relative; left:4px;}
+.menu_sub_group li { cursor:pointer; font-size:10px; height:42px; line-height:10px; padding-top:5px; padding-bottom:5px; text-transform:none; text-align:center; float:left; width:55px; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none; }
+.menu_sub_group div.img {margin-left:10px; float:left; text-align:center; width: 35px; height: 30px; background: transparent url(../img/toolbar-sprite.png) no-repeat; }
+.menu_sub_group .menu_depressed { background: #b3b3b3; }
+.menu_group { display:none; width:1028px; }
+#toolbar #menu_0 { display:block; }
+.menu_wrap { float:left; position:relative; background: transparent url(../img/menu_wrap_left.png) top left no-repeat; margin-left:4px; margin-top:8px; margin-right:4px;  }
+.toolbar_hover { background: transparent url(../img/menu_button_hover.png) 0px 5px no-repeat; }
+.menu_wrap_label { position:absolute; left:10px; top:-6px; font-size:10px; background-color:#fff; padding-left:3px; padding-right:3px; color:#666;z-index:999; }
+.menu_text { font-size:10px; }
+
+#toolbar_save div.img { background-position: -420px 0; }
+#toolbar_saveas div.img { background-position: -455px 0; }
+#toolbar_new div.img { background-position: -700px 0; }
+#toolbar_open div.img { background-position: -630px 0; }
+#toolbar_export div.img, #toolbar_bom_export div.img { background-position: -945px 0; }
+#toolbar_share div.img, #toolbar_bom_share div.img { background-position: -385px 0; }
+#toolbar_order div.img, #toolbar_bom_order div.img { background-position: -1400px 0; }
+#toolbar_print div.img { background-position: -595px 0; }
+#toolbar_cut div.img { background-position: -1050px 0; }
+#toolbar_copy div.img { background-position: -1085px 0; }
+#toolbar_paste div.img { background-position: -665px 0; }
+#toolbar_delete div.img { background-position: -1015px 0; }
+#toolbar_undo div.img { background-position: -35px 0; }
+#toolbar_redo div.img { background-position: -525px 0; }
+#toolbar_group div.img { background-position: -805px 0; }
+#toolbar_ungroup div.img { background-position: -105px 0; }
+#toolbar_raise div.img { background-position: -560px 0; }
+#toolbar_lower div.img { background-position: -770px 0; }
+#toolbar_flip_v div.img { background-position: -840px 0; }
+#toolbar_flip_h div.img { background-position: -875px 0; }
+#toolbar_rotate div.img { background-position: -490px 0; }
+#toolbar_align_left div.img { background-position: -1260px 0; }
+#toolbar_align_center div.img { background-position: -1295px 0; }
+#toolbar_align_right div.img { background-position: -1155px 0; }
+#toolbar_align_top div.img { background-position: -1190px 0; }
+#toolbar_align_middle div.img { background-position: -1225px 0; }
+#toolbar_align_bottom div.img { background-position: -1330px 0; }
+#toolbar_fill div.img { background-position: -910px 0; }
+#toolbar_gradient div.img { background-position: -1365px 0; }
+#toolbar_bigger div.img { background-position: -315px 0; }
+#toolbar_smaller div.img { background-position: 0 0; }
+#toolbar_color div.img { background-position: -910px 0; }
+#toolbar_bold div.img { background-position: -1120px 0; }
+#toolbar_italic div.img { background-position: -735px 0; }
+#toolbar_underline div.img { background-position: -70px 0; }
+#toolbar_text_left div.img { background-position: -245px 0; }
+#toolbar_text_center div.img { background-position: -280px 0; }
+#toolbar_text_right div.img { background-position: -175px 0; }
+#toolbar_text_top div.img { background-position: -140px 0; }
+#toolbar_text_middle div.img { background-position: -210px 0; }
+#toolbar_text_bottom div.img { background-position: -350px 0; }
+#toolbar_run div.img { background: transparent url(../img/run_icon.png) no-repeat;}
+#toolbar_netlist div.img { background: transparent url(../img/Netlist.png) no-repeat;}
+
+/* Toolbar Visibility */
+#menu_1 { display:none; }
+#menu_2 { display:none; }
+
+/* position: relative -- Set lower level objects relative to this object. */
+#tool_body { /* layout.css */ }
+
+/* sidebar
+    This sidebar wraps two main divs:
+        - sidebar_stuff -> contains the tabs div and content div
+                           tabs div provides the interface to select individual content divs (show/hide)
+        - ad div -> fixed on the bottom.
+*/
+#sidebar { /* layout.css */ }
+
+#sidebar_stuff { /* layout.css */ }
+
+/* ---- Schematic Graph Area ---- */
+/* When the status bar is shown, bottom margin = 45. When it is hidden, bottom margin is 0 */
+#schematic-wrapper { cursor: crosshair; border-left: 1px solid #b3b3b3; }
+#schematic { background: #fff url('../images/grid_100.png');}
+
+/* Simulation Status */
+#status_window { border: solid #1add3d; }
+#simstatus { border:solid #b3b3b3; font-size:14px; font-weight:normal;   }
+
+/* --- sidebar tabs --- */
+/* this works... trying something new
+#sidebar_tabs { position:relative; left:0px; top:0px; padding:0; margin:5px 5px 0px 5px; }
+*/
+#sidebar_tabs { float:left; left:0px; top:0px; padding:0; margin:2px 5px -1px 0px; }
+
+#sidebar_tabs ul { height:30px; list-stlye:inline; }
+#sidebar_tabs li { height:30px; display:inline; background-color: #F2F2F2; border: solid; border-width: 1px 1px 0 1px; margin: 2px 2px 0 0px; height:30px; }
+#sidebar_tabs li {float:left; margin-left:0px; color:#333; font-weight:bold; position:relative; cursor:pointer;  border:1px solid #b3b3b3; line-height:23px; padding-top:2px; padding-left:15px; padding-right:15px; height:24px; text-align:center; font-size:11px; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom:none;
+}
+#sidebar_tabs li.tab_hot { background-color: #E4E4E4; z-index:999; color:#242424; border-bottom:1px solid #e4e4e4; height:25px; }
+#sidebar_tabs li.tab_first { display:inline;}
+#sidebar_tabs li.tab_hover { background-color: #a0a0a0 }
+#sidebar_tabs span { /* font-size:18px; */  }
+
+/* Sidebar Content */
+#sidebar_content { /* layout.css */ }
+
+#sidebar_content > div {display:none; }
+#sidebar_content {display:block; cursor:default; }
+
+/* Probes */
+#sidebar_probes .title { clear:both; text-align:center; font-size:120%; border-bottom: 1px solid #313137; margin: 5px 0 15px 0; }
+#sim_probes { overflow-y: auto; }
+/*
+#sidebar_probes span {
+    float:left; width:6em; text-align:right; clear:left; margin-right: 15px;
+}
+*/
+
+/* Center the nets and 'add probe' button in the probe bar */
+#probe_nets { text-align:center; }
+#probe_nets > div.probe_nets { display: inline-block; height: 30px; margin-bottom:10px; }
+
+#sim_probes .probeitem { float:left; clear:both; width:100%; height: 20px;}
+#sim_probes .probeitem > span { float:left; width:auto; text-align:right; clear:left; margin-left:20px; margin-right: 15px; }
+#sim_probes .probeitem > div { position: absolute; right:0; margin-right:15px; height: 100%;}
+#sim_probes .probeitem button { height: 18px; width:18px; }
+
+/* div.add_expr is the containing div for the bottom button.  */
+#sim_probes div.add_expr { float:left; margin-left: 65px; margin-top:10px; margin-bottom:5px; clear:both; }
+
+#probe_list { background:#E4E4E4; }
+
+/* Radio buttons on the bottom.. just for testing */
+#probe_options { float:left; clear:both; width:100%; text-align: center; }
+#probe_options > div:eq(1) { display:inline-block; }
+
+/* Options */
+#sidebar_options .title { clear:both; text-align:center; font-size:120%; border-bottom: 1px solid #313137; margin: 5px 0 15px 0; }
+#sidebar_options span {
+    float:left; width:6em; text-align:right; clear:left; margin-right: 15px;
+}
+
+/* ---- Component Sidebar----
+ The main div is sidebar_components. This is absolutely positioned right up against the container.
+*/
+#sidebar_components { /* layout.css */ }
+
+
+/*
+    The from and sb_search is the top
+*/
+#sidebar_components form { border-bottom: 1px solid #b3b3b3; margin-bottom:5px; }
+#sidebar_components div.title { margin-left:12px; margin-top:8px; margin-bottom:4px; font-style:italic; font-size:11px; color:#666; }
+#sb_search { margin-left:7px; margin-bottom:6px; border:1px solid #b3b3b3 ; padding:0; font-size:12px; }
+#sb_search input { height: 18px; width:175px; border: 0 none; font-size:12px; line-height:18px; }
+
+/* The magic number 49 comes from the height of the form that is above this div in the #sidebar_components div.
+ There is no way (?) to make this div move automatically, since I'm using absolutely positioned divs.
+ These used to be floats, which handle the top-bottom positioning well, but must be given a width. This strategy
+ makes things easier since the widths can track the browser with minimal JS interaction.
+*/
+#sb_symbols { /* layout.css */ }
+.sidebar { z-index:200; background-color:#E4E4E4; overflow-y:hidden; overflow-x: hidden; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; padding: 5px 3px 0 3px;}
+#sidebar_components .sidebar ul { width:100%; list-style:none; margin-left:0px; }
+#sidebar_components .sidebar ul li { background-color:#aaccff;  font-size:12px; line-height:20px; cursor:pointer; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;}
+.sidebar #sb_symbols { overflow-y:auto; overflow-x:hidden;}
+
+.sidebar_shadow {
+    -webkit-border-radius: 5px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius: 5px;
+    -moz-border-radius-topleft: 0;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border:1px solid #b3b3b3;
+}
+
+/* Sidebar visibility */
+#sidebar #symbols_custom { display:none; }
+
+.sidebar .level_1 li { background-color:#333; color:#fff; text-transform:uppercase; font-weight:bold; line-height:28px;  letter-spacing:1px; border-bottom:1px solid #fff; }
+.sidebar .level_1 li span { padding-left:10px; }
+.hover_1, .hover_1_static { background-color:#333 !important; }
+
+/* Level 2 */
+.sidebar .level_2 { display:none; }
+.sidebar .level_2 li span { padding-left:21px; }
+.sidebar .level_2 li { background:#e6e6e6 url('../img/arrow_h.png') 10px 10px no-repeat; color:#333; text-transform:none; letter-spacing:0px; font-size:12px; font-weight:bold;}
+.hover_2 { background-color:#ccc !important; }
+.hover_2_static { background:#ccc url('../img/arrow_v.png') 10px 10px no-repeat !important; }
+
+/* Level 3 */
+.sidebar .level_3 { display:none; }
+.sidebar .level_3 li span { padding-left:27px;  }
+.sidebar .level_3 li { background:#fff  url('../img/folder_icon.png') 10px 9px no-repeat; color:#333; border-bottom:1px solid #e2e2e2; text-transform:none; font-size:11px; font-weight:bold; letter-spacing:0px;}
+.hover_3 { background:#f2f2f2  url('../img/folder_icon.png') 10px -49px no-repeat !important; color:#000000 !important; }
+.hover_3_static { background:#fff url('../img/folder_icon.png') 10px -78px no-repeat !important; color:#000000 !important;}
+
+/* Level 4 */
+.sidebar .level_4 { background-color:#fff; display:none; }
+.sidebar .level_4 li { position:relative; background-image:none !important; background-color:#fff; border-bottom:1px solid #e2e2e2; font-size:11px; line-height:13px; font-weight:normal; height:50px;letter-spacing:0px;  }
+.sidebar .level_4 li span { float:left; padding-left:0px; padding-top:10px; }
+.hover_4 { background-color:#f2f2f2 !important; color:#000 !important;}
+.level_4 img { padding-left:10px; float:left; }
+.component-preview { float: left; width: 50px; height: 40px; margin: 5px 10px; }
+.component-name { font-size:11px; font-weight:bold; line-height:14px; padding-top:12px;}
+.component-description { font-size:11px; line-height:12px;}
+.comp_drag_msg { display:none; position:absolute; text-align:right; right:25px; top:25px; opacity:0.3; background-color: #e8de43; border: 1px solid #6d6d6d; }
+
+/* --- Wiring and Select Buttons -- */
+#select_bar { display:none; width:148px; height:25px; left:208px; top:97px; position:absolute; z-index:100; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none; }
+#select_1 { width:74px; height:25px; left:0px; position:absolute;  }
+#select_2 { width:74px; height:25px; right:0px; position:absolute; }
+.select_1_hot { background: url('../img/wire_select.png') 0px 0px no-repeat !important; }
+.select_1_cold { background: url('../img/wire_select.png') 0px -50px no-repeat; }
+.select_1_hover {  background: url('../img/wire_select.png') 0px -25px no-repeat; }
+.select_2_hot { background: url('../img/wire_select.png') -74px 0px no-repeat !important; }
+.select_2_cold { background: url('../img/wire_select.png') -74px -50px no-repeat; }
+.select_2_hover {  background: url('../img/wire_select.png') -74px -25px no-repeat; }
+
+/* --- Zoom Buttons --- */
+#zoom_bar { width:81px; height:33px; left:356px; top:156px; position:absolute; z-index:100; display:none; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;}
+#z_in { width:39px; left:0px; height:33px; top:0px; position:absolute; }
+#z_out { width:39px; left:42px; height:33px; top:0px; position:absolute;}
+.z_in_hover { background: url('../img/zoom.png') 0px -33px no-repeat; z-index:101; }
+.z_in_click { background: url('../img/zoom.png') 0px 0px no-repeat; z-index:101; }
+.z_in_cold { background: url('../img/zoom.png') 0px -66px no-repeat; z-index:101; }
+.z_out_hover { background: url('../img/zoom.png') -39px -33px no-repeat; z-index:100;}
+.z_out_click { background: url('../img/zoom.png') -39px 0px no-repeat; z-index:100; }
+.z_out_cold { background: url('../img/zoom.png') -39px -66px no-repeat; z-index:100;  }
+
+/* --- BOM Page --- */
+#bom_page { }
+.bom_mode { display: none; }
+
+/* --- Simulation Report Page --- */
+#report_page { /* layout.css */ display:none; }
+#sim_report { /* layout.css */ border: solid #b3b3b3; }
+#circuit_file { /* layout.css */ border: solid #b3b3b3; }
+#sim_report textarea,#circuit_file textarea { /* layout.css */ font-family: courier; }
+
+/* --- Simulation Charts --- */
+.chart_page { /* layout.css */ display:none; }
+.sim_plot { /* layout.css */ }
+
+
+/* --- DigiKey Sidebar --- */
+/* Original DK Bar
+#digikey_bar { float:right; position:relative; width:248px; background-color:#f2f2f2; border-left:1px solid #E4E4E4; z-index:900; padding-top: 50px;}
+*/
+/* New DK Bar */
+#digikey_bar { background-color:#f2f2f2; border-left:solid #E4E4E4; }
+
+#digikey_splitcontainer { /* layout.css */ background-color:#f2f2f2; border-top:solid #ddd;}
+#digikey_splitter { position: relative; height: 100%; width: 100%; background-color:#f2f2f2; border-top:1px solid #ddd;}
+#digikey_btnbar { /* layout.css */ background-color:#f2f2f2; border-top:solid #ddd;}
+.digikey_bar_btn { float:left; display:inline; color: #545454; tfont-size: 16px; border-top: 1px solid #ccc; }
+
+#catalog_list li{ font-size:10px; line-height:14px; border-bottom:1px solid #ddd; padding-top:5px; padding-bottom:5px; padding-left:5px; white-space: nowrap; cursor:pointer; }
+#catalog_list span { font-weight:bold; font-size:12px; }
+#region_1 {  font-size:1px; background-color:#fff; height:400px; overflow-y:auto; overflow-x: hidden; margin-bottom:10px;}
+#region_2 {  background-color:#fff; overflow-y:auto; overflow-x: hidden; }
+#region_2 h3 { font-weight:normal; font-size:12px;line-height:14px; text-transform:uppercase;background-color:#f2f2f2; padding-left:5px; margin: 5px 5px 0; border:1px solid #ccc; }
+#catalog_list li.cat_item_hot { background-color:#ccc !important; }
+#catalog_item_title { background-color:#ccc; padding-left:5px; font-size:16px; font-weight:bold; line-height:28px; margin-bottom:10px;  }
+.catalog_item_wrap { border:1px solid #ccc; border-top:none; margin-left:5px; margin-right:5px; margin-bottom:10px; padding:5px;padding-top:10px; font-size:14px; color:#242424; display:block; text-align:center; }
+.catalog_item_wrap a { font-size:14px; color:#242424; display:block; text-align:center; }
+#search_box{ position:absolute; z-index:999; width:242px; height:43px; background: transparent url('../img/search_bar.png') top left no-repeat; }
+.sidebar_on { top:155px; right:10px; }
+.sidebar_off { top:155px; right:30px; }
+#search_status { font-family: arial,helvetica,sans-serif; font-wdith:700px; font-size:12px; height: 12px; padding: 10px 5px 10px 5px; color: #fff; background-color: #990000; }
+.search_box_input { border:0 none; position:absolute; width:122px; height: 23px;  line-height:23px; font-size:12px;padding-left:3px; top:8px; right:35px; background: transparent; }
+.search_box_submit { border:0 none; position:absolute; right:5px; top:8px; width:30px; height:23px; background: transparent; }
+#close_box { /* layout.css */ background-color:#f2f2f2;}
+
+/* --- jQuery Modal Box --- */
+.modal_form h4 { font-size:14px; line-height:18px; }
+.modal_form input { margin-bottom:10px; }
+.modal_form { padding-left:20px; }
+
+/* --- Splitter bar style--- */
+#digikey_bar .hsplitbar { height: 3px !important; border-top:1px solid #ccc; border-bottom:1px solid #ccc; background-color: #e6e6e6; }
+#digikey_bar .hsplitbar.active, #digikey_bar .hsplitbar:hover {	background-color:#ccc; }
+
+/* --- Help Dialog style --- */
+
+#help_border { background-color: #fff; margin-bottom:10px; border:1px solid #ccc; margin-top:5px; height:400px;}
+#help_nav { float:left; width:175px; background-color:#f9f9f9; border-right:1px solid #ccc;height:400px; }
+#help_nav a { display:block; border:1px solid #ccc; background-color:#f2f2f2; font-size:12px; margin-bottom:5px; margin-left:5px; margin-right:5px; font-size:12px; line-height:25px; padding-left:10px; text-decoration:none; }
+#help_nav a:hover { background-color:#e6e6e6; }
+#help_nav a.first { margin-top:5px; }
+#help_nav a.hot { background-color:#900; color:#fff; }
+#help_content_wrap { height:400px;overflow:scroll; overflow-x:hidden; }
+#help_content { padding:20px; font-family: arial,helvetica; }
+.graph-popup-dialog { background: #efefef; }
+.graph-popup-dialog p, .toc-dialog p { margin-bottom:20px; font-size:14px; line-height:21px; }
+.graph-popup-dialog h3, .toc-dialog h3 { margin-bottom:10px; font-size:18px; font-weight:bold; }
+.graph-popup-dialog h4, .toc-dialog h4 { margin-bottom:5px; font-size:14px; font-weight:bold; }
+
+#help { padding:0px !important; overflow: hidden !important; display: none; }
+
+#netlist_dialog { display:none; padding:0px; overflow:hidden; }
+#netlist_dialog textarea { font-family:courier; font-size:14px; height:100%; width:100%; padding:5px; }
+
+#terms_and_conditions { display: none; }
+div.toc-dialog div.ui-dialog-content { background:#fff; padding:20px; margin-top:.5em; border:1px solid #ccc; }
+
+#view_terms { position:fixed; left:215px; bottom:20px; padding:5px; font-size:12px; color:#737373; font-style: italic; }
+#view_terms a { color:#737373; }
+
+#ss_tabs { border-bottom:1px solid #b3b3b3; position:relative; margin-left:5px; margin-right:5px; height:40px; z-index:0;  background-color:#f9f9f9;}
+/*
+#ss_tabs ul {  position:absolute; bottom:-1px; left:0px; width:700px; }
+*/
+#ss_tabs li { float:left; margin-left:0px; color:#333; font-weight:bold; position:relative; cursor:pointer;  border:1px solid #b3b3b3;  border-left:none; line-height:23px; padding-top:2px; padding-left:15px; padding-right:15px; height:24px; text-align:center; font-size:11px; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;background-color:#e6e6e6;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;}
+#ss_tabs li.tab_hot { background-color: #fff; z-index:999; color:#242424; border-bottom:none; height:25px; }
+#ss_tabs li.tab_first { display:inline;  border-left:1px solid #b3b3b3; }
+#ss_tabs li.tab_hover { background-color: #ccc }
+#ss_config_tran > p{ font-weight:bold; margin-top: 5px; margin-bottom:-2px; }
+
+/* Spice Super Source Dialog Formatting */
+div.dataTables_length { float:left; background-color: red;}
+div.dataTables_filter {
+    float: right;
+}
+
+div.dataTables_info {
+    float: left;
+    background-color: blue;
+}
+
+div.dataTables_paginate {
+    float: right;
+    background-color: yellow;
+}
+div.dataTables_length,
+div.dataTables_filter,
+div.dataTables_paginate,
+div.dataTables_info {
+    padding: 6px;
+}
+
+table.pwltab {
+    clear: both;
+}
+
+/* Self clearing - */
+div.dataTables_wrapper:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+html[xmlns] .dataTables_wrapper { display: block; }
+* html .dataTables_wrapper { height: 1%; }
+
+table.pwltab {
+    width: 100%;
+    clear: both;
+}
+
+table.pwltab td,
+table.pwltab th {
+    padding: 5px;
+    border: 1px solid;
+    border-color: #63b9ff;
+}
+
+/* Header cells */
+table.pwltab thead th {
+    text-align: center;
+    background: #F0F0F0;
+}
+
+/* Body cells */
+table.pwltab tbody th {
+    text-align: left;
+    background: #91c5d4;
+}
+
+table.pwltab tbody td {
+    text-align: left;
+    background: #d5eaf0;
+}
+
+table.pwltab tbody tr.odd td {
+    background: #bcd9e1;
+}
+
+table.pwltab tbody td .row_selected {
+    background: #b8f099;
+}
+
+table.pwltab tbody tr.even .row_selected {
+    background: #edf087;
+}
+
+/* Footer cells */
+table.pwltab tfoot th {
+    background: #b0cc7f;
+    text-align: left;
+}
+
+table.pwltab tfoot td {
+    background: #d7e1c5;
+    text-align: center;
+    font-weight: bold;
+}
+
+div.dataTables_wrapper {
+    background-color: #F0F0F0;
+}
+

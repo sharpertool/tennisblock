@@ -5,9 +5,25 @@
  * Time: 7:19 PM
  */
 
+var tblk_runEnv = 'prod';
+var tblk_dbhost = 'localhost';
+var log;
+
 $(document).ready(function() {
     initForms();
     do_restore_session();
+
+    log = log4javascript.getLogger();
+
+    // Configure popup appender.. if debugging
+    if (tblk_runEnv != "prod") {
+        var popUpAppender = new log4javascript.PopUpAppender();
+        var popUpLayout = new log4javascript.PatternLayout("%d{HH:mm:ss} %-5p - %m%n");
+        popUpAppender.setLayout(popUpLayout);
+        log.addAppender(popUpAppender);
+    }
+
+    log.info("Started Tennisblock App");
 
     var listItems = $(".list_3 li");
 
@@ -41,7 +57,7 @@ $(document).ready(function() {
     });
 
 
-};
+});
 
 function initForms() {
     addJQueryActions();
@@ -54,6 +70,13 @@ function do_restore_session() {
 
 function addJQueryActions()
 {
+    $("#tabs li").click(function() {
+        var tab = $(this).attr('id');
+
+        log.info("Tab " + tab + " clicked");
+
+    });
+
     $("#login").live("click", function() {
         do_login();
         return false;
