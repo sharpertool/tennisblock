@@ -18,7 +18,7 @@ class PlaySheet extends FPDF
         $match = 1;
         $match_height = 0.25;
         foreach ($matches as $courts) {
-            $courtnum = 9;
+            $courtnum = 1;
             $courtidx = 0;
             $text = "Match $match";
             $x = 0.25;
