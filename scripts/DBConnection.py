@@ -147,7 +147,7 @@ class DBConnection(object):
 
         if dest == 'prod':
             self.hosts = [
-                {'host':'ed.deepbondi.net','port':3306}
+                {'host':'localhost','port':3306}
             ]
 
             self.user = 'fntennis'
