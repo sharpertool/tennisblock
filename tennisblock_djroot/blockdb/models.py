@@ -2,29 +2,67 @@ from django.db import models
 
 # Create your models here.
 
+class BlockManager(models.Manager):
+    use_for_related_fields=True
+
+    def seasonPlayers(self,**kwargs):
+        return self.filter()
 
 class Season(models.Model):
-     season             = models.CharField(max_length=20)
+     name               = models.CharField(max_length=20)
      courts             = models.IntegerField()
      firstcourt         = models.IntegerField()
+     startdate          = models.DateField()
+     enddate            = models.DateField()
+
+     def __unicode__(self):
+         return self.season
+
+class GirlsManager(models.Manager):
+    def get_query_set(self):
+        return super(GirlsManager, self).get_query_set().filter(gender='F')
+
+class GuysManager(models.Manager):
+    def get_query_set(self):
+        return super(GuysManager, self).get_query_set().filter(gender='M')
 
 class Player(models.Model):
+    GENDER_CHOICES= (
+        ('F', 'Gal'),
+        ('M', 'Guy')
+    )
+
     first               = models.CharField(max_length=40)
     last                = models.CharField(max_length=60)
-    gender              = models.CharField(max_length=1)
+    gender              = models.CharField(max_length=1,choices= GENDER_CHOICES)
     ntrp                = models.FloatField()
-    microntrp           = models.FloatField()
-    email               = models.CharField(max_length=50)
-    phone               = models.CharField(max_length=14)
+    microntrp           = models.FloatField(null=True,blank=True)
+    email               = models.CharField(max_length=50,blank=True)
+    phone               = models.CharField(max_length=14,blank=True)
+
+    objects = models.Manager()
+    girls = GirlsManager()
+    guys = GuysManager()
+
+    def __unicode__(self):
+        if self.micronntrp:
+            un = self.microntrp
+        else:
+            un = self.ntrp
+        return self.first + " " + self.last + ",%3.1f,%4.2f" % (self.ntrp,un)
+
 
 class Couple(models.Model):
     season              = models.ForeignKey(Season)
     name                = models.CharField(max_length=50)
-    male                = models.ForeignKey(Player)
-    female              = models.ForeignKey(Player)
+    male                = models.ForeignKey(Player,related_name='guy')
+    female              = models.ForeignKey(Player,related_name='gal')
     fulltime            = models.BooleanField()
     canschedule         = models.BooleanField()
     blockcouple         = models.BooleanField()
+
+    def __unicode__(self):
+        return self.name
 
 class Meetings(models.Model):
     season              = models.ForeignKey(Season)
@@ -41,3 +79,5 @@ class SeasonPlayers(models.Model):
     season              = models.ForeignKey(Season)
     player              = models.ForeignKey(Player)
     blockmember         = models.BooleanField()
+
+    objects = BlockManager()
