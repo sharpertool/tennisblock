@@ -151,9 +151,9 @@ class DBConnection(object):
             ]
 
             self.user = 'fntennis'
-            self.pw = 'P5HJTdHt5dR2t9Q2'
+            self.pw = 'twog-nij-koi-gr'
             if not db:
-                self.db = 'friday_tennis'
+                self.db = 'tennisblock'
         else:
             raise "Invalid DB Destination"
 
