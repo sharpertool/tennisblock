@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'tennisblock.views.home',hame='home'),
+    url(r'^$', 'tennisblock.views.home',name='home'),
     # url(r'^$', 'tennisblock_dj.views.home', name='home'),
     # url(r'^tennisblock_project/', include('tennisblock_dj.foo.urls')),
 

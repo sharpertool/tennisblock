@@ -8,7 +8,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(BASE_DIR, '.'))
 sys.path.append(BASE_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tennisblock_dj.settings.production")
 
-import tennisblock_project.monitor
+import tennisblock_dj.monitor
 tennisblock_dj.monitor.start(interval=1.0)
 tennisblock_dj.monitor.track(os.path.join(os.path.dirname(__file__), 'tennisblock_production.wsgi'))
 
