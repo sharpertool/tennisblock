@@ -45,7 +45,11 @@ class PlayerExcel(Excel):
 
 def currentSeason():
 
-    return Season.objects.get(name="Fall 2013")
+    s = Season.objects.filter(name__contains = "2013").filter(name__contains="Fall")
+    #return Season.objects.get(name="Fall 2013")
+    pass
+
+    return s
 
 
 def addPlayer(player):

@@ -16,7 +16,7 @@ class Season(models.Model):
      enddate            = models.DateField()
 
      def __unicode__(self):
-         return self.season
+         return self.name
 
 class GirlsManager(models.Manager):
     def get_query_set(self):
@@ -62,7 +62,7 @@ class Couple(models.Model):
     blockcouple         = models.BooleanField()
 
     def __unicode__(self):
-        return self.name
+        return  self.name
 
 class Meetings(models.Model):
     season              = models.ForeignKey(Season)
