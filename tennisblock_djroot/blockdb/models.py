@@ -14,6 +14,8 @@ class Season(models.Model):
      firstcourt         = models.IntegerField()
      startdate          = models.DateField()
      enddate            = models.DateField()
+     blockstart         = models.DateField()
+     blocktime          = models.TimeField()
 
      def __unicode__(self):
          return self.name

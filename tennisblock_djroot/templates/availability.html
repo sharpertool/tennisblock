@@ -3,9 +3,9 @@
 
 {% block mytags %}
     {% if not isprod %}
-        {% add_data "less-data" "home.less" %}
+        {% add_data "less-data" "availability.less" %}
     {% else %}
-        {% add_data "css-data" "home.css" %}
+        {% add_data "css-data" "availability.css" %}
     {% endif %}
 
     {% add_data "js-body" "angular/apps/tennisblock.js" %}
@@ -17,23 +17,33 @@ Garden Buzz
 {% endblock %}
 {% block content %}
     <div id="container" class="home dynamic">
-        <div id="content" class="dynamic">
+        <div id="content" class="dynamic" ng-controller="Availability">
 
             {% verbatim %}
             <div id="textContent">
-                <div id="blockheading" class="dynamic">
+                <div id="blockheading" class="dynamic" >
                     <h2>Availability</h2>
                 </div>
-                <div id="playerstats" class="dynamic" ng-controller="BlockPlayers">
-                </div>
 
-                <div id="announcement" class="dynamic" ng-controller="LatestBuzz">
-                    <h2>Block Buzz</h2>
-                    <ul class="last">
-                        <li ng-repeat="item in buzzitems">
-                            {{item.text}}
-                        </li>
-                    </ul>
+                <div id="available" class="member_list" >
+                    <table class="member_list">
+                        <tr class="member_list_header">
+                            <th colspan="1">Block Member</th>
+                            <th colspan="numDates{}">Check if Unavailable</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th ng-repeat="date in dates">{{ date.date | date:'M-d' }}</th>
+                            <th>Played</th>
+                            <th>Scheduled</th>
+                        </tr>
+                        <tr ng-repeat="player in players">
+                            <td>{{ player.name }}</td>
+                            <td ng-repeat="avail in player.isavail track by $index">
+                                <input type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             {% endverbatim %}

@@ -11,4 +11,6 @@ urlpatterns = patterns('',
        url(r'currentseasondates/$', 'api.views.getCurrentSeasonDates'),
        url(r'buzz/$', 'api.views.getLatestBuzz'),
        url(r'blockplayers/$', 'api.views.getBlockPlayers'),
+       url(r'blockdates/$', 'api.views.BlockDates'),
+       url(r'availability/$', 'api.views.PlayerAvailability'),
    )

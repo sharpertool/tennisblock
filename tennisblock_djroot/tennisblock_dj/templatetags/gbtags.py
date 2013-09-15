@@ -43,10 +43,11 @@ def stylesheetFilter(s,sheettype="css"):
     else:
         if sheettype == 'less':
             sout = ""
-            media = 'only screen and (max-width:480px)'
+            #media = 'only screen and (max-width:480px)'
+            media = 'screen'
             sout += '<link href="/static/%s/%s" rel="%s" media="%s" type="text/css" />' % (sheettype,s,reltype,media)
-            media = 'only screen and (min-width:481px)'
-            sout += '<link href="/static/%s/%s" rel="%s" media="%s" type="text/css" />' % (sheettype,s,reltype,media)
+            #media = 'only screen and (min-width:481px)'
+            #sout += '<link href="/static/%s/%s" rel="%s" media="%s" type="text/css" />' % (sheettype,s,reltype,media)
             return sout
         else:
             return '<link href="/static/%s/%s" rel="%s" media="screen" type="text/css" />' % (sheettype,s,reltype)
