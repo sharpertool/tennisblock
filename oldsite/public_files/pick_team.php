@@ -10,11 +10,7 @@
     date_default_timezone_set('America/Denver');
     
     $schmgr = ScheduleManager::getInstance();
-    if (isset($_SESSION['season'])) {
-        $schmgr->setSeason($_SESSION['season']);
-        $season = $_SESSION['season'];
-    }
-    
+
     $timestamp = (isset($_POST['timestamp'])) ? $_POST['timestamp'] : time();
 
     if (isset($_POST['matchid'])) {

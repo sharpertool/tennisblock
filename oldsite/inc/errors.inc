@@ -91,7 +91,7 @@ function app_error_handler
  */
 function app_exception_handler($in_exception)
 {
-  echo "Error in $in_errfile line $in_errline: $in_errstr<br>";
+  //echo "Error in $in_errfile line $in_errline: $in_errstr<br>";
   /**
    * If we already have an error, then do no more.
    */

@@ -39,6 +39,17 @@ def _currentSeason():
 
     return None
 
+def _nextMeeting(season):
+    meetings = Meetings.objects \
+        .order_by('date') \
+        .filter(season=season, date__gte = datetime.date.today())
+
+    mtg = None
+    if len(meetings) > 0:
+        mtg = meetings[0]
+
+    return mtg
+
 def getSeasons(request):
     """
     List all code snippets, or create a new snippet.

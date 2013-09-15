@@ -20,9 +20,9 @@ class Season
     {
         if ($dbrow != NULL) {
             if (array_key_exists('sid',$dbrow)){
-                $this->sid    = $dbrow['sid'];
+                $this->sid    = $dbrow['id'];
             }
-            $this->season       = $dbrow['season'];
+            $this->season       = $dbrow['name'];
             $this->courts       = $dbrow['courts'];
             $this->firstcourt   = $dbrow['firstcourt'];
         }

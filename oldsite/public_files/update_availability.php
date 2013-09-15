@@ -8,10 +8,7 @@
         header( "Location: member_availability.php" );
     }
     $schmgr = ScheduleManager::getInstance();
-    if (isset($_SESSION['season'])) {
-        $schmgr->setSeason($_SESSION['season']);
-        $season = $_SESSION['season'];
-    }
+
     $players = $schmgr->GetPlayers();
     
     # Clear out all current availability... This is sort of dangerous!!!

@@ -11,6 +11,7 @@
 require_once('../inc/dbmanager.php');
 require_once('../inc/Player.php');
 require_once('../inc/Season.php');
+require_once('../inc/errors.inc');
 #require_once('../inc/datetimehelpers.php');
 
 class Game
@@ -207,7 +208,7 @@ class ScheduleManager
         $conn = DBManager::getConnection();
         
         $seasons = array();
-        if ($results = @$conn->query("select id,name from blockdb_season")) {
+        if ($results = @$conn->query("select id,name,courts,firstcourt from blockdb_season")) {
             if ($results === FALSE or $results === NULL)
                 throw new DatabaseErrorException($conn->error);
             
@@ -222,7 +223,7 @@ class ScheduleManager
     
     public function getCourtCount()
     {
-        return ScheduleManager::$s_ncourts;
+        return $this->s_ncourts;
     }
     
     public function getFirstMatchDate()
@@ -260,7 +261,7 @@ class ScheduleManager
         $d = date("Y-m-d",$date);
         
         $holdout = False;
-        if ($results = @$conn->query("select meetid from blockdb_meetings where date = '$d' and season_id = $sid")) {
+        if ($results = @$conn->query("select id from blockdb_meetings where date = '$d' and season_id = $sid")) {
             if ($results === FALSE or $results === NULL)
                 throw new DatabaseErrorException($conn->error);
             
@@ -268,7 +269,7 @@ class ScheduleManager
             if ($results->num_rows == 1) {
                 $row = @$results->fetch_assoc();
                 if ($row != NULL) {
-                    $matchid = $row['meetid'];
+                    $matchid = $row['id'];
                 }
             }
             $results->close();
@@ -361,27 +362,22 @@ class ScheduleManager
         */
         $query = <<<EOQUERY
         SELECT
-        firstname,
-        lastname,
-        gender,
-        NTRP,
-        microNTRP,
-        email,
-        home,
-        cell,
-        work,
-        date,
-        comments,
-        sub
+			first,
+			last,
+			gender,
+			ntrp,
+			microntrp,
+			email,
+			phone
         from
-        blockmeetings bm, schedule s, players p
+	        blockdb_meetings bm, blockdb_schedule s, blockdb_player p
         where 
-        bm.meetid = s.matchid
-        and s.pid = p.pid
-        and bm.meetid = $in_matchid
-        and bm.season_id = $sid
-        order by
-        gender,p.pid
+			bm.id = s.meeting_id
+			and s.pid_id = p.id
+			and bm.id = $in_matchid
+			and bm.season_id = $sid
+		order by
+			gender,p.id
         ;
 EOQUERY;
     
@@ -428,24 +424,42 @@ EOQUERY;
         // Need to select these by date.. due to availability
         $query = <<<EOQUERY
         select *
-        from blockdb_couple
+        	from blockdb_couple
         where
-        fulltime = 1
-        and pa_id not in (select pid from availability where date = '$d' and unavailable=1)
-        and pb_id not in (select pid from availability where date = '$d' and unavailable=1)
-        and blockcouple = 1
-        and season_id = $sid
+        	fulltime = 1
+			and male_id not in (select
+                	player_id
+                from
+                	blockdb_availability av, blockdb_meetings mtg
+                    where
+                    	mtg.date = "$d"
+                    	and mtg.season_id = $sid
+                    	and av.meeting_id = mtg.id
+                    	and av.available = 0
+                )
+			and female_id not in (select
+                	player_id
+                from
+                	blockdb_availability av, blockdb_meetings mtg
+                    where
+                    	mtg.date = "$d"
+                    	and mtg.season_id = $sid
+                    	and av.meeting_id = mtg.id
+                    	and av.available = 0
+                )
+			and blockcouple = 1
+			and season_id = $sid
 EOQUERY;
         
         $couples = array();
         $results = @$conn->query($query);
         if ($results === FALSE or $results === NULL) {
-            $needed = ScheduleManager::$s_ncourts*2 - count($couples);
+            $needed = $this->s_ncourts*2 - count($couples);
         } else {
             while (($row = $results->fetch_assoc()) != NULL) {
                 $couples[] = new Couple($row);
             }
-            $needed = ScheduleManager::$s_ncourts*2 - count($couples);
+            $needed = $this->s_ncourts*2 - count($couples);
             
         }
             
@@ -453,35 +467,39 @@ EOQUERY;
         // Fill in with couples that have not played yet.
         // I need to check if there are any records scheduled first,
         // if not, then do a diferent query
-        $query = "select * from schedule";
+        $query = "select * from blockdb_schedule";
         $results = @$conn->query($query);
         if ($results->num_rows > 0) {
             // Use my query when there are some couples scheduled already
             $query = <<<EOQUERY
-            select distinct coupleid
-            from blockdb_couple,schedule,availability,blockdb_meetings
+            select
+            	distinct coupleid
+            from
+            	blockdb_couple,schedule,availability,blockdb_meetings
             where
-            blockdb_couple.season_id = $sid
-            and fulltime = 0
-            and pa_id not in (select pid from schedule where season_id = $sid)
-            and pb_id not in (select pid from schedule where season_id = $sid)
-            and pa_id not in (select pid from availability where date = '$d' and unavailable=1 and season_id = $sid)
-            and pb_id not in (select pid from availability where date = '$d' and unavailable=1 and season_id = $sid)
-            and blockcouple = 1
-            and blockdb_couple.season_id = $sid
+				blockdb_couple.season_id = $sid
+				and fulltime = 0
+				and pa_id not in (select pid from schedule where season_id = $sid)
+				and pb_id not in (select pid from schedule where season_id = $sid)
+				and pa_id not in (select pid from availability where date = '$d' and unavailable=1 and season_id = $sid)
+				and pb_id not in (select pid from availability where date = '$d' and unavailable=1 and season_id = $sid)
+				and blockcouple = 1
+				and blockdb_couple.season_id = $sid
             ;
 EOQUERY;
         } else {
             // Use this query where there is nothing scheduled at all.
             $query = <<<EOQUERY
-            select distinct coupleid
-            from blockdb_couple
+            select
+            	distinct coupleid
+            from
+            	blockdb_couple
             where
-            fulltime = 0
-            and pa_id not in (select pid from availability where date = '$d' and unavailable=1)
-            and pb_id not in (select pid from availability where date = '$d' and unavailable=1)
-            and blockcouple = 1
-            and season_id = $sid
+				fulltime = 0
+				and pa_id not in (select pid from availability where date = '$d' and unavailable=1)
+				and pb_id not in (select pid from availability where date = '$d' and unavailable=1)
+				and blockcouple = 1
+				and season_id = $sid
             ;
 EOQUERY;
         }
@@ -517,19 +535,21 @@ EOQUERY;
         // Do we still need more?? If so, then find the couples with the 
         // least number of plays.
         $query = <<<EOQUERY
-        select count(coupleid) nplays,coupleid,meetid,date
-        from blockdb_couple,schedule,blockdb_meetings
+        select
+        	count(coupleid) nplays,coupleid,meetid,date
+        from
+        	blockdb_couple,schedule,blockdb_meetings
         where
-        blockdb_meetings.season = '$season'
-        and fulltime = 0
-        and schedule.matchid = blockdb_meetings.meetid
-        and (pa_id = pid or pb_id = pid)
-        and pa_id not in (select pid from availability where date = '$d' and unavailable=1)
-        and pb_id not in (select pid from availability where date = '$d' and unavailable=1)
-        and blockcouple = 1
-        and blockdb_couple.season = "$season"
-        group by coupleid
-        order by nplays asc
+			blockdb_meetings.season = '$season'
+			and fulltime = 0
+			and schedule.matchid = blockdb_meetings.meetid
+			and (pa_id = pid or pb_id = pid)
+			and pa_id not in (select pid from availability where date = '$d' and unavailable=1)
+			and pb_id not in (select pid from availability where date = '$d' and unavailable=1)
+			and blockcouple = 1
+			and blockdb_couple.season = "$season"
+			group by coupleid
+			order by nplays asc
         ;
 EOQUERY;
         
@@ -589,7 +609,7 @@ EOQUERY;
         
         // Determine which dates have not been scheduled yet.
         // 
-        $query = "delete from slots where matchid = $matchid";
+        $query = "delete from blockdb_slots where meeting_id = $matchid";
         
         /**
         * Execute the query and look at the results.
@@ -604,7 +624,7 @@ EOQUERY;
         
         // Determine which dates have not been scheduled yet.
         // 
-        $query = "delete from schedule where matchid = $matchid";
+        $query = "delete from blockdb_schedule where meeting_id = $matchid";
         
         /**
         * Execute the query and look at the results.
@@ -621,20 +641,22 @@ EOQUERY;
     */
     public function GetUnsheduledMathces() {
         $conn = DBManager::getConnection();
-        $season = $this->s_season;
-        
+		$sid = $this->s_sid;
+
         // Determine which dates have not been scheduled yet.
         // 
         $query = <<<EOQUERY
         select
-        meetid,
-        date
-        from blockdb_meetings
+			id,
+			date
+        from
+        	blockdb_meetings
         where
-        season = '$season'
-        and meetid not in ( select distinct matchid from schedule)
-        and holdout = 0
-        order by date
+			season_id = $sid
+			and id not in ( select distinct meeting_id from blockdb_schedule)
+			and holdout = 0
+		order by
+			date
 EOQUERY;
         
         /**
@@ -655,16 +677,19 @@ EOQUERY;
     public function AddCouplesToSchedule($matchid,$couples)
     {
         $conn = DBManager::getConnection();
-        $season = $this->s_season;
-        
+		$sid = $this->s_sid;
+
         foreach ($couples as $couple) {
             $id = $couple->paid;
             // Determine which dates have not been scheduled yet.
             // 
             $query = <<<EOQUERY
-            insert into schedule
-            (matchid,pid,sub,season)
-            values ($matchid,$id,0,"$season")
+            insert into
+            	blockdb_schedule
+
+            (meeting_id,pid_id,issub,season_id)
+            values
+            	($matchid,$id,0,$sid)
 EOQUERY;
             
             /**
@@ -679,8 +704,8 @@ EOQUERY;
             // 
             $query = <<<EOQUERY
             insert into schedule
-            (matchid,pid,sub,season)
-            values ($matchid,$id,0,"$season")
+            (meeting_id,pid_id,sub,season_id)
+            values ($matchid,$id,0,$sid)
 EOQUERY;
             
             /**
@@ -701,23 +726,21 @@ EOQUERY;
         // 
         $query = <<<EOQUERY
         select
-        p.pid,
-        coupleid,
-        firstname,
-        lastname,
+        p.id,
+        c.id as coupleid,
+        first,
+        last,
         gender,
-        NTRP,
-        microNTRP,
+        ntrp,
+        microntrp,
         email,
-        home,
-        work,
-        cell
-        
-        from players p,season_players sp,blockdb_couple c
+        phone
+
+        from blokdb_player p,blockdb_seasonplayers sp,blockdb_couple c
         where
-        sp.season = '$season'
-        and c.season = '$season'
-        and p.pid = sp.pid
+        	sp.season_id = $sid
+        and c.season_id = $sid
+        and p.id = sp.player_id
         and (p.pid = c.pa_id or p.pid = c.pb_id)
         and sp.blockmember = 1
         and c.blockcouple = 1
@@ -743,37 +766,40 @@ EOQUERY;
     
     public function GetAllPlayers($timestamp) {
         $conn = DBManager::getConnection();
-        $season = $this->s_season;
-        
+		$sid = $this->s_sid;
+
         $sdate = date("Y-m-d",$timestamp);
 
         // Determine which dates have not been scheduled yet.
         // 
         $query = <<<EOQUERY
         select
-        sp.pid,
-        firstname,
-        lastname,
-        gender,
-        NTRP,
-        microNTRP,
-        email,
-        home,
-        work,
-        cell
-        
+			p.id,
+			first,
+			last,
+			gender,
+			ntrp,
+			microntrp,
+			email,
+			phone
+
         from
-            season_players sp,
-            players p
+            blockdb_seasonplayers sp,
+            blockdb_player p
             
         where
-            sp.season = '$season'
-            and sp.pid = p.pid
-            and sp.pid not in
-                (select PID from availability
+            sp.season_id = $sid
+            and sp.player_id= p.id
+            and sp.player_id not in
+                (select
+                	player_id
+                from
+                	blockdb_availability av, blockdb_meetings mtg
                     where
-                        season = "$season"
-                        and date = "$sdate"
+                    	mtg.date = "$sdate"
+                    	and mtg.season_id = $sid
+                    	and av.meeting_id = mtg.id
+                    	and av.available = 0
                 )
 EOQUERY;
         
@@ -795,30 +821,30 @@ EOQUERY;
     
     public function GetPlayersByDate($ts) {
         $conn = DBManager::getConnection();
-        $season = $this->s_season;
-        
+		$sid = $this->s_sid;
+
         // Determine which dates have not been scheduled yet.
         //
         
         $sdate = date("Y-m-d",$ts);
         $query = <<<EOQUERY
         select
-        meetid,
-        firstname,
-        lastname,
-        gender,
-        p.pid pid,
-        s.schedid schedid,
-        NTRP,
-        microNTRP,
-        email
+			bm.id,
+			first,
+			last,
+			gender,
+			p.id pid,
+			s.id schedid,
+			ntrp,
+			microntrp,
+			email
         
-        from blockdb_meetings bm,schedule s,players p
+        from blockdb_meetings bm,blockdb_schedule s,blockdb_player p
         where
-        bm.season = '$season'
-        and bm.date = "$sdate"
-        and bm.meetid = s.matchid
-        and s.pid = p.pid
+			bm.season_id = $sid
+			and bm.date = "$sdate"
+			and s.meeting_id = bm.id
+			and s.pid_id = p.id
         
 EOQUERY;
         

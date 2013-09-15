@@ -47,12 +47,11 @@ class Player(models.Model):
     guys = GuysManager()
 
     def __unicode__(self):
-        if self.micronntrp:
+        if self.microntrp:
             un = self.microntrp
         else:
             un = self.ntrp
         return self.first + " " + self.last + ",%3.1f,%4.2f" % (self.ntrp,un)
-
 
 class Couple(models.Model):
     season              = models.ForeignKey(Season)
@@ -83,3 +82,9 @@ class SeasonPlayers(models.Model):
     blockmember         = models.BooleanField()
 
     objects = BlockManager()
+
+class Schedule(models.Model):
+    meeting             = models.ForeignKey(Meetings)
+    player              = models.ForeignKey(Player)
+    issub               = models.BooleanField()
+

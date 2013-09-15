@@ -6,11 +6,7 @@
     include 'inc/errors.inc';
     
     $schmgr = ScheduleManager::getInstance();
-    if (isset($_SESSION['season'])) {
-        $schmgr->setSeason($_SESSION['season']);
-        $season = $_SESSION['season'];
-    }
-    
+
     $schmgr->clearScheduleByID($matchid);
     if (isset($_POST['clear'])) {
         // If I clear the schedule, I need to clear the teams also

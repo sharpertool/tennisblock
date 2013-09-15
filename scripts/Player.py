@@ -4,12 +4,12 @@ class Player:
     
     def __init__(self,pdata):
         
-        self.pid = pdata['pid']
-        self.first = pdata['firstname']
-        self.last  = pdata['lastname']
+        self.pid = pdata['id']
+        self.first = pdata['first']
+        self.last  = pdata['last']
         self.gender = pdata['gender']
-        self.ntrp = pdata['NTRP']
-        self.untrp = pdata['microNTRP']
+        self.ntrp = pdata['ntrp']
+        self.untrp = pdata['microntrp']
         self.name = self.first + " " + self.last
         
     def Name(self):

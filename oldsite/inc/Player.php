@@ -29,18 +29,18 @@ class Player
     {
         if ($dbrow != NULL) {
             if (array_key_exists('pid',$dbrow)){
-                $this->pid        = $dbrow['pid'];
+                $this->pid        = $dbrow['id'];
             }
-            $this->firstname  = $dbrow['firstname'];
-            $this->lastname   = $dbrow['lastname'];
-            $this->NTRP       = $dbrow['NTRP'];
-            $this->uNTRP      = $dbrow['microNTRP'];
+            $this->firstname  = $dbrow['first'];
+            $this->lastname   = $dbrow['last'];
+            $this->NTRP       = $dbrow['ntrp'];
+            $this->uNTRP      = $dbrow['microntrp'];
             $this->gender     = $dbrow['gender'];
             if (array_key_exists('email',$dbrow)) {
                 $this->email = $dbrow['email'];
             }
-            if (array_key_exists('home',$dbrow)) {
-                $this->home = $dbrow['home'];
+            if (array_key_exists('phone',$dbrow)) {
+                $this->home = $dbrow['phone'];
             }
             if (array_key_exists('cell',$dbrow)) {
                 $this->cell = $dbrow['cell'];
@@ -197,10 +197,10 @@ class Couple
     {
         if ($in != NULL) {
             if (is_array($in)) {
-              $this->coupleid     = $in['coupleid'];
-              $this->paid         = $in['pa_id'];
-              $this->pbid         = $in['pb_id'];
-              $this->name         = $in['couplename'];
+              $this->coupleid     = $in['id'];
+              $this->paid         = $in['male_id'];
+              $this->pbid         = $in['femail_id'];
+              $this->name         = $in['name'];
               $this->fulltime     = $in['fulltime'];
             } else if (is_numeric($in)) {
                 $conn = DBManager::getConnection();

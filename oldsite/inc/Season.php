@@ -19,10 +19,10 @@ class Season
     public function __construct($dbrow = null)
     {
         if ($dbrow != NULL) {
-            if (array_key_exists('sid',$dbrow)){
-                $this->sid    = $dbrow['sid'];
+            if (array_key_exists('id',$dbrow)){
+                $this->sid    = $dbrow['id'];
             }
-            $this->season       = $dbrow['season'];
+            $this->season       = $dbrow['name'];
             $this->courts       = $dbrow['courts'];
             $this->firstcourt   = $dbrow['firstcourt'];
         }

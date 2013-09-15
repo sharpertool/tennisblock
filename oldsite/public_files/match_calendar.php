@@ -8,12 +8,7 @@
     ob_start();
 
     $schmgr = ScheduleManager::getInstance();
-    if (isset($_SESSION['season'])) {
-        $schmgr->setSeason($_SESSION['season']);
-    } else {
-        $schmgr->setSeason("2013 Fall");
-    }
-    
+
     $firstdate = $schmgr->getFirstMatchDate();
 
     // accept incoming URL parameter, but, adjust to a Friday...

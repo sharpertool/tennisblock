@@ -6,11 +6,7 @@
     include '../inc/errors.inc';
     
     $schmgr = ScheduleManager::getInstance();
-    if (isset($_SESSION['season'])) {
-        $schmgr->setSeason($_SESSION['season']);
-        $season = $_SESSION['season'];
-    }
-    
+
     $timestamp = (isset($_POST['timestamp'])) ? $_POST['timestamp'] : time();
     if (isset($_POST['matchid'])) {
         $matchid =  $_POST['matchid'];

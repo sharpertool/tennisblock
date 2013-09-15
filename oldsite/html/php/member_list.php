@@ -19,10 +19,7 @@
     $colspan = 6 + count($dates);
     
     $schmgr = ScheduleManager::getInstance();
-    if (isset($_SESSION['season'])) {
-        $schmgr->setSeason($_SESSION['season']);
-    }
-    
+
     // output table header
     ob_start();
     $can_edit = False;
