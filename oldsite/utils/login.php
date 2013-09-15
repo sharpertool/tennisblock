@@ -20,7 +20,7 @@
         
         
         //set the database connection variables
-        include_once '../inc/dbauth.inc';
+        include_once '../inc/dbconninfo.php';
         
         //connet to the database
         

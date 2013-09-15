@@ -7,14 +7,19 @@
      * This file contains constants and information used to connect
      * to our database for the appointments web application sample.
      */
-    
-    define('DB_HOST', 'ed.deepbondi.net');
-    define('DB_USER', 'fnt_user');
-    define('DB_PASS', 'P5HJTdHt5dR2t9Q2');
-    define('DB_DBASE', 'friday_tennis');
 
-    $db_host = 'ed.deepbondi.net';
-    $db_user = 'fnt_user';
-    $db_pass = 'P5HJTdHt5dR2t9Q2';
-    $db_database = 'friday_tennis';
+	$db_host = 'localhost';
+	$db_user = 'tennisblock';
+	$db_pass = 'P5HJTdHt5dR2t9Q2';
+	$db_database = 'tennisblock_dj';
+
+    define('DB_HOST', $db_host);
+    define('DB_USER', $db_user);
+    define('DB_PASS', $db_pass);
+    define('DB_DBASE', $db_database);
+
+	$dbHost = $db_host;
+	$dbUser = $db_user;
+	$dbPass = $db_pass;
+	$dbDatabase = $db_database;
 ?>

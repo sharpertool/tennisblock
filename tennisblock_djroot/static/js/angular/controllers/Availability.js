@@ -8,16 +8,24 @@
 
 app.controller('Availability', function($scope,$http) {
     $scope.dates = [];
-    $scope.players = [
-        {'name' : 'Ed Henderson', 'avail' : [true,true,true,true]},
-        {'name' : 'Vici Henderson', 'avail' : [true,true,true,true]}
-    ];
+    $scope.players = [];
+    $scope.initialized = false;
+
+    var updateInitialized = function() {
+        if ($scope.dates.length > 0 && $scope.players.length > 0) {
+            $scope.initialized = true;
+        } else {
+            $scope.initialized = false;
+        }
+    };
 
     $http.get('/api/blockdates').success(function(data) {
         $scope.dates= data;
+        updateInitialized();
     });
     $http.get('/api/availability').success(function(data) {
         $scope.players = data;
+        updateInitialized();
     });
 
     $scope.isHoldout = function() {

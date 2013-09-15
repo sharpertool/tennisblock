@@ -20,28 +20,38 @@ Garden Buzz
         <div id="content" class="dynamic" ng-controller="Availability">
 
             {% verbatim %}
-            <div id="textContent">
+            <div id="textContent" ng-cloak>
                 <div id="blockheading" class="dynamic" >
                     <h2>Availability</h2>
                 </div>
 
-                <div id="available" class="member_list" >
+                <div ng-hide="initialized">
+                    <h2>Loading Data</h2>
+                </div>
+                <div id="available" class="member_list" ng-show="initialized" >
                     <table class="member_list">
                         <tr class="member_list_header">
                             <th colspan="1">Block Member</th>
-                            <th colspan="numDates{}">Check if Unavailable</th>
+                            <th colspan="{{ dates.length + 2 }}">Check if Unavailable</th>
                         </tr>
-                        <tr>
+                        <tr class="even">
                             <th>Name</th>
                             <th ng-repeat="date in dates">{{ date.date | date:'M-d' }}</th>
                             <th>Played</th>
                             <th>Scheduled</th>
                         </tr>
-                        <tr ng-repeat="player in players">
+                        <tr ng-repeat="player in players"
+                            ng-class-odd="'odd'" ng-class-even="'even'"
+                                >
                             <td>{{ player.name }}</td>
-                            <td ng-repeat="avail in player.isavail track by $index">
+                            <td
+                                    ng-repeat="avail in player.isavail track by $index"
+                                    ng-class-odd="'odd'" ng-class-even="'even'"
+                                    >
                                 <input type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
                             </td>
+                            <td>0</td>
+                            <td>0</td>
                         </tr>
                     </table>
                 </div>

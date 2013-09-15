@@ -101,16 +101,9 @@
     if ($can_edit) {
         echo '</form>';
     }
-    
-    if (isset($_SESSION['season'])) {
-        $season = $_SESSION['season'];
-    } else {
-        $season = "Unknown Season";
-    }
+
+	$season_text = $schmgr->getSeasonText();
     echo "<center><h2>";
-    if ($season == "2012 Fall") {
-        $season_text =  "Fall, 2012 ";
-    }
 
     $GLOBALS['TEMPLATE']['title'] = "<h2>Member List for $season_text</h2>";
     $GLOBALS['TEMPLATE']['content'] = ob_get_clean();

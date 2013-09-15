@@ -101,9 +101,9 @@ class ScheduleManager
     */
     private static $s_schManager;
     private $matches;
-    private static $s_season;
-    private static $s_ncourts;
-    private static $s_sid;
+    private $s_season;
+    private $s_ncourts;
+    private $s_sid;
     
     /**
     *=---------------------------------------------------------=
@@ -122,9 +122,6 @@ class ScheduleManager
         if (ScheduleManager::$s_schManager === NULL)
         {
             ScheduleManager::$s_schManager = new ScheduleManager();
-            /* Set the default season */
-            ScheduleManager::$s_season = "2012 Fall";
-            ScheduleManager::$s_ncourts= 3;
         }
     
         return ScheduleManager::$s_schManager;
@@ -139,6 +136,9 @@ class ScheduleManager
     */
     private function __construct()
     {
+		/* Set the default season */
+		ScheduleManager::$s_season = "2012 Fall";
+		ScheduleManager::$s_ncourts= 3;
     }
     
     /**

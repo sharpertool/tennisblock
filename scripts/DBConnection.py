@@ -150,8 +150,8 @@ class DBConnection(object):
                 {'host':'localhost','port':3306}
             ]
 
-            self.user = 'fntennis'
-            self.pw = 'twog-nij-koi-gr'
+            self.user = 'tennisblock'
+            self.pw = 'P5HJTdHt5dR2t9Q2'
             if not db:
                 self.db = 'tennisblock'
         else:

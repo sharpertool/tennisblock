@@ -7,13 +7,7 @@
     ob_start();
 
     $schmgr = ScheduleManager::getInstance();
-    if (isset($_SESSION['season'])) {
-        $season = $_SESSION['season'];
-    } else {
-        $season = "2012 Fall";
-    }
-    $schmgr->setSeason($season);
-    
+
     $timestamp = (isset($_GET['t'])) ? $_GET['t'] : time();
     $currdate = date("Y-m-d",$timestamp);
 
@@ -137,16 +131,9 @@
     if ($can_edit) {
         echo '</form>';
     }
-    
-    if (isset($_SESSION['season'])) {
-        $season = $_SESSION['season'];
-    } else {
-        $season = "Unknown Season";
-    }
+
+	$season_text = $schmgr->getSeasonText();
     echo "<center><h2>";
-    if ($season == "2012 Fall") {
-        $season_text =  "Fall, 2012 ";
-    }
 
     $GLOBALS['TEMPLATE']['title'] = "<h2>Member Availability for $season_text</h2>";
     $GLOBALS['TEMPLATE']['content'] = ob_get_clean();

@@ -1,11 +1,8 @@
 <?php
 
-    $dbHost = "localhost";
-    $dbUser = "fnt_user";
-    $dbPass = "P5HJTdHt5dR2t9Q2";
-    $dbDatabase = "friday_tennis";
+	include_once 'inc/dbconninfo.php';
 
-    if (mysqli_connect_errno() != 0) {
+	if (mysqli_connect_errno() != 0) {
         $message = mysqli_connect_error();
         echo "Connect error:$message <br>\n";
     } else {

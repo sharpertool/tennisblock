@@ -13,10 +13,31 @@ table {
     width: 100%;
     border: 1px solid black;
 
-    tr,th {
+    tr,th,td {
         border: 1px solid black;
     }
 
+    tr {
+        &.odd {
+            background-color: #bccdd3;
+        }
+        &.even {
+            background-color: #b6b6b6;
+        }
+
+        &.member_list_header {
+            background-color: #449aff;
+        }
+    }
+
+    tdxx {
+        .odd {
+            background-color: #d3d3d3;
+        }
+        .even {
+            background-color: gray;
+        }
+    }
 }
 
 

@@ -8,7 +8,7 @@
         $logged_in = True;
     }
 
-	$dbHost = apache_getenv("HOSTNAME");
+	include_once 'inc/dbconninfo.php';
 ?>
 <html>
 <head>

@@ -11,7 +11,7 @@
     if (isset($_SESSION['season'])) {
         $schmgr->setSeason($_SESSION['season']);
     } else {
-        $schmgr->setSeason("2012 Fall");
+        $schmgr->setSeason("2013 Fall");
     }
     
     $firstdate = $schmgr->getFirstMatchDate();
@@ -224,18 +224,9 @@
     echo '</table>';
     
     echo "<br><br>";
-    
-    if (isset($_SESSION['season'])) {
-        $season = $_SESSION['season'];
-    } else {
-        $season = "2012 Fall";
-    }
+
+	$season_text = $schmgr->getSeasonText();
     echo "<center><h2>";
-    if ($season == "2012 Fall") {
-        $season_text =  "Fall, 2012 ";
-    } else {
-        $season_text = $season;
-    }
 
     $GLOBALS['TEMPLATE']['title'] = "<h3>Match Schedule for $season_text</h3>";
     $GLOBALS['TEMPLATE']['content'] = ob_get_clean();

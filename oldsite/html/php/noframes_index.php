@@ -19,16 +19,8 @@
 <body>
     
 <?php
-    if (isset($_SESSION['season'])) {
-        $season = $_SESSION['season'];
-    } else {
-        $season = "Unknown Season";
-    }
-    echo "<center><h2>";
-    if ($season == "2012 Fall") {
-        echo "Fall, 2012 ";
-    }
-    echo "</h2></center>\n";
+	$season_text = $schmgr->getSeasonText();
+	echo "<center><h2>$season_text</h2></center>";
     echo "<center><h2>";
     echo "Friday Night Block";
     echo "</h2></center>\n";

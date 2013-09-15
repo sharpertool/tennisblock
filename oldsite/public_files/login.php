@@ -21,7 +21,7 @@
         $pass = md5($_POST['password']);
         
         //set the database connection variables
-        include_once '../inc/dbauth.inc';
+        include_once '../inc/dbconninfo.php';
         
         //connect to the database
         
@@ -51,7 +51,7 @@
                 if (isset($_POST['season'])) {
                     $_SESSION['season'] = $_POST['season'];
                 } else {
-                    $_SESSION['season'] = "2012 Fall (default)";
+                    $_SESSION['season'] = "2013 Fall (default)";
                 }
               
                 //we will redirect the user to another page where we will make sure they're logged in
