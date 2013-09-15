@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+{% load sekizai_tags %}
+{% load gbtags %}
+
+    {% add_data "js-head" "http://html5shiv.googlecode.com/svn/trunk/html5.js" %}
+    {% add_data "js-head" "library/angular/angular.js" %}
+    {% add_data "js-head" "library/angular/angular-resource.js" %}
+    {% add_data "js-head" "GBLessPrefix.js" %}
+    {% add_data "js-head" "library/less-1.4.1.min.js" %}
+    {% add_data "js-head" "GBHeadFinal.js" %}
+
+    {% add_data "js-body" "library/jquery-1.10.2.min.js" %}
+    {% add_data "js-body" "library/jquery-ui-1.10.3.custom.min.js" %}
+    {% add_data "js-body" "library/underscore.js" %}
+    {% add_data "js-body" "library/jquery.download.js" %}
+    {% add_data "js-body" "library/json2.js" %}
+    {% add_data "js-body" "library/log4javascript.js" %}
+
+    {% comment %}
+        {% add_data "js-body" "library/bootstrap.min.js" %}
+    {% endcomment %}
+    {% add_data "js-head" "//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js" %}
+
+    {% add_data "js-body-final" "GBClient.js" %}
+    {% add_data "js-body-final" "GBLoad.js" %}
+
+    {% add_data "css-data" "http://yui.yahooapis.com/pure/0.1.0/base-min.css" %}
+    {% comment %}
+        {% add_data "css-data" "bootstrap-responsive.min.css" %}
+        {% add_data "css-data" "bootstrap.min.css" %}
+    {% endcomment %}
+    {% add_data "css-data" "//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" %}
+    {% add_data "css-data" "mint-choc/jquery-ui-1.10.3.custom.min.css" %}
+
+    {% add_data "less-data" "base.less" %}
+    {% add_data "less-data" "layout.less" %}
+    {% add_data "less-data" "nav.less" %}
+    {% add_data "less-data" "banner.less" %}
+    {% add_data "less-data" "footer.less" %}
+
+
+{% block mytags %}
+{% endblock %}
+
+<html ng-app="{{angularapp}}" class="main">
+<head>
+    <title>PreTitle: {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, width=device-wdith, initial-scale=1.0">
+
+    {% with_data "css-data" as stylesheets %}
+    {% for stylesheet in stylesheets %}    {{ stylesheet|stylesheetFilter }}
+    {% endfor %}
+    {% end_with_data %}
+
+    {% with_data "less-data" as stylesheets %}
+    {% for stylesheet in stylesheets %}    {{ stylesheet|stylesheetFilter:"less" }}
+    {% endfor %}
+    {% end_with_data %}
+
+    {% with_data "css-final" as stylesheets %}
+    {% for stylesheet in stylesheets %}    {{ stylesheet|stylesheetFilter }}
+    {% endfor %}
+    {% end_with_data %}
+
+    {% with_data "js-head" as scripts %}
+    {% for script in scripts %}    {{ script|scriptFilter }}
+    {% endfor %}
+    {% end_with_data %}
+
+    {% if settings.PROD %}
+        <!--
+        <h1>Running in Production</h1>
+        -->
+    {% else %}
+        <!--
+        <h1>Running in Devlopment</h1>
+        -->
+    {% endif %}
+    <script type="text/javascript">
+        GBBasePath = location.protocol + '//' + location.host + "/static/js/";
+        GBStaticPath = "/static";
+        AngularPartialsBase = '/static/partials';
+    </script>
+</head>
+<body>
+
+
+    <div id="frame" class="dynamic">
+
+        {% include "common/banner.html" %}
+        {% include "common/navigation.html" %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% include "common/footer.html" %}
+    </div>
+
+
+{% with_data "js-body" as scripts %}
+{% for script in scripts %}    {{ script|scriptFilter }}
+{% endfor %}
+{% end_with_data %}
+
+{% with_data "js-body-final" as scripts %}
+{% for script in scripts %}    {{ script|scriptFilter }}
+{% endfor %}
+{% end_with_data %}
+
+</body>
+</html>

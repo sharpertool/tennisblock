@@ -1,0 +1,132 @@
+@import "gbdefs";
+
+#top_banner {
+    //display:none;
+    //margin: 0 auto 53px;
+    margin: 5px 2.5%;
+    //float:left;
+    position: relative;
+    width: 95%;
+    height: @bannerHeight;
+    background-color: @banner_color;
+    //background-color: darkslategray;
+    font-size: 16px;
+
+    z-index:20;
+
+    .tagline {
+        position: absolute;
+        right:200px;
+        line-height: 20px;
+        top:6px;
+        color: #3A8027;
+        font-family: "Century Schoolbook";
+        font-style: italic;
+    }
+
+    .title {
+        //position: absolute;
+        margin-top:1%;
+        margin-left:10%;
+        margin-right:10%;
+        width:80%;
+        bottom:16px;
+        z-index: 100;
+
+        span {
+            width: 100%;
+            color: #3A8027;
+            line-height: 92px;
+            font-family: "Century Schoolbook";
+            //font-style: italic;
+            font-size: 7.5em;
+        }
+
+        @media screen and (max-width:@tinyWidth) {
+            display:none;
+        }
+
+    }
+
+    .titlegraphic {
+        @media screen and (min-width:@tinyWidth) {
+            display:none;
+        }
+        @media screen and (max-width:@tinyWidth) {
+            float:none;
+            position: absolute;
+            top:0; bottom:0; right:0; left:0;
+            //background-image: url("@{imagebase}/logos/GBLogoSquare.png");
+            background-size: @bannerHeight;
+        }
+        img {
+            height: @bannerHeight;
+        }
+    }
+
+    .background {
+        display:none;
+        position: absolute;
+        right: 20px;
+        bottom:6px;
+        width: 104px;
+        height:@bannerBGHeight;
+        //background-image: url("/static/images/watercan_bee.png");
+        //background-repeat: no-repeat;
+        z-index: 100;
+
+    }
+
+    .gb_bee {
+        @width: 129px;
+        @height: ((100/128)*@width);
+        @rotate: -15deg;
+        position: absolute;
+        //right: 220px;
+        left: 620px;
+        bottom:45px;
+        width: @width;
+        height:@height;
+        background-size: 70% 70%;
+        background-image: url("@{imagebase}/gb_bee.png");
+        -webkit-transform:rotate(@rotate);
+        -moz-transform:rotate(@rotate);
+        background-repeat: no-repeat;
+        z-index: 90;
+        @media screen and (max-width:@tinyWidth) {
+            display:none;
+        }
+    }
+
+    .veggies {
+        @width: 128px;
+        @height: 110px;
+        position: absolute;
+        left: 16px;
+        bottom:16px;
+        width: @width;
+        height:@width;
+        background-size: 100% 100%;
+        background-image: url("@{imgbase}/VeggiesTrimmed.png");
+        background-repeat: no-repeat;
+        @media screen and (max-width:@tinyWidth) {
+            display:none;
+        }
+    }
+
+    .watercan {
+        @width: 104px;
+        @height: 124px;
+        position: absolute;
+        right: 14px;
+        bottom:6px;
+        width: @width;
+        height:@height;
+        background-size: 100% 100%;
+        background-image: url("@{imagebase}/watercan_bee.png");
+        background-repeat: no-repeat;
+        @media screen and (max-width:@bigWidth) {
+            display:none;
+        }
+    }
+}

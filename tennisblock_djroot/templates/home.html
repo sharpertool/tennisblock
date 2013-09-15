@@ -1,0 +1,46 @@
+{% extends "common/base.html" %}
+{% load sekizai_tags %}
+
+{% block mytags %}
+    {% if not isprod %}
+        {% add_data "less-data" "home.less" %}
+    {% else %}
+        {% add_data "css-data" "home.css" %}
+    {% endif %}
+
+    {% add_data "js-body" "angular/apps/tennisblock.js" %}
+    {% add_data "js-body" "angular/controllers/Home.js" %}
+{% endblock %}
+
+{% block title %}
+Garden Buzz
+{% endblock %}
+{% block content %}
+    <div id="container" class="home dynamic">
+        <div id="content" class="dynamic">
+
+            {% verbatim %}
+            <div id="textContent">
+                <div id="blockheading" class="dynamic">
+                    <h2>The Official TennisBlock Site</h2>
+                    <span>This is the worlds only automated tennis block (I think).</span>
+                </div>
+                <div id="playerstats" class="dynamic" ng-controller="BlockPlayers">
+                </div>
+
+                <div id="announcement" class="dynamic" ng-controller="LatestBuzz">
+                    <h2>Block Buzz</h2>
+                    <ul class="last">
+                        <li ng-repeat="item in buzzitems">
+                            {{item.text}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% endverbatim %}
+
+        </div>
+    </div>
+
+
+{% endblock %}
