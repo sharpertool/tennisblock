@@ -28,6 +28,14 @@ Garden Buzz
                     <span>This is the worlds only automated tennis block (I think).</span>
                 </div>
                 <div id="playerstats" class="dynamic" ng-controller="BlockPlayers">
+                    <ul>
+                        <li ng-repeat="couple in couples">
+                            <div>
+                                {{ couple.name }}<br/>
+                                {{ couple.him }} and {{ couple.her }}
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
                 <div id="announcement" class="dynamic" ng-controller="LatestBuzz">

@@ -6,4 +6,10 @@ from django.views.generic import TemplateView
 from blockdb.models import *
 
 class HomeView(TemplateView):
+    d = {
+        #'images'        : images,
+        'angularapp'    : 'gardenbuzz',
+        #'isprod'        : settings.PROD
+    }
+
     template_name = "home.html"

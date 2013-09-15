@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import serializers
-from blockdb.models import Season
+from blockdb.models import Season,Couple,Player
 
 class SeasonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,3 +65,26 @@ def getCurrentSeasonDates(request):
             return 'Nice'
 
     return 'Failure'
+
+def getLatestBuzz(request):
+
+    return JSONResponse([
+        {'text': "Block starts September 20th"},
+        {'text': "I don't know the holdout dates yet."}
+    ])
+
+
+def getBlockPlayers(request):
+
+    if request.method == 'GET':
+        couples = Couple.objects.all()
+        data = []
+        for c in couples:
+            d = {
+                'name' : c.name,
+                'him' : c.male.first + ' ' + c.male.last,
+                'her' : c.female.first + ' ' + c.female.last
+            }
+            data.append(d)
+
+        return JSONResponse(data)

@@ -6,10 +6,10 @@
  */
 
 app.controller('BlockPlayers', function($scope,$http) {
-    $scope.players = [];
+    $scope.couples = [];
 
     $http.get('/api/blockplayers').success(function(data) {
-        $scope.players = data;
+        $scope.couples = data;
     });
 
 });
