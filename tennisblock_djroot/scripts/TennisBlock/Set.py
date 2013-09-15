@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 
-from Player import *
-from Team import *
-from Match import *
-import math
-
-class Set:
+class Set(object):
     def __init__(self):
         self.matches = []
 

@@ -1,14 +1,8 @@
 #!/usr/bin/env python
 
-from Player import *
-from Team import *
-from Match import *
-from Set import *
 from Meeting import *
 
-import random
-
-class TeamGen:
+class TeamGen(object):
 
     def __init__(self,courts,nSeqs,men,women):
         self.nCourts = courts

@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 
-from Player import *
-from Team import *
-from Match import *
-from Set import *
 from MeetingStats import *
 
-class Meeting:
+class Meeting(object):
     def __init__(self,nCourts,nSets,men,women):
         self.nCourts = nCourts
         self.nSets = nSets

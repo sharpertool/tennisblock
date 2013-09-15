@@ -6,8 +6,6 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 from django.db import connection
 from blockdb.models import *
 
-from Player import *
-
 class DBTeams(object):
 
     def __init__(self,matchid=None):
@@ -57,16 +55,27 @@ class DBTeams(object):
 
         return m
 
-    def getPlayers(self,filter=None):
+    def getPlayers(self):
 
         m = self.getNextMatch()
+
         men = []
         women = []
+
+        sched = Schedule.objects.filter(meeting=m)
+        for s in sched:
+            p = s.player
+            if p.gender == 'F':
+                women.append(p)
+            elif p.gender == 'M':
+                men.append(p)
+            else:
+                raise("No proper Geneder!")
 
         return men,women
 
     def initTeamGen(self):
-        #Slots.objects.filter(match = self.matchid).delete()
+        Slot.objects.filter(meeting = self.matchid).delete()
         pass
 
     def InsertRecords(self,seq):
@@ -111,16 +120,14 @@ class DBTeams(object):
                         )
                             """ % (self.matchid,set,court,pid,position)
 
-                    """
-                    s = Slots.objects.create(
-                        match = m,
+                    slot = Slot.objects.create(
+                        meeting = m,
                         set = set,
                         court = court,
                         player = pid,
                         position = position
                     )
-                    s.save()
-                    """
+                    slot.save()
 
                 court = court + 1
 

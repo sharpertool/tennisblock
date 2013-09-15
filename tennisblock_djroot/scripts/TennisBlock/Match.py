@@ -2,7 +2,7 @@
 
 from Team import *
 
-class Match:
+class Match(object):
     
     def __init__(self,t1, t2):
         self.t1 = t1

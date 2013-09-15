@@ -53,6 +53,9 @@ class Player(models.Model):
             un = self.ntrp
         return self.first + " " + self.last + ",%3.1f,%4.2f" % (self.ntrp,un)
 
+    def Name(self):
+        return self.first + " " + self.last
+
 class Couple(models.Model):
     season              = models.ForeignKey(Season)
     name                = models.CharField(max_length=50)
@@ -88,3 +91,9 @@ class Schedule(models.Model):
     player              = models.ForeignKey(Player)
     issub               = models.BooleanField()
 
+class Slot(models.Model):
+    meeting             = models.ForeignKey(Meetings)
+    set                 = models.IntegerField()
+    court               = models.IntegerField()
+    player              = models.ForeignKey(Player)
+    position            = models.CharField(max_length=10)
