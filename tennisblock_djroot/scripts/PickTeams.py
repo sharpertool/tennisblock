@@ -19,6 +19,11 @@ def PickTeams(fp,dbTeam,nCourts,nSequences,dups,testing=False):
 
     men,women = dbTeam.getPlayers()
 
+    if len(men) < nCourts*2 or len(women) < nCourts*2:
+        print("Cannot pick teams, there are not enough men or women.")
+        print("Need %d of both. Have %d men and %d women." % (nCourts*2,len(men),len(women)))
+        return
+
     tg = TeamGen(nCourts,nSequences,men,women)
     sequences = tg.GenerateSetSequences(dups)
 
@@ -47,7 +52,7 @@ def main():
     parser.add_option("-c", dest="courts",
                       action="store",
                       type="int",
-                      default=4,
+                      default=3,
                       help="Number of courts.")
     parser.add_option("-s", dest="sequences",
                       action="store",
