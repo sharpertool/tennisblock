@@ -10,8 +10,8 @@ app.controller('Home', function($scope, $http) {
         name: "Loading..." ,
         gardeners: []
     }
-    #$http.get('/api/players/').success(function(data) {
-    #    $scope.gardeners = data;
-    #})
+    //$http.get('/api/players/').success(function(data) {
+    //#    $scope.gardeners = data;
+    //#})
 });
 

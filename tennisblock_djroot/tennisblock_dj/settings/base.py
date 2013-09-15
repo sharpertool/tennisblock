@@ -142,11 +142,16 @@ INSTALLED_APPS = (
     'sekizai',
     'compressor',
 
+    'tennisblock_dj',
     'tennisblock',
     'blockdb',
     'users',
     'seasons',
     'schedule',
+    'members',
+    'contact',
+    'about',
+    'members',
 )
 
 REST_FRAMEWORK = {

@@ -1,9 +1,9 @@
 # Create your views here.
 
 
-from django.views.generic import DetailView
+from django.views.generic import TemplateView
 
-from .blockdb.models import *
+from blockdb.models import *
 
-class HomeView(DetailView):
+class HomeView(TemplateView):
     template_name = "home.html"

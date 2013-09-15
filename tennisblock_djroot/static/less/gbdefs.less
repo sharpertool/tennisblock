@@ -1,0 +1,61 @@
+
+/*
+    The overall structure is:
+    header Bar - top, width of window
+    frame - contains all other elements, fixed width
+*/
+//@headerBarHeight: 50px;
+
+@imagebase : "/static/images";
+@imgbase : "/static/img";
+@import "colorschemes/Garden_Buzz_Winter";
+
+@tinyWidth: 768px;
+@mediumWidth: 960px;
+@bigWidth: 1024px;
+@largeWidth: 1280px;
+
+@headerBarHeight: 10px;
+
+@frameWidth: 1250px;
+@media screen and (max-width: 1250) {
+    @frameWidth: 960px;
+}
+@media screen and (max-width: 768) {
+    @frameWidth: 768px;
+}
+@frameMargin: 36px;
+@sidebarWidth:300px;
+@containerMargin: 3px;
+@frameMarginTop: @headerBarHeight;
+
+@containerWidth: @frameWidth - 2 * @containerMargin;
+
+@bannerWidth: @frameWidth;
+
+@bannerHeight: 131px;
+@bannerBGHeight: 124px;
+
+@navHeight: 50px;
+
+@containerTop: (@bannerHeight + @navHeight);
+
+// Define my colors
+
+@body_bg_color: @color3;
+@navbar_color: @color5;
+@navBGColor: @color5;
+
+body {
+    color: black;
+}
+
+@banner_color: @body_bg_color;
+//@container_bg_color: hsl(hue(@color4),saturation(@color4)*0.8,lightness(@color4));
+@container_bg_color: @color4;
+@container_border_color: @color2;
+@sidebar_border_color: @color1;
+@content_bg_color: @navbar_color;
+@content_border_color: darken(@container_bg_color,10%);
+@jumplink_color: @color2;
+@jumplink_hover_color: lighten(@jumplink_color,20%);

@@ -1,10 +1,5 @@
 from django import template
-from django.conf import settings
 from django.utils.safestring import mark_safe
-from django.utils.html import conditional_escape
-
-from django.template import defaulttags,defaultfilters
-from sekizai import *
 
 register = template.Library()
 import os.path
@@ -49,7 +44,7 @@ def stylesheetFilter(s,sheettype="css"):
         if sheettype == 'less':
             sout = ""
             media = 'only screen and (max-width:480px)'
-            sout += '<link href="/static/%s/phone/%s" rel="%s" media="%s" type="text/css" />' % (sheettype,s,reltype,media)
+            sout += '<link href="/static/%s/%s" rel="%s" media="%s" type="text/css" />' % (sheettype,s,reltype,media)
             media = 'only screen and (min-width:481px)'
             sout += '<link href="/static/%s/%s" rel="%s" media="%s" type="text/css" />' % (sheettype,s,reltype,media)
             return sout

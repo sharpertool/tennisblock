@@ -3,11 +3,11 @@
 {% load gbtags %}
 
     {% add_data "js-head" "http://html5shiv.googlecode.com/svn/trunk/html5.js" %}
-    {% add_data "js-head" "library/angular/angular.js" %}
-    {% add_data "js-head" "library/angular/angular-resource.js" %}
-    {% add_data "js-head" "GBLessPrefix.js" %}
+    {% add_data "js-head" "library/angular/angular.min.js" %}
+    {% add_data "js-head" "library/angular/angular-resource.min.js" %}
+    {% add_data "js-head" "LessPrefix.js" %}
     {% add_data "js-head" "library/less-1.4.1.min.js" %}
-    {% add_data "js-head" "GBHeadFinal.js" %}
+    {% add_data "js-head" "HeadFinal.js" %}
 
     {% add_data "js-body" "library/jquery-1.10.2.min.js" %}
     {% add_data "js-body" "library/jquery-ui-1.10.3.custom.min.js" %}
@@ -19,10 +19,11 @@
     {% comment %}
         {% add_data "js-body" "library/bootstrap.min.js" %}
     {% endcomment %}
+    {% add_data "js-head" "library/jquery-1.10.2.min.js" %}
     {% add_data "js-head" "//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js" %}
 
-    {% add_data "js-body-final" "GBClient.js" %}
-    {% add_data "js-body-final" "GBLoad.js" %}
+    {% add_data "js-body-final" "Client.js" %}
+    {% add_data "js-body-final" "Load.js" %}
 
     {% add_data "css-data" "http://yui.yahooapis.com/pure/0.1.0/base-min.css" %}
     {% comment %}
@@ -45,7 +46,7 @@
 <html ng-app="{{angularapp}}" class="main">
 <head>
     <title>PreTitle: {% block title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, width=device-wdith, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, width=device-width, initial-scale=1.0">
 
     {% with_data "css-data" as stylesheets %}
     {% for stylesheet in stylesheets %}    {{ stylesheet|stylesheetFilter }}

@@ -4,9 +4,11 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+from tennisblock.views import HomeView
+
 urlpatterns = patterns('',
                        # Examples:
-                       url(r'^$', 'tennisblock.views.home',name='home'),
+                       url(r'^$', HomeView.as_view()),
                        # url(r'^$', 'tennisblock_dj.views.home', name='home'),
                        # url(r'^tennisblock_project/', include('tennisblock_dj.foo.urls')),
                        url(r'^api/', include('api.urls')),
