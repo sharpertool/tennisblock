@@ -1,0 +1,34 @@
+{% extends "common/base.html" %}
+{% load sekizai_tags %}
+
+{% block mytags %}
+    {% if not isprod %}
+        {% add_data "less-data" "schedule.less" %}
+    {% else %}
+        {% add_data "css-data" "schedule.css" %}
+    {% endif %}
+
+    {% add_data "js-body" "angular/apps/tennisblock.js" %}
+    {% add_data "js-body" "angular/controllers/Home.js" %}
+{% endblock %}
+
+{% block title %}
+Garden Buzz
+{% endblock %}
+{% block content %}
+    <div id="container" class="home dynamic">
+        <div id="content" class="dynamic">
+
+            {% verbatim %}
+            <div id="textContent">
+                <div id="blockheading" class="dynamic">
+                    <h2>Playsheet</h2>
+                </div>
+            </div>
+            {% endverbatim %}
+
+        </div>
+    </div>
+
+
+{% endblock %}
