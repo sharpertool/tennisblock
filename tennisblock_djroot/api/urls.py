@@ -13,4 +13,7 @@ urlpatterns = patterns('',
        url(r'blockplayers/$', 'api.views.getBlockPlayers'),
        url(r'blockdates/$', 'api.views.BlockDates'),
        url(r'availability/$', 'api.views.PlayerAvailability'),
+       url(r'ptc/$', 'api.views.getPartTimeCouples'),
+       url(r'pickteams/$', 'api.teams.pickTeams'),
    )
+

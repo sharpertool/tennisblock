@@ -1,11 +1,15 @@
 # Django settings for tennisblock_project project.
+
 from unipath import Path
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 PROJECT_DIR = Path(__file__).ancestor(3)
 print("Project dir:%s" % PROJECT_DIR)
+
+sys.path.append(Path(PROJECT_DIR).child("scripts"))
 
 ADMINS = (
     ('Ed Henderson', 'ed@tennisblock.com'),

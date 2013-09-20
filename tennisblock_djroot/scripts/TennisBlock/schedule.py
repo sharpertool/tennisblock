@@ -9,7 +9,7 @@ from blockdb.models import *
 
 import tennisblock_dj.settings.dev
 
-class TennisBlock(object):
+class Scheduler(object):
 
     def __init__(self):
         pass
@@ -181,7 +181,7 @@ class TennisBlock(object):
 
 def main():
 
-    tb = TennisBlock()
+    tb = Scheduler()
 
     group = tb.getNextGroup()
 

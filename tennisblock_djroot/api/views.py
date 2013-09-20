@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view
 from rest_framework import serializers
 from blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
 
+from TennisBlock.schedule import Scheduler
+
 class SeasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Season
@@ -58,6 +60,25 @@ def getSeasons(request):
         seasons = Season.objects.all()
         serializer = SeasonSerializer(seasons, many=True)
         return JSONResponse(serializer.data)
+
+def getPartTimeCouples(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        sch = Scheduler()
+        cs = sch.currentSeason()
+        mtg = sch.nextMeeting(cs)
+        ptc = sch.getParttimeCouples(mtg)
+
+        data = {}
+        for c in ptc:
+            data[c.name] = {
+                'he'  : c.male.Name(),
+                'she' : c.female.Name()
+            }
+
+        return JSONResponse(data)
 
 def getCurrentSeason(request):
     """
@@ -163,6 +184,7 @@ def _AvailabilityInit(player,meetings):
             av.save()
 
 
+@csrf_exempt
 def BlockDates(request):
 
     #_BuildMeetings(True)
@@ -180,7 +202,13 @@ def BlockDates(request):
                     'holdout' : mtg.holdout
                 })
 
-            return JSONResponse(mtgData)
+            response = JSONResponse(mtgData)
+            response["Access-Control-Allow-Origin"] = "*"
+            response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+            response["Access-Control-Max-Age"] = "1000"
+            response["Access-Control-Allow-Headers"] = "*"
+            return response
+
 
     return JSONResponse({'status' : "Failed"})
 
