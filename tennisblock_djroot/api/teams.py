@@ -11,26 +11,7 @@ from blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availabil
 from TennisBlock.schedule import Scheduler
 from TennisBlock.teams import TeamManager
 
-class SeasonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Season
-        fields = (
-            'id',
-            'name',
-            'courts',
-            'firstcourt',
-            'startdate',
-            'enddate'
-        )
-
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders it's content into JSON.
-    """
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
+from apiutils import JSONResponse
 
 def pickTeams(request):
     """

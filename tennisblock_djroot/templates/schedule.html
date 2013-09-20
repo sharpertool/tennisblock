@@ -9,7 +9,7 @@
     {% endif %}
 
     {% add_data "js-body" "angular/apps/tennisblock.js" %}
-    {% add_data "js-body" "angular/controllers/Home.js" %}
+    {% add_data "js-body" "angular/controllers/blockschedule.js" %}
 {% endblock %}
 
 {% block title %}
@@ -17,12 +17,29 @@ Garden Buzz
 {% endblock %}
 {% block content %}
     <div id="container" class="home dynamic">
-        <div id="content" class="dynamic">
+        <div id="content" class="dynamic" ng-controller="BlockSchedule">
 
             {% verbatim %}
-            <div id="textContent">
+            <div id="textContent" >
                 <div id="blockheading" class="dynamic">
                     <h2>Block Schedule</h2>
+                    <button ng-click="pickTeams">Pick Teams</button>
+                    <button ng-click="schedulePlayer">Schedule</button>
+                    <button ng-click="playSheet">Build Play Sheet</button>
+                    <button ng-click="updateSchedule">Update Schedule</button>
+                    <div id=schedule>
+                        <div class="navigation">
+                            <a class="previous">&lt; previous</a>
+                            <a class="next">next &gt;</a>
+                        </div>
+                        <div class="scheduleview">
+                            <ul>
+                                <li ng-repeat="player in players">
+                                    {{ player.name }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endverbatim %}
