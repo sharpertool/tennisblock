@@ -29,13 +29,16 @@ Garden Buzz
                     <button ng-click="updateSchedule">Update Schedule</button>
                     <div id=schedule>
                         <div class="navigation">
-                            <a class="previous"
-                               ng-hide="isFirstBlockDate()"
+                            <a ng-hide='true' class="previous"
                                ng-click="previous()">
                                 &lt; previous
                             </a>
+                            <button ng-repeat="date in dates"
+                                    ng-click="gotodate(date.date)">
+                                {{ date.date }}
+                            </button>
                             <a class="next"
-                               ng-hide="isLastBlockDate()"
+                               ng-hide="1"
                                ng-click="next()">
                                 next &gt;
                             </a>

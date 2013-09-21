@@ -17,20 +17,23 @@ app.controller('BlockSchedule', function($scope,$http) {
     var updateInitialized = function() {
         if ($scope.dates.length > 0
             && $scope.guys.length > 0
-            && $scope.gals.lengty > 0) {
+            && $scope.gals.length > 0) {
             $scope.initialized = true;
         } else {
             $scope.initialized = false;
         }
+
+        $scope.isLastDate = isLastBlockDate();
+        $scope.isFirstDate = isFirstBlockDate();
     };
 
     $http.get('/api/blockdates').success(function(data) {
         $scope.dates= data;
-        $scope.firstDate = data[0].date;
-        $scope.lastDate = data[data.length-1].date;
+        $scope.firstDate = tb.utils.pyDate2js(data[0].date);
+        $scope.lastDate = tb.utils.pyDate2js(data[data.length-1].date);
         $scope.blocksched = {};
         _.each(data,function(d) {
-            var bdate = d.date;
+            var bdate = tb.utils.pyDate2js(d.date);
             var ho = d.holdout;
             $scope.blocksched[bdate] = ho;
         });
@@ -45,7 +48,7 @@ app.controller('BlockSchedule', function($scope,$http) {
             'method'    : 'GET',
             'params'    : {'date' : $scope.queryDate}
         }).success(function(data) {
-                $scope.currdate = data.date;
+                $scope.currdate = tb.utils.pyDate2js(data.date).toLocaleDateString();
                 $scope.guys = data.guys;
                 $scope.gals = data.gals;
                 updateInitialized();
@@ -66,25 +69,33 @@ app.controller('BlockSchedule', function($scope,$http) {
             'params'    : {'date' : $scope.queryDate}
         }).success(function(data) {
                 $scope.slots= data;
+                updateInitialized();
             });
     };
 
     var isLastBlockDate = function() {
-        return $scope.currdate == $scope.lastDate;
+        if ($scope.lastDate && $scope.currdate) {
+            return $scope.currdate == $scope.lastDate.toLocaleDateString();
+        }
+
+        return false;
     };
 
     var isFirstBlockDate = function() {
-        return $scope.currdate == $scope.firstDate;
+        if ($scope.firstDate && $scope.currdate) {
+            return $scope.currdate == $scope.firstDate.toLocaleDateString();
+        }
+        return false;
     };
 
     var previousBlockDate = function() {
         var d1 = new Date($scope.currdate);
-        if (d1 == $scope.firstDate) {
+        if (d1.toDateString() == $scope.firstDate.toDateString()) {
             return d1;
         }
         var d2 = new Date(d1.getFullYear(), d1.getMonth(),d1.getDate()-7);
-        while (d2 != $scope.lastDate && $scope.blocksched[d2] == 1) {
-            d2 = new Date(d2.getFullYear(), d2.getMonth(),d3.getDate()-7);
+        while (d2.toDateString() != $scope.lastDate.toDateString() && $scope.blocksched[d2] == 1) {
+            d2 = new Date(d2.getFullYear(), d2.getMonth(),d2.getDate()-7);
         }
 
         return d2;
@@ -92,12 +103,12 @@ app.controller('BlockSchedule', function($scope,$http) {
 
     var nextBlockDate = function() {
         var d1 = new Date($scope.currdate);
-        if (d1 == $scope.lastDate) {
+        if (d1.toDateString() == $scope.lastDate.toDateString()) {
             return d1;
         }
         var d2 = new Date(d1.getFullYear(), d1.getMonth(),d1.getDate()+7);
-        while (d2 != $scope.lastDate && $scope.blocksched[d2] == 1) {
-            d2 = new Date(d2.getFullYear(), d2.getMonth(),d3.getDate()+7);
+        while (d2.toDateString() != $scope.lastDate.toDateString() && $scope.blocksched[d2] == 1) {
+            d2 = new Date(d2.getFullYear(), d2.getMonth(),d2.getDate()+7);
         }
 
         return d2;
@@ -107,13 +118,19 @@ app.controller('BlockSchedule', function($scope,$http) {
 
     };
 
+    $scope.gotodate = function(date) {
+        $scope.queryDate = date;
+        updateAll();
+    };
+
     $scope.previous = function() {
-        $scope.queryDate = previousBlockDate();
+        var d1 = previousBlockDate();
+        $scope.queryDate = tb.utils.jsDate2py(d1);
         updateAll();
     };
 
     $scope.next = function() {
-        $scope.queryDate = nextBlockDate();
+        $scope.queryDate = tb.utils.jsDate2py(nextBlockDate());
         updateAll();
     };
 

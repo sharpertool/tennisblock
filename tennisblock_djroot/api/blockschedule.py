@@ -140,8 +140,10 @@ def getPlayersForBlock(request):
         date = data.get('date')
         mtg = _getMeetingForDate(date)
 
-        data = {'date' : mtg.date}
+
+        data = {}
         if mtg:
+            data = {'date' : mtg.date}
 
             guys = []
             gals = []
@@ -164,6 +166,7 @@ def getPlayersForBlock(request):
             data['guys'] = guys
             data['gals'] = gals
         else:
+            data['date'] ="Invalid"
             data['mtg'] = {'error' : 'Could not determine meeting.'}
 
         print("Return player list")

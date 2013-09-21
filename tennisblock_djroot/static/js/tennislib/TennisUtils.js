@@ -57,6 +57,32 @@
         }
     }
 
+    var zpad = function(num, size) {
+        var s = "0" + num;
+        return s.substr(s.length-size);
+    };
+
+    TennisUtils.prototype.pyDate2js = function(pydate) {
+        if (typeof pydate === 'string') {
+            var ymd = String(pydate).split('-');
+            if (ymd.length == 3) {
+                var y = ymd[0];
+                var m = ymd[1]-1;
+                var d = ymd[2];
+                var jsdate = new Date(y, m,d);
+                return jsdate;
+            }
+        }
+        return pydate;
+    };
+
+    TennisUtils.prototype.jsDate2py = function(jsdate) {
+        var d = new Date(jsdate);
+        var pydate = d.getFullYear() + '-' + zpad(d.getMonth()+1,2) + '-' + d.getDate();
+        return pydate;
+    };
+
+
     tb.utils = new TennisUtils();
 
 })();
