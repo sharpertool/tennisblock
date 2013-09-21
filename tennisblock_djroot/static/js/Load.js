@@ -7,7 +7,7 @@
  */
 
 
-GBClient.include(GBClient.basePath+'/GBLib/GBEnvironment.js');
-GBClient.include(GBClient.basePath+'/GBLib/GBGui.js');
-GBClient.include(GBClient.basePath+'/GBLib/GBUtils.js');
-GBClient.include(GBClient.basePath+'/GBLib/GBMain.js');
+TennisClient.include(TennisClient.basePath+'/tennislib/TennisEnvironment.js');
+TennisClient.include(TennisClient.basePath+'/tennislib/TennisGui.js');
+TennisClient.include(TennisClient.basePath+'/tennislib/TennisUtils.js');
+TennisClient.include(TennisClient.basePath+'/tennislib/TennisMain.js');

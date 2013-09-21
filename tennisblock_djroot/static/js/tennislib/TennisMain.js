@@ -14,7 +14,7 @@ $(document).ready(function() {
         //jwplayer.key="fYnRtGDQRvdjBsT9eDoZz2vVaRWplQ67uT2nl5y4lIw=";
     }
 
-    gb.log = log4javascript.getLogger();
+    tb.log = log4javascript.getLogger();
 
     if (typeof less !== 'undefined') {
         less.env = 'development';
@@ -28,17 +28,17 @@ $(document).ready(function() {
     popUpAppender.setLayout(popUpLayout);
     //log.addAppender(popUpAppender);
 
-    gb.log.info("Initializing GardenBuzz on " + location.host);
+    tb.log.info("Initializing GardenBuzz on " + location.host);
 
-    gb.gui = new GBGui();
+    tb.gui = new TennisGui();
 
-    gb.gui.init();
+    tb.gui.init();
 
-    //$(window).resize(function() { gb.utils.onResize(); });
+    //$(window).resize(function() { tb.utils.onResize(); });
 
-    //gb.utils.onResize();
+    //tb.utils.onResize();
 
-    GardenBuzz.toggleMenu = function() {
+    tb.toggleMenu = function() {
         console.log("Toggling menu");
         $('#navigation ul').toggleClass('hide');
         $('#leftButton').toggleClass('pressed');

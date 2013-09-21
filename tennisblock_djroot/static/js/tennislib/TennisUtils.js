@@ -9,11 +9,11 @@
 
 (function() {
 
-    function GBUtils() {
+    function TennisUtils() {
 
     }
 
-    GBUtils.prototype.getBrowserWidth = function() {
+    TennisUtils.prototype.getBrowserWidth = function() {
         if (window.innerWidth){
             return window.innerWidth;}
         else if (document.documentElement && document.documentElement.clientWidth != 0){
@@ -22,7 +22,7 @@
         return 0;
     };
 
-    GBUtils.prototype.getBrowserHeight = function() {
+    TennisUtils.prototype.getBrowserHeight = function() {
         if (window.innerHeight){
             return window.innerHeight;}
         else if (document.documentElement && document.documentElement.clientHeight != 0){
@@ -31,7 +31,7 @@
         return 0;
     }
 
-    GBUtils.prototype.onResize = function() {
+    TennisUtils.prototype.onResize = function() {
         return;
         var browserWidth = this.getBrowserWidth();
         var browserHeight = this.getBrowserHeight();
@@ -57,7 +57,7 @@
         }
     }
 
-    gb.utils = new GBUtils();
+    tb.utils = new TennisUtils();
 
 })();
 

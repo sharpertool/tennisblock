@@ -70,7 +70,7 @@ class DBTeams(object):
             elif p.gender == 'M':
                 men.append(p)
             else:
-                raise("No proper Geneder!")
+                raise("No proper Gender!")
 
         return men,women
 
@@ -99,32 +99,22 @@ class DBTeams(object):
                 f2 = m.t2.f
 
                 positions = {
-                    'tapa'  : m1.pid,
-                    'tapb'  : f1.pid,
-                    'tbpa'  : m2.pid,
-                    'tbpb'  : f2.pid
+                    'tapa'  : m1.id,
+                    'tapb'  : f1.id,
+                    'tbpa'  : m2.id,
+                    'tbpb'  : f2.id
                 }
 
                 for position in positions.keys():
                     pid = positions[position]
-                    sql = """
-                        insert into slots
-                            (matchid, setnum, court,pid,position,combokey)
-                        values (
-                            %d,
-                            %d,
-                            %d,
-                            %d,
-                            "%s",
-                            ""
-                        )
-                            """ % (self.matchid,set,court,pid,position)
+
+                    player = Player.objects.get(id=pid)
 
                     slot = Slot.objects.create(
-                        meeting = m,
+                        meeting = self.matchid,
                         set = set,
                         court = court,
-                        player = pid,
+                        player = player,
                         position = position
                     )
                     slot.save()

@@ -7,11 +7,11 @@
  */
 
 
-var GardenBuzz = {
+var TennisBlock = {
     'app'       : null,
     'gui'       : null,
     'log'       : null,
     'utils'     : null
 };
-var gb = GardenBuzz;
+var tb = TennisBlock;
 

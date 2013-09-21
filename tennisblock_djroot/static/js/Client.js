@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var GBClient = {
+var TennisClient = {
 
     VERSION: '1.0.0',
 
@@ -113,17 +113,17 @@ var GBClient = {
 
 };
 
-if (typeof(GBBasePath) !== 'undefined' && GBBasePath.length > 0)
+if (typeof(TennisBasePath) !== 'undefined' && TennisBasePath.length > 0)
 {
     // Adds a trailing slash if required
-    if (GBBasePath.substring(GBBasePath.length - 1) == '/')
+    if (TennisBasePath.substring(TennisBasePath.length - 1) == '/')
     {
-        GBBasePath = GBBasePath.substring(0, GBBasePath.length - 1);
+        TennisBasePath = TennisBasePath.substring(0, TennisBasePath.length - 1);
     }
 
-    GBClient.basePath = GBBasePath;
+    TennisClient.basePath = TennisBasePath;
 }
 else
 {
-    GBClient.basePath = '.';
+    TennisClient.basePath = '.';
 }

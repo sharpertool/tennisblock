@@ -6,11 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-function GBGui() {
+function TennisGui() {
 
 }
 
-GBGui.prototype.init = function() {
+TennisGui.prototype.init = function() {
     // --- Tabs on Top ----
     $("#sitenav li").hover(// Tab Hover Class
         function () {

@@ -22,20 +22,60 @@ Garden Buzz
             {% verbatim %}
             <div id="textContent" >
                 <div id="blockheading" class="dynamic">
-                    <h2>Block Schedule</h2>
+                    <h2>Block Schedule for {{ currdate }}</h2>
                     <button ng-click="pickTeams">Pick Teams</button>
                     <button ng-click="schedulePlayer">Schedule</button>
                     <button ng-click="playSheet">Build Play Sheet</button>
                     <button ng-click="updateSchedule">Update Schedule</button>
                     <div id=schedule>
                         <div class="navigation">
-                            <a class="previous">&lt; previous</a>
-                            <a class="next">next &gt;</a>
+                            <a class="previous"
+                               ng-hide="isFirstBlockDate()"
+                               ng-click="previous()">
+                                &lt; previous
+                            </a>
+                            <a class="next"
+                               ng-hide="isLastBlockDate()"
+                               ng-click="next()">
+                                next &gt;
+                            </a>
                         </div>
                         <div class="scheduleview">
+                            <h3>Players</h3>
                             <ul>
-                                <li ng-repeat="player in players">
-                                    {{ player.name }}
+                                <li ng-repeat="guy in guys">
+                                    {{ guy.name }}
+                                </li>
+                            </ul>
+                            <ul>
+                                <li ng-repeat="gal in gals">
+                                    {{ gal.name }}
+                                </li>
+                            </ul>
+                            <h3>Subs</h3>
+                            <ul>
+                                <li ng-repeat="sub in subs">
+                                    {{ sub.name}}
+                                </li>
+                            </ul>
+                            <h3>Play Schedule</h3>
+                            <ul>
+                                <li ng-repeat="set in sets">
+                                    {{ set.name }}
+                                    <ul>
+                                        <li ng-repeat="court in set.courts">
+                                            <div class="courtAssignment">
+                                                <h4>{{ court.number }}</h4>
+                                                <div class="courtTeam">
+                                                    {{ court.ta.guy.name }} and {{ court.ta.gal.name }}
+                                                </div>
+                                                <span>Versus</span>
+                                                <div class="courtTeam">
+                                                    {{ court.tb.guy.name }} and {{ court.tb.gal.name }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </div>

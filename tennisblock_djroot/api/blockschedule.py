@@ -1,16 +1,18 @@
 # Create your views here.
 
 import datetime
+from dateutil import parser
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-from blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
+from blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
 
-from apiutils import JSONResponse, _currentSeason
+from apiutils import JSONResponse, _currentSeason, _getMeetingForDate,_getBlockSchedule
 
 def _BuildMeetings(force=False):
     """
@@ -80,6 +82,96 @@ def getBlockPlayers(request):
             data.append(d)
 
         return JSONResponse(data)
+
+
+
+@csrf_exempt
+def getSubList(request):
+
+    r = Request(request)
+
+    if r.method == 'GET':
+        data = r.QUERY_PARAMS
+        date = data.get('date')
+        mtg = _getMeetingForDate(date)
+
+        data = {'date' : mtg.date}
+        if mtg:
+
+            playingIds = {}
+            schedulePlayers = Schedule.objects.filter(meeting=mtg)
+            for p in schedulePlayers:
+                playingIds[p.player.id] = p.player
+                print("Playing this meeting:%s" % p.player.Name())
+
+            avail = Availability.objects.filter(meeting=mtg,available=True)
+            fsubs = []
+            msubs = []
+            for a in avail:
+                if not playingIds.has_key(a.player.id):
+                    s = {
+                        'name' : a.player.Name(),
+                        'id'   : a.player.id,
+                        'ntrp' : a.player.ntrp,
+                        'untrp': a.player.microntrp
+                    }
+
+                    if a.player.gender == 'F':
+                        fsubs.append(s)
+                    else:
+                        msubs.append(s)
+
+            data['guysubs'] = msubs
+            data['galsubs'] = fsubs
+        else:
+            data['mtg'] = {'error' : 'Could not determine meeting.'}
+
+        return JSONResponse(data)
+
+    return JSONResponse({})
+
+@csrf_exempt
+def getPlayersForBlock(request):
+
+    r = Request(request)
+
+    if r.method == 'GET':
+        data = r.QUERY_PARAMS
+        date = data.get('date')
+        mtg = _getMeetingForDate(date)
+
+        data = {'date' : mtg.date}
+        if mtg:
+
+            guys = []
+            gals = []
+
+            schedulePlayers = Schedule.objects.filter(meeting=mtg)
+            for sch in schedulePlayers:
+                player = sch.player
+                s = {
+                    'name' : player.Name(),
+                    'id'   : player.id,
+                    'ntrp' : player.ntrp,
+                    'untrp': player.microntrp
+                }
+
+                if player.gender == 'F':
+                    gals.append(s)
+                else:
+                    guys.append(s)
+
+            data['guys'] = guys
+            data['gals'] = gals
+        else:
+            data['mtg'] = {'error' : 'Could not determine meeting.'}
+
+        print("Return player list")
+        return JSONResponse(data)
+
+    return JSONResponse({})
+
+
 
 
 def BlockDates(request):
@@ -160,3 +252,13 @@ def PlayerAvailability(request):
         # Update availability for someone.
 
         return JSONResponse({})
+
+def blockSchedule(request):
+
+    r = Request(request)
+
+    if r.method == 'GET':
+        data = r.QUERY_PARAMS
+        date = data.get('date')
+        sched = _getBlockSchedule(date)
+        return JSONResponse(sched)
