@@ -1,15 +1,10 @@
 # Create your views here.
 
 import datetime
-from dateutil import parser
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
-from rest_framework.response import Response
+from django.views.generic.base import View
 from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view
-from rest_framework import serializers
 from blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
 
 from apiutils import JSONResponse, _currentSeason, _getMeetingForDate,_getBlockSchedule
@@ -201,9 +196,11 @@ def BlockDates(request):
     return JSONResponse({'status' : "Failed"})
 
 
-def PlayerAvailability(request):
+class AvailabilityView(View):
 
-    if request.method == "GET":
+    def get(self,request):
+    #def PlayerAvailability(request):
+
         currseason = _currentSeason()
         mtgs = Meetings.objects.filter(season = currseason)
         players = SeasonPlayers.objects.filter(season = currseason)
@@ -237,7 +234,8 @@ def PlayerAvailability(request):
 
         return JSONResponse(pdata)
 
-    elif request.method == 'PUT':
+    def put(self,request):
+    #elif request.method == 'PUT':
 
         data = JSONParser().parse(request)
         currseason = _currentSeason()

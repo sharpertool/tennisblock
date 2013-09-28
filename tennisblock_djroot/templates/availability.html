@@ -36,7 +36,10 @@ Garden Buzz
                         </tr>
                         <tr class="even">
                             <th>Name</th>
-                            <th ng-repeat="date in dates">{{ date.date | date:'M-d' }}</th>
+                            <th ng-repeat="date in dates"
+                                ng-class="{true: 'holdout',false:'play'}[date.holdout == true]">
+                                {{ date.date | date:'M-d' }}
+                            </th>
                             <th>Played</th>
                             <th>Scheduled</th>
                         </tr>

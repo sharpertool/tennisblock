@@ -5,7 +5,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 from tennisblock.views import HomeView
-from schedule.views import ScheduleView
 from about.views import AboutView
 from contact.views import ContactView
 from availability.views import AvailabilityView
@@ -19,7 +18,7 @@ urlpatterns = patterns('',
                # url(r'^tennisblock_project/', include('tennisblock_dj.foo.urls')),
                url(r'^api/', include('api.urls')),
 
-               url(r'^schedule/', ScheduleView.as_view()),
+               url(r'^schedule/', include('schedule.urls')),
                url(r'^availability/', AvailabilityView.as_view()),
                url(r'^playsheet/', PlaysheetView.as_view()),
                url(r'^members/', MembersView.as_view()),

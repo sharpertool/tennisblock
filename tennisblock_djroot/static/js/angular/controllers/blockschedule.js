@@ -44,7 +44,7 @@ app.controller('BlockSchedule', function($scope,$http) {
         $scope.initialized = false;
 
         $http({
-            'url'       :'/api/blockplayers/',
+            'url'       :'/api/blockplayers/date}/',
             'method'    : 'GET',
             'params'    : {'date' : $scope.queryDate}
         }).success(function(data) {
@@ -112,6 +112,15 @@ app.controller('BlockSchedule', function($scope,$http) {
         }
 
         return d2;
+    };
+
+    /**
+     * schedulePlayer
+     *
+     * Update the schedule for the current block session
+     */
+    $scope.schedulePlayer = function() {
+
     };
 
     $scope.isHoldout = function() {

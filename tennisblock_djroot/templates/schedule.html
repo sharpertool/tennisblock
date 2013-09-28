@@ -33,7 +33,7 @@ Garden Buzz
                                ng-click="previous()">
                                 &lt; previous
                             </a>
-                            <button ng-repeat="date in dates"
+                            <button ng-repeat="date in dates | filter: { holdout : false }"
                                     ng-click="gotodate(date.date)">
                                 {{ date.date }}
                             </button>
