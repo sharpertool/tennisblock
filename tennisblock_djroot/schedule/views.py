@@ -1,22 +1,8 @@
 # Create your views here.
 
-
-from django.shortcuts import render
-from django.views.generic import TemplateView
+from TBLib.view import TennisView
 
 
-class BlockSchedule(TemplateView):
-    """
-    Determine, by default, the next scheduled date for the initial presentation.
-
-    """
-    d = {
-        'angularapp'    : 'tennisblock',
-    }
-
+class BlockSchedule(TennisView):
     template_name = "schedule.html"
-
-    def dispatch(self,request):
-
-        return render(request,self.template_name,self.d)
 

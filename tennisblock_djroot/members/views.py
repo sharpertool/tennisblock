@@ -1,8 +1,7 @@
 # Create your views here.
 
 
-from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from TBLib.view import TennisView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from blockdb.models import Player,SeasonPlayers
@@ -17,10 +16,9 @@ class MemberCreate(CreateView):
     def form_valid(self,form):
         return super(MemberCreate,self).form_valid(form)
 
-class MembersView(TemplateView):
-    members_only = False
+class MembersView(TennisView):
     template_name = "members.html"
-
+    members_only = False
 
     def getPlayers(self):
         s = _currentSeason()
@@ -38,7 +36,6 @@ class MembersView(TemplateView):
     def get_context_data(self,**kwargs):
         context = super(MembersView, self).get_context_data(**kwargs)
         context['players'] = self.getPlayers()
-        context['angularapp'] = 'tennisblock'
         return context
 
 

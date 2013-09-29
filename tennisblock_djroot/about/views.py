@@ -1,19 +1,6 @@
 # Create your views here.
 
+from TBLib.view import TennisView
 
-from django.shortcuts import render
-from django.views.generic import TemplateView
-
-from blockdb.models import *
-
-class AboutView(TemplateView):
-    d = {
-        'angularapp'    : 'tennisblock',
-    }
-
+class AboutView(TennisView):
     template_name = "about.html"
-
-    def dispatch(self,request):
-
-        return render(request,self.template_name,self.d)
-
