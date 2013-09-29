@@ -20,6 +20,7 @@ urlpatterns = patterns('',
                url(r'^members/', include('members.urls')),
                url(r'^contact/', ContactView.as_view()),
                url(r'^about/', AboutView.as_view()),
+               url(r'^accounts/', include('accounts.urls')),
 
                # Uncomment the admin/doc line below to enable admin documentation:
                #url(r'^kag3hewb/doc/', include('django.contrib.admindocs.urls')),
