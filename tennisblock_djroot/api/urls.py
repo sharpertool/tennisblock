@@ -6,19 +6,27 @@ from django.contrib import admin
 admin.autodiscover()
 from blockschedule import AvailabilityView
 
-urlpatterns = patterns('',
-       url(r'seasons/$', 'api.views.getSeasons'),
-       url(r'currentseason/$', 'api.views.getCurrentSeason'),
-       url(r'currentseasondates/$', 'api.views.getCurrentSeasonDates'),
-       url(r'buzz/$', 'api.views.getLatestBuzz'),
-       #url(r'blockplayers/$', 'api.blockschedule.getBlockPlayers'),
-       url(r'blockdates/$', 'api.blockschedule.BlockDates'),
-       url(r'availability/$', AvailabilityView.as_view()),
-       url(r'ptc/$', 'api.views.getPartTimeCouples'),
-       url(r'pickteams/$', 'api.teams.pickTeams'),
-       url(r'subs/$', 'api.blockschedule.getSubList'),
-       url(r'blockplayers/', 'api.blockschedule.getPlayersForBlock'),
-       url(r'blocksheet/', 'api.blocksheet.blockSheet'),
-       url(r'blockschedule/', 'api.blockschedule.blockSchedule'),
-   )
+urlpatterns = patterns('api.views',
+       url(r'seasons/$',            'getSeasons'),
+       url(r'currentseason/$',      'getCurrentSeason'),
+       url(r'currentseasondates/$', 'getCurrentSeasonDates'),
+       url(r'buzz/$',               'getLatestBuzz'),
+       #url(r'ptc/$',                'getPartTimeCouples'),
+)
+urlpatterns += patterns('api.teams',
+       url(r'pickteams/$',          'pickTeams'),
+)
+urlpatterns += patterns('api.blocksheet',
+       url(r'blocksheet/',          'blockSheet'),
+       #url(r'blockplayers/$', 'blockschedule.getBlockPlayers'),
+)
+urlpatterns += patterns('api.blockschedule',
+       url(r'blockdates/$',         'BlockDates'),
+       url(r'subs/$',               'getSubList'),
+       url(r'blockplayers/',        'getPlayersForBlock'),
+       url(r'blockschedule/',       'blockSchedule'),
+)
+urlpatterns += patterns('',
+       url(r'availability/$',       AvailabilityView.as_view()),
+)
 

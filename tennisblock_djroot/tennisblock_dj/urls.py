@@ -13,10 +13,7 @@ from playsheet.views import PlaysheetView
 urlpatterns = patterns('',
                # Examples:
                url(r'^$', HomeView.as_view()),
-               # url(r'^$', 'tennisblock_dj.views.home', name='home'),
-               # url(r'^tennisblock_project/', include('tennisblock_dj.foo.urls')),
                url(r'^api/', include('api.urls')),
-
                url(r'^schedule/', include('schedule.urls')),
                url(r'^availability/', AvailabilityView.as_view()),
                url(r'^playsheet/', PlaysheetView.as_view()),
@@ -29,4 +26,4 @@ urlpatterns = patterns('',
 
                # Uncomment the next line to enable the admin:
                url(r'^admin/', include(admin.site.urls)),
-               )
+       )
