@@ -1,0 +1,39 @@
+{% extends "common/base.html" %}
+{% load sekizai_tags %}
+
+{% block mytags %}
+    {{ block.super }}
+    {% if not isprod %}
+        {% add_data "less-data" "accounts.less" %}
+    {% else %}
+        {% add_data "css-data" "accounts.css" %}
+    {% endif %}
+
+    {% add_data "js-body" "angular/apps/tennisblock.js" %}
+{% endblock %}
+
+{% block title %}
+TennisBlock
+{% endblock %}
+{% block content %}
+    <div id="container" class="home dynamic">
+        <div id="content" class="dynamic">
+            <h2>Login</h2>
+            {% if next %}
+                <span>Next: {{ next }}</span>
+            {% endif %}
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <span>Username:</span>
+                <input type="text" name="username"/>
+                <span>Password:</span>
+                <input type="password" name="password"/>
+                <button type="submit">Submit</button>
+                <input type="hidden" name="next" value="{{ next }}"/>
+            </form>
+
+        </div>
+    </div>
+
+
+{% endblock %}

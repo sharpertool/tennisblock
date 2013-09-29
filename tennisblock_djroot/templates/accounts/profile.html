@@ -1,0 +1,46 @@
+{% extends "common/base.html" %}
+{% load sekizai_tags %}
+
+{% block mytags %}
+    {{ block.super }}
+    {% if not isprod %}
+        {% add_data "less-data" "accounts.less" %}
+    {% else %}
+        {% add_data "css-data" "accounts.css" %}
+    {% endif %}
+
+    {% add_data "js-body" "angular/apps/tennisblock.js" %}
+{% endblock %}
+
+{% block title %}
+TennisBlock
+{% endblock %}
+{% block content %}
+    <div id="container" class="home dynamic">
+        <div id="content" class="dynamic">
+            <h2>Account Profile</h2>
+            <form action="{% url 'profile' %}" method="POST">
+                {% csrf_token %}
+                <span>Username: {{ username }}</span>
+                <span>First Name</span>
+                <input type="text" name="firstname" value="{{ firstname }}"/>
+                <span>Last Name</span>
+                <input type="text" name="lastname" value="{{ lastname }}"/>
+
+                <span>Email</span>
+                <input type="text" name="email" value="{{ email }}"/>
+
+                <span>Phone Number</span>
+                <input type="text" name="phone" value="{{ phone }}"/>
+
+                <span>NTRP</span>
+                <input type="text" name="ntrp" value="{{ ntrp }}"/>
+
+                <button type="submit">Update Profile</button>
+            </form>
+
+        </div>
+    </div>
+
+
+{% endblock %}

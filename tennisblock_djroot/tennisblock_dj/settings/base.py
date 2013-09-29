@@ -36,6 +36,7 @@ DATABASES = {
 ALLOWED_HOSTS = ['tennisblock.com','127.0.0.1','tennisblock.local']
 
 LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -47,7 +48,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID = 3
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.

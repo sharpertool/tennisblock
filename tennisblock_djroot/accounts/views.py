@@ -3,7 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import redirect
-from TBLib.view import TennisView
+from TBLib.view import TennisView,TennisLoginView
 
 from sekizai.context import SekizaiContext
 
@@ -22,13 +22,30 @@ class AccountsLogout(TennisView):
 class AcccountsLogoutSuccess(TennisView):
     template_name = 'accounts/logout_success.html'
 
+class AccountsProfile(TennisLoginView):
+    template_name = 'accounts/profile.html'
+
+    def get_context_data(self,**kwargs):
+        context = super(AccountsProfile, self).get_context_data(**kwargs)
+        u = self.request.user
+        context['firstname'] = u.first_name
+        context['lastname'] = u.last_name
+        context['email'] = u.email
+        return context
+
+    def post(self,request,*args,**kwargs):
+        u = self.request.user
+        u.first_name = request.POST['firstname']
+        u.last_name = request.POST['lastname']
+        u.email = request.POST['email']
+        u.save()
+        return redirect(reverse('profile'))
+
 class AccountsLogin(TennisView):
     template_name = 'accounts/login.html'
 
     def get_context_data(self,**kwargs):
         context = super(TennisView, self).get_context_data(**kwargs)
-        next = self.request.GET['next']
-        context['next'] = next
         return context
 
     def get(self,request,*args,**kwargs):
