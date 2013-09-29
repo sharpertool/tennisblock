@@ -13,7 +13,7 @@ class AboutView(TemplateView):
 
     template_name = "about.html"
 
-    def get(self,request):
+    def dispatch(self,request):
 
         return render(request,self.template_name,self.d)
 

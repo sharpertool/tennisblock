@@ -2,6 +2,7 @@
 {% load sekizai_tags %}
 {% load gbtags %}
 
+{% block mytags %}
     {% add_data "js-head" "http://html5shiv.googlecode.com/svn/trunk/html5.js" %}
     {% add_data "js-head" "library/angular/angular.min.js" %}
     {% add_data "js-head" "library/angular/angular-resource.min.js" %}
@@ -40,9 +41,6 @@
     {% add_data "less-data" "nav.less" %}
     {% add_data "less-data" "banner.less" %}
     {% add_data "less-data" "footer.less" %}
-
-
-{% block mytags %}
 {% endblock %}
 
 <html ng-app="{{ angularapp }}" class="main">

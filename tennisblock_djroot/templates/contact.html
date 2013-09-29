@@ -2,6 +2,7 @@
 {% load sekizai_tags %}
 
 {% block mytags %}
+    {{ block.super }}
     {% if not isprod %}
         {% add_data "less-data" "schedule.less" %}
     {% else %}

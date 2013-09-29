@@ -16,7 +16,7 @@ class BlockSchedule(TemplateView):
 
     template_name = "schedule.html"
 
-    def get(self,request):
+    def dispatch(self,request):
 
         return render(request,self.template_name,self.d)
 

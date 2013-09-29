@@ -8,7 +8,6 @@ from tennisblock.views import HomeView
 from about.views import AboutView
 from contact.views import ContactView
 from availability.views import AvailabilityView
-from members.views import MembersView
 from playsheet.views import PlaysheetView
 
 urlpatterns = patterns('',
@@ -21,7 +20,7 @@ urlpatterns = patterns('',
                url(r'^schedule/', include('schedule.urls')),
                url(r'^availability/', AvailabilityView.as_view()),
                url(r'^playsheet/', PlaysheetView.as_view()),
-               url(r'^members/', MembersView.as_view()),
+               url(r'^members/', include('members.urls')),
                url(r'^contact/', ContactView.as_view()),
                url(r'^about/', AboutView.as_view()),
 

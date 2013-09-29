@@ -6,10 +6,10 @@ from django.views.generic import TemplateView
 from blockdb.models import *
 
 class HomeView(TemplateView):
-    d = {
-        #'images'        : images,
-        'angularapp'    : 'gardenbuzz',
-        #'isprod'        : settings.PROD
-    }
-
     template_name = "home.html"
+
+    def get_context_data(self,**kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['angularapp'] = 'tennisblock'
+        return context
+

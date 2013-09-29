@@ -2,7 +2,6 @@
 {% load sekizai_tags %}
 
 {% block mytags %}
-    {{ block.super }}
     {% if not isprod %}
         {% add_data "less-data" "schedule.less" %}
     {% else %}
@@ -23,7 +22,7 @@ Garden Buzz
             {% verbatim %}
             <div id="textContent">
                 <div id="blockheading" class="dynamic">
-                    <h2>Playsheet</h2>
+                    <h2>About Us</h2>
                 </div>
             </div>
             {% endverbatim %}
