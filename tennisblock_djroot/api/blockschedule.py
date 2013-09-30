@@ -81,13 +81,11 @@ def getBlockPlayers(request):
 
 
 @csrf_exempt
-def getSubList(request):
+def getSubList(request,date=None):
 
     r = Request(request)
 
     if r.method == 'GET':
-        data = r.QUERY_PARAMS
-        date = data.get('date')
         mtg = _getMeetingForDate(date)
 
         data = {'date' : mtg.date}
@@ -126,15 +124,12 @@ def getSubList(request):
     return JSONResponse({})
 
 @csrf_exempt
-def getPlayersForBlock(request):
+def getPlayersForBlock(request,date=None):
 
     r = Request(request)
 
     if r.method == 'GET':
-        data = r.QUERY_PARAMS
-        date = data.get('date')
         mtg = _getMeetingForDate(date)
-
 
         data = {}
         if mtg:
@@ -254,12 +249,57 @@ class AvailabilityView(View):
 
         return JSONResponse({})
 
-def blockSchedule(request):
+def PickTeams(nCourts,nSequences,dups,testing=False):
+
+    from TennisBlock.DBTeams import DBTeams
+    from TennisBlock.TeamGen2 import TeamGen
+
+    dbTeams = DBTeams()
+
+    men,women = dbTeam.getPlayers()
+
+    if len(men) < nCourts*2 or len(women) < nCourts*2:
+        print("Cannot pick teams, there are not enough men or women.")
+        print("Need %d of both. Have %d men and %d women." % (nCourts*2,len(men),len(women)))
+        return
+
+    tg = TeamGen(nCourts,nSequences,men,women)
+    sequences = tg.GenerateSetSequences(dups)
+
+    if sequences == None or len(sequences) < nSequences:
+        print("Could not generate the required sequences.")
+
+    else:
+        # Put the worst sequences last.
+        sequences.reverse()
+        tg.DisplaySequences(sequences)
+        tg.showAllDiffs(sequences)
+
+        if not testing:
+            dbTeam.InsertRecords(sequences)
+
+@csrf_exempt
+def blockSchedule(request,date = None):
 
     r = Request(request)
 
     if r.method == 'GET':
-        data = r.QUERY_PARAMS
-        date = data.get('date')
         sched = _getBlockSchedule(date)
         return JSONResponse(sched)
+
+    elif r.method == 'POST':
+        from TennisBlock.schedule import Scheduler
+        print("Okay.. going to schedule something")
+        tb = Scheduler()
+        group = tb.getNextGroup()
+        tb.addCouplesToSchedule(group)
+
+        return JSONResponse({})
+
+    elif r.method == 'PUT':
+
+        PickTeams(3,3,True)
+
+
+        return JSONResponse({})
+

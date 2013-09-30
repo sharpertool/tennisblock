@@ -1,3 +1,3 @@
-var app = angular.module('tennisblock', []);
+var app = angular.module('tennisblock', ['ngResource']);
 
 

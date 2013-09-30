@@ -24,10 +24,10 @@ Garden Buzz
             <div id="textContent" >
                 <div id="blockheading" class="dynamic">
                     <h2>Block Schedule for {{ currdate }}</h2>
-                    <button ng-click="pickTeams">Pick Teams</button>
-                    <button ng-click="schedulePlayer">Schedule</button>
-                    <button ng-click="playSheet">Build Play Sheet</button>
+                    <button ng-click="pickTeams()">Pick Teams</button>
+                    <button ng-click="schedulePlayers()">Schedule</button>
                     <button ng-click="updateSchedule">Update Schedule</button>
+                    <a target="_self" href="/api/blocksheet/" download="blocksheet.pdf">Download Block Sheet</a>
                     <div id=schedule>
                         <div class="navigation">
                             <a ng-hide='true' class="previous"
@@ -58,7 +58,12 @@ Garden Buzz
                             </ul>
                             <h3>Subs</h3>
                             <ul>
-                                <li ng-repeat="sub in subs">
+                                <span>Guys</span>
+                                <li ng-repeat="sub in subs.guys">
+                                    {{ sub.name}}
+                                </li>
+                                <span>Gals</span>
+                                <li ng-repeat="sub in subs.gals">
                                     {{ sub.name}}
                                 </li>
                             </ul>

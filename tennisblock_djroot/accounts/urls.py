@@ -9,10 +9,13 @@ from views import AccountsLogin,\
 
 urlpatterns = patterns('',
                        #url(r'^login/$', AccountsLogin.as_view(),name='login'),
-                       url(r'^login/$', 'django.contrib.auth.views.login',name='login'),
+                       url(r'^login/$', 'django.contrib.auth.views.login',
+                           {'template_name':'accounts/login.html'},name='login'),
                        url(r'^login/success/$', AcccountsLoginSuccess.as_view(),name='login-success'),
 
-                       url(r'^logout/$', AccountsLogout.as_view(),name='logout'),
+                       #url(r'^logout/$', AccountsLogout.as_view(),name='logout'),
+                       url(r'^logout/$', 'django.contrib.auth.views.logout',
+                           {'template_name':'accounts/logout.html'},name='logout'),
                        url(r'^logout/success/$', AcccountsLogoutSuccess.as_view(),name='logout-success'),
 
                        url(r'^profile/$', AccountsProfile.as_view(),name='profile'),

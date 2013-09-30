@@ -68,6 +68,17 @@
     {% endfor %}
     {% end_with_data %}
 
+    {% block headscript %}
+        <script type="text/javascript">
+            django = {
+                'username'  : "{{ user.username }}",
+                'first'     : "{{ user.first_name }}",
+                'last'      : "{{ user.last_name }}"
+            };
+            console.log("Initialized username to " + django.username);
+        </script>
+    {% endblock headscript %}
+
     {% if settings.PROD %}
         <!--
         <h1>Running in Production</h1>

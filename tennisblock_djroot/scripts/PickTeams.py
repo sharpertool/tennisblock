@@ -9,6 +9,9 @@ import errno
 import mimetypes
 import re
 import smtplib
+os.environ['PYTHONPATH'] = 'scripts'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
+
 from TennisBlock.TeamGen2 import TeamGen
 
 from optparse import OptionParser

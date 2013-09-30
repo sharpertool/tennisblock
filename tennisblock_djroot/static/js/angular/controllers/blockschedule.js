@@ -5,16 +5,38 @@
  * Time: 11:25 AM
  */
 
+app.factory('ScheduleResource', function($resource){
+        return $resource('/api/blockschedule/:date/', {}, {
+            query: {method:'GET', params:{date:'2013-09-20'}, isArray:false},
+            post: {method:'post',isArray:false},
+            put: {method:'post',isArray:false}
+        })
+}).factory('BlockDates',function($resource){
+        return $resource('/api/blockdates/', {}, {
+            query: {method:'GET', isArray:true}
+        })
+}).factory('BlockPlayers',function($resource){
+        return $resource('/api/blockplayers/:date/', {}, {
+            query: {method:'GET', params:{date:'2013-09-20'}, isArray:false}
+        })
+}).factory('BlockSubs',function($resource){
+        return $resource('/api/subs/:date/', {}, {
+            query: {method:'GET', params:{date:'2013-09-20'}, isArray:false}
+        })
+});
 
-app.controller('BlockSchedule', function($scope,$http) {
+app.controller('BlockSchedule', function blocksched($scope,$http,ScheduleResource,BlockDates,BlockPlayers,BlockSubs) {
     $scope.dates = [];
     $scope.guys = [];
     $scope.gals = [];
-    $scope.subs = [];
+    $scope.subs = {
+        'guys' : [],
+        'gals' : []
+    }
     $scope.queryDate = null;
     $scope.initialized = false;
 
-    var updateInitialized = function() {
+    var updateInitialized = function updateinit() {
         if ($scope.dates.length > 0
             && $scope.guys.length > 0
             && $scope.gals.length > 0) {
@@ -27,7 +49,7 @@ app.controller('BlockSchedule', function($scope,$http) {
         $scope.isFirstDate = isFirstBlockDate();
     };
 
-    $http.get('/api/blockdates').success(function(data) {
+    BlockDates.query(function bdates(data) {
         $scope.dates= data;
         $scope.firstDate = tb.utils.pyDate2js(data[0].date);
         $scope.lastDate = tb.utils.pyDate2js(data[data.length-1].date);
@@ -40,40 +62,30 @@ app.controller('BlockSchedule', function($scope,$http) {
         updateInitialized();
     });
 
-    var updateAll = function() {
+    var updateAll = function updateAll() {
         $scope.initialized = false;
 
-        $http({
-            'url'       :'/api/blockplayers/date}/',
-            'method'    : 'GET',
-            'params'    : {'date' : $scope.queryDate}
-        }).success(function(data) {
+        BlockPlayers.query({'date' : $scope.queryDate},function bplayers(data) {
                 $scope.currdate = tb.utils.pyDate2js(data.date).toLocaleDateString();
                 $scope.guys = data.guys;
                 $scope.gals = data.gals;
                 updateInitialized();
             });
 
-        $http({
-            'url'       :'/api/subs/',
-            'method'    : 'GET',
-            'params'    : {'date' : $scope.queryDate}
-        }).success(function(data) {
-                $scope.subs = data;
+        BlockSubs.query({'date' : $scope.queryDate},function bsubs(data) {
+                $scope.subs.guys = data.guysubs;
+                $scope.subs.gals = data.galsubs;
                 updateInitialized();
             });
 
-        $http({
-            'url'       :'/api/blockschedule/',
-            'method'    : 'GET',
-            'params'    : {'date' : $scope.queryDate}
-        }).success(function(data) {
+        ScheduleResource.query({'date' : $scope.queryDate},
+            function schedule(data) {
                 $scope.slots= data;
                 updateInitialized();
             });
     };
 
-    var isLastBlockDate = function() {
+    var isLastBlockDate = function islbd() {
         if ($scope.lastDate && $scope.currdate) {
             return $scope.currdate == $scope.lastDate.toLocaleDateString();
         }
@@ -81,14 +93,14 @@ app.controller('BlockSchedule', function($scope,$http) {
         return false;
     };
 
-    var isFirstBlockDate = function() {
+    var isFirstBlockDate = function isfbd() {
         if ($scope.firstDate && $scope.currdate) {
             return $scope.currdate == $scope.firstDate.toLocaleDateString();
         }
         return false;
     };
 
-    var previousBlockDate = function() {
+    var previousBlockDate = function pbd() {
         var d1 = new Date($scope.currdate);
         if (d1.toDateString() == $scope.firstDate.toDateString()) {
             return d1;
@@ -101,7 +113,7 @@ app.controller('BlockSchedule', function($scope,$http) {
         return d2;
     };
 
-    var nextBlockDate = function() {
+    var nextBlockDate = function nbd() {
         var d1 = new Date($scope.currdate);
         if (d1.toDateString() == $scope.lastDate.toDateString()) {
             return d1;
@@ -119,15 +131,37 @@ app.controller('BlockSchedule', function($scope,$http) {
      *
      * Update the schedule for the current block session
      */
-    $scope.schedulePlayer = function() {
+    $scope.schedulePlayers = function() {
+        console.log("Updating the schedule for " + $scope.queryDate);
+        ScheduleResource.post({date:$scope.queryDate},function(data){
+            console.log("Done");
+        },function(data, errr, stuff) {
+            console.log("Error" + errr);
+        });
+    };
+
+    $scope.pickTeams = function() {
+        console.log("Picking Teams ");
+        ScheduleResource.put({date:$scope.queryDate},function(data){
+            console.log("Done Picking Teams");
+        },function(data, errr, stuff) {
+            console.log("Error Picking Teams:" + errr);
+        });
+    };
+
+    $scope.playSheet = function() {
+        $http({method:"GET",url:'/api/blocksheet/'}).success(function(sheet) {
+            console.log("Returned something..");
+        }).error(function(a,b,c) {
+            console.log('returned nothing');
+        });
+    };
+
+    $scope.isHoldout = function isho() {
 
     };
 
-    $scope.isHoldout = function() {
-
-    };
-
-    $scope.gotodate = function(date) {
+    $scope.gotodate = function gotod(date) {
         $scope.queryDate = date;
         updateAll();
     };

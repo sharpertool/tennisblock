@@ -19,12 +19,13 @@ Garden Buzz
 {% block content %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
-            <h2>Logout</h2>
+            <h2>Logged out</h2>
 
             <p>
                 Thank you for using the TennisBlock site!!
                 Come back again soon.
             </p>
+            <a href="{% url 'login' %}">Log in again</a>
         </div>
     </div>
 

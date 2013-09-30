@@ -20,11 +20,12 @@ Garden Buzz
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic" ng-controller="Availability">
 
-            {% verbatim %}
             <div id="textContent" ng-cloak>
                 <div id="blockheading" class="dynamic" >
-                    <h2>Availability</h2>
+                    <h2>Availability for {{ user.get_full_name }}</h2>
                 </div>
+
+                {% verbatim %}
 
                 <div ng-hide="initialized">
                     <h2>Loading Data</h2>
@@ -52,15 +53,15 @@ Garden Buzz
                                     ng-repeat="avail in player.isavail track by $index"
                                     ng-class-odd="'odd'" ng-class-even="'even'"
                                     >
-                                <input type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
+                                <input ng-disabled="!canEdit(player)" type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
                             </td>
                             <td>0</td>
                             <td>0</td>
                         </tr>
                     </table>
                 </div>
+                {% endverbatim %}
             </div>
-            {% endverbatim %}
 
         </div>
     </div>

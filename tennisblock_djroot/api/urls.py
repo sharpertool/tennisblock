@@ -21,10 +21,17 @@ urlpatterns += patterns('api.blocksheet',
        #url(r'blockplayers/$', 'blockschedule.getBlockPlayers'),
 )
 urlpatterns += patterns('api.blockschedule',
-       url(r'blockdates/$',         'BlockDates'),
-       url(r'subs/$',               'getSubList'),
-       url(r'blockplayers/',        'getPlayersForBlock'),
-       url(r'blockschedule/',       'blockSchedule'),
+       url(r'blockdates/$',                                 'BlockDates'),
+
+       url(r'subs/(?P<date>\d{4}-\d{1,2}-\d{1,2})$',            'getSubList'),
+       url(r'subs/$',                                       'getSubList'),
+
+       url(r'blockplayers/(?P<date>\d{4}-\d{1,2}-\d{1,2})',     'getPlayersForBlock'),
+       url(r'blockplayers/',                                'getPlayersForBlock'),
+
+       url(r'blockschedule/(?P<date>\d{4}-\d{1,2}-\d{1,2})',    'blockSchedule'),
+       url(r'blockschedule$',                               'blockSchedule'),
+       url(r'blockschedule/$',                               'blockSchedule'),
 )
 urlpatterns += patterns('',
        url(r'availability/$',       AvailabilityView.as_view()),

@@ -32,6 +32,14 @@ app.controller('Availability', function($scope,$http) {
 
     };
 
+    $scope.canEdit = function(player) {
+        if (django.username == 'kutenai') { return true;}
+        if (player.name.indexOf(django.first) != -1 && player.name.indexOf(django.last) != -1) {
+            return true;
+        }
+        return false;
+    };
+
     $scope.updateAvail = function(p,idx) {
         console.log('Updating for player ' + p.id + " index " + idx + " is avail?" + p.isavail[idx]);
         $http.put('/api/availability/',{

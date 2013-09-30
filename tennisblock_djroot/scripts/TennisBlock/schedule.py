@@ -61,7 +61,7 @@ class Scheduler(object):
         # Organize by # of plays
         coupleInfo = {}
 
-        meetings = Meetings.objects.filter(season=season)
+        meetings = Meetings.objects.filter(season=season,date__lte = datetime.date.today())
 
         for c in couples:
             cid = c.id
@@ -120,7 +120,8 @@ class Scheduler(object):
         # Sort these randomly
         random.shuffle(haveNotPlayed)
         while len(haveNotPlayed) > 0 and needed > 0:
-            group.append(haveNotPlayed.pop())
+            ci = haveNotPlayed.pop()
+            group.append(ci['couple'])
             needed -= 1
 
         # Sort these by least # of plays.
@@ -145,7 +146,8 @@ class Scheduler(object):
 
         havePlayed = sorted(havePlayed,sortPlays)
         while len(havePlayed) > 0 and needed > 0:
-            group.append(havePlayed.pop())
+            ci = havePlayed.pop()
+            group.append(ci['couple'])
             needed -= 1
 
 
@@ -162,8 +164,7 @@ class Scheduler(object):
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
 
-        for c in couples:
-            cpl = c['couple']
+        for cpl in couples:
             sm = Schedule.objects.create(
                 meeting = mtg,
                 player = cpl.male,
