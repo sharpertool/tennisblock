@@ -125,6 +125,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'tennisblock_dj.urls'
 
+APPEND_SLASH = False
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'tennisblock_dj.wsgi.application'
 

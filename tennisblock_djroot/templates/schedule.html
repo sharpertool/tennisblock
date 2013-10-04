@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block title %}
-Garden Buzz
+    schedule
 {% endblock %}
 {% block content %}
     <div id="container" class="home dynamic">
@@ -25,6 +25,7 @@ Garden Buzz
                 <div id="blockheading" class="dynamic">
                     <h2>Block Schedule for {{ currdate }}</h2>
                     <button ng-click="pickTeams()">Pick Teams</button>
+                    <button ng-click="pickTeamsR()">Random Teams</button>
                     <button ng-click="schedulePlayers()">Schedule</button>
                     <button ng-click="updateSchedule">Update Schedule</button>
                     <a target="_self" href="/api/blocksheet/" download="blocksheet.pdf">Download Block Sheet</a>

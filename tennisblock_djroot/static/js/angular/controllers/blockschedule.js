@@ -8,8 +8,8 @@
 app.factory('ScheduleResource', function($resource){
         return $resource('/api/blockschedule/:date/', {}, {
             query: {method:'GET', params:{date:'2013-09-20'}, isArray:false},
-            post: {method:'post',isArray:false},
-            put: {method:'post',isArray:false}
+            post: {method:'POST',isArray:false},
+            put: {method:'PUT',isArray:false}
         })
 }).factory('BlockDates',function($resource){
         return $resource('/api/blockdates/', {}, {
@@ -23,9 +23,17 @@ app.factory('ScheduleResource', function($resource){
         return $resource('/api/subs/:date/', {}, {
             query: {method:'GET', params:{date:'2013-09-20'}, isArray:false}
         })
-});
+}).factory('PickTeams',function($resource){
+        return $resource('/api/pickteams/:date/', {}, {
+            query: {method:'GET', params:{date:'@qd'}, isArray:false},
+            save: {method:'POST', params:{date:'@qd'},isArray:false}
+        })
+    });
 
-app.controller('BlockSchedule', function blocksched($scope,$http,ScheduleResource,BlockDates,BlockPlayers,BlockSubs) {
+app.controller('BlockSchedule', function blocksched($scope,$http,
+                                                    ScheduleResource,BlockDates,
+                                                    BlockPlayers,BlockSubs,PickTeams
+    ) {
     $scope.dates = [];
     $scope.guys = [];
     $scope.gals = [];
@@ -141,11 +149,25 @@ app.controller('BlockSchedule', function blocksched($scope,$http,ScheduleResourc
     };
 
     $scope.pickTeams = function() {
-        console.log("Picking Teams ");
-        ScheduleResource.put({date:$scope.queryDate},function(data){
-            console.log("Done Picking Teams");
-        },function(data, errr, stuff) {
-            console.log("Error Picking Teams:" + errr);
+        console.log("Picking Teams for " + $scope.queryDate);
+        var d = $scope.queryDate;
+        if (!d) {
+            d = "2013-10-22";
+        }
+        console.log("Using date:" + d);
+        PickTeams.save({qd: d},function(data){
+            console.log("Done Picking Teams:" + data.status + " " + data.date);
+        },function(data, e, stuff) {
+            console.log("Error Picking Teams:" + e);
+        });
+    };
+
+    $scope.pickTeamsR = function() {
+        console.log("Picking Random Teams");
+        PickTeams.save(function(data){
+            console.log("Done Picking Random Teams:" + data.status + " " + data.date);
+        },function(data, e, stuff) {
+            console.log("Error Picking Random Teams:" + e);
         });
     };
 
@@ -162,18 +184,23 @@ app.controller('BlockSchedule', function blocksched($scope,$http,ScheduleResourc
     };
 
     $scope.gotodate = function gotod(date) {
+        console.log("Set queryDate to " + date);
+        console.log("queryDate set to " + $scope.queryDate);
         $scope.queryDate = date;
+        console.log("queryDate set to " + $scope.queryDate);
         updateAll();
     };
 
     $scope.previous = function() {
         var d1 = previousBlockDate();
         $scope.queryDate = tb.utils.jsDate2py(d1);
+        console.log("queryDate set to " + $scope.queryDate);
         updateAll();
     };
 
     $scope.next = function() {
         $scope.queryDate = tb.utils.jsDate2py(nextBlockDate());
+        console.log("queryDate set to " + $scope.queryDate);
         updateAll();
     };
 

@@ -251,12 +251,12 @@ class AvailabilityView(View):
 
 def PickTeams(nCourts,nSequences,dups,testing=False):
 
-    from TennisBlock.DBTeams import DBTeams
-    from TennisBlock.TeamGen2 import TeamGen
+    from TBLib.DBTeams import DBTeams
+    from TBLib.TeamGen2 import TeamGen
 
     dbTeams = DBTeams()
 
-    men,women = dbTeam.getPlayers()
+    men,women = dbTeams.getPlayers()
 
     if len(men) < nCourts*2 or len(women) < nCourts*2:
         print("Cannot pick teams, there are not enough men or women.")
@@ -276,7 +276,7 @@ def PickTeams(nCourts,nSequences,dups,testing=False):
         tg.showAllDiffs(sequences)
 
         if not testing:
-            dbTeam.InsertRecords(sequences)
+            dbTeams.InsertRecords(sequences)
 
 @csrf_exempt
 def blockSchedule(request,date = None):
@@ -288,8 +288,8 @@ def blockSchedule(request,date = None):
         return JSONResponse(sched)
 
     elif r.method == 'POST':
-        from TennisBlock.schedule import Scheduler
-        print("Okay.. going to schedule something")
+        from TBLib.schedule import Scheduler
+        print("blockSchedule POST for date:%s" % date)
         tb = Scheduler()
         group = tb.getNextGroup()
         tb.addCouplesToSchedule(group)
@@ -298,7 +298,7 @@ def blockSchedule(request,date = None):
 
     elif r.method == 'PUT':
 
-        PickTeams(3,3,True)
+        print("blockSchedule PUT for date:%s" % date)
 
 
         return JSONResponse({})
