@@ -230,8 +230,12 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     };
 
     $scope.playerPairs = function() {
-
         return couples;
+    };
+
+    $scope.filterPlayerSub = function(player,subs) {
+        a = subs.clone();
+        a.push(player);
     };
 
     updateAll();

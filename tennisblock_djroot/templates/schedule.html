@@ -48,12 +48,26 @@
                             <h3>Players</h3>
                             <table>
                                 <tr>
-                                    <th>Guy</th>
-                                    <th>Gal</th>
+                                    <th>Guy Subs</th>
+                                    <th>Guys</th>
+                                    <th>Gal Subs</th>
+                                    <th>Gals</th>
                                 </tr>
                                 <tr ng-repeat="couple in players.couples">
-                                    <td>{{ couple[0].name }}</td>
-                                    <td>{{ couple[1].name }}</td>
+                                    <td>
+                                        <select ng-model="couple[0]" ng-options="p.name for p in subs.guys">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        {{ couple[0].name }}
+                                    </td>
+                                    <td>
+                                        <select ng-model="couple[1]" ng-options="p.name for p in subs.gals">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        {{ couple[1].name }}
+                                    </td>
                                 </tr>
                             </table>
                             <h3>Subs</h3>
@@ -69,23 +83,26 @@
                             </ul>
                             <h3>Play Schedule</h3>
                             <ul>
-                                <li ng-repeat="set in match">
-                                    {{ set.name }}
-                                    <ul>
-                                        <li ng-repeat="court in set.courts">
-                                            <div class="courtAssignment">
-                                                <h4>{{ court.number }}</h4>
-                                                <div class="courtTeam">
-                                                    {{ court.ta.guy.name }} and {{ court.ta.gal.name }}
-                                                </div>
-                                                <span>Versus</span>
-                                                <div class="courtTeam">
-                                                    {{ court.tb.guy.name }} and {{ court.tb.gal.name }}
-                                                </div>
+                                <table border="1px">
+                                    <tr>
+                                        <th>Set</th>
+                                        <th>Court 1</th>
+                                        <th>Court 2</th>
+                                        <th>Court 3</th>
+                                    </tr>
+                                    <tr ng-repeat="set in match.sets">
+                                        <td>Set {{ $index }}</td>
+                                        <td ng-repeat="court in set">
+                                            <div class="courtTeam">
+                                                {{ court.team1.m.name }} and {{ court.team1.f.name }}
                                             </div>
-                                        </li>
-                                    </ul>
-                                </li>
+                                            <span>Versus</span>
+                                            <div class="courtTeam">
+                                                {{ court.team2.m.name }} and {{ court.team2.f.name }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
                             </ul>
                         </div>
                     </div>
