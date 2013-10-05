@@ -45,53 +45,56 @@
                             </a>
                         </div>
                         <div class="scheduleview">
-                            <h3>Players</h3>
-                            <table>
-                                <tr>
-                                    <th>Guy Subs</th>
-                                    <th>Guys</th>
-                                    <th>Gal Subs</th>
-                                    <th>Gals</th>
-                                </tr>
-                                <tr ng-repeat="couple in players.couples">
-                                    <td>
-                                        <select ng-model="couple[0]" ng-options="p.name for p in subs.guys">
-                                        </select>
-                                    </td>
-                                    <td>
-                                        {{ couple[0].name }}
-                                    </td>
-                                    <td>
-                                        <select ng-model="couple[1]" ng-options="p.name for p in subs.gals">
-                                        </select>
-                                    </td>
-                                    <td>
-                                        {{ couple[1].name }}
-                                    </td>
-                                </tr>
-                            </table>
-                            <h3>Subs</h3>
-                            <ul>
-                                <span>Guys</span>
-                                <li ng-repeat="sub in subs.guys">
-                                    {{ sub.name}}
-                                </li>
-                                <span>Gals</span>
-                                <li ng-repeat="sub in subs.gals">
-                                    {{ sub.name}}
-                                </li>
-                            </ul>
-                            <h3>Play Schedule</h3>
-                            <ul>
-                                <table border="1px">
+                            <div id="players">
+                                <h3>Players</h3>
+                                <table id="table_players">
+                                    <tr>
+                                        <th>Guy Subs</th>
+                                        <th>Guys</th>
+                                        <th>Gal Subs</th>
+                                        <th>Gals</th>
+                                    </tr>
+                                    <tr ng-repeat="couple in players.couples">
+                                        <td>
+                                            <select ng-model="couple[0]" ng-options="p.name for p in subs.guys">
+                                            </select>
+                                        </td>
+                                        <td>
+                                            {{ couple[0].name }}
+                                        </td>
+                                        <td>
+                                            <select ng-model="couple[1]" ng-options="p.name for p in subs.gals">
+                                            </select>
+                                        </td>
+                                        <td>
+                                            {{ couple[1].name }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="subs" ng-hide="true">
+                                <h3>Subs</h3>
+                                <ul>
+                                    <span>Guys</span>
+                                    <li ng-repeat="sub in subs.guys">
+                                        {{ sub.name}}
+                                    </li>
+                                    <span>Gals</span>
+                                    <li ng-repeat="sub in subs.gals">
+                                        {{ sub.name}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="matches">
+                                <h3>Play Schedule</h3>
+                                <table id="table_matches">
                                     <tr>
                                         <th>Set</th>
-                                        <th>Court 1</th>
-                                        <th>Court 2</th>
-                                        <th>Court 3</th>
+                                        <!-- Dynamic number of courts -->
+                                        <th ng-repeat="court in match.sets[0]">Court {{ $index+1 }}</th>
                                     </tr>
                                     <tr ng-repeat="set in match.sets">
-                                        <td>Set {{ $index }}</td>
+                                        <td>Match {{ $index+1 }}</td>
                                         <td ng-repeat="court in set">
                                             <div class="courtTeam">
                                                 {{ court.team1.m.name }} and {{ court.team1.f.name }}
@@ -103,7 +106,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
