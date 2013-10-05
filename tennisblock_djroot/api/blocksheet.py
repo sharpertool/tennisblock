@@ -14,6 +14,7 @@ from rest_framework import serializers
 
 from apiutils import JSONResponse, _getBlockSchedule
 
+import os
 from fpdf import FPDF
 from reportlab.pdfgen import canvas
 
@@ -54,13 +55,14 @@ class PlaySheet(FPDF):
                 x = 0.25+cellWidth*(crt-1)
                 y = 1+(0.4*5+match_height)*(set-1)
                 self.rect(x,y,cellWidth,0.4*5)
-                self.set_left_margin(x)
+                self.set_left_margin(x-0.5)
                 self.set_xy(x,y)
                 self.set_fill_color(0xff,0xfd,0xd0)
 
                 self.cell(cellWidth,0.25,"Court %d" % crt,1,1,'C',1)
 
                 self.set_xy(x,y+0.3)
+                #self.set_y(y+0.3)
                 self.cell(cellWidth,0.25,match['ta']['guy']['name'],0,1,'C',0)
                 self.cell(cellWidth,0.25,match['ta']['gal']['name'],0,1,'C',0)
 
@@ -86,12 +88,14 @@ def blockSheet(request):
         pdf.set_font('Arial','',14);
         pdf.add_page()
         pdf.GenerateSheet(header,sched)
+        os.unlink(tmpFile)
         pdf.output(tmpFile)
 
         pdffile = FileWrapper(file(tmpFile))
 
         response = HttpResponse(pdffile,content_type='application/pdf')
-        response['Content-Disposition'] = 'attachement; filename="BlockSheet.pdf"'
+        response.write(pdf.output(dest="I"))
+        #response['Content-Disposition'] = 'attachement; filename="BlockSheet.pdf"'
 
         return response
 

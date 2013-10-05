@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-from blockschedule import AvailabilityView
+from availability import AvailabilityView
 
 urlpatterns = patterns('api.views',
        url(r'seasons/?$',            'getSeasons'),
@@ -22,7 +22,7 @@ urlpatterns += patterns('api.blocksheet',
        #url(r'blockplayers/$', 'blockschedule.getBlockPlayers'),
 )
 urlpatterns += patterns('api.blockschedule',
-       url(r'blockdates/?$',                                 'BlockDates'),
+       url(r'blockdates/?$',                                 'getBlockDates'),
 
        url(r'subs/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$',            'getSubList'),
        url(r'subs/?$',                                       'getSubList'),
@@ -32,6 +32,9 @@ urlpatterns += patterns('api.blockschedule',
 
        url(r'blockschedule/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',    'blockSchedule'),
        url(r'blockschedule/?$',                               'blockSchedule'),
+
+       url(r'matchdata/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', 'getMatchData'),
+       url(r'matchdata/?', 'getMatchData'),
 )
 urlpatterns += patterns('',
        url(r'availability/?$',       AvailabilityView.as_view()),

@@ -19,19 +19,30 @@ def pickTeams(request,date = None):
     """
     r = Request(request)
 
-    if r.method == 'GET':
-        print("pickTeams GET for date %s" % date)
-        mgr = TeamManager()
-
-        #teams = mgr.pickTeams(test=True,courts=3,sequences=3)
-
-        return JSONResponse({'status' : 'GET Done','date' : date})
-    elif r.method == 'POST':
+    if r.method == 'POST':
         print("pickTeams POST for date %s" % date)
+        matchData = {}
         if date:
             mgr = TeamManager()
-            teams = mgr.pickTeams(test=False,courts=3,sequences=3)
+            mgr.pickTeams(date,test=False,courts=3,sequences=3)
 
-        return JSONResponse({'status' : 'POST Done','date' : date,'teams':teams})
+            matchData = mgr.queryMatch(date)
+
+        return JSONResponse({'status' : 'POST Done','date' : date,'teams':matchData})
+
+def queryTeams(request,date = None):
+    """
+    """
+    r = Request(request)
+
+    if r.method == 'GET':
+        print("pickTeams GET for date %s" % date)
+        matchData = {}
+        if date:
+            mgr = TeamManager()
+
+            matchData = mgr.queryMatch(date)
+
+        return JSONResponse({'status' : 'GET Done','date' : date,'teams':matchData})
 
 

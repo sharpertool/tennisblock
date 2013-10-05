@@ -23,19 +23,18 @@
             {% verbatim %}
             <div id="textContent" >
                 <div id="blockheading" class="dynamic">
-                    <h2>Block Schedule for {{ currdate }}</h2>
+                    <h2>Block Schedule for {{ block.currdate }}</h2>
                     <button ng-click="pickTeams()">Pick Teams</button>
-                    <button ng-click="pickTeamsR()">Random Teams</button>
-                    <button ng-click="schedulePlayers()">Schedule</button>
+                    <button ng-click="schedulePlayersConfirm()">Schedule</button>
                     <button ng-click="updateSchedule">Update Schedule</button>
-                    <a target="_self" href="/api/blocksheet/" download="blocksheet.pdf">Download Block Sheet</a>
+                    <a target="_blank" href="/api/blocksheet/">Download Block Sheet</a>
                     <div id=schedule>
                         <div class="navigation">
                             <a ng-hide='true' class="previous"
                                ng-click="previous()">
                                 &lt; previous
                             </a>
-                            <button ng-repeat="date in dates | filter: { holdout : false }"
+                            <button ng-repeat="date in block.dates | filter: { holdout : false }"
                                     ng-click="gotodate(date.date)">
                                 {{ date.date }}
                             </button>
@@ -47,16 +46,16 @@
                         </div>
                         <div class="scheduleview">
                             <h3>Players</h3>
-                            <ul>
-                                <li ng-repeat="guy in guys">
-                                    {{ guy.name }}
-                                </li>
-                            </ul>
-                            <ul>
-                                <li ng-repeat="gal in gals">
-                                    {{ gal.name }}
-                                </li>
-                            </ul>
+                            <table>
+                                <tr>
+                                    <th>Guy</th>
+                                    <th>Gal</th>
+                                </tr>
+                                <tr ng-repeat="couple in players.couples">
+                                    <td>{{ couple[0].name }}</td>
+                                    <td>{{ couple[1].name }}</td>
+                                </tr>
+                            </table>
                             <h3>Subs</h3>
                             <ul>
                                 <span>Guys</span>
@@ -70,7 +69,7 @@
                             </ul>
                             <h3>Play Schedule</h3>
                             <ul>
-                                <li ng-repeat="set in sets">
+                                <li ng-repeat="set in match">
                                     {{ set.name }}
                                     <ul>
                                         <li ng-repeat="court in set.courts">
@@ -93,6 +92,7 @@
                 </div>
             </div>
             {% endverbatim %}
+            <div id="dialog_confirm"></div>
 
         </div>
     </div>

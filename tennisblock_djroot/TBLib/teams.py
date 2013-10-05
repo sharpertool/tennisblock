@@ -20,27 +20,16 @@ class TeamManager(object):
 
     def __init__(self,matchid = None):
 
-        self.dbTeams = None
+        self.dbTeams = DBTeams()
 
-        try:
-            if matchid:
-                self.dbTeams = DBTeams(matchid)
-            else:
-                self.dbTeams = DBTeams()
-        except:
-            pass
-
-    def pickTeams(self,**kwargs):
-
-        if not self.dbTeams:
-            return {"status" : {"error" : "Could not access the database."}}
+    def pickTeams(self,date=None,**kwargs):
 
         isTesting = kwargs.get('test',True)
         noDupes = kwargs.get('nodupes',False)
         nCourts = kwargs.get('courts',3)
         nSequences = kwargs.get('sequences',3)
 
-        men,women = self.dbTeams.getPlayers()
+        men,women = self.dbTeams.getPlayers(date)
 
         if len(men) < nCourts*2 or len(women) < nCourts*2:
             errmsg = "Cannot pick teams, there are not enough men or women."
@@ -60,9 +49,14 @@ class TeamManager(object):
             tg.showAllDiffs(sequences)
 
             if not isTesting:
-                self.dbTeams.InsertRecords(sequences)
+                self.dbTeams.InsertRecords(date,sequences)
 
             return sequences
+
+    def queryMatch(self,date=None):
+
+        matchdata = self.dbTeams.queryMatch(date)
+        return matchdata
 
 def main():
 

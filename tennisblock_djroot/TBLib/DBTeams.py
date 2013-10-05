@@ -4,60 +4,28 @@ import datetime
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 
 from django.db import connection
-from blockdb.models import *
+from blockdb.models import Team,Matchup,Schedule
+from api.apiutils import _getMeetingForDate
 
 class DBTeams(object):
 
-    def __init__(self,matchid=None):
+    def __init__(self):
+        self.meeting = None
 
-        #self.sid = self.getSeasonId()
-        if matchid is not None:
-            self.matchid = matchid
-        else:
-            self.matchid = self.getNextMatch()
+    def getMeeting(self,date=None):
+        """
+        Return the cached matchid, or get a new one.
+        """
+        if self.meeting:
+            return self.meeting
 
-    def currentSeason(self):
-        seasons = Season.objects.filter(enddate__gte = datetime.date.today())
-        if len(seasons) > 0:
-            return seasons[0]
-
-        return None
-
-    def nextMeeting(self,season):
-        meetings = Meetings.objects \
-            .order_by('date') \
-            .filter(season=season, date__gte = datetime.date.today())
-
-        mtg = None
-        if len(meetings) > 0:
-            mtg = meetings[0]
-
-        return mtg
-
-    def getMatchid(self):
-        return self.matchid
-
-    def getPlayerID(self,name):
-
-        f,l = name.split()
-        try:
-            p = Player.objects.get(first=f,last=l)
-
-            return p
-
-        except:
-            return None
-
-    def getNextMatch(self):
-
-        s = self.currentSeason()
-        m = self.nextMeeting(s)
-
+        m = _getMeetingForDate(date)
+        self.meeting = m
         return m
 
-    def getPlayers(self):
+    def getPlayers(self,date=None):
 
-        m = self.getNextMatch()
+        m = self.getMeeting(date)
 
         men = []
         women = []
@@ -75,16 +43,20 @@ class DBTeams(object):
         return men,women
 
     def initTeamGen(self):
-        Slot.objects.filter(meeting = self.matchid).delete()
+        """
+        Remove all of the slots for the given date.
+        """
+        Matchup.objects.filter(meeting = self.getMeeting()).delete()
         pass
 
-    def InsertRecords(self,seq):
+    def InsertRecords(self,date,seq):
         """
         Insert the sequence
         """
 
         self.initTeamGen()
-        m = self.getNextMatch()
+
+        meeting = self.getMeeting(date)
 
         # Insert the slots
 
@@ -93,35 +65,87 @@ class DBTeams(object):
             court = 1
             for m in s.matches:
 
-                m1 = m.t1.m
-                f1 = m.t1.f
-                m2 = m.t2.m
-                f2 = m.t2.f
+                t1 = Team.objects.create(
+                    male    = m.t1.m,
+                    female  = m.t1.f
+                )
+                t2 = Team.objects.create(
+                    male    = m.t2.m,
+                    female  = m.t2.f
+                )
 
-                positions = {
-                    'tapa'  : m1.id,
-                    'tapb'  : f1.id,
-                    'tbpa'  : m2.id,
-                    'tbpb'  : f2.id
-                }
+                matchup = Matchup.objects.create(
+                    meeting     = meeting,
+                    set         = set,
+                    court       = court,
+                    team1       = t1,
+                    team2       = t2
+                )
+                matchup.save()
 
-                for position in positions.keys():
-                    pid = positions[position]
+                court += 1
 
-                    player = Player.objects.get(id=pid)
+            set += 1
 
-                    slot = Slot.objects.create(
-                        meeting = self.matchid,
-                        set = set,
-                        court = court,
-                        player = player,
-                        position = position
-                    )
-                    slot.save()
 
-                court = court + 1
+    def queryMatch(self,date):
+        """
+        Query all of the records for the given date.
+        """
 
-            set = set + 1
+        def serializeTeam(team):
+            return {
+                'm' : {
+                    'name' : team.male.Name(),
+                    'ntrp' : team.male.ntrp,
+                    'untrp': team.male.microntrp,
+                    },
+                'f' : {
+                    'name' : team.female.Name(),
+                    'ntrp' : team.female.ntrp,
+                    'untrp': team.female.microntrp,
+                    }
+            }
+
+
+        meeting = self.getMeeting(date)
+
+        matchups = Matchup.objects.order_by('set','court').filter(meeting=meeting)
+
+
+        if len(matchups) == 0:
+            return None
+
+
+        data = []
+
+        currSet = 1
+        currCourt = 1
+        courtArray = []
+        for matchup in matchups:
+            if currSet != matchup.set:
+                data.append(courtArray)
+                courtArray = []
+                currSet = matchup.set
+
+            matchData = {
+                'team1' : serializeTeam(matchup.team1),
+                'team2' : serializeTeam(matchup.team2)
+            }
+            courtArray.append(matchData)
+
+        data.append(courtArray) # Don't forget the last one!
+
+        return data
+
+
+
+
+
+
+
+
+
 
 def main():
 

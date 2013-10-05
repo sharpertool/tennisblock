@@ -5,9 +5,9 @@
  * Time: 6:51 PM
  */
 
-app.controller('LatestBuzz', function($scope,$http) {
-    $http.get('/api/buzz/').success(function(data) {
+tennisblockapp.controller('LatestBuzz', function($scope,$http,BlockBuzz) {
+    BlockBuzz.query(function(data) {
         $scope.buzzitems = data;
-    })
+    });
 });
 

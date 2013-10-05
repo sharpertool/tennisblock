@@ -6,7 +6,7 @@
  */
 
 
-app.controller('Availability', function($scope,$http) {
+tennisblockapp.controller('Availability', function($scope,$http,BlockDates,Availability) {
     $scope.dates = [];
     $scope.players = [];
     $scope.initialized = false;
@@ -19,11 +19,12 @@ app.controller('Availability', function($scope,$http) {
         }
     };
 
-    $http.get('/api/blockdates').success(function(data) {
+    BlockDates.query(function(data) {
         $scope.dates= data;
         updateInitialized();
     });
-    $http.get('/api/availability').success(function(data) {
+
+    Availability.query(function(data) {
         $scope.players = data;
         updateInitialized();
     });

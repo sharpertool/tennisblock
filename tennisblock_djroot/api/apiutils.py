@@ -34,6 +34,9 @@ class JSONResponse(HttpResponse):
 
 
 def _currentSeason():
+    """
+    Return the current season object.
+    """
 
     seasons = Season.objects.filter(enddate__gte = datetime.date.today())
     if len(seasons) > 0:
@@ -42,10 +45,20 @@ def _currentSeason():
     return None
 
 
-def _nextMeeting(season):
+def _nextMeeting(season=None):
+    """
+    Return the next scheduled match for the given season.
+    If season is not specified, use the current season.
+
+    """
+    if not season:
+        season = _currentSeason()
+
     meetings = Meetings.objects \
         .order_by('date') \
-        .filter(season=season, holdout=0,date__gte = datetime.date.today())
+        .filter(season=season,
+                holdout=0,
+                date__gte = datetime.date.today())
 
     mtg = None
     if len(meetings) > 0:
@@ -53,7 +66,10 @@ def _nextMeeting(season):
 
     return mtg
 
-def _getMeetingForDate(date):
+def _getMeetingForDate(date=None):
+    """
+    Return the meeting object for the specified date.
+    """
 
     season = _currentSeason()
 
@@ -62,9 +78,9 @@ def _getMeetingForDate(date):
 
     dt = parser.parse(date)
     meetings = Meetings.objects \
-        .order_by('date') \
-        .filter(season=season) \
-        .filter(date__exact = dt.strftime("%Y-%m-%d"))
+        .filter(season=season,
+                holdout=0,
+                date__exact = dt.strftime("%Y-%m-%d"))
 
     if len(meetings) == 1:
         return meetings[0]
@@ -109,62 +125,3 @@ def _BuildMeetings(force=False):
         mtg.save()
         currDate += datetime.timedelta(days = 7)
 
-def _getBlockSchedule(date=None):
-    season = _currentSeason()
-    mtg = _getMeetingForDate(date)
-
-    slots = Slot.objects.order_by('set','court','position').filter(meeting=mtg)
-
-    dbsets      = Slot.objects.filter(meeting=mtg).values('set').distinct()
-    dbcourts    = Slot.objects.filter(meeting=mtg).values('court').distinct()
-    dbpos       = Slot.objects.filter(meeting=mtg).values('position').distinct()
-
-    sets = [s['set'] for s in dbsets]
-    courts = [s['court'] for s in dbcourts]
-    positions = [s['position'] for s in dbpos]
-
-
-    sched = []
-
-    currset = 0
-    currcrt = 0
-
-    schedule = {
-        'sets' : sets,
-        'courts' : courts,
-        'positions' : positions,
-        'sched' : {}
-    }
-
-    for slot in slots:
-        # Initialize each set structure
-        if currset != slot.set:
-            currset = slot.set
-            schedule['sched'][slot.set] = {}
-            csArray = schedule['sched'][slot.set]
-            for court in courts:
-                csArray[court] = {
-                    'ta' : {
-                        'guy' : None,
-                        'gal' : None
-                    },
-                    'tb' : {
-                        'guy' : None,
-                        'gal' : None
-                    }
-                }
-
-        court = csArray[slot.court]
-        pos = slot.position[0:2]
-        pinfo = {
-            'name' : slot.player.Name(),
-            'ntrp' : slot.player.ntrp,
-            'untrp': slot.player.microntrp
-        }
-        if slot.player.gender == 'F':
-            court[pos]['gal'] = pinfo
-        else:
-            court[pos]['guy'] = pinfo
-
-
-    return schedule

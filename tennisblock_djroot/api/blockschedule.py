@@ -7,7 +7,9 @@ from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
 from blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
 
-from apiutils import JSONResponse, _currentSeason, _getMeetingForDate,_getBlockSchedule
+from apiutils import JSONResponse, _currentSeason, _getMeetingForDate
+from TBLib.teams import TeamManager
+from TBLib.schedule import Scheduler
 
 def _BuildMeetings(force=False):
     """
@@ -88,7 +90,11 @@ def getSubList(request,date=None):
     if r.method == 'GET':
         mtg = _getMeetingForDate(date)
 
-        data = {'date' : mtg.date}
+        if mtg:
+            data =  {'date' : mtg.date}
+        else:
+            data = {'date' : None}
+
         if mtg:
 
             playingIds = {}
@@ -129,56 +135,33 @@ def getPlayersForBlock(request,date=None):
     r = Request(request)
 
     if r.method == 'GET':
-        mtg = _getMeetingForDate(date)
-
-        data = {}
-        if mtg:
-            data = {'date' : mtg.date}
-
-            guys = []
-            gals = []
-
-            schedulePlayers = Schedule.objects.filter(meeting=mtg)
-            for sch in schedulePlayers:
-                player = sch.player
-                s = {
-                    'name' : player.Name(),
-                    'id'   : player.id,
-                    'ntrp' : player.ntrp,
-                    'untrp': player.microntrp
-                }
-
-                if player.gender == 'F':
-                    gals.append(s)
-                else:
-                    guys.append(s)
-
-            data['guys'] = guys
-            data['gals'] = gals
-        else:
-            data['date'] ="Invalid"
-            data['mtg'] = {'error' : 'Could not determine meeting.'}
-
-        print("Return player list")
+        print("Getting players for block. Requested date:%s" % date)
+        tb = Scheduler()
+        data = tb.querySchedule(date)
         return JSONResponse(data)
 
     return JSONResponse({})
 
-
-
-
-def BlockDates(request):
+def getBlockDates(request):
+    """
+    View function to return a list of the block dates.
+    Return the holdout status, and a flag that indicates if the
+    meeting is the currently scheduled meeting.
+    """
 
     if request.method == 'GET':
         currSeason = _currentSeason()
+        currmtg = _getMeetingForDate()
 
         meetings = Meetings.objects.filter(season=currSeason)
         mtgData = []
         for mtg in meetings:
-            mtgData.append({
+            d = {
                 'date' : mtg.date,
-                'holdout' : mtg.holdout
-            })
+                'holdout' : mtg.holdout,
+                'current' : mtg == currmtg
+            }
+            mtgData.append(d)
 
         response = JSONResponse(mtgData)
         response["Access-Control-Allow-Origin"] = "*"
@@ -191,115 +174,40 @@ def BlockDates(request):
     return JSONResponse({'status' : "Failed"})
 
 
-class AvailabilityView(View):
-
-    def get(self,request):
-    #def PlayerAvailability(request):
-
-        currseason = _currentSeason()
-        mtgs = Meetings.objects.filter(season = currseason)
-        players = SeasonPlayers.objects.filter(season = currseason)
-
-        pdata = []
-        for sp in players:
-            if not sp.blockmember:
-                continue
-
-            player = sp.player
-
-            p = {
-                'name' : player.first + ' ' + player.last,
-                'id' : player.id,
-                'isavail' : []
-            }
-            avail = p['isavail']
-            for mtg in mtgs:
-                av = Availability.objects.filter(player=player, meeting=mtg)
-
-                if len(av) == 0:
-                    _AvailabilityInit(player,mtgs)
-                    av = Availability.objects.filter(player=player, meeting=mtg)
-
-                if len(av) > 0 and av[0].available:
-                    avail.append(True)
-                else:
-                    avail.append(False)
-
-            pdata.append(p)
-
-        return JSONResponse(pdata)
-
-    def put(self,request):
-    #elif request.method == 'PUT':
-
-        data = JSONParser().parse(request)
-        currseason = _currentSeason()
-        mtgs = Meetings.objects.filter(season = currseason)
-        try:
-            mtg = mtgs[data['mtgidx']]
-            p = Player.objects.get(pk=data['id'])
-            av = Availability.objects.get(meeting=mtg,player=p)
-            av.available = data['isavail']
-            av.save()
-        except:
-            print("Error trying to update availability")
-
-        #data = request.DATA
-        # Update availability for someone.
-
-        return JSONResponse({})
-
-def PickTeams(nCourts,nSequences,dups,testing=False):
-
-    from TBLib.DBTeams import DBTeams
-    from TBLib.TeamGen2 import TeamGen
-
-    dbTeams = DBTeams()
-
-    men,women = dbTeams.getPlayers()
-
-    if len(men) < nCourts*2 or len(women) < nCourts*2:
-        print("Cannot pick teams, there are not enough men or women.")
-        print("Need %d of both. Have %d men and %d women." % (nCourts*2,len(men),len(women)))
-        return
-
-    tg = TeamGen(nCourts,nSequences,men,women)
-    sequences = tg.GenerateSetSequences(dups)
-
-    if sequences == None or len(sequences) < nSequences:
-        print("Could not generate the required sequences.")
-
-    else:
-        # Put the worst sequences last.
-        sequences.reverse()
-        tg.DisplaySequences(sequences)
-        tg.showAllDiffs(sequences)
-
-        if not testing:
-            dbTeams.InsertRecords(sequences)
-
 @csrf_exempt
 def blockSchedule(request,date = None):
+    from TBLib.schedule import Scheduler
+    tb = Scheduler()
 
     r = Request(request)
 
     if r.method == 'GET':
-        sched = _getBlockSchedule(date)
+        sched = tb.querySchedule(date)
         return JSONResponse(sched)
 
-    elif r.method == 'POST':
-        from TBLib.schedule import Scheduler
+    if r.method == 'POST':
         print("blockSchedule POST for date:%s" % date)
-        tb = Scheduler()
         group = tb.getNextGroup()
-        tb.addCouplesToSchedule(group)
+        print("Groups:")
+        for g in group:
+            print("\tHe:%s She:%s" % (g.male.Name(),g.female.Name()))
 
+        tb.addCouplesToSchedule(date,group)
+
+        sched = tb.querySchedule(date)
+
+        return JSONResponse(sched)
+
+
+@csrf_exempt
+def getMatchData(request,date = None):
+
+    r = Request(request)
+
+    if r.method == 'GET':
+        mgr = TeamManager()
+
+        matchData = mgr.queryMatch(date)
+        if matchData:
+            return JSONResponse({"match":matchData})
         return JSONResponse({})
-
-    elif r.method == 'PUT':
-
-        print("blockSchedule PUT for date:%s" % date)
-
-
-        return JSONResponse({})
-

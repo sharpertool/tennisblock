@@ -6,6 +6,7 @@ import random
 
 from django.db import connection
 from blockdb.models import *
+from api.apiutils import _currentSeason,_nextMeeting,_getMeetingForDate
 
 import tennisblock_dj.settings.dev
 
@@ -14,24 +15,6 @@ class Scheduler(object):
     def __init__(self):
         pass
 
-
-    def currentSeason(self):
-        seasons = Season.objects.filter(enddate__gte = datetime.date.today())
-        if len(seasons) > 0:
-            return seasons[0]
-
-        return None
-
-    def nextMeeting(self,season):
-        meetings = Meetings.objects \
-            .order_by('date') \
-            .filter(season=season, date__gte = datetime.date.today())
-
-        mtg = None
-        if len(meetings) > 0:
-            mtg = meetings[0]
-
-        return mtg
 
     def getFulltimeCouples(self, mtg):
 
@@ -63,6 +46,20 @@ class Scheduler(object):
 
         meetings = Meetings.objects.filter(season=season,date__lte = datetime.date.today())
 
+        def _sumPlays(p):
+            """
+            Sum plays from he, she or they
+            """
+            return p['he'] + p['she'] + p['they']
+
+        def _weightPlays(p):
+            """
+            Weight plays from he, she or they
+            Give more weight to the he or she, thus giving
+            he or she plays higher priority when sorted
+            """
+            return max(p['he'],p['she'])*1.1 + p['they']
+
         for c in couples:
             cid = c.id
 
@@ -74,7 +71,7 @@ class Scheduler(object):
                     'they' :0
                 }
             }
-            coupleInfo[cid] = cinfo
+            coupleInfo[c.name] = cinfo
             for m in meetings:
                 he = len(Schedule.objects.filter(meeting=m,player=c.male))
                 she = len(Schedule.objects.filter(meeting=m,player=c.female))
@@ -85,11 +82,20 @@ class Scheduler(object):
                 elif she:
                     cinfo['plays']['she'] += 1
 
+                cinfo['weight'] = _weightPlays(cinfo['plays'])
+                cinfo['plays']['total'] = _sumPlays(cinfo['plays'])
+
         return coupleInfo
 
     def getNextGroup(self):
-        season = self.currentSeason()
-        mtg = self.nextMeeting(season)
+        """
+        Get the next group of players.
+        """
+
+        season = _currentSeason
+        mtg = _nextMeeting(season)
+        if mtg:
+            print("Scheduling for date:%s" % mtg.date)
 
         needed = 6
         group = []
@@ -104,62 +110,62 @@ class Scheduler(object):
 
         stats = self.getCouplePlayStats(season,pt)
 
-        def neverPlayed(ci):
-            p = ci['plays']
-            return p['he'] == p['she'] == p['they'] == 0
+        numberOfPlaysMap = {}
+        maxNumberOfPlays = 0
+        for info in stats.itervalues():
+            nplays = info['plays']['total']
+            a = numberOfPlaysMap.get(nplays)
+            if not a:
+                a = []
+                numberOfPlaysMap[nplays] = a
 
-        haveNotPlayed = []
-        havePlayed = []
-        for cid,info in stats.iteritems():
-            if neverPlayed(info):
-                haveNotPlayed.append(info)
-            else:
-                havePlayed.append(info)
+            a.append(info)
+            maxNumberOfPlays = max(maxNumberOfPlays,nplays)
 
+        for i in range(0,maxNumberOfPlays+1):
+            cinfo = numberOfPlaysMap.get(i)
+            if cinfo:
+                cinfo = self.sortShuffle(cinfo)
 
-        # Sort these randomly
-        random.shuffle(haveNotPlayed)
-        while len(haveNotPlayed) > 0 and needed > 0:
-            ci = haveNotPlayed.pop()
-            group.append(ci['couple'])
-            needed -= 1
+                while len(cinfo) and needed > 0:
+                    info = cinfo.pop(0)
+                    group.append(info['couple'])
+                    needed -= 1
 
-        # Sort these by least # of plays.
-
-        def sumPlays(p):
-            return p['he'] + p['she'] + p['they']
-
-        def sortPlays(a,b):
-            pa = a['plays']
-            pb = b['plays']
-
-            tpa = sumPlays(pa)
-            tpb = sumPlays(pb)
-
-            if tpa < tpb:
-                return -1
-            elif tpa > tpb:
-                return 1
-
-            return 0
+            if needed == 0:
+                break
 
 
-        havePlayed = sorted(havePlayed,sortPlays)
-        while len(havePlayed) > 0 and needed > 0:
-            ci = havePlayed.pop()
-            group.append(ci['couple'])
-            needed -= 1
-
-
-        print("Done")
-
+        # Should have a full block now..
         return group
 
+    def sortShuffle(self,cinfo):
+        """
+        Sort and shuffle the list of couples.
 
-    def addCouplesToSchedule(self,couples):
+        These will be list of couples with equal numbers of total
+        plays, but I'd like to further sub-divide them with the goal
+        that if he or she only has played, then that couple has 'priority'
+        over couples where both have played.
 
-        season = self.currentSeason()
-        mtg = self.nextMeeting(season)
+        """
+        weights = {}
+        for c in cinfo:
+            weights[c['weight']] = 1
+
+        cinfosortedshuffled = []
+
+        for weight in sorted(weights.iterkeys(),reverse=True):
+            couples = [c for c in cinfo if c['weight'] == weight]
+            random.shuffle(couples)
+            cinfosortedshuffled.extend(couples)
+
+        return cinfosortedshuffled
+
+
+    def addCouplesToSchedule(self,date,couples):
+
+        mtg = _getMeetingForDate(date)
 
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
@@ -178,6 +184,43 @@ class Scheduler(object):
                 issub = False
             )
             sh.save()
+
+    def querySchedule(self,date=None):
+        """
+        Query the schedule of players for the given date.
+        """
+        mtg = _getMeetingForDate(date)
+
+        data = {}
+        if mtg:
+            data = {'date' : mtg.date}
+
+            guys = []
+            gals = []
+
+            schedulePlayers = Schedule.objects.filter(meeting=mtg)
+            for sch in schedulePlayers:
+                player = sch.player
+                s = {
+                    'name' : player.Name(),
+                    'id'   : player.id,
+                    'ntrp' : player.ntrp,
+                    'untrp': player.microntrp
+                }
+
+                if player.gender == 'F':
+                    gals.append(s)
+                else:
+                    guys.append(s)
+
+            data['guys'] = guys
+            data['gals'] = gals
+        else:
+            data['date'] = "Invalid"
+            data['mtg'] = {'error' : 'Could not determine meeting.'}
+
+        return data
+
 
 
 def main():
