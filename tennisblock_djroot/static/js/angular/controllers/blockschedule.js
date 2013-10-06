@@ -24,6 +24,10 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     $scope.players = {
         guys : [],
         gals : [],
+
+        selguys : [],
+        selgals : [],
+
         couples : [],
         initialized : false
     };
@@ -86,23 +90,25 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     var updateAll = function updateAll() {
         resetScope();
 
-        BlockPlayers.get({'date' : $scope.queryDate},function bplayers(data) {
+        BlockPlayers.get({'date' : $scope.block.queryDate},function bplayers(data) {
             $scope.players.guys = data.guys;
             $scope.players.gals = data.gals;
+            $scope.players.selguys = data.guys.slice(0);
+            $scope.players.selgals = data.gals.slice(0);
             $scope.players.couples = _.zip($scope.players.guys,$scope.players.gals);
             $scope.players.initialized = true;
             console.log("Updated Block Players for date:" + $scope.block.queryDate);
             updateInitialized();
         });
 
-        BlockSubs.get({'date' : $scope.queryDate},function bsubs(data) {
+        BlockSubs.get({'date' : $scope.block.queryDate},function bsubs(data) {
             $scope.subs.guys = data.guysubs;
             $scope.subs.gals = data.galsubs;
             $scope.subs.initialized = true;
             updateInitialized();
         });
 
-        TeamSchedule.get({'date' : $scope.queryDate}, function(data) {
+        TeamSchedule.get({'date' : $scope.block.queryDate}, function(data) {
             $scope.match.sets = data.match;
         });
     };
@@ -209,9 +215,8 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     };
 
     $scope.gotodate = function gotod(date) {
-        console.log("Set queryDate to " + date);
-        console.log("queryDate set to " + $scope.block.queryDate);
-        $scope.block.queryDate = tb.utils.jsDate2py(date);
+        console.log("Setting new queryDate to " + date);
+        $scope.block.queryDate = date;
         console.log("queryDate set to " + $scope.block.queryDate);
         updateAll();
     };
@@ -236,6 +241,33 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     $scope.filterPlayerSub = function(player,subs) {
         a = subs.clone();
         a.push(player);
+    };
+
+    $scope.getGuySubs = function(currPlayer) {
+        return _.union([currPlayer],$scope.subs.guys);
+    };
+    $scope.getGalSubs = function(currPlayer) {
+        return _.union([currPlayer],$scope.subs.gals);
+    };
+
+    $scope.onPlayerChanged = function(idx,galnguy) {
+        if (galnguy) {
+            var players = $scope.players.gals;
+            var subs = $scope.subs.gals;
+            var selplayers = $scope.players.selgals;
+        } else {
+            var players = $scope.players.guys;
+            var subs = $scope.subs.guys;
+            var selplayers = $scope.players.selguys;
+        }
+        var was = players[idx];
+        var is = selplayers[idx];
+        console.log("onPlayerChanged[" + idx + "][" + galnguy + "] was " + was.name + " now is " + is.name);
+
+        var isidx = subs.indexOf(is);
+        console.log("isindex:" + isidx);
+        subs[isidx] = was;
+        players[idx] = is;
     };
 
     updateAll();
