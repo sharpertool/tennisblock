@@ -26,7 +26,6 @@
                     <h2>Block Schedule for {{ block.currdate }}</h2>
                     <button ng-click="pickTeams()">Pick Teams</button>
                     <button ng-click="schedulePlayersConfirm()">Schedule</button>
-                    <button ng-click="updateSchedule">Update Schedule</button>
                     <a target="_blank" href="/api/blocksheet/">Download Block Sheet</a>
                     <div id=schedule>
                         <div class="navigation">
@@ -88,17 +87,28 @@
                                     <tr>
                                         <th>Set</th>
                                         <!-- Dynamic number of courts -->
-                                        <th ng-repeat="court in match.sets[0]">Court {{ $index+1 }}</th>
+                                        <th ng-repeat-start="court in match.sets[0]">Court {{ $index+1 }}</th>
+                                        <th ng-repeat-end>Ratings</th>
                                     </tr>
                                     <tr ng-repeat="set in match.sets">
                                         <td>Match {{ $index+1 }}</td>
-                                        <td ng-repeat="court in set">
+                                        <td ng-repeat-start="court in set">
                                             <div class="courtTeam">
                                                 {{ court.team1.m.name }} and {{ court.team1.f.name }}
                                             </div>
                                             <span>Versus</span>
                                             <div class="courtTeam">
                                                 {{ court.team2.m.name }} and {{ court.team2.f.name }}
+                                            </div>
+                                        </td>
+                                        <td ng-repeat-end>
+                                            <div class="total_untrp">
+                                                {{ court.team1.m.untrp + court.team1.f.untrp|number:2 }}
+                                                /
+                                                {{ court.team2.m.untrp + court.team2.f.untrp|number:2 }}
+                                            </div>
+                                            <div class="untrp_diff">
+                                                Diff: {{ (court.team1.m.untrp + court.team1.f.untrp)-(court.team2.m.untrp + court.team2.f.untrp)|number:2 }}
                                             </div>
                                         </td>
                                     </tr>

@@ -155,9 +155,11 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     };
 
     /**
-     * schedulePlayer
+     * schedulePlayersConfirm
      *
-     * Update the schedule for the current block session
+     * If there is an existing schedule, then confirm that
+     * the user wants to re-schedule before firing the
+     * schedule command.
      */
     $scope.schedulePlayersConfirm = function() {
         if ($scope.players.guys.length > 0) {
@@ -184,7 +186,7 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     /**
      * schedulePlayers
      *
-     * Reschedule the current active date.
+     * Schedule or reschedule the current active date.
      */
     $scope.schedulePlayers = function() {
         console.log("Updating the schedule for " + $scope.block.queryDate);
