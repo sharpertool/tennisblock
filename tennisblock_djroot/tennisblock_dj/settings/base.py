@@ -151,6 +151,7 @@ INSTALLED_APPS = (
 
     'rest_framework',
     'sekizai',
+    'south',
     'compressor',
 
     'tennisblock_dj',

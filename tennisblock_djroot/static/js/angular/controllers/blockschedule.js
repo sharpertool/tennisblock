@@ -29,7 +29,8 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
         selgals : [],
 
         couples : [],
-        initialized : false
+        initialized : false,
+        changed : false
     };
     $scope.subs = {
         'guys' : [],
@@ -245,32 +246,6 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
         a.push(player);
     };
 
-    $scope.getGuySubs = function(currPlayer) {
-        return _.union([currPlayer],$scope.subs.guys);
-    };
-    $scope.getGalSubs = function(currPlayer) {
-        return _.union([currPlayer],$scope.subs.gals);
-    };
-
-    $scope.onPlayerChanged = function(idx,galnguy) {
-        if (galnguy) {
-            var players = $scope.players.gals;
-            var subs = $scope.subs.gals;
-            var selplayers = $scope.players.selgals;
-        } else {
-            var players = $scope.players.guys;
-            var subs = $scope.subs.guys;
-            var selplayers = $scope.players.selguys;
-        }
-        var was = players[idx];
-        var is = selplayers[idx];
-        console.log("onPlayerChanged[" + idx + "][" + galnguy + "] was " + was.name + " now is " + is.name);
-
-        var isidx = subs.indexOf(is);
-        console.log("isindex:" + isidx);
-        subs[isidx] = was;
-        players[idx] = is;
-    };
 
     updateAll();
 });

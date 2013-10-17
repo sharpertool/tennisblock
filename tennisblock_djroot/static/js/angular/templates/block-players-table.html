@@ -1,0 +1,23 @@
+<h3>Players</h3>
+<button ng-show="players.changed">Update Schedule</button>
+<table id="table_players">
+    <thead>
+    <th>Guys</th>
+    <th>Gals</th>
+    </thead>
+    <tr ng-repeat="couple in players.couples">
+        <td>
+            <select ng-model="players.selguys[$index]"
+                    ng-change="onPlayerChanged($index,0)"
+                    ng-options="p.name for p in getGuySubs(players.selguys[$index])">
+            </select>
+        </td>
+        <td>
+            <select ng-model="players.selgals[$index]"
+                    ng-change="onPlayerChanged($index,1)"
+                    ng-options="p.name for p in getGalSubs(players.selgals[$index])">
+            </select>
+        </td>
+    </tr>
+</table>
+<h3>Total couples is {{ players.couples.length }}</h3>

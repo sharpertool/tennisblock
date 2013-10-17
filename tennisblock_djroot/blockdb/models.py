@@ -90,6 +90,7 @@ class Schedule(models.Model):
     meeting             = models.ForeignKey(Meetings)
     player              = models.ForeignKey(Player)
     issub               = models.BooleanField()
+    verified            = models.BooleanField()
 
 class Slot(models.Model):
     meeting             = models.ForeignKey(Meetings)

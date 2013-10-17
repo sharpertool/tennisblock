@@ -3,7 +3,7 @@
 import datetime
 from django.views.generic.base import View
 from rest_framework.parsers import JSONParser
-from blockdb.models import Player,SeasonPlayers,Meetings,Availability
+from blockdb.models import Player,SeasonPlayers,Meetings,Availability,Schedule
 
 from apiutils import JSONResponse, _currentSeason, _getMeetingForDate
 
@@ -40,14 +40,19 @@ class AvailabilityView(View):
 
             player = sp.player
 
+            avail = []
+            scheduled = []
+
             p = {
                 'name' : player.first + ' ' + player.last,
                 'id' : player.id,
-                'isavail' : []
+                'isavail' : avail,
+                'scheduled' : scheduled
             }
-            avail = p['isavail']
+
             for mtg in mtgs:
                 av = Availability.objects.filter(player=player, meeting=mtg)
+                sch = Schedule.objects.filter(meeting=mtg,player=player)
 
                 if len(av) == 0:
                     _AvailabilityInit(player,mtgs)
@@ -57,6 +62,11 @@ class AvailabilityView(View):
                     avail.append(True)
                 else:
                     avail.append(False)
+
+                if len(sch):
+                    scheduled.append(True)
+                else:
+                    scheduled.append(False)
 
             pdata.append(p)
 

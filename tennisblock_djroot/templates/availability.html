@@ -51,7 +51,7 @@ availability
                             <td>{{ player.name }}</td>
                             <td
                                     ng-repeat="avail in player.isavail track by $index"
-                                    ng-class-odd="'odd'" ng-class-even="'even'"
+                                    ng-class="{cplayed:player.scheduled[$index]}"
                                     >
                                 <input ng-disabled="!canEdit(player)" type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
                             </td>

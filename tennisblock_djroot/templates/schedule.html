@@ -11,6 +11,7 @@
 
     {% add_data "js-body" "angular/apps/tennisblock.js" %}
     {% add_data "js-body" "angular/controllers/blockschedule.js" %}
+    {% add_data "js-body" "angular/directives/block-players.js" %}
 {% endblock %}
 
 {% block title %}
@@ -44,29 +45,12 @@
                             </a>
                         </div>
                         <div class="scheduleview">
-                            <div id="players">
-                                <h3>Players</h3>
-                                <table id="table_players">
-                                    <thead>
-                                        <th>Guys</th>
-                                        <th>Gals</th>
-                                    </thead>
-                                    <tr ng-repeat="couple in mycouples = (players.couples)">
-                                        <td>
-                                            <select ng-model="players.selguys[$index]"
-                                                    ng-change="onPlayerChanged($index,0)"
-                                                    ng-options="p.name for p in getGuySubs(players.selguys[$index])">
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select ng-model="players.selgals[$index]"
-                                                    ng-change="onPlayerChanged($index,1)"
-                                                    ng-options="p.name for p in getGalSubs(players.selgals[$index])">
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <h3>Total couples is {{ mycouples.length }}</h3>
+                            <div id="players" block-players-table
+                                 players="players" subs="subs">
+                            </div>
+                            <div block-players
+                                    couples="players.couples" guys="players.selguys" gals="players.selgals">
+
                             </div>
                             <div id="subs" ng-hide="true">
                                 <h3>Subs</h3>
