@@ -28,8 +28,8 @@ tennisblockapp.directive('blockPlayers',[
     }
 ]);
 
-tennisblockapp.directive('blockPlayersTable',[
-    function() {
+tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers',
+    function(BlockPlayers) {
         // Initialization
 
         return {
@@ -41,16 +41,35 @@ tennisblockapp.directive('blockPlayersTable',[
             replace: false,
             scope: {
                 players:    '=players',
-                subs:       '=subs'
+                subs:       '=subs',
+                block:      '=block'
             },
             link: function($scope,$element,$attributes) {
                 console.log("Link blockPlayersTable");
+
+                $scope.original = {
+                    guys : [],
+                    gals : []
+                };
+
+                $scope.$watch('players',function() {
+                    $scope.original.guys = $scope.players.guys.slice(0);
+                    $scope.original.gals = $scope.players.gals.slice(0);
+                    console.log("Updated the original snapshot.");
+                });
 
                 $scope.getGuySubs = function(currPlayer) {
                     return _.union([currPlayer],$scope.subs.guys);
                 };
                 $scope.getGalSubs = function(currPlayer) {
                     return _.union([currPlayer],$scope.subs.gals);
+                };
+
+                $scope.hasChanged = function() {
+                    var changed = (_.difference($scope.players.guys,$scope.players.original.guys).length
+                    + _.difference($scope.players.gals,$scope.players.original.gals).length) > 0;
+                    console.log("hasChanged: " + changed);
+                    return changed;
                 };
 
                 $scope.onPlayerChanged = function(idx,galnguy) {
@@ -72,6 +91,24 @@ tennisblockapp.directive('blockPlayersTable',[
                     console.log("isindex:" + isidx);
                     subs[isidx] = was;
                     players[idx] = is;
+                };
+
+                $scope.updateSchedule = function() {
+
+                    var params = {
+                        date:$scope.block.queryDate
+                    };
+                    var payload = {
+                        guys:$scope.players.guys,
+                        gals:$scope.players.gals
+                    };
+
+                    BlockPlayers.save(params,payload,function(data){
+                        console.log("Schedule updated..");
+                    },function(data, errr, stuff) {
+                        console.log("BlockPlayers update failed:" + errr);
+                    });
+
                 };
             }
         };

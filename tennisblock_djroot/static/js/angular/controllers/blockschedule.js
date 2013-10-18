@@ -84,6 +84,8 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
         $scope.block.initialized = false;
         $scope.players.guys = [];
         $scope.players.gals = [];
+        $scope.players.original = { guys : [], gals : [] };
+        $scope.players.gals = [];
         $scope.subs.guys = [];
         $scope.subs.gals = [];
     };
@@ -96,6 +98,8 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
             $scope.players.gals = data.gals;
             $scope.players.selguys = data.guys.slice(0);
             $scope.players.selgals = data.gals.slice(0);
+            $scope.players.original.guys = data.guys.slice(0);
+            $scope.players.original.gals = data.gals.slice(0);
             $scope.players.couples = _.zip($scope.players.guys,$scope.players.gals);
             $scope.players.initialized = true;
             console.log("Updated Block Players for date:" + $scope.block.queryDate);

@@ -5,8 +5,8 @@ tennisblockapp.factory('BlockDates',function ($resource) {
             query: {method: 'GET', isArray: true}
         })
     }).factory('BlockPlayers',function ($resource) {
-        return $resource('/api/blockplayers/:date/', {}, {
-            get: {method: 'GET', params: {date: '@date'}, isArray: false}
+        return $resource('/api/blockplayers/:date/', {date: '@date'}, {
+            get: {method: 'GET', isArray: false}
         })
     }).factory('BlockSubs',function ($resource) {
         return $resource('/api/subs/:date/', {}, {

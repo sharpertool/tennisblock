@@ -57,7 +57,7 @@ def _nextMeeting(season=None):
     meetings = Meetings.objects \
         .order_by('date') \
         .filter(season=season,
-                holdout=0,
+                holdout=False,
                 date__gte = datetime.date.today())
 
     mtg = None

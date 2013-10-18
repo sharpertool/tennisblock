@@ -30,7 +30,7 @@ class AvailabilityView(View):
     def get(self,request):
 
         currseason = _currentSeason()
-        mtgs = Meetings.objects.filter(season = currseason)
+        mtgs = Meetings.objects.filter(season = currseason).order_by('date')
         players = SeasonPlayers.objects.filter(season = currseason)
 
         pdata = []

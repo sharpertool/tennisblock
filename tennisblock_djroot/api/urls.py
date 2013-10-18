@@ -28,8 +28,8 @@ urlpatterns += patterns('api.blockschedule',
        url(r'subs/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$',            'getSubList'),
        url(r'subs/?$',                                       'getSubList'),
 
-       url(r'blockplayers/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',     'getPlayersForBlock'),
-       url(r'blockplayers/?',                                'getPlayersForBlock'),
+       url(r'blockplayers/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',     'blockPlayers'),
+       url(r'blockplayers/?',                                'blockPlayers'),
 
        url(r'blockschedule/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',    'blockSchedule'),
        url(r'blockschedule/?$',                               'blockSchedule'),

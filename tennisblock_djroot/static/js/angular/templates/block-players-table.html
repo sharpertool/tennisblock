@@ -1,5 +1,5 @@
 <h3>Players</h3>
-<button ng-show="players.changed">Update Schedule</button>
+<button ng-show="hasChanged()" ng-click="updateSchedule()">Update Schedule</button>
 <table id="table_players">
     <thead>
     <th>Guys</th>

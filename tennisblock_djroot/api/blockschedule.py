@@ -129,8 +129,7 @@ def getSubList(request,date=None):
 
     return JSONResponse({})
 
-@csrf_exempt
-def getPlayersForBlock(request,date=None):
+def blockPlayers(request,date=None):
 
     r = Request(request)
 
@@ -139,6 +138,19 @@ def getPlayersForBlock(request,date=None):
         tb = Scheduler()
         data = tb.querySchedule(date)
         return JSONResponse(data)
+
+    elif r.method == 'POST':
+        data = JSONParser().parse(r)
+        guys = data.get('guys')
+        gals = data.get('gals')
+        print("Setting block players...")
+        result = {'status' : "Did not execute"}
+        if guys and gals:
+            tb = Scheduler()
+            result['status'] = tb.updateSchedule(date,guys,gals)
+        else:
+            result['status'] = "Did not decode the guys and gals"
+        return JSONResponse(result)
 
     return JSONResponse({})
 
@@ -153,7 +165,7 @@ def getBlockDates(request):
         currSeason = _currentSeason()
         currmtg = _getMeetingForDate()
 
-        meetings = Meetings.objects.filter(season=currSeason)
+        meetings = Meetings.objects.filter(season=currSeason).order_by('date')
         mtgData = []
         for mtg in meetings:
             d = {
