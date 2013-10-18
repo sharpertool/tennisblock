@@ -174,16 +174,33 @@ class Scheduler(object):
             sm = Schedule.objects.create(
                 meeting = mtg,
                 player = cpl.male,
-                issub = False
+                issub = False,
+                verified=False,
+                partner=cpl.female
             )
             sm.save()
 
             sh = Schedule.objects.create(
                 meeting = mtg,
                 player = cpl.female,
-                issub = False
+                issub = False,
+                verified=False,
+                partner=cpl.male
             )
             sh.save()
+
+    def getParnerId(self,player):
+
+        if player.gender == 'f':
+            c = Couple.objects.filter(female=player)
+            if len(c):
+                return c[0].male
+        else:
+            c = Couple.objects.filter(male=player)
+            if len(c):
+                return c[0].female
+
+        return None
 
     def querySchedule(self,date=None):
         """
@@ -201,12 +218,24 @@ class Scheduler(object):
             schedulePlayers = Schedule.objects.filter(meeting=mtg)
             for sch in schedulePlayers:
                 player = sch.player
+                if sch.partner:
+                    partner = sch.partner
+                else:
+                    partner = self.getParnerId(player)
                 s = {
                     'name' : player.Name(),
                     'id'   : player.id,
                     'ntrp' : player.ntrp,
-                    'untrp': player.microntrp
+                    'untrp': player.microntrp,
+                    'verify': sch.verified,
+                    'issub' : sch.issub
                 }
+                if partner:
+                    s['partner'] = partner.id
+                    s['parntername'] = partner.Name()
+                else:
+                    s['partner'] = None
+                    s['parntername'] = ''
 
                 if player.gender == 'F':
                     gals.append(s)
@@ -220,6 +249,43 @@ class Scheduler(object):
             data['mtg'] = {'error' : 'Could not determine meeting.'}
 
         return data
+    def updateSchedule(selfself,date,guys,gals):
+        """
+        Update the schedule with the given list.
+        """
+        mtg = _getMeetingForDate(date)
+
+        if mtg:
+            data = {'date' : mtg.date}
+
+            playersById = {}
+            for g in guys:
+                playersById[g['id']] = g
+            for g in gals:
+                playersById[g['id']] = g
+
+            schedulePlayers = Schedule.objects.filter(meeting=mtg)
+            for sch in schedulePlayers:
+                player = sch.player
+
+                if playersById.has_key(player.id):
+                    # Match
+                    del playersById[player.id]
+                else:
+                    sch.delete()
+
+            for id in playersById.iterkeys():
+                player = Player.objects.get(id=id)
+                Schedule.objects.create(
+                    meeting=mtg,
+                    player=player,
+                    issub=True,
+                    verified=False
+                )
+
+            return "Schedule updated"
+        else:
+            return "Could not update schedule."
 
 
 

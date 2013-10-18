@@ -91,7 +91,7 @@ class Schedule(models.Model):
     player              = models.ForeignKey(Player)
     issub               = models.BooleanField()
     verified            = models.BooleanField()
-    #partner             = models.ForeignKey(Player,related_name='partner',null=True)
+    partner             = models.ForeignKey(Player,related_name='partner',null=True)
 
 class Slot(models.Model):
     meeting             = models.ForeignKey(Meetings)

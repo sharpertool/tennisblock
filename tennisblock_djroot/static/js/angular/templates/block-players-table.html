@@ -1,4 +1,5 @@
 <h3>Players</h3>
+<h4>QueryDate: {{ queryDate }}</h4>
 <button ng-show="hasChanged()" ng-click="updateSchedule()">Update Schedule</button>
 <table id="table_players">
     <thead>
@@ -7,15 +8,15 @@
     </thead>
     <tr ng-repeat="couple in players.couples">
         <td>
-            <select ng-model="players.selguys[$index]"
+            <select ng-model="couple[0]"
                     ng-change="onPlayerChanged($index,0)"
-                    ng-options="p.name for p in getGuySubs(players.selguys[$index])">
+                    ng-options="p.name for p in getGuySubs(couple[0])">
             </select>
         </td>
         <td>
-            <select ng-model="players.selgals[$index]"
+            <select ng-model="couple[1]"
                     ng-change="onPlayerChanged($index,1)"
-                    ng-options="p.name for p in getGalSubs(players.selgals[$index])">
+                    ng-options="p.name for p in getGalSubs(couple[1])">
             </select>
         </td>
     </tr>

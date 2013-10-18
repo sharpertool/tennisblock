@@ -21,17 +21,7 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
         queryDate : null,
         initialized : false
     };
-    $scope.players = {
-        guys : [],
-        gals : [],
 
-        selguys : [],
-        selgals : [],
-
-        couples : [],
-        initialized : false,
-        changed : false
-    };
     $scope.subs = {
         'guys' : [],
         'gals' : [],
@@ -47,7 +37,6 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
 
     var updateInitialized = function updateinit() {
         if ($scope.block.initialized
-            && $scope.players.initialized
             && $scope.subs.initialized) {
             $scope.view.initialized = true;
         } else {
@@ -80,31 +69,13 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
     var resetScope = function() {
         $scope.view.initialized = false;
         $scope.subs.initialized = false;
-        $scope.players.initialzed = false;
         $scope.block.initialized = false;
-        $scope.players.guys = [];
-        $scope.players.gals = [];
-        $scope.players.original = { guys : [], gals : [] };
-        $scope.players.gals = [];
         $scope.subs.guys = [];
         $scope.subs.gals = [];
     };
 
     var updateAll = function updateAll() {
         resetScope();
-
-        BlockPlayers.get({'date' : $scope.block.queryDate},function bplayers(data) {
-            $scope.players.guys = data.guys;
-            $scope.players.gals = data.gals;
-            $scope.players.selguys = data.guys.slice(0);
-            $scope.players.selgals = data.gals.slice(0);
-            $scope.players.original.guys = data.guys.slice(0);
-            $scope.players.original.gals = data.gals.slice(0);
-            $scope.players.couples = _.zip($scope.players.guys,$scope.players.gals);
-            $scope.players.initialized = true;
-            console.log("Updated Block Players for date:" + $scope.block.queryDate);
-            updateInitialized();
-        });
 
         BlockSubs.get({'date' : $scope.block.queryDate},function bsubs(data) {
             $scope.subs.guys = data.guysubs;
@@ -157,50 +128,6 @@ tennisblockapp.controller('BlockSchedule', function blocksched($scope,$http,
         }
 
         return d2;
-    };
-
-    /**
-     * schedulePlayersConfirm
-     *
-     * If there is an existing schedule, then confirm that
-     * the user wants to re-schedule before firing the
-     * schedule command.
-     */
-    $scope.schedulePlayersConfirm = function() {
-        if ($scope.players.guys.length > 0) {
-            $('#dialog_confirm').dialog({
-                resizable: false,
-                height: 140,
-                modal:true,
-                title:"Reset Schedule",
-                buttons: {
-                    "Reset current schedule?": function() {
-                        $(this).dialog("close");
-                        $scope.schedulePlayers();
-                    },
-                    Cancel: function() {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-        } else {
-            $scope.schedulePlayers();
-        }
-    };
-
-    /**
-     * schedulePlayers
-     *
-     * Schedule or reschedule the current active date.
-     */
-    $scope.schedulePlayers = function() {
-        console.log("Updating the schedule for " + $scope.block.queryDate);
-        BlockSchedule.save({date:$scope.block.queryDate},function(data){
-            console.log("Done");
-            updateAll();
-        },function(data, errr, stuff) {
-            console.log("Error" + errr);
-        });
     };
 
     $scope.pickTeams = function() {
