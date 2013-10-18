@@ -12,6 +12,7 @@
     {% add_data "js-body" "angular/apps/tennisblock.js" %}
     {% add_data "js-body" "angular/controllers/blockschedule.js" %}
     {% add_data "js-body" "angular/directives/block-players.js" %}
+    {% add_data "js-body" "angular/directives/block-players-table.js" %}
 {% endblock %}
 
 {% block title %}
@@ -26,7 +27,6 @@
                 <div id="blockheading" class="dynamic">
                     <h2>Block Schedule for {{ block.currdate }}</h2>
                     <button ng-click="pickTeams()">Pick Teams</button>
-                    <button ng-click="schedulePlayersConfirm()">Schedule</button>
                     <a target="_blank" href="/api/blocksheet/">Download Block Sheet</a>
                     <div id=schedule>
                         <div class="navigation">

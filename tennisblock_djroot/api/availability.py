@@ -77,10 +77,11 @@ class AvailabilityView(View):
 
         data = JSONParser().parse(request)
         currseason = _currentSeason()
-        mtgs = Meetings.objects.filter(season = currseason)
+        mtgs = Meetings.objects.filter(season = currseason).order_by('date')
         try:
             mtg = mtgs[data['mtgidx']]
             p = Player.objects.get(pk=data['id'])
+            print("Updating availability for %s on %s to %s" % (p.Name(),mtg.date,data['isavail']))
             av = Availability.objects.get(meeting=mtg,player=p)
             av.available = data['isavail']
             av.save()
