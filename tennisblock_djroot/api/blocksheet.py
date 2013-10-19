@@ -26,7 +26,7 @@ class PlaySheet(FPDF):
         self.cell(0,0,header,0,1,'C')
 
         matchTitleHeight = 0.4
-        matchHeight = (7.0/float(len(sched[0])))-0.5
+        matchHeight = (7.0/float(len(sched[0])))
         matchY = 0.75
         matchNum = 1
 
@@ -59,17 +59,22 @@ class PlaySheet(FPDF):
         y = matchY
         #self.rect(x,y,cellWidth,0.4*5)
         self.set_left_margin(x-0.5)
-        self.set_xy(x,y)
         self.set_fill_color(0xff,0xfd,0xd0)
 
-        self.cell(cellWidth,cellHeight,"Court %d" % crtidx,1,1,'C',1)
-
         lineHeight = 0.25
+        self.set_xy(x,y)
+        self.cell(cellWidth,cellHeight,"Court %d" % crtidx,1,1,'C',1)
+        self.rect(x,self.get_y(),cellWidth,6*lineHeight+0.2)
 
-        y += lineHeight
+
+        x += 0.4
+        y += cellHeight+0.4
         self.centerText(x,y,cellWidth,match['team1']['m']['name'])
         y += lineHeight
         self.centerText(x,y,cellWidth,match['team1']['f']['name'])
+
+        y += lineHeight
+        self.centerText(x,y,cellWidth,'----- versus -----')
 
         y += lineHeight
         self.centerText(x,y,cellWidth,match['team2']['m']['name'])
@@ -79,7 +84,7 @@ class PlaySheet(FPDF):
     def centerText(self,x,y,width,text):
         print("StringWidth:%f" % self.get_string_width(text))
         self.text(
-            x+width/2-self.get_string_width(text),
+            x,
             y,
             text
         )

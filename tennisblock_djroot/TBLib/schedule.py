@@ -249,7 +249,7 @@ class Scheduler(object):
             data['mtg'] = {'error' : 'Could not determine meeting.'}
 
         return data
-    def updateSchedule(selfself,date,guys,gals):
+    def updateSchedule(selfself,date,couples):
         """
         Update the schedule with the given list.
         """
@@ -259,29 +259,46 @@ class Scheduler(object):
             data = {'date' : mtg.date}
 
             playersById = {}
-            for g in guys:
-                playersById[g['id']] = g
-            for g in gals:
-                playersById[g['id']] = g
+            for c in couples:
+                guy = c['currguy']
+                playersById[guy['id']] = {
+                        'player' : guy,
+                        'partner' : c['currgal']
+                    }
+                gal = c['currgal']
+                playersById[gal['id']] = {
+                    'player' : gal,
+                    'partner' : c['currguy']
+                }
 
-            schedulePlayers = Schedule.objects.filter(meeting=mtg)
-            for sch in schedulePlayers:
-                player = sch.player
+            # Clear any existing one first.
+            Schedule.objects.filter(meeting=mtg).delete()
 
-                if playersById.has_key(player.id):
-                    # Match
-                    del playersById[player.id]
-                else:
-                    sch.delete()
+            for cpl in couples:
+                try:
+                    md = cpl['currguy']
+                    fd = cpl['currgal']
+                    guy = Player.objects.get(id=md['id'])
+                    gal = Player.objects.get(id=fd['id'])
+                    sm = Schedule.objects.create(
+                        meeting = mtg,
+                        player = guy,
+                        issub = md.get('issub',False),
+                        verified=md.get('verified',False),
+                        partner=gal
+                    )
+                    sm.save()
 
-            for id in playersById.iterkeys():
-                player = Player.objects.get(id=id)
-                Schedule.objects.create(
-                    meeting=mtg,
-                    player=player,
-                    issub=True,
-                    verified=False
-                )
+                    sh = Schedule.objects.create(
+                        meeting = mtg,
+                        player = gal,
+                        issub = fd.get('issub',False),
+                        verified=fd.get('verified',False),
+                        partner=guy
+                    )
+                    sh.save()
+                except:
+                    pass
 
             return "Schedule updated"
         else:

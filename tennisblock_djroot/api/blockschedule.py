@@ -141,13 +141,11 @@ def blockPlayers(request,date=None):
 
     elif r.method == 'POST':
         data = JSONParser().parse(r)
-        guys = data.get('guys')
-        gals = data.get('gals')
-        print("Setting block players...")
+        couples = data.get('couples')
         result = {'status' : "Did not execute"}
-        if guys and gals:
+        if couples:
             tb = Scheduler()
-            result['status'] = tb.updateSchedule(date,guys,gals)
+            result['status'] = tb.updateSchedule(date,couples)
         else:
             result['status'] = "Did not decode the guys and gals"
         return JSONResponse(result)

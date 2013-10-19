@@ -65,10 +65,20 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                                 return gal.id == pid;
                             });
                             if (pgal) {
-                                return [guy,pgal];
+                                return {
+                                    guy: {
+                                        id      : guy.id,
+                                        name    : guy.name
+                                    },
+                                    gal : {
+                                        id      : pgal.id,
+                                        name    : pgal.name
+                                    }
+                                };
                             }
                         }
                     });
+                    $scope.players.originalcouples = JSON.parse(JSON.stringify($scope.players.couples));
                     //$scope.players.couples = _.zip($scope.players.guys,$scope.players.gals);
                     $scope.players.initialized = true;
                     console.log("Updated Block Players for date:" + $scope.queryDate);
@@ -100,39 +110,44 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                 update();
 
 
-                $scope.getGuySubs = function(currPlayer) {
+                $scope.getGuySubs = function(idx,currPlayer) {
+                    $scope.players.couples[idx].currguy = currPlayer;
                     return _.union([currPlayer],$scope.subs.guys);
                 };
-                $scope.getGalSubs = function(currPlayer) {
+                $scope.getGalSubs = function(idx,currPlayer) {
+                    $scope.players.couples[idx].currgal = currPlayer;
                     return _.union([currPlayer],$scope.subs.gals);
                 };
 
                 $scope.hasChanged = function() {
-                    var changed = (_.difference($scope.players.guys,$scope.players.original.guys).length
-                    + _.difference($scope.players.gals,$scope.players.original.gals).length) > 0;
+                    var cpls= $scope.players.couples;
+                    var ocpls= $scope.players.originalcouples;
+                    var changed = false;
+                    _.each(cpls,function(c,idx) {
+                        var oc = ocpls[idx];
+                        changed = changed || c.guy.id != oc.guy.id || c.gal.id != oc.gal.id;
+                    });
                     console.log("hasChanged: " + changed);
                     return changed;
                 };
 
-                $scope.onPlayerChanged = function(idx,galnguy) {
-                    if (galnguy) {
-                        var players = $scope.players.gals;
-                        var subs = $scope.subs.gals;
-                        var selplayers = $scope.players.selgals;
-                    } else {
-                        var players = $scope.players.guys;
-                        var subs = $scope.subs.guys;
-                        var selplayers = $scope.players.selguys;
-                    }
-                    var was = players[idx];
-                    var is = selplayers[idx];
-                    console.log("onPlayerChanged[" + idx + "][" + galnguy + "] was " + was.name + " now is " + is.name);
-                    $scope.players.changed = true;
+                $scope.onGuyChanged = function(idx) {
+                    var is = $scope.players.couples[idx].guy;
+                    var was = $scope.players.couples[idx].currguy;
+                    console.log("onGuyChanged[" + idx + "] was " + was.name + " now is " + is.name);
+                    $scope.players.couples[idx].currguy = is;
+                    var isidx = $scope.subs.guys.indexOf(is);
+                    $scope.subs.guys[isidx] = was;
+                };
 
-                    var isidx = subs.indexOf(is);
-                    console.log("isindex:" + isidx);
-                    subs[isidx] = was;
-                    players[idx] = is;
+
+                $scope.onGalChanged = function(idx) {
+                    var is = $scope.players.couples[idx].gal;
+                    var was = $scope.players.couples[idx].currgal;
+                    console.log("onGalChanged[" + idx + "] was " + was.name + " now is " + is.name);
+                    $scope.players.couples[idx].currgal = is;
+                    var isidx = $scope.subs.gals.indexOf(is);
+                    $scope.subs.gals[isidx] = was;
                 };
 
                 $scope.updateSchedule = function() {
@@ -141,12 +156,12 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                         date:$scope.queryDate
                     };
                     var payload = {
-                        guys:$scope.players.guys,
-                        gals:$scope.players.gals
+                        couples:$scope.players.couples
                     };
 
                     BlockPlayers.save(params,payload,function(data){
                         console.log("Schedule updated..");
+                        update();
                     },function(data, errr, stuff) {
                         console.log("BlockPlayers update failed:" + errr);
                     });
