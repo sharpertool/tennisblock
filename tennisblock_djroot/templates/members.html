@@ -4,9 +4,9 @@
 {% block mytags %}
     {{ block.super }}
     {% if not isprod %}
-        {% add_data "less-data" "schedule.less" %}
+        {% add_data "less-data" "members.less" %}
     {% else %}
-        {% add_data "css-data" "schedule.css" %}
+        {% add_data "css-data" "members.css" %}
     {% endif %}
 
     {% add_data "js-body" "angular/apps/tennisblock.js" %}

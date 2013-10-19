@@ -13,7 +13,7 @@ tennisblockapp.directive('blockMembers',['Members','$q',
             priority: 10,
             restrict: 'EA',
             terminal: false,
-            templateUrl: '/static/js/angular/templates/block-members.html',
+            templateUrl: '/static/templates/block-members.html',
             //transclude: true,
             replace: false,
             scope: false,
@@ -22,26 +22,12 @@ tennisblockapp.directive('blockMembers',['Members','$q',
 
                 $scope.members = {
                     headings : ['Name', 'NTRP', 'Gender', 'uNTRP'],
-                    allmembers : [
-                        {
-                            'first'  : 'Ed' , 'last' : 'Henderson',
-                            'gender' : 'M',
-                            'ntrp' : 3.5, 'microntrp' : 3.8,
-                            'new' : false,
-                            'changed' : false
-                        },
-                        {
-                            'first'  : 'Vicki' , 'last' : 'Henderson',
-                            'gender' : 'M',
-                            'ntrp' : 3.5, 'microntrp' : 3.8,
-                            'new' : false,
-                            'changed' : false
-                        }
-                    ]
+                    allmembers : []
                 };
 
                 var updateMembers = function(members) {
                     _.each(members,function(m) {
+                        m.original = JSON.parse(JSON.stringify(m));
                         m.new = false;
                         m.changed = false;
                     });
