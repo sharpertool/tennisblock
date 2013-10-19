@@ -120,6 +120,21 @@ def getSubList(request,date=None):
                     else:
                         msubs.append(s)
 
+            others = SeasonPlayers.objects.filter(blockmember=False)
+            for sp in others:
+                if not playingIds.has_key(sp.player.id):
+                    s = {
+                        'name' : sp.player.Name(),
+                        'id'   : sp.player.id,
+                        'ntrp' : sp.player.ntrp,
+                        'untrp': sp.player.microntrp
+                    }
+
+                    if sp.player.gender == 'F':
+                        fsubs.append(s)
+                    else:
+                        msubs.append(s)
+
             data['guysubs'] = msubs
             data['galsubs'] = fsubs
         else:

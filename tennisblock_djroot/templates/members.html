@@ -11,6 +11,9 @@
 
     {% add_data "js-body" "angular/apps/tennisblock.js" %}
     {% add_data "js-body" "angular/controllers/members.js" %}
+    {% add_data "js-body" "angular/directives/members-list.js" %}
+    {% add_data "js-body" "angular/directives/block-members.js" %}
+    {% add_data "js-body" "angular/directives/block-member.js" %}
 {% endblock %}
 
 {% block title %}
@@ -20,41 +23,9 @@
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
 
-            <div id="textContent">
-                <div id="blockheading" class="dynamic">
-                    <h2>Block Members</h2>
-                </div>
-            </div>
-
-            <div id="blockheading">
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>NTRP</th>
-                        <th>Gender</th>
-                        <th>uNTRP</th>
-                    </tr>
-                    {% for player in players %}
-                    <tr>
-                        <td>{{ player.first }} {{ player.last }}</td>
-                        <td>{{ player.ntrp }}</td>
-                        <td>{{ player.gender }}</td>
-                        <td>{{ player.microntrp }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-
-            <form action="{% url 'addplayer' %}" method="GET">
-                <input type="text" name="q" />
-                <button type="submit">search</button>
-            </form>
             {% verbatim %}
-            <div id="textContent">
-                <div id="blockheading" class="dynamic">
-                    <h2>Block Members</h2>
-                </div>
-            </div>
+            <block-members id="members" >
+            </block-members>
             {% endverbatim %}
 
         </div>

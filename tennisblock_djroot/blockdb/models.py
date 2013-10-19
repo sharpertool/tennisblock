@@ -56,6 +56,13 @@ class Player(models.Model):
     def Name(self):
         return self.first + " " + self.last
 
+class SeasonPlayers(models.Model):
+    season              = models.ForeignKey(Season)
+    player              = models.ForeignKey(Player)
+    blockmember         = models.BooleanField()
+
+    objects = BlockManager()
+
 class Couple(models.Model):
     season              = models.ForeignKey(Season)
     name                = models.CharField(max_length=50)
@@ -78,13 +85,6 @@ class Availability(models.Model):
     meeting             = models.ForeignKey(Meetings)
     player              = models.ForeignKey(Player)
     available           = models.BooleanField()
-
-class SeasonPlayers(models.Model):
-    season              = models.ForeignKey(Season)
-    player              = models.ForeignKey(Player)
-    blockmember         = models.BooleanField()
-
-    objects = BlockManager()
 
 class Schedule(models.Model):
     meeting             = models.ForeignKey(Meetings)

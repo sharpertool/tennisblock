@@ -1,0 +1,10 @@
+Total Members {{ members.allmembers.length }}
+<table class="membertable">
+    <tr class="headerrow">
+        <th ng-repeat="hdg in members.headings">{{ hdg }}</th>
+    </tr>
+    <tr block-member ng-repeat="member in members.allmembers"
+            class="memberrow">
+    </tr>
+</table>
+<button ng-click="addNewMember()">New Member</button>

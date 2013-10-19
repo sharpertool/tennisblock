@@ -1,0 +1,24 @@
+<td class="membername">
+    {{ member.first }} {{ member.last }}
+</td>
+<td class="membergender">
+    {{ member.gender }}
+</td>
+<td class="memberntrp">
+    {{ member.ntrp }}
+</td>
+<td class="membermicro">
+    {{ member.microntrp }}
+</td>
+<td class="memberemail">
+    {{ member.email}}
+</td>
+<td class="memberphone">
+    {{ member.phone}}
+</td>
+<td>
+    <button ng-show="member.changed">Update</button>
+</td>
+<td>
+    <button ng-show="member.new">Delete</button>
+</td>
