@@ -42,6 +42,7 @@ urlpatterns += patterns('',
                         url(r'availability/?$', AvailabilityView.as_view()),
 )
 urlpatterns += patterns('api.members',
+                        url(r'members/(?P<id>\d+)/?$', SeasonPlayersView.as_view()),
                         url(r'members/?$', SeasonPlayersView.as_view()),
 
 

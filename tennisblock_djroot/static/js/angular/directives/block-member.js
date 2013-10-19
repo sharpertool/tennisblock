@@ -5,8 +5,8 @@
  * Time: 11:56 AM
  */
 
-tennisblockapp.directive('blockMember',[
-    function() {
+tennisblockapp.directive('blockMember',['Members','$q',
+    function(Members,$q) {
         // Initialization
 
         return {
@@ -37,6 +37,24 @@ tennisblockapp.directive('blockMember',[
                 $scope.memberFieldChanged = function(member,field) {
                     return member[field] != member.original[field];
                 }
+
+                $scope.updateMember = function(member) {
+                    console.log("Updating " + member.first + " " + member.last);
+                    var mdef = $q.defer();
+                    Members.save({},{'member':member},function() {
+                        mdef.resolve();
+                    });
+                    mdef.promise.then(function() {
+                        Members.get({id:member.id},function(data) {
+                            var m = $scope.member;
+                            delete m.original;
+                            m.original = JSON.parse(JSON.stringify(m));
+                        });
+                    });
+
+
+
+                };
             }
         };
     }
@@ -54,19 +72,16 @@ tennisblockapp.directive('blockMemberItem',[
             //transclude: true,
             replace: true,
             scope: {
-                member : '=',
-                mvar : '='
+                   field : '@',
+                   member : '='
             },
             link: function($scope,$element,$attrs) {
                 console.log("Link blockMemberItem");
 
-                var fld=$attrs['field'];
-                $scope.field = $attrs['field'];
-
                 $scope.isChanged = function() {
-                    var changed = $scope.member[fld] != $scope.member.original[fld];
-                    console.log("Field " + fld + " is changed:" + changed);
-                    return changed;
+                    var f = $scope.field;
+                    var m = $scope.member;
+                    return m.original[f] != m[f];
                 }
             }
         };

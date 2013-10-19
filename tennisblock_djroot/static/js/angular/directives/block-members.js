@@ -37,7 +37,7 @@ tennisblockapp.directive('blockMembers',['Members','$q',
                 var update = function() {
 
                     var mdef = $q.defer();
-                    Members.get({},function(data) {
+                    Members.query({},function(data) {
                         mdef.resolve(data);
                     });
 
@@ -48,7 +48,6 @@ tennisblockapp.directive('blockMembers',['Members','$q',
                 };
 
                 update();
-
 
                 $scope.addNewMember = function() {
                     var newMember = {
