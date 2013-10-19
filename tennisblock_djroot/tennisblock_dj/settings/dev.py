@@ -8,5 +8,3 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROD = False
 
-DATABASES['default']['NAME'] = 'tennisblock_south'
-
