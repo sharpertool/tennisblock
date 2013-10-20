@@ -47,19 +47,24 @@ class DBTeams(object):
         Remove all of the slots for the given date.
         """
         Matchup.objects.filter(meeting = self.getMeeting()).delete()
-        pass
+
+    def deleteMatchup(self,date):
+        """
+        Delete the matchup for the given date.
+        """
+        meeting = self.getMeeting(date)
+        if meeting:
+            Matchup.objects.filter(meeting = meeting).delete()
 
     def InsertRecords(self,date,seq):
         """
         Insert the sequence
         """
 
-        self.initTeamGen()
-
         meeting = self.getMeeting(date)
+        self.deleteMatchup(meeting)
 
         # Insert the slots
-
         set = 1
         for s in seq:
             court = 1

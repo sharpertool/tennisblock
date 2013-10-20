@@ -219,6 +219,9 @@ def blockSchedule(request,date = None):
 
         tb.addCouplesToSchedule(date,group)
 
+        mgr = TeamManager()
+        mgr.dbTeams.deleteMatchup(date)
+
         sched = tb.querySchedule(date)
 
         return JSONResponse(sched)
