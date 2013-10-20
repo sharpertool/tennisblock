@@ -13,7 +13,7 @@ tennisblockapp.directive('blockPlayers',[
             priority: 10,
             restrict: 'A',
             terminal: false,
-            templateUrl: '/static/js/angular/templates/block-players.html',
+            templateUrl: '/static/templates/block-players.html',
             transclude: true,
             replace: true,
             scope: {

@@ -12,18 +12,21 @@ tennisblockapp.directive('blockMembers',['Members','$q',
         return {
             priority: 10,
             restrict: 'EA',
+            controller: 'MembersController',
             terminal: false,
             templateUrl: '/static/templates/block-members.html',
             //transclude: true,
             replace: false,
             scope: false,
-            link: function($scope,$element,$attributes) {
+            link: function($scope,$element,$attributes,ctrl) {
                 console.log("Link blockMembers");
 
                 $scope.members = {
                     headings : ['Name', 'NTRP', 'Gender', 'uNTRP'],
                     allmembers : []
                 };
+
+                ctrl.registerMembers($scope.members);
 
                 var updateMembers = function(members) {
                     _.each(members,function(m) {
@@ -51,14 +54,16 @@ tennisblockapp.directive('blockMembers',['Members','$q',
 
                 $scope.addNewMember = function() {
                     var newMember = {
-                        'first'  : '' , 'last' : '',
-                        'gender' : '',
+                        'first'  : 'Rod' , 'last' : 'Rocks',
+                        'gender' : 'M',
                         'ntrp' : 3.0, 'microntrp' : 3.0,
+                        'email' : 'rod@yahoo.com', 'phone' : '(208) 857-3809',
                         'new' : true,
                         'changed' : false
                     };
 
-                    $scope.members.allmembers.push(newMember)
+                    ctrl.addNewMember(newMember);
+                    //$scope.members.allmembers.push(newMember)
                 };
             }
         };

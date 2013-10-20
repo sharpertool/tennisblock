@@ -1,11 +1,13 @@
-<span block-member-item field="first"></span>
-<span block-member-item field="last"></span>
-<span block-member-item field="gender"></span>
-<span block-member-item field="ntrp"></span>
-<span block-member-item field="microntrp"></span>
-<span block-member-item field="email"></span>
-<span block-member-item field="phone"></span>
+<div>
+    <span block-member-item field="first"></span>
+    <span block-member-item field="last"></span>
+    <span block-member-item field="gender"></span>
+    <span block-member-item field="ntrp"></span>
+    <span block-member-item field="microntrp"></span>
+    <span block-member-item field="email"></span>
+    <span block-member-item field="phone"></span>
 
-<button ng-show="!member.new && memberChanged(member)" ng-click="updateMember(member)">Update</button>
-<button ng-show="member.new">Insert</button>
-<button ng-show="member.new">Delete</button>
+    <button ng-show="!member.new && memberChanged(member)" ng-click="updateMember(member)">Update</button>
+    <button ng-show="member.new" ng-click="insertNewMember(member)">Insert</button>
+    <button ng-click="deleteNewMember(member)">Delete</button>
+</div>

@@ -44,7 +44,8 @@ class SeasonPlayersView(View):
         else:
             pdata = []
 
-            players = SeasonPlayers.objects.filter(season = currseason).order_by('player__last','player__first')
+            players = SeasonPlayers.objects.filter(season = currseason)\
+                .order_by('player__last','player__gender','player__first')
 
             for sp in players:
 
@@ -92,3 +93,74 @@ class SeasonPlayersView(View):
 
         return JSONResponse({})
 
+    def put(self,request,*args,**kwargs):
+        """
+        Used to insert a new member
+        """
+        currseason = _currentSeason()
+        data = JSONParser().parse(request)
+        member = data.get('member')
+
+        fields = [
+            'first',
+            'last',
+            'gender',
+            'ntrp',
+            'microntrp',
+            'email',
+            'phone'
+        ]
+
+        if member:
+            print("I got a new member! %s %s" % (
+                member.get('first'),member.get('last')))
+
+            try:
+                player = Player.objects.create(
+                    first   = member.get('first'),
+                    last    = member.get('last'),
+                    gender  = member.get('gender'),
+                    ntrp    = member.get('ntrp'),
+                    microntrp = member.get('microntrp'),
+                    email   = member.get('email'),
+                    phone   = member.get('phone'),
+                )
+                player.save()
+
+                sp = SeasonPlayers.objects.create(
+                    season=currseason,
+                    player=player,
+                    blockmember = member.get('blockmember',False)
+                )
+                sp.save()
+
+                p = self.serializeSeasonPlayer(sp)
+
+                return JSONResponse(p)
+
+            except Exception as e:
+                print("Error inserting the player player!:%s" % e)
+
+
+        return JSONResponse({})
+
+    def delete(self,request,*args,**kwargs):
+        """
+        Remove a member by ID
+        """
+
+        currseason = _currentSeason()
+        data = JSONParser().parse(request)
+        member = data.get('member')
+
+        if member:
+            print("Deleting member! %s %s" % (
+                member.get('first'),member.get('last')))
+
+            print("Deleting player id(%s)" % member.get('id'))
+            SeasonPlayers.objects.filter(season = currseason,player__id = member.get('id')).delete()
+            Player.objects.filter(id=member.get('id')).delete()
+
+            print("Player deleted.")
+
+            return JSONResponse({})

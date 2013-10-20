@@ -12,14 +12,16 @@ tennisblockapp.directive('blockMember',['Members','$q',
         return {
             priority: 10,
             restrict: 'EA',
+            require: '^blockMembers',
+            controller: 'MembersController',
             terminal: false,
             templateUrl: '/static/templates/block-member.html',
-            //transclude: true,
-            replace: false,
+            transclude: true,
+            replace: true,
             scope: {
                 member : '='
             },
-            link: function($scope,$element,$attributes) {
+            link: function($scope,$element,$attributes,ctrl) {
                 console.log("Link blockMember");
 
                 var attrs = ['first','last','gender','ntrp','microntrp','phone','email'];
@@ -51,9 +53,35 @@ tennisblockapp.directive('blockMember',['Members','$q',
                             m.original = JSON.parse(JSON.stringify(m));
                         });
                     });
+                };
 
+                $scope.insertNewMember = function(member) {
+                    console.log("Inserting " + member.first + " " + member.last);
+                    var mdef = $q.defer();
+                    Members.insert({},{'member':member},function(data) {
+                        mdef.resolve(data);
+                    });
+                    mdef.promise.then(function(data) {
+                        var newid = data.id;
+                        Members.get({id:newid },function(data) {
+                            var m = $scope.member;
+                            delete m.original;
+                            m.new = false;
+                            m.changed = false;
+                            m.original = JSON.parse(JSON.stringify(m));
+                        });
+                    });
+                };
 
-
+                $scope.deleteNewMember = function(member) {
+                    var mdef = $q.defer();
+                    Members.remove({},{'member':member},function(data) {
+                        mdef.resolve(data);
+                    });
+                    mdef.promise.then(function(data) {
+                        console.log("Player actually removed!");
+                        ctrl.deleteMember(member);
+                    });
                 };
             }
         };
@@ -81,7 +109,7 @@ tennisblockapp.directive('blockMemberItem',[
                 $scope.isChanged = function() {
                     var f = $scope.field;
                     var m = $scope.member;
-                    return m.original[f] != m[f];
+                    return !m.new && m.original[f] != m[f];
                 }
             }
         };
