@@ -13,13 +13,14 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
             priority: 10,
             restrict: 'A',
             terminal: false,
+            controller: 'BlockSchedule',
             templateUrl: '/static/templates/block-players-table.html',
             //transclude: true,
             replace: false,
             scope: {
                 queryDate:    '=queryDate'
             },
-            link: function($scope,$element,$attributes) {
+            link: function($scope,$element,$attributes,ctrl) {
                 console.log("Link blockPlayersTable");
 
                 $scope.players = {
@@ -151,6 +152,7 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                 };
 
                 $scope.updateSchedule = function() {
+                    ctrl.updateAll();
 
                     var params = {
                         date:$scope.queryDate
@@ -165,7 +167,6 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                     },function(data, errr, stuff) {
                         console.log("BlockPlayers update failed:" + errr);
                     });
-
                 };
 
                 /**
