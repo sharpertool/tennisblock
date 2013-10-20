@@ -4,7 +4,7 @@ import datetime
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 
 from django.db import connection
-from blockdb.models import Team,Matchup,Schedule
+from blockdb.models import Matchup,Schedule
 from api.apiutils import _getMeetingForDate
 
 class DBTeams(object):
@@ -70,21 +70,14 @@ class DBTeams(object):
             court = 1
             for m in s.matches:
 
-                t1 = Team.objects.create(
-                    male    = m.t1.m,
-                    female  = m.t1.f
-                )
-                t2 = Team.objects.create(
-                    male    = m.t2.m,
-                    female  = m.t2.f
-                )
-
                 matchup = Matchup.objects.create(
                     meeting     = meeting,
                     set         = set,
                     court       = court,
-                    team1       = t1,
-                    team2       = t2
+                    team1_p1    = m.t1.m,
+                    team1_p2    = m.t1.f,
+                    team2_p1    = m.t2.m,
+                    team2_p2    = m.t2.f
                 )
                 matchup.save()
 
@@ -98,17 +91,17 @@ class DBTeams(object):
         Query all of the records for the given date.
         """
 
-        def serializeTeam(team):
+        def serializeTeam(p1,p2):
             return {
                 'm' : {
-                    'name' : team.male.Name(),
-                    'ntrp' : team.male.ntrp,
-                    'untrp': team.male.microntrp,
+                    'name' : p1.Name(),
+                    'ntrp' : p1.ntrp,
+                    'untrp': p1.microntrp,
                     },
                 'f' : {
-                    'name' : team.female.Name(),
-                    'ntrp' : team.female.ntrp,
-                    'untrp': team.female.microntrp,
+                    'name' : p2.Name(),
+                    'ntrp' : p2.ntrp,
+                    'untrp': p2.microntrp,
                     }
             }
 
@@ -134,8 +127,8 @@ class DBTeams(object):
                 currSet = matchup.set
 
             matchData = {
-                'team1' : serializeTeam(matchup.team1),
-                'team2' : serializeTeam(matchup.team2)
+                'team1' : serializeTeam(matchup.team1_p1,matchup.team1_p2),
+                'team2' : serializeTeam(matchup.team2_p1,matchup.team2_p2)
             }
             courtArray.append(matchData)
 

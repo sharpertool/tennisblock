@@ -100,15 +100,13 @@ class Slot(models.Model):
     player              = models.ForeignKey(Player)
     position            = models.CharField(max_length=10)
 
-class Team(models.Model):
-    male                = models.ForeignKey(Player,related_name='team_guy')
-    female              = models.ForeignKey(Player,related_name='team_gal')
-
 class Matchup(models.Model):
     meeting             = models.ForeignKey(Meetings)
     set                 = models.IntegerField()
     court               = models.IntegerField()
-    team1               = models.ForeignKey(Team,related_name="team1")
-    team2               = models.ForeignKey(Team,related_name="team2")
+    team1_p1            = models.ForeignKey(Player,related_name="t1_p1",null=True)
+    team1_p2            = models.ForeignKey(Player,related_name="t1_p2",null=True)
+    team2_p1            = models.ForeignKey(Player,related_name="t2_p1",null=True)
+    team2_p2            = models.ForeignKey(Player,related_name="t2_p2",null=True)
 
 
