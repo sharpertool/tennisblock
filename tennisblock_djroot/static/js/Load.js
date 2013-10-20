@@ -8,6 +8,7 @@
 
 
 TennisClient.include(TennisClient.basePath+'/tennislib/TennisEnvironment.js');
+TennisClient.include(TennisClient.basePath+'/tennislib/tennisconstants.js');
 TennisClient.include(TennisClient.basePath+'/tennislib/TennisGui.js');
 TennisClient.include(TennisClient.basePath+'/tennislib/TennisUtils.js');
 TennisClient.include(TennisClient.basePath+'/tennislib/TennisMain.js');

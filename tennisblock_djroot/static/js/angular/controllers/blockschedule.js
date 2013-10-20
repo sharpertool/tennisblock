@@ -6,8 +6,10 @@
  */
 
 tennisblockapp.controller('BlockSchedule', ['$scope',
-    'BlockDates','BlockPlayers','BlockSubs','PickTeams','PlaySheet','TeamSchedule',
-    function ($scope,BlockDates,BlockPlayers,BlockSubs,PickTeams,PlaySheet,TeamSchedule) {
+    'BlockDates','BlockPlayers','BlockSubs','PlaySheet',
+    function ($scope,BlockDates,BlockPlayers,BlockSubs,PlaySheet) {
+        var self = this;
+
         $scope.block = {
             dates : [],
             currdate : null,
@@ -24,9 +26,6 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
             'guys' : [],
             'gals' : [],
             initialized : false
-        };
-        $scope.match = {
-            'sets' : []
         };
 
         $scope.view = {
@@ -70,7 +69,6 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
             $scope.block.initialized = false;
             $scope.subs.guys = [];
             $scope.subs.gals = [];
-            $scope.match.sets =[];
         };
 
         this.updateAll = function updateAll() {
@@ -84,9 +82,6 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
                 updateInitialized();
             });
 
-            TeamSchedule.get({'date' : $scope.block.queryDate}, function(data) {
-                $scope.match.sets = data.match;
-            });
         };
 
         var isLastBlockDate = function islbd() {
@@ -130,16 +125,6 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
             return d2;
         };
 
-        $scope.pickTeams = function() {
-            console.log("Picking Teams for " + $scope.block.queryDate);
-            PickTeams.save({date: $scope.block.queryDate},function(data){
-                console.log("Done Picking Teams:" + data.status + " " + data.date);
-                updateAll();
-            },function(data, e, stuff) {
-                console.log("Error Picking Teams:" + e);
-            });
-        };
-
         $scope.playSheet = function() {
             PlaySheet.get({data:$scope.block.queryDate});
         };
@@ -151,21 +136,22 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
         $scope.gotodate = function gotod(date) {
             console.log("Setting new queryDate to " + date);
             $scope.block.queryDate = date;
+            $scope.block.currdate = tb.utils.pyDate2js(date).toLocaleDateString();
             console.log("queryDate set to " + $scope.block.queryDate);
-            this.updateAll();
+            self.updateAll();
         };
 
         $scope.previous = function() {
             var d1 = previousBlockDate();
             $scope.block.queryDate = tb.utils.jsDate2py(d1);
             console.log("queryDate set to " + $scope.block.queryDate);
-            this.updateAll();
+            self.updateAll();
         };
 
         $scope.next = function() {
             $scope.block.queryDate = tb.utils.jsDate2py(nextBlockDate());
             console.log("queryDate set to " + $scope.block.queryDate);
-            updateAll();
+            self.updateAll();
         };
 
         $scope.playerPairs = function() {

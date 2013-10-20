@@ -1,0 +1,16 @@
+<div class="navigation">
+    <a ng-hide='true' class="previous"
+       ng-click="previous()">
+        &lt; previous
+    </a>
+    <button ng-repeat="date in block.dates | filter: { holdout : false }"
+            ng-click="gotodate(date.date)">
+        {{ date.date }}
+    </button>
+    <a class="next"
+       ng-hide="true"
+       ng-click="next()">
+        next &gt;
+    </a>
+</div>
+

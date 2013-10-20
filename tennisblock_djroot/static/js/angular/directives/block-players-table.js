@@ -112,12 +112,21 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
 
 
                 $scope.getGuySubs = function(idx,currPlayer) {
-                    $scope.players.couples[idx].currguy = currPlayer;
-                    return _.union([currPlayer],$scope.subs.guys);
+                    if (currPlayer && $scope.players.couples[idx]) {
+
+                        $scope.players.couples[idx].currguy = currPlayer;
+                        return _.union([currPlayer],$scope.subs.guys);
+                    }
+                    return $scope.subs.guys;
                 };
+
                 $scope.getGalSubs = function(idx,currPlayer) {
-                    $scope.players.couples[idx].currgal = currPlayer;
-                    return _.union([currPlayer],$scope.subs.gals);
+                    if (currPlayer && $scope.players.couples[idx]) {
+
+                        $scope.players.couples[idx].currgal = currPlayer;
+                        return _.union([currPlayer],$scope.subs.gals);
+                    }
+                    return $scope.subs.gals;
                 };
 
                 $scope.hasChanged = function() {
@@ -125,20 +134,28 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                     var ocpls= $scope.players.originalcouples;
                     var changed = false;
                     _.each(cpls,function(c,idx) {
-                        var oc = ocpls[idx];
-                        changed = changed || c.guy.id != oc.guy.id || c.gal.id != oc.gal.id;
+                        if (typeof c == 'undefined') {
+                            console.log("Null entry in one of the players..");
+                        } else {
+                            var oc = ocpls[idx];
+                            changed = changed || c.guy.id != oc.guy.id || c.gal.id != oc.gal.id;
+                        }
                     });
                     console.log("hasChanged: " + changed);
                     return changed;
                 };
 
                 $scope.onGuyChanged = function(idx) {
-                    var is = $scope.players.couples[idx].guy;
-                    var was = $scope.players.couples[idx].currguy;
-                    console.log("onGuyChanged[" + idx + "] was " + was.name + " now is " + is.name);
-                    $scope.players.couples[idx].currguy = is;
-                    var isidx = $scope.subs.guys.indexOf(is);
-                    $scope.subs.guys[isidx] = was;
+                    if ($scope.players.couples[idx]) {
+                        var is = $scope.players.couples[idx].guy;
+                        var was = $scope.players.couples[idx].currguy;
+                        console.log("onGuyChanged[" + idx + "] was " + was.name + " now is " + is.name);
+                        $scope.players.couples[idx].currguy = is;
+                        var isidx = $scope.subs.guys.indexOf(is);
+                        $scope.subs.guys[isidx] = was;
+                    } else {
+
+                    }
                 };
 
 
@@ -152,7 +169,6 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                 };
 
                 $scope.updateSchedule = function() {
-                    ctrl.updateAll();
 
                     var params = {
                         date:$scope.queryDate
@@ -164,6 +180,8 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                     BlockPlayers.save(params,payload,function(data){
                         console.log("Schedule updated..");
                         update();
+                        ctrl.updateAll();
+                        amplify.publish(tb.events.SCHED_UPDATED);
                     },function(data, errr, stuff) {
                         console.log("BlockPlayers update failed:" + errr);
                     });

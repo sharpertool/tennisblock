@@ -18,8 +18,8 @@ urlpatterns = patterns('',
                url(r'^availability/', AvailabilityView.as_view()),
                url(r'^playsheet/', PlaysheetView.as_view()),
                url(r'^members/', include('members.urls')),
-               url(r'^contact/', ContactView.as_view()),
-               url(r'^about/', AboutView.as_view()),
+               url(r'^contact/?', ContactView.as_view()),
+               url(r'^about/?', AboutView.as_view()),
                url(r'^accounts/', include('accounts.urls')),
 
                # Uncomment the admin/doc line below to enable admin documentation:

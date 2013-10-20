@@ -7,11 +7,10 @@
  */
 
 
-var TennisBlock = {
-    'app'       : null,
-    'gui'       : null,
-    'log'       : null,
-    'utils'     : null
-};
+var TennisBlock = TennisBlock === undefined ? {} : TennisBlock;
 var tb = TennisBlock;
+tb.app = null;
+tb.gui = null;
+tb.log = null;
+tb.utils = null;
 

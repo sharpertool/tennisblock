@@ -161,6 +161,8 @@ def blockPlayers(request,date=None):
         if couples:
             tb = Scheduler()
             result['status'] = tb.updateSchedule(date,couples)
+            mgr = TeamManager()
+            mgr.dbTeams.deleteMatchup(date)
         else:
             result['status'] = "Did not decode the guys and gals"
         return JSONResponse(result)

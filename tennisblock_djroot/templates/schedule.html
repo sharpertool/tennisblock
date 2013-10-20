@@ -11,6 +11,8 @@
 
     {% add_data "js-body" "angular/apps/tennisblock.js" %}
     {% add_data "js-body" "angular/controllers/blockschedule.js" %}
+    {% add_data "js-body" "angular/directives/schedule-nav.js" %}
+    {% add_data "js-body" "angular/directives/schedule-matches.js" %}
     {% add_data "js-body" "angular/directives/block-players.js" %}
     {% add_data "js-body" "angular/directives/block-players-table.js" %}
 {% endblock %}
@@ -26,75 +28,12 @@
             <div id="textContent" >
                 <div id="blockheading" class="dynamic">
                     <h2>Block Schedule for {{ block.currdate }}</h2>
-                    <button ng-click="pickTeams()">Pick Teams</button>
-                    <a target="_blank" href="/api/blocksheet/">Download Block Sheet</a>
                     <div id=schedule>
-                        <div class="navigation">
-                            <a ng-hide='true' class="previous"
-                               ng-click="previous()">
-                                &lt; previous
-                            </a>
-                            <button ng-repeat="date in block.dates | filter: { holdout : false }"
-                                    ng-click="gotodate(date.date)">
-                                {{ date.date }}
-                            </button>
-                            <a class="next"
-                               ng-hide="1"
-                               ng-click="next()">
-                                next &gt;
-                            </a>
+                        <div schedule-nav block="block"></div>
+                        <div id="players" block-players-table
+                             query-date="block.queryDate">
                         </div>
-                        <div class="scheduleview">
-                            <div id="players" block-players-table
-                                 query-date="block.queryDate">
-                            </div>
-                            <div id="subs" ng-hide="true">
-                                <h3>Subs</h3>
-                                <ul>
-                                    <span>Guys</span>
-                                    <li ng-repeat="sub in subs.guys">
-                                        {{ sub.name}}
-                                    </li>
-                                    <span>Gals</span>
-                                    <li ng-repeat="sub in subs.gals">
-                                        {{ sub.name}}
-                                    </li>
-                                </ul>
-                            </div>
-                            <div id="matches">
-                                <h3>Play Schedule</h3>
-                                <table id="table_matches">
-                                    <tr>
-                                        <th>Set</th>
-                                        <!-- Dynamic number of courts -->
-                                        <th ng-repeat-start="court in match.sets[0]">Court {{ $index+1 }}</th>
-                                        <th ng-repeat-end>Ratings</th>
-                                    </tr>
-                                    <tr ng-repeat="set in match.sets">
-                                        <td>Match {{ $index+1 }}</td>
-                                        <td ng-repeat-start="court in set">
-                                            <div class="courtTeam">
-                                                {{ court.team1.m.name }} and {{ court.team1.f.name }}
-                                            </div>
-                                            <span>Versus</span>
-                                            <div class="courtTeam">
-                                                {{ court.team2.m.name }} and {{ court.team2.f.name }}
-                                            </div>
-                                        </td>
-                                        <td ng-repeat-end>
-                                            <div class="total_untrp">
-                                                {{ court.team1.m.untrp + court.team1.f.untrp|number:2 }}
-                                                /
-                                                {{ court.team2.m.untrp + court.team2.f.untrp|number:2 }}
-                                            </div>
-                                            <div class="untrp_diff">
-                                                Diff: {{ (court.team1.m.untrp + court.team1.f.untrp)-(court.team2.m.untrp + court.team2.f.untrp)|number:2 }}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                        <div schedule-matches query-date="block.queryDate"></div>
                     </div>
                 </div>
             </div>
