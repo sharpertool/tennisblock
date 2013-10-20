@@ -60,35 +60,50 @@ class SeasonPlayersView(View):
 
         currseason = _currentSeason()
         data = JSONParser().parse(request)
-        member = data.get('member')
 
-        fields = [
-            'first',
-            'last',
-            'gender',
-            'ntrp',
-            'microntrp',
-            'email',
-            'phone'
-        ]
+        if kwargs.get('id'):
+            print("Updating one player..")
+            players = SeasonPlayers.objects.filter(season = currseason,player__id = kwargs.get('id'))
+            if len(players):
+                sp = players[0]
+                for key,val in data.iteritems():
+                    if key == 'blockmember':
+                        print("Updating blockmember value to %s" % val)
+                        sp.blockmember = val
+                        sp.save()
 
-        if member:
-            print("I got a member! id(%s) %s %s" % (
-                member.get('id'),
-                member.get('first'),member.get('last')))
+            return JSONResponse({})
+        else:
 
-            try:
-                player = Player.objects.get(pk=int(member.get('id',-1)))
-                print("Found the player object.")
-                orig = member.get('original')
-                for fld in fields:
-                    if member.get(fld) != orig.get(fld):
-                        setattr(player,fld,member.get(fld))
+            member = data.get('member')
 
-                player.save()
+            fields = [
+                'first',
+                'last',
+                'gender',
+                'ntrp',
+                'microntrp',
+                'email',
+                'phone'
+            ]
 
-            except Exception as e:
-                print("Error updating the player player!:%s" % e)
+            if member:
+                print("I got a member! id(%s) %s %s" % (
+                    member.get('id'),
+                    member.get('first'),member.get('last')))
+
+                try:
+                    player = Player.objects.get(pk=int(member.get('id',-1)))
+                    print("Found the player object.")
+                    orig = member.get('original')
+                    for fld in fields:
+                        if member.get(fld) != orig.get(fld):
+                            setattr(player,fld,member.get(fld))
+
+                    player.save()
+
+                except Exception as e:
+                    print("Error updating the player player!:%s" % e)
 
 
         return JSONResponse({})

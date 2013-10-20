@@ -42,6 +42,7 @@ tennisblockapp.factory('BlockDates',function ($resource) {
         return $resource('/api/members/:id/', {}, {
             get: {method: 'GET', params: {id: '@id'}},
             save: {method: 'POST', isArray: false},
+            update: {method: 'POST', params: {id: '@id'},isArray: false},
             insert: { method: 'PUT', isArray: false},
             remove: { method: 'DELETE'}
         })

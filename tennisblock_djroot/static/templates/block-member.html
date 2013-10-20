@@ -6,6 +6,7 @@
     <span block-member-item field="microntrp"></span>
     <span block-member-item field="email"></span>
     <span block-member-item field="phone"></span>
+    <input type="checkbox" ng-model="member.blockmember" ng-change="updateBlockMember(member)"/>
 
     <button ng-show="!member.new && memberChanged(member)" ng-click="updateMember(member)">Update</button>
     <button ng-show="member.new" ng-click="insertNewMember(member)">Insert</button>

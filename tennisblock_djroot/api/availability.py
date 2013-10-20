@@ -38,6 +38,8 @@ class AvailabilityView(View):
             if not sp.blockmember:
                 continue
 
+            print("Getting availability data for %s" % sp.player.Name())
+
             player = sp.player
 
             avail = []

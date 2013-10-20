@@ -34,6 +34,15 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'blockdb', ['Player'])
 
+        # Adding model 'SeasonPlayers'
+        db.create_table(u'blockdb_seasonplayers', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('season', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['blockdb.Season'])),
+            ('player', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['blockdb.Player'])),
+            ('blockmember', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal(u'blockdb', ['SeasonPlayers'])
+
         # Adding model 'Couple'
         db.create_table(u'blockdb_couple', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -66,15 +75,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'blockdb', ['Availability'])
 
-        # Adding model 'SeasonPlayers'
-        db.create_table(u'blockdb_seasonplayers', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('season', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['blockdb.Season'])),
-            ('player', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['blockdb.Player'])),
-            ('blockmember', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal(u'blockdb', ['SeasonPlayers'])
-
         # Adding model 'Schedule'
         db.create_table(u'blockdb_schedule', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -82,6 +82,7 @@ class Migration(SchemaMigration):
             ('player', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['blockdb.Player'])),
             ('issub', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('verified', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('partner', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partner', null=True, to=orm['blockdb.Player'])),
         ))
         db.send_create_signal(u'blockdb', ['Schedule'])
 
@@ -123,6 +124,9 @@ class Migration(SchemaMigration):
         # Deleting model 'Player'
         db.delete_table(u'blockdb_player')
 
+        # Deleting model 'SeasonPlayers'
+        db.delete_table(u'blockdb_seasonplayers')
+
         # Deleting model 'Couple'
         db.delete_table(u'blockdb_couple')
 
@@ -131,9 +135,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Availability'
         db.delete_table(u'blockdb_availability')
-
-        # Deleting model 'SeasonPlayers'
-        db.delete_table(u'blockdb_seasonplayers')
 
         # Deleting model 'Schedule'
         db.delete_table(u'blockdb_schedule')
@@ -200,6 +201,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'issub': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'meeting': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blockdb.Meetings']"}),
+            'partner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partner'", 'null': 'True', 'to': u"orm['blockdb.Player']"}),
             'player': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blockdb.Player']"}),
             'verified': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         },

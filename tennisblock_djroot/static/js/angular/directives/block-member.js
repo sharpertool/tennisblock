@@ -55,6 +55,10 @@ tennisblockapp.directive('blockMember',['Members','$q',
                     });
                 };
 
+                $scope.updateBlockMember = function(member) {
+                    Members.update({id:member.id},{'blockmember':member.blockmember});
+                };
+
                 $scope.insertNewMember = function(member) {
                     console.log("Inserting " + member.first + " " + member.last);
                     var mdef = $q.defer();
