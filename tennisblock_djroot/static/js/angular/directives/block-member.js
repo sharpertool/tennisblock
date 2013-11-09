@@ -34,11 +34,11 @@ tennisblockapp.directive('blockMember',['Members','$q',
                     });
                     m.changed = changed;
                     return changed;
-                }
+                };
 
                 $scope.memberFieldChanged = function(member,field) {
                     return member[field] != member.original[field];
-                }
+                };
 
                 $scope.updateMember = function(member) {
                     console.log("Updating " + member.first + " " + member.last);
@@ -50,7 +50,7 @@ tennisblockapp.directive('blockMember',['Members','$q',
                         Members.get({id:member.id},function(data) {
                             var m = $scope.member;
                             delete m.original;
-                            m.original = JSON.parse(JSON.stringify(m));
+                            m.original = angular.copy(m);
                         });
                     });
                 };
