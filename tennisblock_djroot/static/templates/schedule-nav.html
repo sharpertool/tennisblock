@@ -4,6 +4,7 @@
         &lt; previous
     </a>
     <button ng-repeat="date in block.dates | filter: { holdout : false }"
+            ng-class="{currentDateClass: date.date == block.queryDate}"
             ng-click="gotodate(date.date)">
         {{ date.date }}
     </button>

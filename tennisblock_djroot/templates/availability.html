@@ -55,8 +55,8 @@ availability
                                     >
                                 <input ng-disabled="!canEdit(player)" type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
                             </td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td>{{ player.nplayed }}</td>
+                            <td>{{ player.nscheduled }}</td>
                         </tr>
                     </table>
                 </div>
