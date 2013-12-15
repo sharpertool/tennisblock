@@ -45,11 +45,16 @@ class AvailabilityView(View):
             avail = []
             scheduled = []
 
+            nplayed = 0
+            nscheduled = 0
+
             p = {
                 'name' : player.first + ' ' + player.last,
                 'id' : player.id,
                 'isavail' : avail,
-                'scheduled' : scheduled
+                'scheduled' : scheduled,
+                'nplayed' : nplayed,
+                'nscheduled': nscheduled
             }
 
             for mtg in mtgs:
@@ -67,8 +72,14 @@ class AvailabilityView(View):
 
                 if len(sch):
                     scheduled.append(True)
+                    nscheduled += 1
+                    if mtg.date < datetime.date.today():
+                        nplayed += 1
                 else:
                     scheduled.append(False)
+
+            p['nplayed'] = nplayed
+            p['nscheduled'] = nscheduled
 
             pdata.append(p)
 

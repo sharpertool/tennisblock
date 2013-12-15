@@ -36,10 +36,10 @@
         span {
             width: 100%;
             color: #3A8027;
-            line-height: 92px;
+            line-height: 35px;
             font-family: "Century Schoolbook";
             //font-style: italic;
-            font-size: 7.5em;
+            font-size: 3.5em;
         }
 
         @media screen and (max-width:@tinyWidth) {
@@ -75,58 +75,5 @@
         //background-repeat: no-repeat;
         z-index: 100;
 
-    }
-
-    .gb_bee {
-        @width: 129px;
-        @height: ((100/128)*@width);
-        @rotate: -15deg;
-        position: absolute;
-        //right: 220px;
-        left: 620px;
-        bottom:45px;
-        width: @width;
-        height:@height;
-        background-size: 70% 70%;
-        background-image: url("@{imagebase}/gb_bee.png");
-        -webkit-transform:rotate(@rotate);
-        -moz-transform:rotate(@rotate);
-        background-repeat: no-repeat;
-        z-index: 90;
-        @media screen and (max-width:@tinyWidth) {
-            display:none;
-        }
-    }
-
-    .veggies {
-        @width: 128px;
-        @height: 110px;
-        position: absolute;
-        left: 16px;
-        bottom:16px;
-        width: @width;
-        height:@width;
-        background-size: 100% 100%;
-        background-image: url("@{imgbase}/VeggiesTrimmed.png");
-        background-repeat: no-repeat;
-        @media screen and (max-width:@tinyWidth) {
-            display:none;
-        }
-    }
-
-    .watercan {
-        @width: 104px;
-        @height: 124px;
-        position: absolute;
-        right: 14px;
-        bottom:6px;
-        width: @width;
-        height:@height;
-        background-size: 100% 100%;
-        background-image: url("@{imagebase}/watercan_bee.png");
-        background-repeat: no-repeat;
-        @media screen and (max-width:@bigWidth) {
-            display:none;
-        }
     }
 }
