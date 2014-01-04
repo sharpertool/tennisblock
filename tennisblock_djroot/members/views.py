@@ -1,7 +1,7 @@
 # Create your views here.
 
 
-from TBLib.view import TennisView
+from TBLib.view import TennisView, TennisLoginView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from blockdb.models import Player,SeasonPlayers
@@ -16,7 +16,7 @@ class MemberCreate(CreateView):
     def form_valid(self,form):
         return super(MemberCreate,self).form_valid(form)
 
-class MembersView(TennisView):
+class MembersView(TennisLoginView):
     template_name = "members.html"
     members_only = False
 

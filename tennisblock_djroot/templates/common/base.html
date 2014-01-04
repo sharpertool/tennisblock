@@ -74,7 +74,8 @@
             django = {
                 'username'  : "{{ user.username }}",
                 'first'     : "{{ user.first_name }}",
-                'last'      : "{{ user.last_name }}"
+                'last'      : "{{ user.last_name }}",
+                'blockcaptain' : "{{ perms.blockdb.change_sched }}"
             };
             console.log("Initialized username to " + django.username);
         </script>

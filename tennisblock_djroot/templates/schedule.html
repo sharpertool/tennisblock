@@ -24,6 +24,13 @@
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic" ng-controller="BlockSchedule">
 
+            {%  if perms.blockdb.schedule.change_sched %}
+                <h1>Be carefull grasshopper!!</h1>
+            {% endif %}
+            {%  if perms.blockdb.bobusperm %}
+                <h1>this is bogus!!</h1>
+            {% endif %}
+
             {% verbatim %}
             <div id="textContent" >
                 <div id="blockheading" class="dynamic">

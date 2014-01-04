@@ -87,6 +87,12 @@ class Availability(models.Model):
     available           = models.BooleanField()
 
 class Schedule(models.Model):
+
+    class Meta:
+        permissions = (
+            ("change_sched", "Can change the schedule")
+        )
+
     meeting             = models.ForeignKey(Meetings)
     player              = models.ForeignKey(Player)
     issub               = models.BooleanField()

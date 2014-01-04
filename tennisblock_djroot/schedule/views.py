@@ -1,8 +1,8 @@
 # Create your views here.
 
-from TBLib.view import TennisView
+from TBLib.view import TennisLoginView
 
 
-class BlockSchedule(TennisView):
+class BlockSchedule(TennisLoginView):
     template_name = "schedule.html"
 
