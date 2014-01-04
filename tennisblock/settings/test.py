@@ -1,5 +1,10 @@
 
+print ("Running Test Settings.")
+
 from .base import *
 
-print ("Running Test Settings.")
+try:
+    from local_settings import *
+except ImportError:
+print("No local settings file imported")
 

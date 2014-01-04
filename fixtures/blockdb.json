@@ -1,0 +1,7601 @@
+Running Development Settings.
+Project dir:/Volumes/bnpraid/Users/kutenai/proj/bondiproj/tennisblock/tennisblock
+[
+{
+    "pk": 1, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "permission", 
+        "name": "permission", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 2, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "group", 
+        "name": "group", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 3, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "user", 
+        "name": "user", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 4, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "contenttype", 
+        "name": "content type", 
+        "app_label": "contenttypes"
+    }
+},
+{
+    "pk": 5, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "session", 
+        "name": "session", 
+        "app_label": "sessions"
+    }
+},
+{
+    "pk": 6, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "site", 
+        "name": "site", 
+        "app_label": "sites"
+    }
+},
+{
+    "pk": 7, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "logentry", 
+        "name": "log entry", 
+        "app_label": "admin"
+    }
+},
+{
+    "pk": 8, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "migrationhistory", 
+        "name": "migration history", 
+        "app_label": "south"
+    }
+},
+{
+    "pk": 9, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "season", 
+        "name": "season", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 10, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "player", 
+        "name": "player", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 11, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "seasonplayers", 
+        "name": "season players", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 12, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "couple", 
+        "name": "couple", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 13, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "meetings", 
+        "name": "meetings", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 14, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "availability", 
+        "name": "availability", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 15, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "schedule", 
+        "name": "schedule", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 16, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "slot", 
+        "name": "slot", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 17, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "team", 
+        "name": "team", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": 18, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "matchup", 
+        "name": "matchup", 
+        "app_label": "blockdb"
+    }
+},
+{
+    "pk": "868t94vdrmkzanf1w8ustbujq8cpcivz", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-01-18T20:23:44Z", 
+        "session_data": "ZDNkYWVmMWFkOGVlMDk3NDRhZDk0M2YxMWUzNjU2NWMzYmU3YjQ3YTqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg=="
+    }
+},
+{
+    "pk": "vlvsrj0300ifb99mqb301g5fummrnoa8", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2013-11-04T06:52:45Z", 
+        "session_data": "ZmUzZWJlYWFmNDc2YTFjMTc4YTI2YmM2M2M4MGYwZmY3Mzk2OWU4YTqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQSKAQJ1Lg=="
+    }
+},
+{
+    "pk": "zj7i4l5nliib8i7r92j82qrfn87db478", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2013-11-03T19:08:10Z", 
+        "session_data": "ZTk0ODU4N2JjNmEwNGNlYjIzNDU5YTQwMDhkZTFiNjM5NzgxNjA3OTqAAn1xAShYCgAAAHRlc3Rjb29raWVxAlgGAAAAd29ya2VkcQNVDV9hdXRoX3VzZXJfaWSKAQFVEl9hdXRoX3VzZXJfYmFja2VuZFUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmR1Lg=="
+    }
+},
+{
+    "pk": 3, 
+    "model": "sites.site", 
+    "fields": {
+        "domain": "tennisblock.com", 
+        "name": "tennisblock.com"
+    }
+},
+{
+    "pk": 1, 
+    "model": "south.migrationhistory", 
+    "fields": {
+        "applied": "2013-10-20T18:55:28Z", 
+        "app_name": "blockdb", 
+        "migration": "0001_initial"
+    }
+},
+{
+    "pk": 2, 
+    "model": "south.migrationhistory", 
+    "fields": {
+        "applied": "2013-10-20T21:59:11Z", 
+        "app_name": "blockdb", 
+        "migration": "0002_auto__add_field_matchup_team1_p1__add_field_matchup_team1_p2__add_fiel"
+    }
+},
+{
+    "pk": 3, 
+    "model": "south.migrationhistory", 
+    "fields": {
+        "applied": "2013-10-20T22:15:09Z", 
+        "app_name": "blockdb", 
+        "migration": "0003_auto__del_team__del_field_matchup_team1__del_field_matchup_team2"
+    }
+},
+{
+    "pk": 1, 
+    "model": "blockdb.season", 
+    "fields": {
+        "firstcourt": 6, 
+        "enddate": "2014-01-05", 
+        "name": "Fall 2013", 
+        "startdate": "2013-09-16", 
+        "blocktime": "19:00:00", 
+        "courts": 3, 
+        "blockstart": "2013-09-20"
+    }
+},
+{
+    "pk": 1, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Henderson", 
+        "microntrp": 3.95, 
+        "gender": "M", 
+        "ntrp": 3.5, 
+        "phone": "", 
+        "email": "ed@tennisblock.com", 
+        "first": "Ed"
+    }
+},
+{
+    "pk": 2, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Henderson", 
+        "microntrp": 4.1, 
+        "gender": "F", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "viquee@cableone.net", 
+        "first": "Vicki"
+    }
+},
+{
+    "pk": 3, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Bettis", 
+        "microntrp": 3.6, 
+        "gender": "M", 
+        "ntrp": 3.5, 
+        "phone": "", 
+        "email": "davebettis@cableone.net", 
+        "first": "Dave"
+    }
+},
+{
+    "pk": 4, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Bettis", 
+        "microntrp": 3.41, 
+        "gender": "F", 
+        "ntrp": 3.5, 
+        "phone": "(208) 344-4142", 
+        "email": "lisabettis416@gmail.com", 
+        "first": "Lisa"
+    }
+},
+{
+    "pk": 5, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Braithwaite", 
+        "microntrp": 3.9, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "rbrat56@hotmail.com", 
+        "first": "Richard"
+    }
+},
+{
+    "pk": 6, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Braithwaite", 
+        "microntrp": 4.2, 
+        "gender": "F", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "ritabrat64@hotmail.com", 
+        "first": "Rita"
+    }
+},
+{
+    "pk": 7, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Grunke", 
+        "microntrp": 4.2, 
+        "gender": "F", 
+        "ntrp": 4.0, 
+        "phone": "(208) 672-9254", 
+        "email": "jcrlaw2000@yahoo.com", 
+        "first": "Jenny"
+    }
+},
+{
+    "pk": 8, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Grunke", 
+        "microntrp": 4.04, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "jwgrunke@hotmail.com", 
+        "first": "James"
+    }
+},
+{
+    "pk": 9, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Parker", 
+        "microntrp": 4.35, 
+        "gender": "F", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "mkparker@spro.net", 
+        "first": "Marilyn"
+    }
+},
+{
+    "pk": 10, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Kimerling", 
+        "microntrp": 4.3, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "rodnkime@yahoo.com", 
+        "first": "Rod"
+    }
+},
+{
+    "pk": 11, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Putnam", 
+        "microntrp": 4.4, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "mjakeputnam@att.net", 
+        "first": "Jake"
+    }
+},
+{
+    "pk": 12, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "McGraw", 
+        "microntrp": 3.4, 
+        "gender": "F", 
+        "ntrp": 3.0, 
+        "phone": "", 
+        "email": "llrfamily3@gmail.com", 
+        "first": "Lori"
+    }
+},
+{
+    "pk": 13, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Haller", 
+        "microntrp": 3.6, 
+        "gender": "M", 
+        "ntrp": 3.5, 
+        "phone": "", 
+        "email": "ghaller@micron.com", 
+        "first": "Gordon"
+    }
+},
+{
+    "pk": 14, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Haller", 
+        "microntrp": 4.1, 
+        "gender": "F", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "jmhaller@cableone.net", 
+        "first": "Julianne"
+    }
+},
+{
+    "pk": 15, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Pearce", 
+        "microntrp": 4.5, 
+        "gender": "M", 
+        "ntrp": 4.5, 
+        "phone": "208 855-2369", 
+        "email": "drjpearce@aol.com", 
+        "first": "John"
+    }
+},
+{
+    "pk": 16, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Pearce", 
+        "microntrp": 4.2, 
+        "gender": "F", 
+        "ntrp": 4.0, 
+        "phone": "208 855-2369", 
+        "email": "pearceelc@aol.com", 
+        "first": "Corie"
+    }
+},
+{
+    "pk": 17, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Smith", 
+        "microntrp": 4.6, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "", 
+        "first": "Mark"
+    }
+},
+{
+    "pk": 18, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Smith", 
+        "microntrp": 3.3, 
+        "gender": "F", 
+        "ntrp": 3.0, 
+        "phone": "", 
+        "email": "debsmith5@hotmail.com", 
+        "first": "Debbie"
+    }
+},
+{
+    "pk": 19, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Trask", 
+        "microntrp": 4.5, 
+        "gender": "M", 
+        "ntrp": 4.5, 
+        "phone": "", 
+        "email": "jeff.trask@hp.com", 
+        "first": "Jeff"
+    }
+},
+{
+    "pk": 20, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Trask", 
+        "microntrp": 3.8, 
+        "gender": "F", 
+        "ntrp": 3.5, 
+        "phone": "", 
+        "email": "sonja.trask@hp.com,fannydog@earthlink.net", 
+        "first": "Sonja "
+    }
+},
+{
+    "pk": 21, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Kittelson", 
+        "microntrp": 4.2, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "bkittelson@gmail.com", 
+        "first": "Brian"
+    }
+},
+{
+    "pk": 22, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Kittelson", 
+        "microntrp": 3.9, 
+        "gender": "F", 
+        "ntrp": 3.5, 
+        "phone": "", 
+        "email": "kristinekittelson@gmail.com", 
+        "first": "Kristine"
+    }
+},
+{
+    "pk": 23, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Bloomer", 
+        "microntrp": 4.3, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "jtbloomer@cableone.net", 
+        "first": "Jonathan"
+    }
+},
+{
+    "pk": 25, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Kittelson", 
+        "microntrp": 3.7, 
+        "gender": "M", 
+        "ntrp": 3.5, 
+        "phone": "unkown", 
+        "email": "unknown", 
+        "first": "Bryce (?)"
+    }
+},
+{
+    "pk": 27, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Parker", 
+        "microntrp": 4.1, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "", 
+        "email": "mkparker@spro.net", 
+        "first": "Marilyn"
+    }
+},
+{
+    "pk": 32, 
+    "model": "blockdb.player", 
+    "fields": {
+        "last": "Knudsen", 
+        "microntrp": 4.2, 
+        "gender": "M", 
+        "ntrp": 4.0, 
+        "phone": "(208) 857-3809", 
+        "email": "greg@gmail.com", 
+        "first": "Greg"
+    }
+},
+{
+    "pk": 114, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 1
+    }
+},
+{
+    "pk": 115, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 2
+    }
+},
+{
+    "pk": 116, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 3
+    }
+},
+{
+    "pk": 117, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 4
+    }
+},
+{
+    "pk": 118, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 5
+    }
+},
+{
+    "pk": 119, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 6
+    }
+},
+{
+    "pk": 120, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 7
+    }
+},
+{
+    "pk": 121, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 8
+    }
+},
+{
+    "pk": 122, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 9
+    }
+},
+{
+    "pk": 123, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 10
+    }
+},
+{
+    "pk": 124, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 11
+    }
+},
+{
+    "pk": 125, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 12
+    }
+},
+{
+    "pk": 126, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 13
+    }
+},
+{
+    "pk": 127, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 14
+    }
+},
+{
+    "pk": 128, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 15
+    }
+},
+{
+    "pk": 129, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 16
+    }
+},
+{
+    "pk": 130, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 17
+    }
+},
+{
+    "pk": 131, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 18
+    }
+},
+{
+    "pk": 132, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 19
+    }
+},
+{
+    "pk": 133, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 20
+    }
+},
+{
+    "pk": 134, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 21
+    }
+},
+{
+    "pk": 135, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": true, 
+        "player": 22
+    }
+},
+{
+    "pk": 136, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": false, 
+        "player": 23
+    }
+},
+{
+    "pk": 138, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": false, 
+        "player": 25
+    }
+},
+{
+    "pk": 139, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": false, 
+        "player": 27
+    }
+},
+{
+    "pk": 143, 
+    "model": "blockdb.seasonplayers", 
+    "fields": {
+        "season": 1, 
+        "blockmember": false, 
+        "player": 32
+    }
+},
+{
+    "pk": 34, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Trasks", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 20, 
+        "blockcouple": true, 
+        "male": 19
+    }
+},
+{
+    "pk": 35, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Grunkes", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 7, 
+        "blockcouple": true, 
+        "male": 8
+    }
+},
+{
+    "pk": 36, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Braithwaties", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 6, 
+        "blockcouple": true, 
+        "male": 5
+    }
+},
+{
+    "pk": 37, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Pearces", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 16, 
+        "blockcouple": true, 
+        "male": 15
+    }
+},
+{
+    "pk": 38, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Hallers", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 14, 
+        "blockcouple": true, 
+        "male": 13
+    }
+},
+{
+    "pk": 39, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Smiths", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 18, 
+        "blockcouple": true, 
+        "male": 17
+    }
+},
+{
+    "pk": 40, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Bettis", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 4, 
+        "blockcouple": true, 
+        "male": 3
+    }
+},
+{
+    "pk": 41, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Kittelsons", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 22, 
+        "blockcouple": true, 
+        "male": 21
+    }
+},
+{
+    "pk": 42, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Rod & Marilyn", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 9, 
+        "blockcouple": true, 
+        "male": 10
+    }
+},
+{
+    "pk": 43, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Hendersons", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": true, 
+        "female": 2, 
+        "blockcouple": true, 
+        "male": 1
+    }
+},
+{
+    "pk": 44, 
+    "model": "blockdb.couple", 
+    "fields": {
+        "name": "Jake & Lori", 
+        "canschedule": true, 
+        "season": 1, 
+        "fulltime": false, 
+        "female": 12, 
+        "blockcouple": true, 
+        "male": 11
+    }
+},
+{
+    "pk": 17, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-09-20", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 18, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-09-27", 
+        "season": 1, 
+        "holdout": true, 
+        "comments": ""
+    }
+},
+{
+    "pk": 19, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-10-04", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 20, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-10-11", 
+        "season": 1, 
+        "holdout": true, 
+        "comments": ""
+    }
+},
+{
+    "pk": 21, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-10-18", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 22, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-10-25", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 23, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-11-01", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 24, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-11-08", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 25, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-11-15", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 26, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-11-22", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 27, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-11-29", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 28, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-12-06", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 29, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-12-13", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 30, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-12-20", 
+        "season": 1, 
+        "holdout": true, 
+        "comments": ""
+    }
+},
+{
+    "pk": 31, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2013-12-27", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 32, 
+    "model": "blockdb.meetings", 
+    "fields": {
+        "date": "2014-01-03", 
+        "season": 1, 
+        "holdout": false, 
+        "comments": ""
+    }
+},
+{
+    "pk": 1, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 1, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 2, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 3, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 4, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 5, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 6, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 7, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 8, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 1, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 9, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 1, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 10, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 11, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 12, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 13, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 14, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 15, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 16, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 1, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 17, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 2, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 18, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 19, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 20, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 21, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 22, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 23, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 24, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 2, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 25, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 2, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 26, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 27, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 28, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 29, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 30, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 31, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 32, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 2, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 33, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 3, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 34, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 3, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 35, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 3, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 36, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 37, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 38, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 3, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 39, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 40, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 41, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 42, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 43, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 44, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 45, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 46, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 47, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 48, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 3, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 49, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 50, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 4, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 51, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 4, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 52, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 53, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 54, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 55, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 56, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 57, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 58, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 59, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 60, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 61, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 62, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 63, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 64, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 4, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 65, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 5, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 66, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 67, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 68, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 69, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 70, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 71, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 72, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 73, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 74, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 75, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 76, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 77, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 78, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 79, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 80, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 5, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 81, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 6, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 82, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 83, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 84, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 85, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 86, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 87, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 88, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 89, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 90, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 91, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 92, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 93, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 94, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 95, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 96, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 6, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 97, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 98, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 99, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 100, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 7, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 101, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 102, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 103, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 104, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 105, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 106, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 107, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 108, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 109, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 110, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 111, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 112, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 7, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 113, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 8, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 114, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 115, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 8, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 116, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 8, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 117, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 118, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 119, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 120, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 121, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 122, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 123, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 124, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 125, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 126, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 127, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 128, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 8, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 129, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 130, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 131, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 132, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 133, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 134, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 135, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 136, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 137, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 138, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 139, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 140, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 141, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 142, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 143, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 144, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 9, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 145, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 146, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 147, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 148, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 149, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 10, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 150, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 151, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 152, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 153, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 154, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 155, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 156, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 157, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 158, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 159, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 160, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 10, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 161, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 162, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 163, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 164, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 165, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 166, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 167, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 168, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 169, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 170, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 171, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 172, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 173, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 174, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 175, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 176, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 11, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 177, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 12, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 178, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 179, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 180, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 181, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 12, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 182, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 183, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 184, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 185, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 186, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 187, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 188, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 189, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 190, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 191, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 192, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 12, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 193, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 194, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 195, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 196, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 197, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 198, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 199, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 200, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 201, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 202, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 203, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 13, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 204, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 205, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 13, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 206, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 13, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 207, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 13, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 208, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 13, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 209, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 210, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 211, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 212, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 213, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 14, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 214, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 215, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 216, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 217, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 218, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 219, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 14, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 220, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 221, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 222, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 14, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 223, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 14, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 224, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 14, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 225, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 226, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 227, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 15, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 228, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 15, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 229, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 230, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 231, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 232, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 233, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 234, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 235, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 15, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 236, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 237, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 15, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 238, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 239, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 240, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 15, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 241, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 242, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 243, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 16, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 244, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 16, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 245, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 246, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 247, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 248, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 249, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 250, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 251, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 16, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 252, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 253, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 16, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 254, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 255, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 256, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 16, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 257, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 17, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 258, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 259, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 260, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 261, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 262, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 263, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 264, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 265, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 266, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 267, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 268, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 269, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 270, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 271, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 272, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 17, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 273, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 18, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 274, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 275, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 276, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 277, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 18, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 278, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 279, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 280, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 281, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 282, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 283, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 284, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 285, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 286, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 287, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 288, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 18, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 289, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 290, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 19, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 291, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 19, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 292, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 293, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 294, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 295, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 296, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 297, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 298, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 299, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 300, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 301, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 302, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 303, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 304, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 19, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 305, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 306, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 20, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 307, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 20, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 308, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 309, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 310, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 311, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 312, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 313, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 314, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 315, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 316, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 317, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 318, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 319, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 320, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 20, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 321, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 322, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 323, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 21, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 324, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 325, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 326, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 327, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 328, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 329, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 330, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 331, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 332, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 333, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 334, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 335, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 336, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 21, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 337, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 338, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 339, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 22, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 340, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 22, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 341, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 22, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 342, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": false, 
+        "player": 22, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 343, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 344, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 345, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 346, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 347, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 348, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 349, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 350, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 351, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 352, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 22, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 353, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 354, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 18
+    }
+},
+{
+    "pk": 355, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 356, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 20
+    }
+},
+{
+    "pk": 357, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 358, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 359, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 360, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 24
+    }
+},
+{
+    "pk": 361, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 25
+    }
+},
+{
+    "pk": 362, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 26
+    }
+},
+{
+    "pk": 363, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 27
+    }
+},
+{
+    "pk": 364, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 28
+    }
+},
+{
+    "pk": 365, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 29
+    }
+},
+{
+    "pk": 366, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 30
+    }
+},
+{
+    "pk": 367, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 31
+    }
+},
+{
+    "pk": 368, 
+    "model": "blockdb.availability", 
+    "fields": {
+        "available": true, 
+        "player": 23, 
+        "meeting": 32
+    }
+},
+{
+    "pk": 21, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 13, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 22, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 14, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 23, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 15, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 24, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 16, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 25, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 10, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 26, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 9, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 27, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 19, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 28, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 20, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 29, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 21, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 30, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 22, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 31, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 11, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 32, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 7, 
+        "issub": false, 
+        "meeting": 17, 
+        "partner": null
+    }
+},
+{
+    "pk": 105, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 1, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 2
+    }
+},
+{
+    "pk": 106, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 2, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 1
+    }
+},
+{
+    "pk": 107, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 11, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 7
+    }
+},
+{
+    "pk": 108, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 7, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 11
+    }
+},
+{
+    "pk": 109, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 5, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 6
+    }
+},
+{
+    "pk": 110, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 6, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 5
+    }
+},
+{
+    "pk": 111, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 27, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 16
+    }
+},
+{
+    "pk": 112, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 16, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 27
+    }
+},
+{
+    "pk": 113, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 19, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 20
+    }
+},
+{
+    "pk": 114, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 20, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 19
+    }
+},
+{
+    "pk": 115, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 3, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 4
+    }
+},
+{
+    "pk": 116, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 4, 
+        "issub": false, 
+        "meeting": 21, 
+        "partner": 3
+    }
+},
+{
+    "pk": 201, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 1, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": 2
+    }
+},
+{
+    "pk": 202, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 2, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": 1
+    }
+},
+{
+    "pk": 203, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 5, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 204, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 6, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 205, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 13, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 206, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 14, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 207, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 10, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 208, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 9, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 209, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 11, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 210, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 12, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 211, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 17, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 212, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 18, 
+        "issub": false, 
+        "meeting": 19, 
+        "partner": null
+    }
+},
+{
+    "pk": 922, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 23, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 2
+    }
+},
+{
+    "pk": 923, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 2, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 23
+    }
+},
+{
+    "pk": 924, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 17, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 18
+    }
+},
+{
+    "pk": 925, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 18, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 17
+    }
+},
+{
+    "pk": 926, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 8, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 7
+    }
+},
+{
+    "pk": 927, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 7, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 8
+    }
+},
+{
+    "pk": 928, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 15, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 16
+    }
+},
+{
+    "pk": 929, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 16, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 15
+    }
+},
+{
+    "pk": 930, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 19, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 20
+    }
+},
+{
+    "pk": 931, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 20, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 19
+    }
+},
+{
+    "pk": 932, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 10, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 9
+    }
+},
+{
+    "pk": 933, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 9, 
+        "issub": false, 
+        "meeting": 22, 
+        "partner": 10
+    }
+},
+{
+    "pk": 970, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 11, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 2
+    }
+},
+{
+    "pk": 971, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 2, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 11
+    }
+},
+{
+    "pk": 972, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 17, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 18
+    }
+},
+{
+    "pk": 973, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 18, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 17
+    }
+},
+{
+    "pk": 974, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 8, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 7
+    }
+},
+{
+    "pk": 975, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 7, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 8
+    }
+},
+{
+    "pk": 976, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 15, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 16
+    }
+},
+{
+    "pk": 977, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 16, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 15
+    }
+},
+{
+    "pk": 978, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 10, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 9
+    }
+},
+{
+    "pk": 979, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 9, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 10
+    }
+},
+{
+    "pk": 980, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 19, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 20
+    }
+},
+{
+    "pk": 981, 
+    "model": "blockdb.schedule", 
+    "fields": {
+        "verified": false, 
+        "player": 20, 
+        "issub": false, 
+        "meeting": 23, 
+        "partner": 19
+    }
+},
+{
+    "pk": 1, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 19
+    }
+},
+{
+    "pk": 2, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 11
+    }
+},
+{
+    "pk": 3, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 7
+    }
+},
+{
+    "pk": 4, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 9
+    }
+},
+{
+    "pk": 5, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 10
+    }
+},
+{
+    "pk": 6, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 13
+    }
+},
+{
+    "pk": 7, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 16
+    }
+},
+{
+    "pk": 8, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 14
+    }
+},
+{
+    "pk": 9, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 15
+    }
+},
+{
+    "pk": 10, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 21
+    }
+},
+{
+    "pk": 11, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 20
+    }
+},
+{
+    "pk": 12, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 17, 
+        "player": 22
+    }
+},
+{
+    "pk": 13, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 11
+    }
+},
+{
+    "pk": 14, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 13
+    }
+},
+{
+    "pk": 15, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 20
+    }
+},
+{
+    "pk": 16, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 16
+    }
+},
+{
+    "pk": 17, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 19
+    }
+},
+{
+    "pk": 18, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 21
+    }
+},
+{
+    "pk": 19, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 22
+    }
+},
+{
+    "pk": 20, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 9
+    }
+},
+{
+    "pk": 21, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 10
+    }
+},
+{
+    "pk": 22, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 15
+    }
+},
+{
+    "pk": 23, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 14
+    }
+},
+{
+    "pk": 24, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 17, 
+        "player": 7
+    }
+},
+{
+    "pk": 25, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 13
+    }
+},
+{
+    "pk": 26, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 21
+    }
+},
+{
+    "pk": 27, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 9
+    }
+},
+{
+    "pk": 28, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 20
+    }
+},
+{
+    "pk": 29, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 19
+    }
+},
+{
+    "pk": 30, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 15
+    }
+},
+{
+    "pk": 31, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 14
+    }
+},
+{
+    "pk": 32, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 22
+    }
+},
+{
+    "pk": 33, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 11
+    }
+},
+{
+    "pk": 34, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 10
+    }
+},
+{
+    "pk": 35, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 16
+    }
+},
+{
+    "pk": 36, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 17, 
+        "player": 7
+    }
+},
+{
+    "pk": 73, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 5
+    }
+},
+{
+    "pk": 74, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 13
+    }
+},
+{
+    "pk": 75, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 2
+    }
+},
+{
+    "pk": 76, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 9
+    }
+},
+{
+    "pk": 77, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 11
+    }
+},
+{
+    "pk": 78, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 10
+    }
+},
+{
+    "pk": 79, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 14
+    }
+},
+{
+    "pk": 80, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 18
+    }
+},
+{
+    "pk": 81, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 1
+    }
+},
+{
+    "pk": 82, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 17
+    }
+},
+{
+    "pk": 83, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 6
+    }
+},
+{
+    "pk": 84, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 19, 
+        "player": 12
+    }
+},
+{
+    "pk": 85, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 13
+    }
+},
+{
+    "pk": 86, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 1
+    }
+},
+{
+    "pk": 87, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 18
+    }
+},
+{
+    "pk": 88, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 12
+    }
+},
+{
+    "pk": 89, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 5
+    }
+},
+{
+    "pk": 90, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 10
+    }
+},
+{
+    "pk": 91, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 9
+    }
+},
+{
+    "pk": 92, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 6
+    }
+},
+{
+    "pk": 93, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 11
+    }
+},
+{
+    "pk": 94, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 17
+    }
+},
+{
+    "pk": 95, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 2
+    }
+},
+{
+    "pk": 96, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 19, 
+        "player": 14
+    }
+},
+{
+    "pk": 97, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 1
+    }
+},
+{
+    "pk": 98, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 10
+    }
+},
+{
+    "pk": 99, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 9
+    }
+},
+{
+    "pk": 100, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 14
+    }
+},
+{
+    "pk": 101, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 17
+    }
+},
+{
+    "pk": 102, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 5
+    }
+},
+{
+    "pk": 103, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 18
+    }
+},
+{
+    "pk": 104, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 6
+    }
+},
+{
+    "pk": 105, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 11
+    }
+},
+{
+    "pk": 106, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 13
+    }
+},
+{
+    "pk": 107, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 12
+    }
+},
+{
+    "pk": 108, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 19, 
+        "player": 2
+    }
+},
+{
+    "pk": 253, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 20, 
+        "player": 3
+    }
+},
+{
+    "pk": 542, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 1
+    }
+},
+{
+    "pk": 543, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 17
+    }
+},
+{
+    "pk": 544, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 6
+    }
+},
+{
+    "pk": 545, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 4
+    }
+},
+{
+    "pk": 546, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 8
+    }
+},
+{
+    "pk": 547, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 3
+    }
+},
+{
+    "pk": 548, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 18
+    }
+},
+{
+    "pk": 549, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 2
+    }
+},
+{
+    "pk": 550, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 5
+    }
+},
+{
+    "pk": 551, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 19
+    }
+},
+{
+    "pk": 552, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 20
+    }
+},
+{
+    "pk": 553, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 1, 
+        "meeting": 21, 
+        "player": 7
+    }
+},
+{
+    "pk": 554, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 3
+    }
+},
+{
+    "pk": 555, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 1
+    }
+},
+{
+    "pk": 556, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 4
+    }
+},
+{
+    "pk": 557, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 18
+    }
+},
+{
+    "pk": 558, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 8
+    }
+},
+{
+    "pk": 559, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 5
+    }
+},
+{
+    "pk": 560, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 2
+    }
+},
+{
+    "pk": 561, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 7
+    }
+},
+{
+    "pk": 562, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 19
+    }
+},
+{
+    "pk": 563, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 17
+    }
+},
+{
+    "pk": 564, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 6
+    }
+},
+{
+    "pk": 565, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 2, 
+        "meeting": 21, 
+        "player": 20
+    }
+},
+{
+    "pk": 566, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 1
+    }
+},
+{
+    "pk": 567, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 5
+    }
+},
+{
+    "pk": 568, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 2
+    }
+},
+{
+    "pk": 569, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 1, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 6
+    }
+},
+{
+    "pk": 570, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 8
+    }
+},
+{
+    "pk": 571, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 17
+    }
+},
+{
+    "pk": 572, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 20
+    }
+},
+{
+    "pk": 573, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 2, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 18
+    }
+},
+{
+    "pk": 574, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapa", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 3
+    }
+},
+{
+    "pk": 575, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpa", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 19
+    }
+},
+{
+    "pk": 576, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tapb", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 7
+    }
+},
+{
+    "pk": 577, 
+    "model": "blockdb.slot", 
+    "fields": {
+        "position": "tbpb", 
+        "court": 3, 
+        "set": 3, 
+        "meeting": 21, 
+        "player": 4
+    }
+},
+{
+    "pk": 46, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 1, 
+        "team2_p1": 27, 
+        "team1_p2": 6, 
+        "team1_p1": 19, 
+        "team2_p2": 16, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 47, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 2, 
+        "team2_p1": 1, 
+        "team1_p2": 4, 
+        "team1_p1": 11, 
+        "team2_p2": 2, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 48, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 3, 
+        "team2_p1": 5, 
+        "team1_p2": 7, 
+        "team1_p1": 3, 
+        "team2_p2": 20, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 49, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 1, 
+        "team2_p1": 27, 
+        "team1_p2": 7, 
+        "team1_p1": 1, 
+        "team2_p2": 2, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 50, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 2, 
+        "team2_p1": 5, 
+        "team1_p2": 20, 
+        "team1_p1": 11, 
+        "team2_p2": 6, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 51, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 3, 
+        "team2_p1": 3, 
+        "team1_p2": 4, 
+        "team1_p1": 19, 
+        "team2_p2": 16, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 52, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 1, 
+        "team2_p1": 3, 
+        "team1_p2": 4, 
+        "team1_p1": 27, 
+        "team2_p2": 20, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 53, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 2, 
+        "team2_p1": 19, 
+        "team1_p2": 6, 
+        "team1_p1": 11, 
+        "team2_p2": 2, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 54, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 3, 
+        "team2_p1": 5, 
+        "team1_p2": 16, 
+        "team1_p1": 1, 
+        "team2_p2": 7, 
+        "meeting": 21
+    }
+},
+{
+    "pk": 82, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 1, 
+        "team2_p1": 11, 
+        "team1_p2": 9, 
+        "team1_p1": 13, 
+        "team2_p2": 12, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 83, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 2, 
+        "team2_p1": 5, 
+        "team1_p2": 6, 
+        "team1_p1": 1, 
+        "team2_p2": 14, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 84, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 3, 
+        "team2_p1": 17, 
+        "team1_p2": 2, 
+        "team1_p1": 10, 
+        "team2_p2": 18, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 85, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 1, 
+        "team2_p1": 1, 
+        "team1_p2": 6, 
+        "team1_p1": 10, 
+        "team2_p2": 9, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 86, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 2, 
+        "team2_p1": 17, 
+        "team1_p2": 14, 
+        "team1_p1": 11, 
+        "team2_p2": 2, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 87, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 3, 
+        "team2_p1": 13, 
+        "team1_p2": 12, 
+        "team1_p1": 5, 
+        "team2_p2": 18, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 88, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 1, 
+        "team2_p1": 1, 
+        "team1_p2": 12, 
+        "team1_p1": 17, 
+        "team2_p2": 14, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 89, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 2, 
+        "team2_p1": 11, 
+        "team1_p2": 9, 
+        "team1_p1": 5, 
+        "team2_p2": 2, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 90, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 3, 
+        "team2_p1": 13, 
+        "team1_p2": 18, 
+        "team1_p1": 10, 
+        "team2_p2": 6, 
+        "meeting": 19
+    }
+},
+{
+    "pk": 91, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 1, 
+        "team2_p1": 15, 
+        "team1_p2": 9, 
+        "team1_p1": 21, 
+        "team2_p2": 14, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 92, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 2, 
+        "team2_p1": 13, 
+        "team1_p2": 7, 
+        "team1_p1": 19, 
+        "team2_p2": 16, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 93, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 3, 
+        "team2_p1": 11, 
+        "team1_p2": 22, 
+        "team1_p1": 10, 
+        "team2_p2": 20, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 94, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 1, 
+        "team2_p1": 21, 
+        "team1_p2": 22, 
+        "team1_p1": 11, 
+        "team2_p2": 14, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 95, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 2, 
+        "team2_p1": 13, 
+        "team1_p2": 20, 
+        "team1_p1": 10, 
+        "team2_p2": 7, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 96, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 3, 
+        "team2_p1": 15, 
+        "team1_p2": 9, 
+        "team1_p1": 19, 
+        "team2_p2": 16, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 97, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 1, 
+        "team2_p1": 10, 
+        "team1_p2": 22, 
+        "team1_p1": 15, 
+        "team2_p2": 16, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 98, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 2, 
+        "team2_p1": 11, 
+        "team1_p2": 14, 
+        "team1_p1": 19, 
+        "team2_p2": 7, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 99, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 3, 
+        "team2_p1": 21, 
+        "team1_p2": 9, 
+        "team1_p1": 13, 
+        "team2_p2": 20, 
+        "meeting": 17
+    }
+},
+{
+    "pk": 307, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 1, 
+        "team2_p1": 8, 
+        "team1_p2": 7, 
+        "team1_p1": 23, 
+        "team2_p2": 9, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 308, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 2, 
+        "team2_p1": 10, 
+        "team1_p2": 20, 
+        "team1_p1": 17, 
+        "team2_p2": 2, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 309, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 3, 
+        "team2_p1": 19, 
+        "team1_p2": 16, 
+        "team1_p1": 15, 
+        "team2_p2": 18, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 310, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 1, 
+        "team2_p1": 10, 
+        "team1_p2": 20, 
+        "team1_p1": 19, 
+        "team2_p2": 7, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 311, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 2, 
+        "team2_p1": 8, 
+        "team1_p2": 18, 
+        "team1_p1": 15, 
+        "team2_p2": 2, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 312, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 3, 
+        "team2_p1": 17, 
+        "team1_p2": 9, 
+        "team1_p1": 23, 
+        "team2_p2": 16, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 313, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 1, 
+        "team2_p1": 17, 
+        "team1_p2": 20, 
+        "team1_p1": 8, 
+        "team2_p2": 18, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 314, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 2, 
+        "team2_p1": 19, 
+        "team1_p2": 16, 
+        "team1_p1": 23, 
+        "team2_p2": 7, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 315, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 3, 
+        "team2_p1": 10, 
+        "team1_p2": 2, 
+        "team1_p1": 15, 
+        "team2_p2": 9, 
+        "meeting": 22
+    }
+},
+{
+    "pk": 344, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 1, 
+        "team2_p1": 17, 
+        "team1_p2": 2, 
+        "team1_p1": 11, 
+        "team2_p2": 7, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 345, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 2, 
+        "team2_p1": 10, 
+        "team1_p2": 16, 
+        "team1_p1": 19, 
+        "team2_p2": 18, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 346, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 1, 
+        "court": 3, 
+        "team2_p1": 15, 
+        "team1_p2": 9, 
+        "team1_p1": 8, 
+        "team2_p2": 20, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 347, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 1, 
+        "team2_p1": 11, 
+        "team1_p2": 9, 
+        "team1_p1": 15, 
+        "team2_p2": 16, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 348, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 2, 
+        "team2_p1": 10, 
+        "team1_p2": 20, 
+        "team1_p1": 17, 
+        "team2_p2": 7, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 349, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 2, 
+        "court": 3, 
+        "team2_p1": 19, 
+        "team1_p2": 2, 
+        "team1_p1": 8, 
+        "team2_p2": 18, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 350, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 1, 
+        "team2_p1": 11, 
+        "team1_p2": 9, 
+        "team1_p1": 10, 
+        "team2_p2": 7, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 351, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 2, 
+        "team2_p1": 19, 
+        "team1_p2": 16, 
+        "team1_p1": 15, 
+        "team2_p2": 2, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 352, 
+    "model": "blockdb.matchup", 
+    "fields": {
+        "set": 3, 
+        "court": 3, 
+        "team2_p1": 8, 
+        "team1_p2": 18, 
+        "team1_p1": 17, 
+        "team2_p2": 20, 
+        "meeting": 23
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_permission", 
+        "name": "Can add permission", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_permission", 
+        "name": "Can change permission", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_permission", 
+        "name": "Can delete permission", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_group", 
+        "name": "Can add group", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_group", 
+        "name": "Can change group", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_group", 
+        "name": "Can delete group", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 7, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_user", 
+        "name": "Can add user", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 8, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_user", 
+        "name": "Can change user", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 9, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_user", 
+        "name": "Can delete user", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 10, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_contenttype", 
+        "name": "Can add content type", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 11, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_contenttype", 
+        "name": "Can change content type", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 12, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_contenttype", 
+        "name": "Can delete content type", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 13, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_session", 
+        "name": "Can add session", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 14, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_session", 
+        "name": "Can change session", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 15, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_session", 
+        "name": "Can delete session", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 16, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_site", 
+        "name": "Can add site", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 17, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_site", 
+        "name": "Can change site", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 18, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_site", 
+        "name": "Can delete site", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 19, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_logentry", 
+        "name": "Can add log entry", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 20, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_logentry", 
+        "name": "Can change log entry", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 21, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_logentry", 
+        "name": "Can delete log entry", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 22, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_migrationhistory", 
+        "name": "Can add migration history", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 23, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_migrationhistory", 
+        "name": "Can change migration history", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 24, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_migrationhistory", 
+        "name": "Can delete migration history", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 25, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_season", 
+        "name": "Can add season", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 26, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_season", 
+        "name": "Can change season", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 27, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_season", 
+        "name": "Can delete season", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 28, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_player", 
+        "name": "Can add player", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 29, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_player", 
+        "name": "Can change player", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 30, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_player", 
+        "name": "Can delete player", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 31, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_seasonplayers", 
+        "name": "Can add season players", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 32, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_seasonplayers", 
+        "name": "Can change season players", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 33, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_seasonplayers", 
+        "name": "Can delete season players", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 34, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_couple", 
+        "name": "Can add couple", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 35, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_couple", 
+        "name": "Can change couple", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 36, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_couple", 
+        "name": "Can delete couple", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 37, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_meetings", 
+        "name": "Can add meetings", 
+        "content_type": 13
+    }
+},
+{
+    "pk": 38, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_meetings", 
+        "name": "Can change meetings", 
+        "content_type": 13
+    }
+},
+{
+    "pk": 39, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_meetings", 
+        "name": "Can delete meetings", 
+        "content_type": 13
+    }
+},
+{
+    "pk": 40, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_availability", 
+        "name": "Can add availability", 
+        "content_type": 14
+    }
+},
+{
+    "pk": 41, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_availability", 
+        "name": "Can change availability", 
+        "content_type": 14
+    }
+},
+{
+    "pk": 42, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_availability", 
+        "name": "Can delete availability", 
+        "content_type": 14
+    }
+},
+{
+    "pk": 43, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_schedule", 
+        "name": "Can add schedule", 
+        "content_type": 15
+    }
+},
+{
+    "pk": 44, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_schedule", 
+        "name": "Can change schedule", 
+        "content_type": 15
+    }
+},
+{
+    "pk": 45, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_schedule", 
+        "name": "Can delete schedule", 
+        "content_type": 15
+    }
+},
+{
+    "pk": 46, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_slot", 
+        "name": "Can add slot", 
+        "content_type": 16
+    }
+},
+{
+    "pk": 47, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_slot", 
+        "name": "Can change slot", 
+        "content_type": 16
+    }
+},
+{
+    "pk": 48, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_slot", 
+        "name": "Can delete slot", 
+        "content_type": 16
+    }
+},
+{
+    "pk": 49, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_team", 
+        "name": "Can add team", 
+        "content_type": 17
+    }
+},
+{
+    "pk": 50, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_team", 
+        "name": "Can change team", 
+        "content_type": 17
+    }
+},
+{
+    "pk": 51, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_team", 
+        "name": "Can delete team", 
+        "content_type": 17
+    }
+},
+{
+    "pk": 52, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_matchup", 
+        "name": "Can add matchup", 
+        "content_type": 18
+    }
+},
+{
+    "pk": 53, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_matchup", 
+        "name": "Can change matchup", 
+        "content_type": 18
+    }
+},
+{
+    "pk": 54, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_matchup", 
+        "name": "Can delete matchup", 
+        "content_type": 18
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "block captain", 
+        "permissions": [
+            41, 
+            34, 
+            35, 
+            36, 
+            52, 
+            53, 
+            54, 
+            28, 
+            29, 
+            43, 
+            44, 
+            45, 
+            31, 
+            32, 
+            46, 
+            47, 
+            48
+        ]
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "block member", 
+        "permissions": []
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "kutenai", 
+        "first_name": "Ed", 
+        "last_name": "Henderson", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2014-01-04T20:23:44Z", 
+        "groups": [
+            1, 
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$UGCMSd1c9dxV$Ine362HzeC5aeHfRiBQSLn9AG/GFSA+wH6u/bpfJOpI=", 
+        "email": "kutnai@me.com", 
+        "date_joined": "2013-10-20T18:54:55Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "viquee", 
+        "first_name": "Vicki", 
+        "last_name": "Henderson", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": true, 
+        "last_login": "2013-10-21T06:52:45Z", 
+        "groups": [
+            1, 
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$ocUNht1Twt5D$0TwAZks5ZHQZ0J49VD1531dYq1WQa0idFn0yGa6vukE=", 
+        "email": "viquee@me.com", 
+        "date_joined": "2013-10-21T06:25:00Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "tindrum", 
+        "first_name": "Dan", 
+        "last_name": "Henderson", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-21T06:48:42Z", 
+        "groups": [
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$bJlLviK07Q3X$6uKGcbrKJ00P+hJXOcvNtmlHD5VSs5n33j8x4ufHREM=", 
+        "email": "tindrum@mac.com", 
+        "date_joined": "2013-10-21T06:25:13Z"
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "corrie", 
+        "first_name": "Corie", 
+        "last_name": "Pearce", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-21T06:26:19Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$wsGYTwcGinGF$1E9ucBlaRciUkibCFB6MBpIV3/aSWrzYEYgkQFtsMio=", 
+        "email": "", 
+        "date_joined": "2013-10-21T06:26:19Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 1, 
+        "action_time": "2013-10-21T06:25:00Z", 
+        "object_repr": "viquee", 
+        "object_id": "2", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 2, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 1, 
+        "action_time": "2013-10-21T06:25:13Z", 
+        "object_repr": "tindrum", 
+        "object_id": "3", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 3, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-10-21T06:25:30Z", 
+        "object_repr": "tindrum", 
+        "object_id": "3", 
+        "change_message": "Changed password, first_name, last_name, email and groups.", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 4, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-10-21T06:25:59Z", 
+        "object_repr": "tindrum", 
+        "object_id": "3", 
+        "change_message": "Changed password.", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 5, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 1, 
+        "action_time": "2013-10-21T06:26:20Z", 
+        "object_repr": "corrie", 
+        "object_id": "4", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 6, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-10-21T06:26:38Z", 
+        "object_repr": "corrie", 
+        "object_id": "4", 
+        "change_message": "Changed password, first_name, last_name and groups.", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 7, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-10-21T06:27:05Z", 
+        "object_repr": "viquee", 
+        "object_id": "2", 
+        "change_message": "Changed password, first_name, last_name, is_staff and groups.", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 8, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-10-21T06:27:21Z", 
+        "object_repr": "viquee", 
+        "object_id": "2", 
+        "change_message": "Changed password and email.", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 9, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-10-21T06:34:55Z", 
+        "object_repr": "block member", 
+        "object_id": "2", 
+        "change_message": "No fields changed.", 
+        "user": 1, 
+        "content_type": 2
+    }
+},
+{
+    "pk": 10, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-10-21T06:36:06Z", 
+        "object_repr": "block captain", 
+        "object_id": "1", 
+        "change_message": "Changed permissions.", 
+        "user": 1, 
+        "content_type": 2
+    }
+}
+]
