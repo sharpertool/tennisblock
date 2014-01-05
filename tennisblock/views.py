@@ -13,3 +13,9 @@ class AvailabilityView(TennisLoginView):
 
 class PlaysheetView(TennisView):
     template_name = "playsheet.html"
+
+class AboutView(TennisView):
+    template_name = "about.html"
+
+class ContactView(TennisView):
+    template_name = "contact.html"

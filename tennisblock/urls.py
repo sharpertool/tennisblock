@@ -4,9 +4,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from views import HomeView, BlockSchedule, AvailabilityView, PlaysheetView
-from tennisblock.about.views import AboutView
-from tennisblock.contact.views import ContactView
+from views import HomeView, BlockSchedule, AvailabilityView, PlaysheetView, AboutView, ContactView
 
 urlpatterns = patterns('',
                # Examples:
