@@ -26,11 +26,14 @@ class Scheduler(object):
             male_av = Availability.objects.get(meeting = mtg,player = male)
             maleIsAvailable=male_av.available
         except ObjectDoesNotExist:
+            print("Added availability for %s" % male)
             Availability.objects.create(meeting = mtg,player = male,available=True).save()
 
         try:
             female_av = Availability.objects.get(meeting = mtg,player = female)
+            femaleIsAvailable = female_av.available
         except ObjectDoesNotExist:
+            print("Added availability for %s" % male)
             Availability.objects.create(meeting = mtg,player = female,available=True).save()
 
         return maleIsAvailable and femaleIsAvailable
