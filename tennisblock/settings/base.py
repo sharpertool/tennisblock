@@ -156,7 +156,6 @@ INSTALLED_APPS = (
     'tennisblock.blockdb',
     'tennisblock.users',
     'tennisblock.seasons',
-    'tennisblock.schedule',
     'tennisblock.members',
     'tennisblock.contact',
     'tennisblock.about',
