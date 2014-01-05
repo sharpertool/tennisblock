@@ -6,6 +6,7 @@ import random
 
 from tennisblock.blockdb.models import *
 from tennisblock.api.apiutils import _currentSeason,_nextMeeting,_getMeetingForDate
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Scheduler(object):
@@ -13,30 +14,37 @@ class Scheduler(object):
     def __init__(self):
         pass
 
+    def checkAvailability(self,mtg,male,female):
+        """
+        Check availability of the given couple.
+        If the availability does not exist for that couple, then mark them
+        as available.
+        """
+        maleIsAvailable = True
+        femaleIsAvailable = True
+        try:
+            male_av = Availability.objects.get(meeting = mtg,player = male)
+            maleIsAvailable=male_av.available
+        except ObjectDoesNotExist:
+            Availability.objects.create(meeting = mtg,player = male,available=True).save()
 
-    def getFulltimeCouples(self, mtg):
+        try:
+            female_av = Availability.objects.get(meeting = mtg,player = female)
+        except ObjectDoesNotExist:
+            Availability.objects.create(meeting = mtg,player = female,available=True).save()
 
-        ftavailable = []
-        ftcouples = Couple.objects.filter(fulltime = True,blockcouple=True)
-        for c in ftcouples:
-            male_av = Availability.objects.get(meeting = mtg,player = c.male)
-            female_av = Availability.objects.get(meeting = mtg,player = c.female)
-            if male_av.available and female_av.available:
-                ftavailable.append(c)
+        return maleIsAvailable and femaleIsAvailable
 
-        return ftavailable
+    def getAvailableCoulpes(self,season,mtg,fulltime=True):
+        availableCouples = []
+        couples = Couple.objects.filter(
+            season=season,fulltime = fulltime,blockcouple=True)
 
-    def getParttimeCouples(self, mtg):
-
-        available = []
-        couples = Couple.objects.filter(fulltime = False,blockcouple=True)
         for c in couples:
-            male_av = Availability.objects.get(meeting = mtg,player = c.male)
-            female_av = Availability.objects.get(meeting = mtg,player = c.female)
-            if male_av.available and female_av.available:
-                available.append(c)
+            if self.checkAvailability(mtg,c.male,c.female):
+                availableCouples.append(c)
 
-        return available
+        return availableCouples
 
     def getCouplePlayStats(self,season,couples):
         # Organize by # of plays
@@ -66,8 +74,10 @@ class Scheduler(object):
                 'plays'     : {
                     'he' : 0,
                     'she' : 0,
-                    'they' :0
-                }
+                    'they' :0,
+                    'total' : 0
+                },
+                'weight' : 0.0
             }
             coupleInfo[c.name] = cinfo
             for m in meetings:
@@ -98,13 +108,13 @@ class Scheduler(object):
         needed = 6
         group = []
 
-        ft = self.getFulltimeCouples(mtg)
+        ft = self.getAvailableCoulpes(season,mtg,fulltime=True)
         if ft:
             for f in ft:
                 group.append(f)
                 needed -= 1
 
-        pt = self.getParttimeCouples(mtg)
+        pt = self.getAvailableCoulpes(season,mtg,fulltime=False)
 
         stats = self.getCouplePlayStats(season,pt)
 

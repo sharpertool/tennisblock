@@ -1,0 +1,53 @@
+{% extends "common/base.html" %}
+{% load sekizai_tags %}
+
+{% block mytags %}
+    {{ block.super }}
+    {% if not isprod %}
+        {% add_data "less-data" "home.less" %}
+    {% else %}
+        {% add_data "css-data" "home.css" %}
+    {% endif %}
+
+{% endblock %}
+
+{% block title %}
+home
+{% endblock %}
+{% block content %}
+    <div id="blockheading" class="dynamic">
+        <h2>Couple Editor</h2>
+    </div>
+    <div>
+        <h3>Season: {{ season.name }}</h3>
+        <div class="pure-g">
+            <span class="pure-u-1-6">Courts:{{ season.courts}}</span>
+            <span class="pure-u-1-6">First Court:{{ season.firstcourt }}</span>
+            <span class="pure-u-1-6">Season Starts:{{ season.startdate }}</span>
+            <span class="pure-u-1-6">Season Ends:{{ season.enddate }}</span>
+            <span class="pure-u-1-6">Block Starts:{{ season.blockstart }}</span>
+            <span class="pure-u-1-6">Block Time:{{ season.blocktime }}</span>
+
+        </div>
+
+    </div>
+
+    <div>
+        <h3>Couples</h3>
+        <ul>
+            {% for couple in couples %}
+            <li>Name: {{ couple.name }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h3>New Couple</h3>
+        <form action="{% url 'couple_editor' season.pk %}" method="post">{% csrf_token %}
+            {{ form.as_p}}
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+
+{% endblock %}

@@ -18,8 +18,9 @@ urlpatterns = patterns('',
                url(r'^contact/?', ContactView.as_view()),
                url(r'^about/?', AboutView.as_view()),
                url(r'^accounts/', include('tennisblock.accounts.urls')),
-               url(r'^seasons/$', SeasonsView.as_view()),
-               url(r'^seasons/(?P<name>\w+)/$', SeasonsView.as_view()),
+               url(r'^seasons/$', SeasonsView.as_view(),name="seasons"),
+               url(r'^seasons/(?P<pk>\d+)/$', SeasonsView.as_view(),name="season_view"),
+               url(r'^couples/(?P<pk>\d+)/$', CouplesView.as_view(),name="couple_editor"),
 
                # Uncomment the next line to enable the admin:
                url(r'^kag3hewb/', include(admin.site.urls)),

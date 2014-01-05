@@ -35,13 +35,14 @@ home
                         <tbody>
                             {% for season in seasons %}
                                 <tr>
-                                    <td>{{ season.name }}</td>
+                                    <td><a href="{% url 'season_view' season.pk %}">{{ season.name }}</a></td>
                                     <td>{{ season.courts}}</td>
                                     <td>{{ season.firstcourt }}</td>
                                     <td>{{ season.startdate }}</td>
                                     <td>{{ season.enddate }}</td>
                                     <td>{{ season.blockstart }}</td>
                                     <td>{{ season.blocktime }}</td>
+                                    <td><a href="{% url 'couple_editor' season.pk %}">Couple Editor</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
