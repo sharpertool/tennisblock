@@ -7,11 +7,9 @@ import sys
 import re
 import time
 
-import MySQLdb
-from ExcelUtils import *
 from types import *
 
-from optparse import OptionParser
+import argparse
 
 db_host = "bondinorth.deepbondi.net"
 db_user = "fnt_user"
@@ -30,14 +28,6 @@ PlayerFieldColumns = {
     "cell"      :   9,
     "work"      :   10
 }
-
-def dbConn():
-    conn = MySQLdb.connect (host = db_host,
-                       user = db_user,
-                       passwd = db_pass,
-                       db = db_name,
-                       use_unicode = True)
-    return conn
 
 def sqlExec(sql,conn=None):
     myConn = False
@@ -285,25 +275,23 @@ def UpdatePlayers(ws):
         wsdata = GetPlayerData(ws,rowidx)
 
 def main():
-    
-    usage = "usage: %prog -[options] arg"
-    parser = OptionParser(usage)
-    parser.add_option("-f", "--file", dest="file",
-                      action="store",
-                      type="string",
-                      default="f:/proj/friday_block/Players.xlsx",
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-f", "--file",
                       help="Excel File.")
-    parser.add_option("-r", "--read", dest="read",
-                      action="store_true",
+
+    parser.add_argument("-r", "--read",
                       help="Read From Database")
-    parser.add_option("-u", "--update", dest="update",
-                      action="store_true",
+
+    parser.add_argument("-u", "--update",
                       help="Update To Database")
-    parser.add_option('--verbose',action="store_true",default=False,dest="verbose")
-    
-    (options, args) = parser.parse_args()
-    
-    file = options.file
+
+    parser.add_argument('-v','--verbose',action="store_true")
+
+    args = parser.parse_args()
+
+    file = args.file
     if not os.path.isfile(file):
         os.error('File %s does not exist' % file)
         print "Specified file (%s) does not exist." % file
@@ -312,12 +300,12 @@ def main():
     xl = ExcelUtils()
     xl.OpenFile(file)
         
-    if options.read:
+    if args.read:
         ws = xl.GetWorksheet('Players')
         if ws:
             ReadPlayers(ws)
             
-    if options.update:
+    if args.update:
         ws = xl.GetWorksheet('Block Meetings')
         if ws:
             #UpdateBlockMeetings(ws)
