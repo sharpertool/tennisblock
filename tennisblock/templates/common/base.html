@@ -98,9 +98,6 @@
 </head>
 <body>
 
-
-    <div id="frame" class="dynamic">
-
         {% include "common/banner.html" %}
         {% include "common/navigation.html" %}
 
@@ -108,8 +105,6 @@
         {% endblock %}
 
         {% include "common/footer.html" %}
-    </div>
-
 
 {% with_data "js-body" as scripts %}
 {% for script in scripts %}    {{ script|scriptFilter }}

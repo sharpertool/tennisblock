@@ -63,6 +63,9 @@ class SeasonPlayers(models.Model):
 
     objects = BlockManager()
 
+    def __unicode__(self):
+        return self.player
+
 class Couple(models.Model):
     season              = models.ForeignKey(Season)
     name                = models.CharField(max_length=50)
@@ -84,7 +87,7 @@ class Meetings(models.Model):
 class Availability(models.Model):
     meeting             = models.ForeignKey(Meetings)
     player              = models.ForeignKey(Player)
-    available           = models.BooleanField()
+    available           = models.BooleanField(default=True)
 
 class Schedule(models.Model):
 

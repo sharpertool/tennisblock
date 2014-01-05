@@ -4,10 +4,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from views import HomeView, BlockSchedule, AvailabilityView
-from tennisblock.about.views import AboutView
-from tennisblock.contact.views import ContactView
-from tennisblock.playsheet.views import PlaysheetView
+from views import *
 
 urlpatterns = patterns('',
                # Examples:
@@ -21,6 +18,9 @@ urlpatterns = patterns('',
                url(r'^contact/?', ContactView.as_view()),
                url(r'^about/?', AboutView.as_view()),
                url(r'^accounts/', include('tennisblock.accounts.urls')),
+               url(r'^seasons/$', SeasonsView.as_view(),name="seasons"),
+               url(r'^seasons/(?P<pk>\d+)/$', SeasonsView.as_view(),name="season_view"),
+               url(r'^couples/(?P<pk>\d+)/$', CouplesView.as_view(),name="couple_editor"),
 
                # Uncomment the next line to enable the admin:
                url(r'^kag3hewb/', include(admin.site.urls)),

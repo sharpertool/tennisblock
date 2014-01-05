@@ -1,27 +1,16 @@
-<div id="navwrapper">
-    <div id="nav_icons">
-        <!--
-        <div id="nav_facebook"><a href="https://www.facebook.com/Gardenbuzz" target="_blank"><img src="/static/images/facebook/FB-f-Logo__blue_29.png"/></a></div>
-        <div id="nav_twitter"><a href="https://twitter.com/GardenBuzz" target="_blank"><img src="/static/images/twitter-bird-light-bgs.png"/></a></div>
-        -->
-    </div>
-    <div id="navigation">
+<div id="navwrapper" class="pure-menu pure-menu-open pure-menu-horizontal">
+    <div>
         <ul class="nav nav-pills">
-            <li><a href="/">Home</a></li>
-            <li><a href="/schedule/">Block Schedule</a></li>
-            <li><a href="/availability/">Availability</a></li>
-            <li><a href="/members/">Block Members</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a class="pure-menu-selected" href="/schedule/">Block Schedule</a></li>
             {% if user.is_authenticated %}
-            <!--
-            <li><a href="/aboutthevalley/">About The Valley</a></li>
-            <li><a href="/tools/">Gardening Tools</a></li>
-            <li><a href="/video/">Video Library</a></li>
-            <li><a href="/books/">Garden Books</a></li>
-            -->
-            <li><a href="/accounts/profile/">Profile</a></li>
-            <li><a href="/accounts/logout/">Log out</a></li>
+                <li><a href="/availability/">Availability</a></li>
+                <li><a href="/members/">Block Members</a></li>
+                <li><a href="/seasons/">Seasons</a></li>
+                <li><a href="/accounts/profile/">Profile</a></li>
+                <li><a href="/accounts/logout/">Log out</a></li>
             {% else %}
-            <li><a href="/accounts/login/">Login</a></li>
+                <li><a href="/accounts/login/">Login</a></li>
             {% endif %}
         </ul>
     </div>
