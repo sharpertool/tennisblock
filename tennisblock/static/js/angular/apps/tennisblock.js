@@ -6,11 +6,11 @@ tennisblockapp.factory('BlockDates',function ($resource) {
         })
     }).factory('BlockPlayers',function ($resource) {
         return $resource('/api/blockplayers/:date/', {date: '@date'}, {
-            get: {method: 'GET', isArray: false}
+            get: {method: 'GET', params: {ver: '@ver'},isArray: false}
         })
     }).factory('BlockSubs',function ($resource) {
-        return $resource('/api/subs/:date/', {}, {
-            get: {method: 'GET', params: {date: '@date'}, isArray: false}
+        return $resource('/api/subs/:date/', {date: '@date'}, {
+            get: {method: 'GET', params: {ver: '@ver'}, isArray: false}
         })
     }).factory('PickTeams',function ($resource) {
         return $resource('/api/pickteams/:date/', {}, {
@@ -36,6 +36,7 @@ tennisblockapp.factory('BlockDates',function ($resource) {
     }).factory('BlockSchedule', function ($resource) {
         return $resource('/api/blockschedule/:date/', {}, {
             get: {method: 'GET', isArray: true},
+            remove: { method: 'DELETE', params: {date: '@date'}  },
             save: {method: 'POST', params: {date: '@date'}, isArray: false}
         })
     }).factory('Members', function ($resource) {

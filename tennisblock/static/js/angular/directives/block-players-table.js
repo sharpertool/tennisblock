@@ -23,6 +23,8 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
             link: function($scope,$element,$attributes,ctrl) {
                 console.log("Link blockPlayersTable");
 
+                var ver = 1;
+
                 $scope.players = {
                     guys : [],
                     gals : [],
@@ -93,13 +95,14 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
 
                 var update = function() {
 
+                    ver += 1;
                     var pdef = $q.defer();
-                    BlockPlayers.get({'date' : $scope.queryDate},function(data) {
+                    BlockPlayers.get({'date' : $scope.queryDate, 'ver' : ver},function(data) {
                         pdef.resolve(data);
                     });
 
                     var sdef = $q.defer();
-                    BlockSubs.get({'date' : $scope.queryDate},function(data) { sdef.resolve(data)});
+                    BlockSubs.get({'date' : $scope.queryDate, 'ver' : ver},function(data) { sdef.resolve(data)});
 
                     $q.all([pdef.promise,sdef.promise]).then(function(results) {
                         console.log("Both are done");
@@ -217,6 +220,33 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                 };
 
                 /**
+                 * schedulePlayersConfirm
+                 *
+                 * If there is an existing schedule, then confirm that
+                 * the user wants to re-schedule before firing the
+                 * schedule command.
+                 */
+                $scope.clearScheduleConfirm = function() {
+                    if ($scope.players.guys.length > 0) {
+                        $('#dialog_confirm').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal:true,
+                            title:"Reset Schedule",
+                            buttons: {
+                                "Clear current schedule?": function() {
+                                    $(this).dialog("close");
+                                    $scope.clearSchedule();
+                                },
+                                Cancel: function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+                };
+
+                /**
                  * schedulePlayers
                  *
                  * Schedule or reschedule the current active date.
@@ -231,6 +261,20 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                     });
                 };
 
+                /**
+                 * schedulePlayers
+                 *
+                 * Schedule or reschedule the current active date.
+                 */
+                $scope.clearSchedule = function() {
+                    console.log("Clearing the schedule for " + $scope.queryDate);
+                    BlockSchedule.remove({date:$scope.queryDate},function(){
+                        console.log("Done");
+                        update();
+                    },function(data, errr, stuff) {
+                        console.log("Error" + errr);
+                    });
+                };
             }
         };
     }

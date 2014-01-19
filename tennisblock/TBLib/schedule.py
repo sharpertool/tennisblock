@@ -14,38 +14,35 @@ class Scheduler(object):
     def __init__(self):
         pass
 
-    def checkAvailability(self,mtg,male,female):
+    def isPlayerAvailable(self,mtg,player):
         """
-        Check availability of the given couple.
-        If the availability does not exist for that couple, then mark them
-        as available.
+        Return True if this player is available on the meeting date.
         """
-        maleIsAvailable = True
-        femaleIsAvailable = True
         try:
-            male_av = Availability.objects.get(meeting = mtg,player = male)
-            maleIsAvailable=male_av.available
+            av = Availability.objects.get(meeting = mtg,player = player)
+            return av.available;
         except ObjectDoesNotExist:
-            print("Added availability for %s" % male)
-            Availability.objects.create(meeting = mtg,player = male,available=True).save()
+            print("Added availability for %s" % player)
+            Availability.objects.create(meeting = mtg,
+                                        player = player,
+                                        available=True)
 
-        try:
-            female_av = Availability.objects.get(meeting = mtg,player = female)
-            femaleIsAvailable = female_av.available
-        except ObjectDoesNotExist:
-            print("Added availability for %s" % male)
-            Availability.objects.create(meeting = mtg,player = female,available=True).save()
+        return True
 
-        return maleIsAvailable and femaleIsAvailable
+
+    def isCoupleAvailable(self,mtg,couple):
+        """
+        Check if both members of the given couple are available.
+        """
+
+        return self.isPlayerAvailable(mtg,couple.male) \
+            and self.isPlayerAvailable(mtg,couple.female)
 
     def getAvailableCoulpes(self,season,mtg,fulltime=True):
-        availableCouples = []
         couples = Couple.objects.filter(
             season=season,fulltime = fulltime,blockcouple=True)
 
-        for c in couples:
-            if self.checkAvailability(mtg,c.male,c.female):
-                availableCouples.append(c)
+        availableCouples = [c for c in couples if self.isCoupleAvailable(mtg,c)]
 
         return availableCouples
 
@@ -53,7 +50,7 @@ class Scheduler(object):
         # Organize by # of plays
         coupleInfo = {}
 
-        meetings = Meetings.objects.filter(season=season,date__lte = datetime.date.today())
+        meetings = Meetings.objects.filter(season=season)
 
         def _sumPlays(p):
             """
@@ -83,28 +80,27 @@ class Scheduler(object):
                 'weight' : 0.0
             }
             coupleInfo[c.name] = cinfo
-            for m in meetings:
-                he = len(Schedule.objects.filter(meeting=m,player=c.male))
-                she = len(Schedule.objects.filter(meeting=m,player=c.female))
-                if he and she:
-                    cinfo['plays']['they'] += 1
-                elif he:
-                    cinfo['plays']['he'] += 1
-                elif she:
-                    cinfo['plays']['she'] += 1
+            he = Schedule.objects.filter(meeting__in=meetings,player=c.male).count()
+            she = Schedule.objects.filter(meeting__in=meetings,player=c.female).count()
+            cinfo['plays']['he'] = he
+            cinfo['plays']['she'] = she
+            cinfo['plays']['they'] = min(he,she)
 
-                cinfo['weight'] = _weightPlays(cinfo['plays'])
-                cinfo['plays']['total'] = _sumPlays(cinfo['plays'])
+            cinfo['weight'] = _weightPlays(cinfo['plays'])
+            cinfo['plays']['total'] = _sumPlays(cinfo['plays'])
 
         return coupleInfo
 
-    def getNextGroup(self):
+    def getNextGroup(self,date = None):
         """
         Get the next group of players.
         """
 
         season = _currentSeason
-        mtg = _nextMeeting(season)
+        if date:
+            mtg = _getMeetingForDate(date)
+        else:
+            mtg = _nextMeeting(season)
         if mtg:
             print("Scheduling for date:%s" % mtg.date)
 
@@ -125,10 +121,7 @@ class Scheduler(object):
         maxNumberOfPlays = 0
         for info in stats.itervalues():
             nplays = info['plays']['total']
-            a = numberOfPlaysMap.get(nplays)
-            if not a:
-                a = []
-                numberOfPlaysMap[nplays] = a
+            a = numberOfPlaysMap.setdefault(nplays,[])
 
             a.append(info)
             maxNumberOfPlays = max(maxNumberOfPlays,nplays)
@@ -199,6 +192,15 @@ class Scheduler(object):
                 partner=cpl.male
             )
             sh.save()
+
+    def removeAllCouplesFromSchedule(self,date):
+        """
+        Remove all couples from the given date.
+        """
+        mtg = _getMeetingForDate(date)
+
+        # Clear any existing one first.
+        Schedule.objects.filter(meeting=mtg).delete()
 
     def getParnerId(self,player):
 

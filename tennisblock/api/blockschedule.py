@@ -211,7 +211,7 @@ def blockSchedule(request,date = None):
 
     if r.method == 'POST':
         print("blockSchedule POST for date:%s" % date)
-        group = tb.getNextGroup()
+        group = tb.getNextGroup(date)
         print("Groups:")
         for g in group:
             print("\tHe:%s She:%s" % (g.male.Name(),g.female.Name()))
@@ -225,6 +225,13 @@ def blockSchedule(request,date = None):
 
         return JSONResponse(sched)
 
+    if r.method == 'DELETE':
+        print("blockSchedule DELETE for date:%s" % date)
+        mgr = TeamManager()
+        mgr.dbTeams.deleteMatchup(date)
+        tb.removeAllCouplesFromSchedule(date)
+
+        return JSONResponse({})
 
 @csrf_exempt
 def getMatchData(request,date = None):
