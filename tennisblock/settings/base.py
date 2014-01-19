@@ -223,3 +223,21 @@ LOGGING = {
         },
     }
 }
+
+# Email Server Settings. Change as needed
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ed@tennisblock.com'
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Contact Form
+CONTACT_FORM_SUBJECT = 'Tennisblock.com Contact'
+CONTACT_FORM_RECIPIENTS = (
+    "ed@tennisblock.com",
+    "vicki@gardenbuzz.com",
+    "viquee@me.com"
+)
+
+BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
+BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"

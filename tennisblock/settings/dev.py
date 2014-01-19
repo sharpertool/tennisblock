@@ -21,6 +21,10 @@ DATABASES = {
 
 SECRET_KEY = 'reeG2vog5Ut5gaIc7Wed3ib5iSk4Yok'
 
+
+# Set this for development, but clear for PROD
+BLOCK_NOTIFY_RECIPIENTS = ['ed@tennisblock.com','viquee@me.com']
+
 try:
     from local_settings import *
 except ImportError:

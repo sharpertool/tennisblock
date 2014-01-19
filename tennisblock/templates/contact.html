@@ -17,21 +17,40 @@
 contact
 {% endblock %}
 {% block content %}
-    <div id="container" class="home dynamic">
-        <div id="content" class="dynamic">
-
-            {% verbatim %}
-            <div id="textContent">
-                <div id="blockheading" class="dynamic">
-                    <h2>Contact Us</h2>
-
-
-                </div>
+<div class='container form_wrap'>
+    <h1 class="header_bar">
+        Contact Us
+    </h1>
+    {% if form.errors %}
+    <div class="alert alert-error">Errors on Form</div>
+    {% endif %}
+    <form enctype="application/x-www-form-urlencoded"
+          class="form-horizontal"
+          action="/contact/"
+          method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="control-group">
+            <label for="bootstrap-{{ field.name }}"
+                   class="control-label optional">
+                {{ field.label }}
+            </label>
+            <div class="controls">
+                {{ field }}
+                <span class="help-inline">{{ field.errors.as_text }}</span>
             </div>
-            {% endverbatim %}
-
         </div>
-    </div>
-
+        {% endfor %}
+        <div class="control-group">
+            <div class="controls">
+                <input type="submit"
+                       name="bootstrap[send]"
+                       value="Send"
+                id="bootstrap-send"
+                class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

@@ -5,8 +5,9 @@
  * Time: 11:56 AM
  */
 
-tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','BlockSchedule','$q',
-    function(BlockPlayers,BlockSubs,BlockSchedule,$q) {
+tennisblockapp.directive('blockPlayersTable',[
+        'BlockPlayers','BlockSubs','BlockSchedule','SendSchedule','$q',
+    function(BlockPlayers,BlockSubs,BlockSchedule,SendSchedule,$q) {
         // Initialization
 
         return {
@@ -275,6 +276,15 @@ tennisblockapp.directive('blockPlayersTable',[ 'BlockPlayers','BlockSubs','Block
                         console.log("Error" + errr);
                     });
                 };
+
+                /**
+                 * sendScheduleUpdate
+                 *
+                 * Send out an e-mail with the schedule for this date.
+                 */
+                $scope.sendScheduleUpdate = function() {
+                    SendSchedule.update({date:$scope.queryDate},function() {});
+                }
             }
         };
     }

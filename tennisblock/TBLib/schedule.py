@@ -1,5 +1,7 @@
 import os
 import datetime
+import re
+
 os.environ['PYTHONPATH'] = '../../gbrest'
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 import random
@@ -262,6 +264,7 @@ class Scheduler(object):
             data['mtg'] = {'error' : 'Could not determine meeting.'}
 
         return data
+
     def updateSchedule(selfself,date,couples):
         """
         Update the schedule with the given list.
@@ -316,6 +319,25 @@ class Scheduler(object):
             return "Schedule updated"
         else:
             return "Could not update schedule."
+
+
+    def getBlockEmailList(self):
+        """
+        Return a list of all e-mail addresses for block players.
+        """
+        players = SeasonPlayers.objects.filter(season=_currentSeason(),blockmember=True).only('player')
+        addresses = []
+        for player in players:
+            addr = player.player.email
+            if ',' in addr:
+                alist = [s.strip() for s in re.split(',',addr)]
+                addresses.extend(alist)
+            else:
+                if addr.strip():
+                    addresses.append(addr.strip())
+
+        return addresses
+
 
 
 

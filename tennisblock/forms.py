@@ -1,6 +1,9 @@
 
-from django.forms import ModelForm,Form,CharField,ModelChoiceField,BooleanField,ChoiceField,Select
+from django import forms
+from django.forms import ModelForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import ugettext_lazy as _
+
 
 from tennisblock.blockdb.models import Couple,SeasonPlayers
 
@@ -29,4 +32,18 @@ class CoupleForm(ModelForm):
         fields=['name','male','female','fulltime','blockcouple']
 
 
+class ContactForm(forms.Form):
+    email = forms.EmailField(max_length=100,
+                             required=True,
+                             label=_('Please enter your e-mail address.'),
+                             widget=forms.TextInput({
+                                 'id': 'bootstrap-email',
+                                 }))
+    message = forms.CharField(max_length=500,
+                              required=True,
+                              label=_('Enter your message'),
+                              widget=forms.Textarea({
+                                  'id':'bootstrap-message',
+                                  'cols': '60', 'rows': '10'})
+    )
 

@@ -47,5 +47,9 @@ tennisblockapp.factory('BlockDates',function ($resource) {
             insert: { method: 'PUT', isArray: false},
             remove: { method: 'DELETE'}
         })
+    }).factory("SendSchedule", function($resource) {
+        return $resource('/api/schedule/notify/:date/',{date: '@date'}, {
+            update: {method: 'POST', params: {},isArray: false}
+        })
     });
 

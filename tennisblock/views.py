@@ -4,6 +4,9 @@ from tennisblock.TBLib.view import TennisView,TennisLoginView
 from tennisblock.blockdb.models import Season,Meetings,Couple,Player,SeasonPlayers
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.core.mail import send_mail
+from forms import ContactForm
 
 from .forms import CoupleForm
 
@@ -24,6 +27,38 @@ class AboutView(TennisView):
 
 class ContactView(TennisView):
     template_name = "contact.html"
+    thankyou_template = "thankyou.html"
+
+    def get(self, request):
+        form = ContactForm()
+        return render(request,
+                      self.template_name,
+                      {'form': form}
+        )
+
+    def post(self, request):
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = settings.CONTACT_FORM_RECIPIENTS
+
+            sender_email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            message = "FROM: %s\n\n\nMESSAGE:\n\n%s" % (sender_email, message)
+
+            subject = settings.CONTACT_FORM_SUBJECT
+
+            send_mail(subject, message, from_email, recipient_list)
+
+            return render(request,
+                          self.thankyou_template,
+                          {'form': form})
+
+        return render(request,
+                      self.template_name,
+                      {'form': form})
 
 class SeasonsView(TennisLoginView):
     template_name = "seasons.html"

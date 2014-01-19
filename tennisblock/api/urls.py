@@ -6,6 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 from availability import AvailabilityView
 from members import SeasonPlayersView
+from blockschedule import BlockNotifyer
 
 urlpatterns = patterns('tennisblock.api.views',
                        url(r'seasons/?$', 'getSeasons'),
@@ -44,5 +45,10 @@ urlpatterns += patterns('',
 urlpatterns += patterns('tennisblock.api.members',
                         url(r'members/(?P<id>\d+)/?$', SeasonPlayersView.as_view()),
                         url(r'members/?$', SeasonPlayersView.as_view()),
+)
+
+urlpatterns += patterns('',
+                        url(r'schedule/notify/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',
+                            BlockNotifyer.as_view(),name="schedule_notify")
 )
 

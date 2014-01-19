@@ -1,0 +1,26 @@
+{% extends "common/base.html" %}
+{% load sekizai_tags %}
+
+{% block mytags %}
+    {{ block.super }}
+    {% if not isprod %}
+        {% add_data "less-data" "schedule.less" %}
+    {% else %}
+        {% add_data "css-data" "schedule.css" %}
+    {% endif %}
+
+    {% add_data "js-body" "angular/apps/tennisblock.js" %}
+    {% add_data "js-body" "angular/controllers/contact.js" %}
+{% endblock %}
+
+{% block title %}
+contact
+{% endblock %}
+{% block content %}
+<div class='container form_wrap'>
+    <h1 class="header_bar">
+        Thank You!
+    </h1>
+</div>
+
+{% endblock %}

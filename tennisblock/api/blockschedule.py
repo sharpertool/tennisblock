@@ -3,6 +3,9 @@
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
+from django.conf import settings
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
 from tennisblock.blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
@@ -245,3 +248,87 @@ def getMatchData(request,date = None):
         if matchData:
             return JSONResponse({"match":matchData})
         return JSONResponse({})
+
+class BlockNotifyer(View):
+
+    def generateNotifyMessage(self,date,players):
+        """
+        Generate plain text version of message.
+        """
+
+        import random
+        playerList = []
+        prefix = "      - "
+
+        gals = players.get('gals')
+        guys = players.get('guys')
+
+        for x in range(0,len(gals)):
+            couple = [gals[x],guys[x]]
+            random.shuffle(couple)
+            playerList.append("%s and %s" % (couple[0].get('name'),couple[1].get('name')))
+        msg = """
+=
+
+Here is the schedule for Friday, %s:
+%s
+
+        """ % (date,prefix + prefix.join(playerList))
+
+        return msg
+
+    def generateHtmlNotifyMessage(self,date,players):
+        """
+        Generate an HTML Formatted version of the message.
+        """
+
+        import random
+        playerList = []
+
+        gals = players.get('gals')
+        guys = players.get('guys')
+
+        for x in range(0,len(gals)):
+            couple = [gals[x],guys[x]]
+            random.shuffle(couple)
+            playerList.append("<li><span>%s</span> and <span>%s</span></li>" % (couple[0].get('name'),couple[1].get('name')))
+        msg = """
+
+        <html>
+        <head></head>
+        <body>
+            <h3>Here is the schedule for Friday, %s:</h3>
+
+        <ul>
+            %s
+        </ul>
+
+        """ % (date,"\n".join(playerList))
+
+        return msg
+
+    def post(self, request,date):
+        tb = Scheduler()
+
+        players = tb.querySchedule(date)
+
+        from_email = settings.EMAIL_HOST_USER
+
+        # Generate Text and HTML versions.
+        message = self.generateNotifyMessage(date,players)
+        html = self.generateHtmlNotifyMessage(date,players)
+
+        subject = settings.BLOCK_NOTIFY_SUBJECT % date
+
+        if settings.BLOCK_NOTIFY_RECIPIENTS:
+            recipient_list = ['ed@tennisblock.com','viquee@me.com']
+        else:
+            recipient_list = tb.getBlockEmailList()
+
+        msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
+        msg.attach_alternative(html,'text/html')
+
+        msg.send()
+
+        return JSONResponse({})
+
