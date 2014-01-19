@@ -31,7 +31,6 @@ tennisblockapp.directive('scheduleMatches',['TeamSchedule','PickTeams','$q',
                 var update = function() {
                     TeamSchedule.get({'date' : $scope.queryDate}, function(data) {
                         $scope.match.sets = data.match;
-                        $scope.$apply();
                     });
                 };
 
