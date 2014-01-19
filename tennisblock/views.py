@@ -16,7 +16,7 @@ class BlockSchedule(TennisLoginView):
 class AvailabilityView(TennisLoginView):
     template_name = "availability.html"
 
-class PlaysheetView(TennisView):
+class PlaysheetView(TennisLoginView):
     template_name = "playsheet.html"
 
 class AboutView(TennisView):
