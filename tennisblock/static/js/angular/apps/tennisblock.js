@@ -23,7 +23,7 @@ tennisblockapp.factory('BlockDates',function ($resource) {
         })
     }).factory('TeamSchedule',function ($resource) {
         return $resource('/api/matchdata/:date/', {}, {
-            get: {method: 'GET', params: {date: '@date'}, isArray: false}
+            get: {method: 'GET', params: {date: '@date', ver: '@ver'}, isArray: false}
         })
     }).factory('Availability',function ($resource) {
         return $resource('/api/availability/', {}, {

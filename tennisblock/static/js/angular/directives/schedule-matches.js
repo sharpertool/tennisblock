@@ -24,13 +24,17 @@ tennisblockapp.directive('scheduleMatches',['TeamSchedule','PickTeams','$q',
             link: function($scope,$element,$attributes,ctrl) {
                 console.log("Link scheduleMatches");
 
+                var schedule_iterator = 1;
+
                 $scope.match = {
                     'sets' : []
                 };
 
                 var update = function() {
-                    TeamSchedule.get({'date' : $scope.queryDate}, function(data) {
+                    TeamSchedule.get({'date' : $scope.queryDate,'ver' : schedule_iterator}, function(data) {
+                        console.log("Returned the team schedule.. updating values.");
                         $scope.match.sets = data.match;
+                        schedule_iterator += 1;
                     });
                 };
 
