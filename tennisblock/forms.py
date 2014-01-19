@@ -47,3 +47,12 @@ class ContactForm(forms.Form):
                                   'cols': '60', 'rows': '10'})
     )
 
+
+class NotifyForm(forms.Form):
+    message = forms.CharField(max_length=500,
+                              required=True,
+                              label=_('Enter your message'),
+                              widget=forms.Textarea({
+                                  'id':'bootstrap-message',
+                                  'cols': '60', 'rows': '10'})
+    )

@@ -49,6 +49,7 @@ tennisblockapp.factory('BlockDates',function ($resource) {
         })
     }).factory("SendSchedule", function($resource) {
         return $resource('/api/schedule/notify/:date/',{date: '@date'}, {
+            get: {method: 'GET', params: {}},
             update: {method: 'POST', params: {},isArray: false}
         })
     });

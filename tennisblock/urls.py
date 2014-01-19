@@ -9,6 +9,8 @@ from views import *
 urlpatterns = patterns('',
                # Examples:
                url(r'^$', HomeView.as_view()),
+               url(r'^schedule/notify/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',
+                   ScheduleNotify.as_view(),name="schedule_notify"),
                url(r'^schedule/', BlockSchedule.as_view()),
                url(r'^availability/', AvailabilityView.as_view()),
 

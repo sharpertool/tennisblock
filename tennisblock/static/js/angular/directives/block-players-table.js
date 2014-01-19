@@ -6,8 +6,8 @@
  */
 
 tennisblockapp.directive('blockPlayersTable',[
-        'BlockPlayers','BlockSubs','BlockSchedule','SendSchedule','$q',
-    function(BlockPlayers,BlockSubs,BlockSchedule,SendSchedule,$q) {
+        'BlockPlayers','BlockSubs','BlockSchedule','SendSchedule','$q','$location',
+    function(BlockPlayers,BlockSubs,BlockSchedule,SendSchedule,$q,$location) {
         // Initialization
 
         return {
@@ -283,7 +283,9 @@ tennisblockapp.directive('blockPlayersTable',[
                  * Send out an e-mail with the schedule for this date.
                  */
                 $scope.sendScheduleUpdate = function() {
-                    SendSchedule.update({date:$scope.queryDate},function() {});
+                    window.location = window.location.origin
+                        + "/schedule/notify/" + $scope.queryDate +"/";
+                    //SendSchedule.update({date:$scope.queryDate},function() {});
                 }
             }
         };
