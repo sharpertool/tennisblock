@@ -22,12 +22,12 @@ availability
 
             <div id="textContent" ng-cloak>
                 <div id="blockheading" class="dynamic" >
-                    <h2>Availability for {{ user.get_full_name }}</h2>
+                    <h2>Availability for {{ user.get_full_name }}
+                        {%  if perms.blockdb.availability %}
+                        <span>Editable</span>
+                        {% endif %}
+                    </h2>
                 </div>
-                {%  if perms.blockdb.availability %}
-                    <h1>Be carefull grasshopper!!</h1>
-                {% endif %}
-
 
                 {% verbatim %}
 

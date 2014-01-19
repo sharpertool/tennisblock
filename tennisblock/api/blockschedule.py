@@ -7,7 +7,7 @@ from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
 from tennisblock.blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
 
-from .apiutils import JSONResponse, _currentSeason, _getMeetingForDate
+from .apiutils import JSONResponse, _currentSeason, _getMeetingForDate,time_to_js
 from tennisblock.TBLib.teams import TeamManager
 from tennisblock.TBLib.schedule import Scheduler
 
@@ -183,6 +183,7 @@ def getBlockDates(request):
         meetings = Meetings.objects.filter(season=currSeason).order_by('date')
         mtgData = []
         for mtg in meetings:
+            jstime = time_to_js(mtg.date)
             d = {
                 'date' : mtg.date,
                 'holdout' : mtg.holdout,
@@ -191,10 +192,6 @@ def getBlockDates(request):
             mtgData.append(d)
 
         response = JSONResponse(mtgData)
-        response["Access-Control-Allow-Origin"] = "*"
-        response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
-        response["Access-Control-Max-Age"] = "1000"
-        response["Access-Control-Allow-Headers"] = "*"
         return response
 
 

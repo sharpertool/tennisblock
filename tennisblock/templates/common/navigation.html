@@ -2,8 +2,8 @@
     <div>
         <ul class="nav nav-pills">
             <li><a href="#">Home</a></li>
-            <li><a class="pure-menu-selected" href="/schedule/">Block Schedule</a></li>
             {% if user.is_authenticated %}
+                <li><a class="pure-menu-selected" href="/schedule/">Block Schedule</a></li>
                 <li><a href="/availability/">Availability</a></li>
                 <li><a href="/members/">Block Members</a></li>
                 <li><a href="/seasons/">Seasons</a></li>

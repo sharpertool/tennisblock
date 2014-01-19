@@ -32,9 +32,32 @@ DATABASES = {
     }
 }
 
+# Added the django cors module
+CORS_ORIGIN_WHITELIST = (
+    'tennisblock.com',
+    'dev.tennisblock.com',
+    'test.tennisblock.com',
+)
+
+CORS_ORIGIN_REGEX_WHITELIST = (
+)
+
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS'
+)
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['tennisblock.com','127.0.0.1','tennisblock.local']
+ALLOWED_HOSTS = [
+    'tennisblock.com',
+    '127.0.0.1',
+    'tennisblock.local',
+    '54.245.89.249',
+]
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/profile/'
@@ -114,6 +137,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -142,6 +167,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # CORS
+    'corsheaders',
+
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

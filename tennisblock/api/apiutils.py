@@ -1,6 +1,6 @@
 # Create your views here.
 
-import datetime
+import datetime,time
 from django.http import HttpResponse
 from dateutil import parser
 from django.views.decorators.csrf import csrf_exempt
@@ -125,3 +125,6 @@ def _BuildMeetings(force=False):
         mtg.save()
         currDate += datetime.timedelta(days = 7)
 
+
+def time_to_js(tval):
+    return int(time.mktime(tval.timetuple())) * 1000
