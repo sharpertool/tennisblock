@@ -92,7 +92,7 @@ class Availability(models.Model):
 class Schedule(models.Model):
 
     class Meta:
-        permissions = (
+        permissions = (             `
             ("change_sched", "Can change the schedule")
         )
 
@@ -101,13 +101,6 @@ class Schedule(models.Model):
     issub               = models.BooleanField()
     verified            = models.BooleanField()
     partner             = models.ForeignKey(Player,related_name='partner',null=True)
-
-class Slot(models.Model):
-    meeting             = models.ForeignKey(Meetings)
-    set                 = models.IntegerField()
-    court               = models.IntegerField()
-    player              = models.ForeignKey(Player)
-    position            = models.CharField(max_length=10)
 
 class Matchup(models.Model):
     meeting             = models.ForeignKey(Meetings)
