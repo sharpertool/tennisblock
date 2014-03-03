@@ -9,6 +9,8 @@ TEMPLATE_DEBUG = DEBUG
 PACKAGE_ROOT = Path(__file__).ancestor(2)
 PROJECT_ROOT = PACKAGE_ROOT.ancestor(1)
 PROJECT_DIR = PACKAGE_ROOT
+print("PACKAGE_ROOT:%s" % PACKAGE_ROOT)
+print("PROJECT_ROOT:%s" % PROJECT_ROOT)
 print("Project dir:%s" % PROJECT_DIR)
 
 sys.path.append(Path(PROJECT_DIR).child("scripts"))
@@ -100,7 +102,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = PROJECT_ROOT.child('collectedstatic')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"

@@ -106,7 +106,10 @@ class BuildUtil(object):
         for dir,dirspec in spec['dirs'].iteritems():
             p = path(os.path.join(dir))
 
-            self.zipPath(zip,p,dirspec)
+            if os.path.isdir(p):
+                self.zipPath(zip,p,dirspec)
+            else:
+                print("Ignoring missing dir %s" % p)
 
         for file in spec['files']:
             zip.write(file)

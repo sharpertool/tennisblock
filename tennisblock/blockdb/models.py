@@ -92,8 +92,8 @@ class Availability(models.Model):
 class Schedule(models.Model):
 
     class Meta:
-        permissions = (             `
-            ("change_sched", "Can change the schedule")
+        permissions = (
+            ("change_sched", "Can change the schedule"),
         )
 
     meeting             = models.ForeignKey(Meetings)

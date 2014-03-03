@@ -10,7 +10,6 @@ directory_specifications = {
             #'favicon.ico'
         ],
         'dirs': {
-            'tennisblock/about': {},
             'tennisblock/accounts': {},
             'tennisblock/api': {},
             'tennisblock/blockdb': {},
@@ -25,7 +24,6 @@ directory_specifications = {
             'tennisblock/templates': {},
             'tennisblock/templatetags': {},
             'tennisblock/tools': {},
-            'tennisblock/users': {},
             #'collectedstatic': { 'ignore' : '.*/pat/.*'},
             'collectedstatic': { },
             'tennisblock': {
