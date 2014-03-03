@@ -6,7 +6,9 @@ import sys
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-PROJECT_DIR = Path(__file__).ancestor(2)
+PACKAGE_ROOT = Path(__file__).ancestor(2)
+PROJECT_ROOT = PACKAGE_ROOT.ancestor(1)
+PROJECT_DIR = PACKAGE_ROOT
 print("Project dir:%s" % PROJECT_DIR)
 
 sys.path.append(Path(PROJECT_DIR).child("scripts"))

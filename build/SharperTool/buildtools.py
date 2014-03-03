@@ -6,6 +6,7 @@ import platform
 import subprocess
 import tempfile
 from cssmin import cssmin
+from django.conf import settings
 
 def quote(f):
     return re.sub(' ','\\ ',f)
@@ -413,5 +414,48 @@ class LessCompiler(CommandRunner):
             print("Failed to build destination file!")
         else:
             print("Built %s" % os.path.relpath(dest_relative))
+
+
+class ClientCompiler(ClosureCompiler):
+
+    def __init__(self,spec):
+        super(ClientCompiler,self).__init__()
+
+        self.clientFile = spec.get('src')
+        self.preFiles = spec.get('pre',[])
+        self.postFiles = spec.get('post',[])
+        self.destFile = spec.get('dest')
+        self.basepath = spec.get('basepath','')
+
+        self._parser = self.parseClientFile
+
+    def compile(self,vmap=False,adv=False,pretty=False):
+        """
+        Assemble required files, and call the closure compiler.
+        """
+
+        jsFiles = []
+
+        for f in self.preFiles:
+            if exists(f):
+                jsFiles.append(f)
+
+        if exists(self.clientFile):
+            files = self._parser(self.basepath,self.clientFile)
+            jsFiles.extend(files)
+        else:
+            print("Specified client file (%s) was not found." % self.clientFile)
+
+        for jsfile in self.postFiles:
+            jsFiles.append(jsfile)
+
+        if len(jsFiles) == 0:
+            print("No javascript files were found to process.")
+            print("The current directory is %s" % os.getcwd())
+            print("The specified basepath is %s" % settings.BUILD_EEBASEPATH)
+            print("Insure that the base path and the files in the import list combined will be valid.")
+            sys.exit(2)
+
+        self.closure_compile(jsFiles,self.destFile)
 
 

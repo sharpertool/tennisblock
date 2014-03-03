@@ -6,3 +6,16 @@
 ~$2012_Fall.xlsx
 libraries/angular-1.2.0-rc.2/docs
 *.pyc
+tennisblock/static/css/about.css
+tennisblock/static/css/accounts.css
+tennisblock/static/css/availability.css
+tennisblock/static/css/banner.css
+tennisblock/static/css/basecontacts.css
+tennisblock/static/css/footer.css
+tennisblock/static/css/home.css
+tennisblock/static/css/layout.css
+tennisblock/static/css/members.css
+tennisblock/static/css/playsheet.css
+tennisblock/static/css/schedule.css
+tennisblock/static/css/tbdefs.css
+tennisblock/static/css/tennisblock_min.css
