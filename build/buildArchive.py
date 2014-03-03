@@ -28,7 +28,7 @@ def main():
 
     parser.add_argument('--rootdir',
                         default=rootdir,
-                        help="Specify the root of the partsim directory.")
+                        help="Specify the root of the project directory.")
 
     args = parser.parse_args()
 
