@@ -19,3 +19,5 @@ tennisblock/static/css/playsheet.css
 tennisblock/static/css/schedule.css
 tennisblock/static/css/tbdefs.css
 tennisblock/static/css/tennisblock_min.css
+env.txt
+local_config.py

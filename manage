@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# This is a bash script version of manage.py..
+# All that it does is load the environment (in case you forget)
+# and run manage.py
+# It's also 3 fewer characters to type.. and in some projects,
+# at the root instead of buried.
+
+if [ -f env.txt ];then
+    environment=`cat env.txt`
+    source $WORKON_HOME/$environment/bin/activate
+else
+    echo "Please add your preferred virtualenv to env.txt"
+    echo ">> echo \"envname\" > env.txt"
+    exit 1
+
+fi
+
+python manage.py "$@"
+

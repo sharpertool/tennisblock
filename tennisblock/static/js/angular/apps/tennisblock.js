@@ -12,6 +12,7 @@ tennisblockapp.factory('BlockDates',function ($resource) {
         return $resource('/api/subs/:date/', {date: '@date'}, {
             get: {method: 'GET', params: {ver: '@ver'}, isArray: false}
         })
+
     }).factory('PickTeams',function ($resource) {
         return $resource('/api/pickteams/:date/', {}, {
             get: {method: 'GET', params: {date: '@date'}, isArray: false},

@@ -25,5 +25,5 @@ SECRET_KEY = ''
 try:
     from local_settings import *
 except ImportError:
-    print("No local settings file imported")
+    pass
 

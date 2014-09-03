@@ -21,12 +21,12 @@ class Season(models.Model):
          return self.name
 
 class GirlsManager(models.Manager):
-    def get_query_set(self):
-        return super(GirlsManager, self).get_query_set().filter(gender='F')
+    def get_queryset(self):
+        return super(GirlsManager, self).get_queryset().filter(gender='F')
 
 class GuysManager(models.Manager):
-    def get_query_set(self):
-        return super(GuysManager, self).get_query_set().filter(gender='M')
+    def get_queryset(self):
+        return super(GuysManager, self).get_queryset().filter(gender='M')
 
 class Player(models.Model):
     GENDER_CHOICES= (
@@ -59,7 +59,7 @@ class Player(models.Model):
 class SeasonPlayers(models.Model):
     season              = models.ForeignKey(Season)
     player              = models.ForeignKey(Player)
-    blockmember         = models.BooleanField()
+    blockmember         = models.BooleanField(default=False)
 
     objects = BlockManager()
 
@@ -71,9 +71,9 @@ class Couple(models.Model):
     name                = models.CharField(max_length=50)
     male                = models.ForeignKey(Player,related_name='guy')
     female              = models.ForeignKey(Player,related_name='gal')
-    fulltime            = models.BooleanField()
-    canschedule         = models.BooleanField()
-    blockcouple         = models.BooleanField()
+    fulltime            = models.BooleanField(default=False)
+    canschedule         = models.BooleanField(default=False)
+    blockcouple         = models.BooleanField(default=False)
 
     def __unicode__(self):
         return  self.name
@@ -81,7 +81,7 @@ class Couple(models.Model):
 class Meetings(models.Model):
     season              = models.ForeignKey(Season)
     date                = models.DateField()
-    holdout             = models.BooleanField()
+    holdout             = models.BooleanField(default=False)
     comments            = models.CharField(max_length=128)
 
 class Availability(models.Model):
@@ -98,8 +98,8 @@ class Schedule(models.Model):
 
     meeting             = models.ForeignKey(Meetings)
     player              = models.ForeignKey(Player)
-    issub               = models.BooleanField()
-    verified            = models.BooleanField()
+    issub               = models.BooleanField(default=False)
+    verified            = models.BooleanField(default=False)
     partner             = models.ForeignKey(Player,related_name='partner',null=True)
 
 class Matchup(models.Model):
