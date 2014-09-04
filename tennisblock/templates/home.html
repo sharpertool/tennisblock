@@ -17,7 +17,6 @@
 {% block angular_script %}
     {{ block.super }}
 
-    <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/angular/controllers/blockplayers.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/angular/controllers/latestbuzz.js' %}"></script>
 
@@ -26,7 +25,7 @@
 {% block title %}
 home
 {% endblock %}
-{% block content %}
+{% block body %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
 

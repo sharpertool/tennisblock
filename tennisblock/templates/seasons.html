@@ -1,20 +1,17 @@
-{% extends "common/base.html" %}
-{% load sekizai_tags %}
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
 
-{% block mytags %}
+{% block page_style %}
     {{ block.super }}
-    {% if not isprod %}
-        {% add_data "less-data" "home.less" %}
-    {% else %}
-        {% add_data "css-data" "home.css" %}
-    {% endif %}
+    <!-- about.html: page_style -->
 
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/home.less' %}">
 {% endblock %}
 
 {% block title %}
 home
 {% endblock %}
-{% block content %}
+{% block body %}
             <div id="textContent">
                 <div id="blockheading" class="dynamic">
                     <h2>Block Seasons</h2>

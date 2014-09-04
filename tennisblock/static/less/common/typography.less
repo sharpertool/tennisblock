@@ -1,0 +1,82 @@
+/* ==========================================================================
+   Typographic styles and applications
+
+   NOTE: See fonts.less for @font-face imports;
+
+   ========================================================================== */
+
+@sans_serifs: 'BenchNine', 'Roboto Slab', helvetica, arial, sans-serif;
+
+.font-reset {
+    margin         : 0;
+    padding        : 0;
+    font-size      : 1em;
+    line-height    : 1em;
+    font-weight    : 300;
+    font-style     : normal;
+    letter-spacing : .05em;
+}
+
+/* Base Font Styles */
+
+.base-serif {
+    font-family : @sans_serifs;
+    .font-reset;
+}
+
+.base-header {
+    .base-serif;
+    color       : @base_header_color;
+    font-weight : 700;
+}
+
+.base-paragraph {
+    .base-serif;
+    color : @base_p_color;
+}
+
+/* ================= */
+/* Font Applications */
+/* ================= */
+
+/* Base Header Styles */
+
+h1 {
+    .base-header;
+    font-size      : 2em;
+    line-height    : 1.4em;
+    padding-top    : .9em;
+    padding-bottom : .1em;
+}
+
+h2 {
+    .base-header;
+    font-size      : 1.5em;
+    line-height    : 1.3em;
+    padding-top    : .9em;
+    padding-bottom : .3em;
+}
+
+h3 {
+    .base-header;
+    font-size      : 1.175em;
+    line-height    : 1.7em;
+    padding-top    : 1.2em;
+    padding-bottom : .3em;
+}
+
+h4 {
+    .base-header;
+    font-size      : 1em;
+    line-height    : 1.9em;
+    padding-top    : 1.5em;
+    padding-bottom : .3em;
+}
+
+p {
+    .base-paragraph;
+    line-height : 1.43em;
+    .wide-lines {
+        line-height : 1.9em;
+    }
+}

@@ -6,10 +6,10 @@ import sys
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-PACKAGE_ROOT = Path(__file__).ancestor(2)
-PROJECT_ROOT = PACKAGE_ROOT.ancestor(1)
-PROJECT_DIR = PACKAGE_ROOT
-print("PACKAGE_ROOT:%s" % PACKAGE_ROOT)
+DJANGO_ROOT = Path(__file__).ancestor(2)
+PROJECT_ROOT = DJANGO_ROOT.ancestor(1)
+PROJECT_DIR = DJANGO_ROOT
+print("DJANGO_ROOT:%s" % DJANGO_ROOT)
 print("PROJECT_ROOT:%s" % PROJECT_ROOT)
 print("Project dir:%s" % PROJECT_DIR)
 
@@ -25,14 +25,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tennisblock',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tennisblock',
         'USER': 'tennisblock',
-        'PASSWORD': 'P5HJTdHt5dR2t9Q2',
-        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -102,7 +100,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = PROJECT_ROOT.child('collectedstatic')
+STATIC_ROOT = DJANGO_ROOT.child('static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -113,7 +111,6 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    PROJECT_DIR.child('static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -137,6 +134,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     #'sekizai.context_processors.sekizai',
     #'sekizai.context.SekizaiContext',
+    'tennisblock.utils.context.tennisblock',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -246,3 +244,21 @@ CONTACT_FORM_RECIPIENTS = (
 
 BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+)
+
+USE_LESS = False
+LESS_POLL = 100000
+
+COMPRESS_ENABLED = False
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'tennisblock_flake'
+    }
+}
+
+COMPRESS_OUTPUT_DIR = ''

@@ -1,5 +1,6 @@
 from django import template
 from django.utils.safestring import mark_safe
+from django.conf import settings
 
 register = template.Library()
 import os.path
@@ -7,6 +8,11 @@ import re
 
 lessFiles = []
 cssFiles = []
+
+# settings value
+@register.simple_tag
+def settings_value(name):
+    return getattr(settings, name, "")
 
 def isFixedUrl(url):
     return re.search('^http',url,re.I) or re.search('^//',url)

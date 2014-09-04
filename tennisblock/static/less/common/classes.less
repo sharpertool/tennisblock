@@ -1,0 +1,42 @@
+/* ==========================================================================
+   Modules reused throughout the site
+   ========================================================================== */
+
+.alert {
+    background : transparent;
+}
+
+.ss-icon-clickable {
+    cursor : pointer;
+}
+
+.pagination {
+    padding : 0 0 1em 0 !important;
+    color   : @pagination_color;
+}
+
+.errorlist {
+    list-style-type : none;
+    padding         : .5em;
+    border          : 1px solid @red;
+    color           : @error_color;
+    .rounded-corners;
+    .small-text;
+
+    &:before {
+        content      : "Warning";
+        .ss-icon;
+        float        : left;
+        display      : block;
+        margin-right : .5em;
+    }
+}
+
+.nav-link-style {
+    color           : @navlink_color;
+    text-decoration : none;
+    font-size       : .8em;
+    &:hover {
+        text-decoration : underline;
+    }
+}
