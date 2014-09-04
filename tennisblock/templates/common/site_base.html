@@ -45,7 +45,7 @@
 
     {% block typekit %}
         <script type="text/javascript" src="//use.typekit.net/dre8afp.js"></script>
-        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){ console.log('Could not load typescript');}</script>
     {% endblock typekit %}
 
     {% compress css %}
@@ -71,7 +71,47 @@
 
 {% block header_bar_base %}
     <!-- site_base.html: header_bar_base -->
-    {% include "common/header.html" %}
+    <section class="header_bar" id="header">
+        <div id="top_banner" class="dynamic">
+            <div class="title dynamic"><span>TennisBlock.com</span></div>
+            <div class="background dynamic"></div>
+        </div>
+
+
+
+        <header id="header_bar" class="header {% block navbar_class %}navbar-fixed-top{% endblock %}">
+            {% comment %}
+            <a href="{% url 'home' %}" id="header_logo" class="">{{SITE_NAME}}</a>
+        {% endcomment %}
+
+            {% comment %}
+        <img id="header_logo" src="{% static 'images/assets/header_logo.png' %}"/>
+        <img id="header_title" src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
+        {% endcomment %}
+            {% block header_bar_nav %}
+                <nav class="nav-list">
+                    <a href="#">Home</a>
+                    {% if user.is_authenticated %}
+                        <a class="pure-menu-selected" href="{% url 'schedule' %}">Block Schedule</a>
+                        <a href="{% url 'availability' %}">Availability</a>
+                        <a href="{% url 'seasonplayers' %}">Block Members</a>
+                        <a href="{% url 'seasons' %}">Seasons</a>
+                        {% if request.user.is_staff %}
+                            <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}">
+                                <i class="icon-cog"></i> {% trans "ADMIN" %}</a>
+                        {% endif %}
+                        <a href="{% url 'profile' %}">Profile</a>
+                        <a href="{% url 'logout' %}">Log out</a>
+                        <a href="{% url 'about' %}">ABOUT</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">Login</a>
+                        <a href="{% url 'about' %}">ABOUT</a>
+                    {% endif %}
+                </nav>
+            {% endblock header_bar_nav %}
+        </header>
+
+    </section>
 {% endblock header_bar_base %}
 
 {% block page_header_base %}
@@ -94,7 +134,18 @@
 
 {% block footer_base %}
     <!-- site_base.html: footer_base -->
-    {% include "common/footer.html" %}
+    <div id="block_footer" class="col-lg-12">
+
+        <ul class="">
+            <li class="foottext"><a href="{% url 'contact' %}" class="first">Contact Us</a></li>
+            <li class="foottext"><a href="{% url 'about' %}" >About Us</a></li>
+            <!--
+            <li id="foot_facebook" class="icon"><a href="https://www.facebook.com/Gardenbuzz" target="_blank"><img src="/static/images/facebook/FB-f-Logo__blue_29.png"/></a></li>
+            <li id="foot_twitter" class="icon"><a href="https://twitter.com/GardenBuzz" target="_blank"><img src="/static/images/twitter-bird-light-bgs.png" height="30" width="30"/></a></li>
+            -->
+        </ul>
+
+    </div>
 {% endblock %}
 
 {% block body_script %}

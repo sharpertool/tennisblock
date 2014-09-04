@@ -1,18 +1,12 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
 
-{% comment %}
-{% block mytags %}
+{% block page_style %}
     {{ block.super }}
+    <!-- about.html: page_style -->
 
-    {% if not isprod %}
-        {% add_data "less-data" "home.less" %}
-    {% else %}
-        {% add_data "css-data" "home.css" %}
-    {% endif %}
-
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/home.less' %}">
 {% endblock %}
-{% endcomment %}
 
 {% block angular_script %}
     {{ block.super }}
@@ -25,7 +19,8 @@
 {% block title %}
 home
 {% endblock %}
-{% block body %}
+
+{% block body_base %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
 
