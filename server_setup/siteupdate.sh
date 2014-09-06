@@ -1,9 +1,9 @@
 #!/bin/bash
 
-BASEDIR=/var/www/sites/dev.orderpcbs.com
+BASEDIR=/var/www/sites/dev.tennisblock.com
 GITDIR=currentVersion
 ENVDIR=/home/ec2-user/Envs
-ENVNAME=orderpcbdev
+ENVNAME=tennisblockdev
 
 pushd ${BASEDIR} >> /dev/null
 cp maintenance.html maintenance_on.html
