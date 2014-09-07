@@ -3,28 +3,16 @@
    ========================================================================== */
 
 .body_wrapper {
-    position: absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    //height: 100%;
-    margin: 0;
-    padding: 0;
+    width: 100%;
+    height: 100%;
+
 }
 
-.header_bar {
-    height: 100px;
-
-    #top_banner {
-        height: 40px;
-    }
-}
-
-#banner {
-    height     : 21em;
+#top_banner {
+    float:left;
+    height     : 13em;
     padding    : 3em 2em;
-    background : @banner_bg_color url('@{imgbase}/gardenbuzz_logo_veggies.png') no-repeat right center;
+    //background : @banner_bg_color url('@{imgbase}/gardenbuzz_logo_veggies.png') no-repeat right center;
     overflow   : hidden;
     text-align : center;
 
@@ -80,63 +68,12 @@
 
 }
 
-#search_header {
-    background : @light_grey;
-    width      : 100%;
-
-    #search_term {
-    }
-}
-
 #page_header {
-    height: 385px;
+    float:left;
+    //margin-top: 13em;
+    //height: 385px;
+    width:100%;
 
-}
-
-#top_tabs {
-    padding  : 0em 1em 1em 1em !important;
-    overflow : auto;
-    color    : @darker_grey;
-
-    #top_tabs_labels {
-        list-style-type : none;
-        font-weight     : 300;
-        padding         : 0;
-        overflow        : auto;
-        border-bottom   : 1px solid @grey;
-        a {
-            color : @darker_grey; padding-right : 2em;
-
-            &:hover {
-                color : @darker_grey;
-            }
-
-            &:active {
-                color : @dark_grey;
-            }
-        }
-
-        .ui-state-active {
-            font-weight : 600;
-        }
-
-        li {
-            float : left;
-        }
-    }
-
-    div {
-        padding : 0;
-    }
-
-    p {
-        color       : @darker_grey;
-        font-weight : 300 !important;
-    }
-
-    label + input {
-        margin-top : 0em;
-    }
 }
 
 #bottom {

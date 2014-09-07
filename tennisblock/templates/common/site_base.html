@@ -8,13 +8,19 @@
 {% block head_script %}
     {{ block.super }}
     <!-- site_base.html: head_script -->
-    <script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <script type="text/javascript" src="{% static 'js/library/angular/angular.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/library/angular/angular-resource.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/HeadFinal.js' %}"></script>
+    <script type="text/javascript"
+            src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/angular/angular.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/angular/angular-resource.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/HeadFinal.js' %}"></script>
 
-    <script type="text/javascript" src="{% static 'js/library/jquery-1.10.2.min.js' %}"></script>
-    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/jquery-1.10.2.min.js' %}"></script>
+    <script type="text/javascript"
+            src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
 
 {% endblock %}
 
@@ -22,9 +28,10 @@
     {{ block.super }}
     <!-- site_base.html: page_style -->
 
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
+    <link rel="stylesheet"
+          href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
 
     <link rel="stylesheet/less" type="text/less" href="{% static 'less/style_base.less' %}">
     <!-- site_base.html: page_style end -->
@@ -39,24 +46,29 @@
 
     {% comment %}
     {% block google_fonts %}
-        <link href='http://fonts.googleapis.com/css?family=BenchNine:300,400,700|Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+        <link
+        href='http://fonts.googleapis.com/css?family=BenchNine:300,400,700|Roboto+Slab:400,100,300,700'
+        rel='stylesheet' type='text/css'>
     {% endblock google_fonts %}
     {% endcomment %}
 
     {% block typekit %}
-        <script type="text/javascript" src="//use.typekit.net/dre8afp.js"></script>
-        <script type="text/javascript">try{Typekit.load();}catch(e){ console.log('Could not load typescript');}</script>
+        <script type="text/javascript" src="//use.typekit.net/den5ddu.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     {% endblock typekit %}
 
     {% compress css %}
-        <link rel="stylesheet/less" type="text/less" href="{% static 'less/style_base.less' %}">
+        <link rel="stylesheet/less" type="text/less"
+              href="{% static 'less/style_base.less' %}">
 
         {% block extra_less %}
         {% endblock %}
     {% endcompress %}
 
-    <link rel="stylesheet" href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/highslide/highslide.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/highslide/highslide.css' %}">
 
     {% block extra_style %}
     {% endblock %}
@@ -69,67 +81,61 @@
 
 {% block wrapper_class %}wrapper{% endblock %}
 
-{% block header_bar_base %}
-    <!-- site_base.html: header_bar_base -->
-    <section class="header_bar" id="header">
-        <div id="top_banner" class="dynamic">
-            <div class="title dynamic"><span>TennisBlock.com</span></div>
-            <div class="background dynamic"></div>
-        </div>
+{% block header_bar_images %}
+    <img id="header_logo"
+         src="{% static 'images/assets/header_logo.png' %}"/>
+    <img id="header_title"
+         src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
+{% endblock header_bar_images %}
 
+{% block header_bar_nav %}
+    <nav class="nav header" id="header_bar_nav">
+        <a href="{% url 'home' %}">HOME</a>
+        {% if request.user.is_authenticated %}
+            <a href="{{ request.user.profile.get_absolute_url }}">
+                <i class="icon-briefcase"></i> {% trans "ACCOUNT" %}
+            </a>
+            {% if request.user.is_staff %}
+                <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}">
+                    <i class="icon-cog"></i> {% trans "ADMIN" %}
+                </a>
+            {% endif %}
+            <a id="account_logout" href="{% url "logout" %}">
+                <i class="icon-off"></i> {% trans "LOG OUT" %}
+            </a>
+        {% else %}
+            <a href="{% url "login" %}">{% trans "SIGN IN" %}
+            </a>
+        {% endif %}
+    </nav>
+{% endblock header_bar_nav %}
 
+{% block page_header_top %}
+    <h2>The Premier Site for</h2>
+    <h2>Tennis Block Management!</h2>
+{% endblock %}
 
-        <header id="header_bar" class="header {% block navbar_class %}navbar-fixed-top{% endblock %}">
-            {% comment %}
-            <a href="{% url 'home' %}" id="header_logo" class="">{{SITE_NAME}}</a>
-        {% endcomment %}
-
-            {% comment %}
-        <img id="header_logo" src="{% static 'images/assets/header_logo.png' %}"/>
-        <img id="header_title" src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
-        {% endcomment %}
-            {% block header_bar_nav %}
-                <nav class="nav-list">
-                    <a href="#">Home</a>
-                    {% if user.is_authenticated %}
-                        <a class="pure-menu-selected" href="{% url 'schedule' %}">Block Schedule</a>
-                        <a href="{% url 'availability' %}">Availability</a>
-                        <a href="{% url 'seasonplayers' %}">Block Members</a>
-                        <a href="{% url 'seasons' %}">Seasons</a>
-                        {% if request.user.is_staff %}
-                            <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}">
-                                <i class="icon-cog"></i> {% trans "ADMIN" %}</a>
-                        {% endif %}
-                        <a href="{% url 'profile' %}">Profile</a>
-                        <a href="{% url 'logout' %}">Log out</a>
-                        <a href="{% url 'about' %}">ABOUT</a>
-                    {% else %}
-                        <a href="{% url 'login' %}">Login</a>
-                        <a href="{% url 'about' %}">ABOUT</a>
-                    {% endif %}
-                </nav>
-            {% endblock header_bar_nav %}
-        </header>
-
-    </section>
-{% endblock header_bar_base %}
-
-{% block page_header_base %}
-    <!-- site_base.html: page_header_base -->
-    <section id="page_header" class="{% block page_header_class %}page_header{% endblock %}">
-        {% block page_header_top %}
-            <section id="page_header_top">
-                {% block ph_top_content %}{% endblock %}
-            </section>
-        {% endblock page_header_top %}
-        {% block page_header_bottom %}
-            <section id="page_header_bottom" class="page_header_bottom">
-                {% block ph_bottom_content %}
-                {% endblock ph_bottom_content %}
-            </section>
-        {% endblock page_header_bottom %}
-    </section>
-{% endblock page_header_base %}
+{% block page_header_bottom %}
+    <nav class="nav-list pure-menu pure-menu-upen">
+        <a href="#">Home</a>
+        {% if user.is_authenticated %}
+            <a class="pure-menu-selected" href="{% url 'schedule' %}">Block Schedule</a>
+            <a href="{% url 'availability' %}">Availability</a>
+            <a href="{% url 'seasonplayers' %}">Block Members</a>
+            <a href="{% url 'seasons' %}">Seasons</a>
+            {% if request.user.is_staff %}
+                <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}">
+                    <i class="icon-cog"></i> {% trans "ADMIN" %}</a>
+            {% endif %}
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Log out</a>
+            <a href="{% url 'about' %}">ABOUT</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'about' %}">ABOUT</a>
+        {% endif %}
+    </nav>
+{% endblock page_header_bottom %}
 
 
 {% block footer_base %}
@@ -139,8 +145,15 @@
         <ul class="">
             <li class="foottext"><a href="{% url 'contact' %}" class="first">Contact Us</a></li>
             <li class="foottext"><a href="{% url 'about' %}" >About Us</a></li>
-            <li id="foot_facebook" class="icon"><a href="https://www.facebook.com/tennisblock" target="_blank"><img src="/static/images/facebook/FB-f-Logo__blue_29.png"/></a></li>
-            <li id="foot_twitter" class="icon"><a href="https://twitter.com/tennisblock" target="_blank"><img src="/static/images/twitter-bird-light-bgs.png" height="30" width="30"/></a></li>
+            <li id="foot_facebook"
+                class="icon"><a href="https://www.facebook.com/tennisblock"
+                                target="_blank"><img src="/static/images/facebook/FB-f-Logo__blue_29.png"/></a></li>
+            <li id="foot_twitter"
+                class="icon">
+                <a href="https://twitter.com/tennisblock"
+                   target="_blank"><img src="/static/images/twitter-bird-light-bgs.png" height="30" width="30"/>
+                </a>
+            </li>
         </ul>
 
     </div>
@@ -150,16 +163,25 @@
     {{ block.super }}
     <!-- site_base.html: body_script -->
 
-    <script type="text/javascript" src="{% static 'js/library/jquery-1.10.2.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/library/jquery-ui-1.10.3.custom.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/library/underscore.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/library/amplify.core.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/library/jquery.download.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/library/json2.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/library/log4javascript.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/jquery-1.10.2.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/jquery-ui-1.10.3.custom.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/underscore.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/amplify.core.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/jquery.download.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/json2.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/log4javascript.js' %}"></script>
 
-    <script type="text/javascript" src="{% static 'js/Client.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/Load.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/Client.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/Load.js' %}"></script>
 {% endblock %}
 
 {% block extra_script %}

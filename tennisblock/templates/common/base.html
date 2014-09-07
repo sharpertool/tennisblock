@@ -53,34 +53,54 @@
 
     </head>
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
-        <section class="body_wrapper {% block wrapper_class %}{% endblock %}">
+        <section class="body_wrapper pure-g
+            {% block wrapper_class %}{% endblock %}">
             {% block header_bar_base %}
-                <div id="topbar" class="topbar {% block navbar_class %}navbar-fixed-top{% endblock %}">
+                <section id="top_banner"
+                         class="topbar
+                            pure-u-1
+                            {% block navbar_class %}
+                                navbar-fixed-top
+                            {% endblock %}
+                            ">
                     {% block header_bar_images %}
-                        <img id="header_logo" src="{% static 'images/assets/header_logo.png' %}"/>
-                        <img id="header_title" src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
+                        <img id="header_logo"
+                             src="{% static 'images/assets/header_logo.png' %}"/>
+                        <img id="header_title"
+                             src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
                     {% endblock header_bar_images %}
                     {% block header_bar_nav %}
-                        <nav>
+                        <nav class="nav header" id="header_bar_nav">
                             <a href="{% url 'home' %}">HOME</a>
                             {% if request.user.is_authenticated %}
-                                <a href="{{ request.user.profile.get_absolute_url }}"><i class="icon-briefcase"></i> {% trans "ACCOUNT" %}</a>
+                                <a href="{{ request.user.profile.get_absolute_url }}">
+                                    <i class="icon-briefcase"></i> {% trans "ACCOUNT" %}
+                                </a>
                                 {% if request.user.is_staff %}
-                                    <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}"><i class="icon-cog"></i> {% trans "ADMIN" %}</a>
+                                    <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}">
+                                        <i class="icon-cog">
+                                        </i>
+                                        {% trans "ADMIN" %}
+                                    </a>
                                 {% endif %}
-                                <a id="account_logout" href="{% url "account_logout" %}"><i class="icon-off"></i> {% trans "LOG OUT" %}</a>
+                                <a id="account_logout" href="{% url "account_logout" %}">
+                                    <i class="icon-off"></i> {% trans "LOG OUT" %}
+                                </a>
                             {% else %}
                                 <a href="{% url "account_login" %}">{% trans "SIGN IN" %}</a>
                             {% endif %}
                         </nav>
                     {% endblock header_bar_nav %}
-                </div>
+                </section>
             {% endblock header_bar_base %}
 
             {% block page_header_base %}
-                <div class="page_header">
-                    <h3>Gardening in</h3>
-                    <h2>Treasure Valley.</h2>
+                <section id="page_header"
+                         class="page_header pure-u-1">
+                    {% block page_header_top %}
+                        <h3>Gardening in</h3>
+                        <h2>Treasure Valley.</h2>
+                    {% endblock %}
                     {% block page_header_bottom %}
                         <div class="page_header_bottom">
                             <nav>
@@ -90,21 +110,24 @@
                             </nav>
                         </div>
                     {% endblock page_header_bottom %}
-                </div>
+                </section>
             {% endblock page_header_base %}
 
             {% block body_base %}
-                <div class="container">
+                <section class="container">
                     {% include "_messages.html" %}
                     {% block body %}
                     {% endblock body %}
-                </div>
+                </section>
             {% endblock body_base %}
 
             {% block footer_base %}
-                <hr/>
-                <footer>
-                </footer>
+                <section id="footer_base">
+                    <hr/>
+                    <footer>
+                    </footer>
+
+                </section>
             {% endblock footer_base %}
         </section>
 
