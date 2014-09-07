@@ -1,22 +1,24 @@
-{% extends "common/base.html" %}
-{% load sekizai_tags %}
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
 
-{% block mytags %}
+{% block page_style %}
     {{ block.super }}
-    {% if not isprod %}
-        {% add_data "less-data" "schedule.less" %}
-    {% else %}
-        {% add_data "css-data" "schedule.css" %}
-    {% endif %}
+    <!-- about.html: page_style -->
 
-    {% add_data "js-body" "angular/apps/tennisblock.js" %}
-    {% add_data "js-body" "angular/controllers/contact.js" %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/schedule.less' %}">
+{% endblock %}
+
+{% block angular_script %}
+    {{ block.super }}
+
+    <script src="{% static 'js/angular/controllers/contact.js' %}" type="text/javascript"></script>
+
 {% endblock %}
 
 {% block title %}
 contact
 {% endblock %}
-{% block content %}
+{% block body %}
 <div class='container form_wrap'>
     <h1 class="header_bar">
         Contact Us

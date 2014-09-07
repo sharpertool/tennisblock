@@ -1,25 +1,27 @@
-{% extends "common/base.html" %}
-{% load sekizai_tags %}
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
 
-{% block mytags %}
+{% block page_style %}
     {{ block.super }}
-    {% if not isprod %}
-        {% add_data "less-data" "members.less" %}
-    {% else %}
-        {% add_data "css-data" "members.css" %}
-    {% endif %}
+    <!-- about.html: page_style -->
 
-    {% add_data "js-body" "angular/apps/tennisblock.js" %}
-    {% add_data "js-body" "angular/controllers/members-controller.js" %}
-    {% add_data "js-body" "angular/directives/members-list.js" %}
-    {% add_data "js-body" "angular/directives/block-members.js" %}
-    {% add_data "js-body" "angular/directives/block-member.js" %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/members.less' %}">
+{% endblock %}
+
+{% block angular_script %}
+    {{ block.super }}
+
+    <script src="{% static 'js/angular/controllers/members-controller.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/directives/members-list.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/directives/block-members.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/directives/block-member.js' %}" type="text/javascript"></script>
+
 {% endblock %}
 
 {% block title %}
     members
 {% endblock %}
-{% block content %}
+{% block body %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
 

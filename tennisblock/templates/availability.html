@@ -1,22 +1,24 @@
-{% extends "common/base.html" %}
-{% load sekizai_tags %}
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
 
-{% block mytags %}
+{% block page_style %}
     {{ block.super }}
-    {% if not isprod %}
-        {% add_data "less-data" "availability.less" %}
-    {% else %}
-        {% add_data "css-data" "availability.css" %}
-    {% endif %}
+    <!-- about.html: page_style -->
 
-    {% add_data "js-body" "angular/apps/tennisblock.js" %}
-    {% add_data "js-body" "angular/controllers/availability.js" %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/availability.less' %}">
+{% endblock %}
+
+{% block angular_script %}
+    {{ block.super }}
+
+    <script src="{% static 'js/angular/controllers/availability.js' %}" type="text/javascript"></script>
+
 {% endblock %}
 
 {% block title %}
 availability
 {% endblock %}
-{% block content %}
+{% block body %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic" ng-controller="Availability">
 

@@ -1,120 +1,129 @@
-<!DOCTYPE HTML>
-{% load sekizai_tags %}
+{% load staticfiles %}
+{% load url from future %}
+{% load i18n %}
 {% load gbtags %}
+<!DOCTYPE HTML>
 
-{% block mytags %}
-    {% add_data "js-head" "http://html5shiv.googlecode.com/svn/trunk/html5.js" %}
-    {% add_data "js-head" "library/angular/angular.min.js" %}
-    {% add_data "js-head" "library/angular/angular-resource.min.js" %}
-    {% add_data "js-head" "LessPrefix.js" %}
-    {% add_data "js-head" "library/less-1.4.1.min.js" %}
-    {% add_data "js-head" "HeadFinal.js" %}
-    {% add_data "js-head" "LessPrefix.js" %}
-    {% add_data "js-head" "LessWatch.js" %}
+<html lang="{{ LANGUAGE_CODE }}" ng-app="{{ angularapp }}" class="main">
+    <head>
+        <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}
+        {% endblock %}{% endblock %}</title>
+        <link rel="icon" href="{% static 'img/favicon.png' %}">
+        <meta name="viewport" content="width=device-width, width=device-width, initial-scale=1.0">
 
-    {% add_data "js-body" "library/jquery-1.10.2.min.js" %}
-    {% add_data "js-body" "library/jquery-ui-1.10.3.custom.min.js" %}
-    {% add_data "js-body" "library/underscore.js" %}
-    {% add_data "js-body" "library/amplify.core.min.js" %}
-    {% add_data "js-body" "library/jquery.download.js" %}
-    {% add_data "js-body" "library/json2.js" %}
-    {% add_data "js-body" "library/log4javascript.js" %}
-
-    {% comment %}
-        {% add_data "js-body" "library/bootstrap.min.js" %}
-    {% endcomment %}
-    {% add_data "js-head" "library/jquery-1.10.2.min.js" %}
-    {% add_data "js-head" "//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js" %}
-
-    {% add_data "js-body-final" "Client.js" %}
-    {% add_data "js-body-final" "Load.js" %}
-
-    {% add_data "css-data" "http://yui.yahooapis.com/pure/0.1.0/base-min.css" %}
-    {% comment %}
-        {% add_data "css-data" "bootstrap-responsive.min.css" %}
-        {% add_data "css-data" "bootstrap.min.css" %}
-    {% endcomment %}
-    {% add_data "css-data" "//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" %}
-    {% add_data "css-data" "mint-choc/jquery-ui-1.10.3.custom.min.css" %}
-
-    {% add_data "less-data" "base.less" %}
-    {% add_data "less-data" "layout.less" %}
-    {% add_data "less-data" "nav.less" %}
-    {% add_data "less-data" "banner.less" %}
-    {% add_data "less-data" "footer.less" %}
-{% endblock %}
-
-<html ng-app="{{ angularapp }}" class="main">
-<head>
-    <title>TennisBlock - {% block title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, width=device-width, initial-scale=1.0">
-
-    {% with_data "css-data" as stylesheets %}
-    {% for stylesheet in stylesheets %}    {{ stylesheet|stylesheetFilter }}
-    {% endfor %}
-    {% end_with_data %}
-
-    {% with_data "less-data" as stylesheets %}
-    {% for stylesheet in stylesheets %}    {{ stylesheet|stylesheetFilter:"less" }}
-    {% endfor %}
-    {% end_with_data %}
-
-    {% with_data "css-final" as stylesheets %}
-    {% for stylesheet in stylesheets %}    {{ stylesheet|stylesheetFilter }}
-    {% endfor %}
-    {% end_with_data %}
-
-    {% with_data "js-head" as scripts %}
-    {% for script in scripts %}    {{ script|scriptFilter }}
-    {% endfor %}
-    {% end_with_data %}
-
-    {% block headscript %}
-        <script type="text/javascript">
-            django = {
-                'username'  : "{{ user.username }}",
-                'first'     : "{{ user.first_name }}",
-                'last'      : "{{ user.last_name }}",
-                'blockcaptain' : "{{ perms.blockdb.change_sched }}"
-            };
-            console.log("Initialized username to " + django.username);
-        </script>
-    {% endblock headscript %}
-
-    {% if settings.PROD %}
-        <!--
-        <h1>Running in Production</h1>
-        -->
-    {% else %}
-        <!--
-        <h1>Running in Devlopment</h1>
-        -->
-    {% endif %}
-    <script type="text/javascript">
-        GBBasePath = location.protocol + '//' + location.host + "/static/js/";
-        GBStaticPath = "/static";
-        AngularPartialsBase = '/static/partials';
-    </script>
-</head>
-<body>
-
-        {% include "common/banner.html" %}
-        {% include "common/navigation.html" %}
-
-        {% block content %}
+        {% block style_base %}
+            <!-- base.html: style_base -->
+            {% block extra_style %}{% endblock %}
         {% endblock %}
 
-        {% include "common/footer.html" %}
+        {% block html5shim %}
+            <!-- base.html: html5shim -->
+            <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+            <!--[if lt IE 9]>
+                    <script src="{% static 'pinax/js/html5shiv.js' %}"></script>
+                <![endif]-->
+        {% endblock %}
 
-{% with_data "js-body" as scripts %}
-{% for script in scripts %}    {{ script|scriptFilter }}
-{% endfor %}
-{% end_with_data %}
+        {% block head_script %}
+            <!-- base.html: head_script -->
+        {% endblock %}
 
-{% with_data "js-body-final" as scripts %}
-{% for script in scripts %}    {{ script|scriptFilter }}
-{% endfor %}
-{% end_with_data %}
+        {% block page_style %}
+            <!-- base.html: page_style -->
+        {% endblock %}
 
-</body>
+        {% block less_script %}
+            <!-- base.html: less_script -->
+            {% if debug %}
+                <script type="text/javascript">
+                    var less = {
+                        env: "development",
+                        logLevel: 2,
+                        async: false,
+                        fileAsync: false,
+                        poll: {{ less_poll }},
+                        dumpLineNumbers: "comments",
+                        relativeUrls: false
+                    };
+                </script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.4/less.min.js" type="text/javascript"></script>
+            {% endif %}
+
+        {% endblock %}
+
+    </head>
+    <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
+        <section class="body_wrapper {% block wrapper_class %}{% endblock %}">
+            {% block header_bar_base %}
+                <div id="topbar" class="topbar {% block navbar_class %}navbar-fixed-top{% endblock %}">
+                    {% block header_bar_images %}
+                        <img id="header_logo" src="{% static 'images/assets/header_logo.png' %}"/>
+                        <img id="header_title" src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
+                    {% endblock header_bar_images %}
+                    {% block header_bar_nav %}
+                        <nav>
+                            <a href="{% url 'home' %}">HOME</a>
+                            {% if request.user.is_authenticated %}
+                                <a href="{{ request.user.profile.get_absolute_url }}"><i class="icon-briefcase"></i> {% trans "ACCOUNT" %}</a>
+                                {% if request.user.is_staff %}
+                                    <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}"><i class="icon-cog"></i> {% trans "ADMIN" %}</a>
+                                {% endif %}
+                                <a id="account_logout" href="{% url "account_logout" %}"><i class="icon-off"></i> {% trans "LOG OUT" %}</a>
+                            {% else %}
+                                <a href="{% url "account_login" %}">{% trans "SIGN IN" %}</a>
+                            {% endif %}
+                        </nav>
+                    {% endblock header_bar_nav %}
+                </div>
+            {% endblock header_bar_base %}
+
+            {% block page_header_base %}
+                <div class="page_header">
+                    <h3>Gardening in</h3>
+                    <h2>Treasure Valley.</h2>
+                    {% block page_header_bottom %}
+                        <div class="page_header_bottom">
+                            <nav>
+                                <a href="{% url 'gardentips' %}">BEGINNER'S GUIDE TO GARDENING</a>
+                                <a href="{% url 'featured_gardeners' %}">FEATURED GARDENS</a>
+                                <a href="{% url 'nurseries' %}">TREASURE VALLEY NURSERIES</a>
+                            </nav>
+                        </div>
+                    {% endblock page_header_bottom %}
+                </div>
+            {% endblock page_header_base %}
+
+            {% block body_base %}
+                <div class="container">
+                    {% include "_messages.html" %}
+                    {% block body %}
+                    {% endblock body %}
+                </div>
+            {% endblock body_base %}
+
+            {% block footer_base %}
+                <hr/>
+                <footer>
+                </footer>
+            {% endblock footer_base %}
+        </section>
+
+
+        {% block body_script %}
+            <!-- base.html: body_script -->
+        {% endblock %}
+
+        {% block extra_script %}
+            <!-- base.html: body_extra_script -->
+        {% endblock %}
+
+        {% block page_script %}
+            <!-- base.html: body_page_script -->
+        {% endblock %}
+
+        {% block body_script_final %}
+            <!-- base.html: body_script_final -->
+        {% endblock %}
+
+    </body>
 </html>

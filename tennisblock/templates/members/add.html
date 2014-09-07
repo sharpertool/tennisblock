@@ -1,21 +1,25 @@
 {% extends "common/base.html" %}
-{% load sekizai_tags %}
+{% load staticfiles %}
 
-{% block mytags %}
-    {% if not isprod %}
-        {% add_data "less-data" "schedule.less" %}
-    {% else %}
-        {% add_data "css-data" "schedule.css" %}
-    {% endif %}
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
 
-    {% add_data "js-body" "angular/apps/tennisblock.js" %}
-    {% add_data "js-body" "angular/controllers/Home.js" %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/schedule.less' %}">
+{% endblock %}
+
+{% block angular_script %}
+    {{ block.super }}
+
+    <script src="{% static 'js/angular/controllers/Home.js' %}" type="text/javascript"></script>
+
 {% endblock %}
 
 {% block title %}
 add
 {% endblock %}
-{% block content %}
+
+{% block body %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
 

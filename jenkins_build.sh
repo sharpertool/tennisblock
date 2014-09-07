@@ -47,14 +47,15 @@ workon $vmname
 # Update the requirements
 # Patch the requirements for jenkins..
 # I've never been able to resolve this MySQL-python install bug that occurs on the jenkins server.
-cat requirements.txt | sed 's/MySQL-python==1.2.4/mysql-python/' > jenkins_requirements.txt
-pip install --allow-all-external --allow-insecure PIL -r jenkins_requirements.txt
+#cat requirements.txt | sed 's/MySQL-python==1.2.4/mysql-python/' > jenkins_requirements.txt
+#pip install --allow-all-external --allow-insecure PIL -r jenkins_requirements.txt
+pip install -r requirements.txt
 
 # Build less compiled files and additional javascript libraries.
 build/build.py
 
 # Collect static files
-python manage.py collectstatic --noinput --ignore eeweb
+python manage.py settings:build collectstatic --noinput
 
 # Combine all of the required artifcats into a zip file.
 build/buildArchive.py --gz $zipfile

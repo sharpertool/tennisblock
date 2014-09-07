@@ -1,0 +1,593 @@
+/* ==========================================================================
+   Layout Styles and Composition
+   ========================================================================== */
+
+.body_wrapper {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    //height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.header_bar {
+    height: 100px;
+
+    #top_banner {
+        height: 40px;
+    }
+}
+
+#banner {
+    height     : 21em;
+    padding    : 3em 2em;
+    background : @banner_bg_color url('@{imgbase}/gardenbuzz_logo_veggies.png') no-repeat right center;
+    overflow   : hidden;
+    text-align : center;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        color       : @banner_text_color;
+        line-height : 1.5em;
+        margin-top  : 0;
+        padding-top : 0;
+        text-align  : left;
+    }
+
+    a {
+        font-style : italic;
+    }
+
+    #login_or {
+        padding    : .5em 0;
+        text-align : center;
+        position   : relative;
+        color      : @grey;
+        span {
+            &:before, &:after {
+                content    : ' ';
+                display    : block;
+                width      : 80px;
+                margin     : 0 10px;
+                height     : 1px;
+                background : @dark_grey;
+                position   : absolute;
+                top        : 1.1em;
+                opacity    : .75
+            }
+            &:before {
+                left : 0;
+            }
+            &:after {
+                right : 0;
+            }
+        }
+    }
+
+    #banner_headline {
+        font-size     : 1.5em;
+        line-height   : 1.15em;
+        margin-bottom : .25em;
+    }
+
+}
+
+#search_header {
+    background : @light_grey;
+    width      : 100%;
+
+    #search_term {
+    }
+}
+
+#page_header {
+    height: 385px;
+
+}
+
+#top_tabs {
+    padding  : 0em 1em 1em 1em !important;
+    overflow : auto;
+    color    : @darker_grey;
+
+    #top_tabs_labels {
+        list-style-type : none;
+        font-weight     : 300;
+        padding         : 0;
+        overflow        : auto;
+        border-bottom   : 1px solid @grey;
+        a {
+            color : @darker_grey; padding-right : 2em;
+
+            &:hover {
+                color : @darker_grey;
+            }
+
+            &:active {
+                color : @dark_grey;
+            }
+        }
+
+        .ui-state-active {
+            font-weight : 600;
+        }
+
+        li {
+            float : left;
+        }
+    }
+
+    div {
+        padding : 0;
+    }
+
+    p {
+        color       : @darker_grey;
+        font-weight : 300 !important;
+    }
+
+    label + input {
+        margin-top : 0em;
+    }
+}
+
+#bottom {
+    .light-background;
+    min-height : 400px;
+    padding    : 2em;
+
+    #main_left {
+        margin-left   : -1em;
+        padding-right : 1em;
+
+    }
+
+    #main_right {
+        background-color : @grey;
+        height           : intrinsic;
+
+        a {
+            color : @darker_grey;
+
+            &:hover {
+                color : @dark_grey;
+            }
+
+            &.selected {
+                color : @darker_grey;
+                font-weight : 700;
+            }
+
+            &:active {
+                color : @darker_grey;
+            }
+        }
+
+        div {
+            padding : 1em;
+        }
+
+        hr {
+            background-color : @dark_grey;
+        }
+
+        hr + .card-title,
+        ul + .card-title {
+            margin-top : 1em;
+        }
+    }
+}
+
+.pure-button {
+    .ss-icon {
+        position     : relative;
+        top          : .125em;
+        margin-right : .2em;
+    }
+}
+
+#login_page, #signup_page {
+    // text-align: center;
+    padding    : 6em 2em 0;
+    text-align : center;
+
+    .login-form-wrapper {
+        width      : 60%;
+        margin     : 1em auto 2.5em;
+        text-align : left;
+    }
+
+    input {
+        color: @darker_grey;
+    }
+
+    .login_page_form,.signup_page_form {
+        //text-align: center;
+        margin: 0 auto;
+    }
+
+    h2, h3 {
+        color : @grey;
+    }
+
+    #login_or {
+        position    : relative;
+        padding-top : 3.75em;
+        font-weight : 100;
+        text-align  : center;
+        span {
+            font-size : .75em;
+        }
+
+        &:before,
+        &:after {
+            height      : 3em; // set height of vertical lines
+            top         : .5em; //set distance from top of frame
+            content     : "";
+            display     : block;
+            border-left : 1px solid @dark_grey;
+            position    : absolute;
+            left        : 50%;
+        }
+
+        &:after {
+            top : 5.25em;
+        }
+    }
+
+}
+
+#signup_page,
+#login_page {
+
+    #login_or {
+        margin-top  : 1.5em;
+        padding-top : 6em;
+        &:before,
+        &:after {
+            padding-top : 2em;
+        }
+        &:after { top : 8em; }
+    }
+
+    #reset_page {
+        margin-bottom : 2em;
+    }
+
+    #reset_form {
+        text-align : left;
+        p {
+            color : @dark_grey;
+        }
+        input {
+            margin-bottom : 0;
+        }
+        button {
+            width : 100%;
+        }
+    }
+
+}
+
+.social-connect-wrapper {
+    margin     : 5em auto 0;
+    padding    : 0 2em;
+    text-align : center;
+    h2 {
+        color     : @grey;
+        font-size : 1.5em !important;
+    }
+    #social_connect_buttons {
+        margin : 0 auto;
+    }
+}
+
+#profile_header {
+    background : @light_grey;
+    padding    : 0 1em 1em !important;
+    overflow   : auto;
+
+    #profile_header_banner {
+        margin-top : 0 !important;
+    }
+
+    &.personal-profile {
+        #profile_info {
+            position    : relative;
+            padding-top : .75em;
+            color       : @darker_grey;
+            font-weight : 700;
+            float       : left;
+            z-index     : 10;
+            #profile_info_details {
+                p {
+                    color : @dark_grey;
+                }
+            }
+        }
+        button, a {
+            display    : inline;
+            margin-top : .75em;
+            clear      : both;
+            .ss-icon {
+                position : relative;
+                top      : .1em;
+                left     : -.2em;
+            }
+        }
+    }
+
+    &.personal-profile {
+        padding : 1em 0 !important;
+        #gravatar_img {
+            float        : left;
+            margin-right : 1em;
+            a {
+                img {
+                    @gravatar_border_radius: 50px;
+                    .border-radius(@gravatar_border_radius, @gravatar_border_radius, @gravatar_border_radius, @gravatar_border_radius);
+                }
+                button {
+                    position  : absolute;
+                    font-size : .6em;
+                    padding   : .5em;
+                }
+            }
+        }
+    }
+
+    #profile_info {
+        margin-right : 1em;
+        margin-top   : 1em !important;
+    }
+
+    #profile_buttons a button {
+        position : relative;
+        z-index  : 10;
+    }
+
+}
+
+#profile,
+#profile_left {
+    padding : 0 !important;
+}
+
+#search_bar {
+    .small-text;
+    width        : 25%;
+    margin-right : 5%;
+
+    hr { margin : 1em 0; }
+
+    h2,
+    h3 {
+        margin  : 0;
+        padding : 0;
+    }
+
+    ul {
+        list-style-type : none;
+        padding         : 0;
+        .search-category {
+
+            &:after {
+                content : ' ▻';
+                .ss-icon;
+                .small-text;
+            }
+
+            &.selected {
+                &:after {
+                    content : ' ';
+                }
+            }
+        }
+
+        .category-list {
+            margin-bottom : 1em;
+            a {
+                color : @dark_grey;
+                &:hover {
+                    color : @darker_grey;
+                }
+            }
+        }
+    }
+}
+
+#search_results {
+    padding : 0 1em;
+}
+
+#footer {
+    //position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    font-size  : .7em;
+
+    a { color : @footer_a_color; line-height : 2em; }
+    a:hover { color : @footer_a_hover_color; }
+    a:active { color : @footer_a_active_color; }
+    a:visited { color : @footer_a_visited_color; }
+
+    h2 {
+        color : @grey;
+    }
+
+    p {
+        color : @dark_grey;
+    }
+
+    .dark-background;
+    background : @footer_bg_color url('@{imgbase}/Gardenbuzz-Footer-Backround.png') no-repeat center top;
+    overflow   : hidden;
+    padding    : 2em;
+
+    #footer_logo {
+        background    : url('@{imgbase}/gardenbuzz_logo_footer_pot_bee.png') no-repeat center center;
+        min-height    : 143px;
+        margin-bottom : 2em;
+        .hide-text;
+    }
+
+    #footer_wrapper {
+        h3, p {
+            padding-right : 3em;
+        }
+    }
+
+    #footer_copyright {
+        font-size : .75em;
+    }
+
+}
+
+#privacy_policy, #terms_of_service {
+
+    p + p {
+        margin-top : 1em;
+    }
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width : 400px) {
+    .project-preview {
+        width : 47%;
+    }
+}
+
+@media only screen and (min-width : 530px) {
+
+    .project-preview {
+        width  : 30%;
+        height : 20em;
+        .pure-button {
+            display : block;
+        }
+    }
+
+}
+
+@media only screen and (min-width : 768px) {
+
+    #banner {
+        background-position : center center;
+    }
+
+    #footer {
+        #footer_logo {
+            background-position : left center;
+            background-size     : 90%;
+        }
+    }
+
+}
+
+@media only screen and (min-width : 960px) {
+
+    #header {
+        padding : 1em;
+        font-size: 2em;
+
+        #header_logo {
+            width : 16.2em;
+            display: none;
+        }
+
+        nav {
+            position   : relative;
+            display    : block;
+
+            /* Dropdown un-styling */
+            background : transparent;
+            top        : inherit;
+            width      : inherit;
+            .drop-shadow(none);
+
+            .nav-list {
+
+                li {
+                    display : inline;
+                    a {
+                        /* Dropdown un-styling */
+                        display : inline;
+                        padding : 0;
+                        border  : none;
+                    }
+                }
+            }
+
+            &:before {
+                display : none;
+            }
+
+            #site_nav {
+                float : left;
+                a {
+                    //padding-left : 1.5em;
+                }
+            }
+
+            #account_nav {
+                float : right;
+                a { padding-right : 1.5em; }
+            }
+        }
+
+        #search_box {
+            width : intrinsic;
+            float : right;
+        }
+
+        #header_nav_button {
+            display : none;
+        }
+    }
+
+    #header,
+    #banner_wrapper,
+    #profile_header_banner,
+    #main,
+    #footer_wrapper,
+    #login_page,
+    #signup_page,
+    #search_term,
+    .alert {
+        width  : 940px;
+        margin : 0 auto;
+    }
+
+    #banner {
+        #banner_headline {
+            font-size : 2em;
+        }
+    }
+
+    #footer {
+        #footer_logo {
+            background-size : inherit;
+        }
+    }
+}
+
+.wrapper {
+    margin:0 auto;
+    bottom: 0;
+}
+
+@media only screen and (min-width : 1140px) {
+
+}

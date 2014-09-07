@@ -1,21 +1,14 @@
-{% extends "common/base.html" %}
-{% load sekizai_tags %}
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
 
-{% block mytags %}
+{% block page_style %}
     {{ block.super }}
-    {% if not isprod %}
-        {% add_data "less-data" "accounts.less" %}
-    {% else %}
-        {% add_data "css-data" "accounts.css" %}
-    {% endif %}
+    <!-- about.html: page_style -->
 
-    {% add_data "js-body" "angular/apps/tennisblock.js" %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/accounts.less' %}">
 {% endblock %}
 
-{% block title %}
-TennisBlock
-{% endblock %}
-{% block content %}
+{% block body %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
             <h2>Account Profile</h2>

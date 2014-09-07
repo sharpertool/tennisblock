@@ -1,52 +1,30 @@
-{% extends "common/base.html" %}
-{% load sekizai_tags %}
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
 
-{% block mytags %}
+{% block page_style %}
     {{ block.super }}
-    {% if not isprod %}
-        {% add_data "less-data" "home.less" %}
-    {% else %}
-        {% add_data "css-data" "home.css" %}
-    {% endif %}
+    <!-- about.html: page_style -->
 
-    {% add_data "js-body" "angular/apps/tennisblock.js" %}
-    {% add_data "js-body" "angular/controllers/blockplayers.js" %}
-    {% add_data "js-body" "angular/controllers/latestbuzz.js" %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/home.less' %}">
+{% endblock %}
+
+{% block angular_script %}
+    {{ block.super }}
+
+    <script type="text/javascript" src="{% static 'js/angular/controllers/blockplayers.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/angular/controllers/latestbuzz.js' %}"></script>
+
 {% endblock %}
 
 {% block title %}
 home
 {% endblock %}
-{% block content %}
+
+{% block body_base %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
 
             {% verbatim %}
-            <div id="textContent">
-                <div id="blockheading" class="dynamic">
-                    <h2>The Official TennisBlock Site</h2>
-                    <span>This is the worlds only automated tennis block (I think).</span>
-                </div>
-                <div id="playerstats" class="dynamic" ng-controller="BlockPlayers">
-                    <ul>
-                        <li ng-repeat="couple in couples">
-                            <div>
-                                {{ couple.name }}<br/>
-                                {{ couple.him }} and {{ couple.her }}
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div id="announcement" class="dynamic" ng-controller="LatestBuzz">
-                    <h2>Block Buzz</h2>
-                    <ul class="last">
-                        <li ng-repeat="item in buzzitems">
-                            {{item.text}}
-                        </li>
-                    </ul>
-                </div>
-            </div>
             {% endverbatim %}
 
         </div>

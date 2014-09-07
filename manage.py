@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 import os
 import sys
-import re
+
+def local_exists():
+    for p in sys.path:
+        lc = os.path.join(p,'local_config.py')
+        if os.path.exists(lc):
+            #print("Found local_config.py here:{}".format(lc))
+            return True
+
+    return False
 
 if __name__ == "__main__":
-
-    setting = 'dev'
-    m = re.match('setting:(\w+)',sys.argv[1])
-    if m:
-        setting = m.group(1)
-        del sys.argv[1]
-        print sys.argv
-
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tennisblock.settings.%s" % setting)
+    if local_exists():
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "local_config")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orderpcbs.settings.dev")
 
     from django.core.management import execute_from_command_line
-
     execute_from_command_line(sys.argv)
