@@ -8,23 +8,23 @@ from availability import AvailabilityView
 from members import SeasonPlayersView
 from blockschedule import BlockNotifyer
 
-urlpatterns = patterns('tennisblock.api.views',
+urlpatterns = patterns('api.views',
                        url(r'seasons/?$', 'getSeasons'),
                        url(r'currentseason/?$', 'getCurrentSeason'),
                        url(r'currentseasondates/?$', 'getCurrentSeasonDates'),
                        url(r'buzz/?$', 'getLatestBuzz'),
                        #url(r'ptc/$',                'getPartTimeCouples'),
 )
-urlpatterns += patterns('tennisblock.api.teams',
+urlpatterns += patterns('api.teams',
                         url(r'pickteams/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', 'pickTeams'),
                         url(r'pickteams/?$', 'pickTeams'),
 )
-urlpatterns += patterns('tennisblock.api.blocksheet',
+urlpatterns += patterns('api.blocksheet',
                         url(r'blocksheet/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', 'blockSheet'),
                         url(r'blocksheet/?$', 'blockSheet'),
                         #url(r'blockplayers/$', 'blockschedule.getBlockPlayers'),
 )
-urlpatterns += patterns('tennisblock.api.blockschedule',
+urlpatterns += patterns('api.blockschedule',
                         url(r'blockdates/?$', 'getBlockDates'),
 
                         url(r'subs/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', 'getSubList'),
@@ -42,7 +42,7 @@ urlpatterns += patterns('tennisblock.api.blockschedule',
 urlpatterns += patterns('',
                         url(r'availability/?$', AvailabilityView.as_view()),
 )
-urlpatterns += patterns('tennisblock.api.members',
+urlpatterns += patterns('api.members',
                         url(r'members/(?P<id>\d+)/?$', SeasonPlayersView.as_view()),
                         url(r'members/?$', SeasonPlayersView.as_view()),
 )

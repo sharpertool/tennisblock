@@ -3,7 +3,7 @@
 from django.db import connection
 from excel import Excel
 
-from tennisblock.blockdb.models import Player,Couple,Season,SeasonPlayers
+from blockdb.models import Player,Couple,Season,SeasonPlayers
 
 
 class PlayerExcel(Excel):

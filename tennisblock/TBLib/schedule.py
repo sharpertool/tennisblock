@@ -6,8 +6,8 @@ os.environ['PYTHONPATH'] = '../../gbrest'
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 import random
 
-from tennisblock.blockdb.models import *
-from tennisblock.api.apiutils import _currentSeason,_nextMeeting,_getMeetingForDate
+from blockdb.models import *
+from api.apiutils import _currentSeason,_nextMeeting,_getMeetingForDate
 from django.core.exceptions import ObjectDoesNotExist
 
 

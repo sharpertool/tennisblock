@@ -6,14 +6,12 @@ import sys
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-DJANGO_ROOT = Path(__file__).ancestor(2)
+DJANGO_ROOT = Path(__file__).ancestor(3)
 PROJECT_ROOT = DJANGO_ROOT.ancestor(1)
-PROJECT_DIR = DJANGO_ROOT
 print("DJANGO_ROOT:%s" % DJANGO_ROOT)
 print("PROJECT_ROOT:%s" % PROJECT_ROOT)
-print("Project dir:%s" % PROJECT_DIR)
 
-sys.path.append(Path(PROJECT_DIR).child("scripts"))
+sys.path.append(Path(PROJECT_ROOT).child("scripts"))
 
 ADMINS = (
     ('Ed Henderson', 'ed@tennisblock.com'),
@@ -89,7 +87,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = PROJECT_DIR.child('media')
+MEDIA_ROOT = PROJECT_ROOT.child('media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -134,7 +132,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     #'sekizai.context_processors.sekizai',
     #'sekizai.context.SekizaiContext',
-    'tennisblock.utils.context.tennisblock',
+    'TBLib.context.tennisblock',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -159,7 +157,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    PROJECT_DIR.child('templates'),
+    DJANGO_ROOT.child('templates'),
 )
 
 INSTALLED_APPS = (
@@ -180,12 +178,11 @@ INSTALLED_APPS = (
     'pinax_theme_bootstrap',
     "account",
     'bootstrapform',
-    'south',
     'compressor',
 
     'tennisblock',
-    'tennisblock.blockdb',
-    'tennisblock.members',
+    'blockdb',
+    'members',
     'raven.contrib.django.raven_compat',
 )
 

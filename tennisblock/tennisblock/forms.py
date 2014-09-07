@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
 
-from tennisblock.blockdb.models import Couple,SeasonPlayers
+from blockdb.models import Couple,SeasonPlayers
 
 class CoupleForm(ModelForm):
 

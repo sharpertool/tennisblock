@@ -8,11 +8,11 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
-from tennisblock.blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
+from blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
 
 from .apiutils import JSONResponse, _currentSeason, _getMeetingForDate,time_to_js
-from tennisblock.TBLib.teams import TeamManager
-from tennisblock.TBLib.schedule import Scheduler
+from  TBLib.teams import TeamManager
+from  TBLib.schedule import Scheduler
 
 def _BuildMeetings(force=False):
     """
@@ -203,7 +203,7 @@ def getBlockDates(request):
 
 @csrf_exempt
 def blockSchedule(request,date = None):
-    from tennisblock.TBLib.schedule import Scheduler
+    from  TBLib.schedule import Scheduler
     tb = Scheduler()
 
     r = Request(request)

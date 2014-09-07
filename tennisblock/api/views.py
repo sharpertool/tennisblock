@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-from tennisblock.blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
+from blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
 
 from .apiutils import JSONResponse, _currentSeason, SeasonSerializer
 

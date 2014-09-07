@@ -3,7 +3,7 @@
 import datetime
 from django.views.generic.base import View
 from rest_framework.parsers import JSONParser
-from tennisblock.blockdb.models import Player,SeasonPlayers,Meetings,Availability,Schedule
+from blockdb.models import Player,SeasonPlayers,Meetings,Availability,Schedule
 
 from .apiutils import JSONResponse, _currentSeason, _getMeetingForDate
 

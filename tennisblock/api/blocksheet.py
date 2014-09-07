@@ -5,7 +5,7 @@ from django.core.servers.basehttp import FileWrapper
 
 import os
 from fpdf import FPDF
-from tennisblock.TBLib.teams import TeamManager
+from  TBLib.teams import TeamManager
 
 
 class PlaySheet(FPDF):

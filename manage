@@ -16,5 +16,7 @@ else
 
 fi
 
+pushd tennisblock >> /dev/null
 python manage.py "$@"
+popd tennisblock >> /dev/null
 

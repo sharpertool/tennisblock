@@ -1,13 +1,13 @@
 # Create your views here.
 
 
-from tennisblock.TBLib.view import TennisView, TennisLoginView
+from  TBLib.view import TennisView, TennisLoginView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from tennisblock.blockdb.models import Player,SeasonPlayers
+from blockdb.models import Player,SeasonPlayers
 from forms import PlayerForm
 
-from tennisblock.api.apiutils import _currentSeason
+from api.apiutils import _currentSeason
 
 class MemberCreate(CreateView):
     form_class = PlayerForm

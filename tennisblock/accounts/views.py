@@ -3,7 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import redirect
-from tennisblock.TBLib.view import TennisView,TennisLoginView
+from TBLib.view import TennisView,TennisLoginView
 
 from sekizai.context import SekizaiContext
 

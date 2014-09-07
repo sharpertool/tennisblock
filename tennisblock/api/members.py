@@ -3,7 +3,7 @@
 
 from django.views.generic.edit import View
 
-from tennisblock.blockdb.models import Player,SeasonPlayers
+from blockdb.models import Player,SeasonPlayers
 
 from .apiutils import JSONResponse,JSONParser, _currentSeason
 

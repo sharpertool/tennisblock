@@ -15,7 +15,7 @@ if __name__ == "__main__":
     if local_exists():
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "local_config")
     else:
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orderpcbs.settings.dev")
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tennisblock.settings.dev")
 
     from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)

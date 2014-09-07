@@ -1,7 +1,7 @@
 # Create your views here.
 
-from tennisblock.TBLib.view import TennisView,TennisLoginView
-from tennisblock.blockdb.models import Season,Meetings,Couple,Player,SeasonPlayers
+from TBLib.view import TennisView,TennisLoginView
+from blockdb.models import Season,Meetings,Couple,Player,SeasonPlayers
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.conf import settings
@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from forms import ContactForm
 
 from .forms import CoupleForm,NotifyForm
-from tennisblock.TBLib.schedule import Scheduler
+from TBLib.schedule import Scheduler
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 

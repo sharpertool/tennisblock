@@ -14,7 +14,7 @@ directory_specifications = {
             'tennisblock/api': {},
             'tennisblock/blockdb': {},
             'tennisblock/members': {},
-            'tennisblock/mixins': {},
+            'tennisblock/TBLib.mixins': {},
             'tennisblock/sekizai_processors': {},
             'tennisblock/settings': {
                 'ignore': ['.*local_settings.*']
@@ -22,7 +22,7 @@ directory_specifications = {
             'tennisblock/static': {},
             'tennisblock/TBLib': {},
             'tennisblock/templates': {},
-            'tennisblock/templatetags': {},
+            'tennisblock/tennisblock.templatetags': {},
             'tennisblock/tools': {},
             #'collectedstatic': { 'ignore' : '.*/pat/.*'},
             'collectedstatic': { },

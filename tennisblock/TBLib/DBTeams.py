@@ -4,8 +4,8 @@ import datetime
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 
 from django.db import connection
-from tennisblock.blockdb.models import Matchup,Schedule
-from tennisblock.api.apiutils import _getMeetingForDate
+from blockdb.models import Matchup,Schedule
+from api.apiutils import _getMeetingForDate
 
 class DBTeams(object):
 

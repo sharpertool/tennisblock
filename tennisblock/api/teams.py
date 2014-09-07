@@ -6,11 +6,11 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import serializers
-from tennisblock.blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
+from blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
 from rest_framework.request import Request
 
-from tennisblock.TBLib.schedule import Scheduler
-from tennisblock.TBLib.teams import TeamManager
+from TBLib.schedule import Scheduler
+from  TBLib.teams import TeamManager
 
 from .apiutils import JSONResponse
 

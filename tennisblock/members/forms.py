@@ -1,6 +1,6 @@
 
 from django import forms
-from tennisblock.blockdb.models import Player
+from blockdb.models import Player
 
 class PlayerForm(forms.ModelForm):
     fields = [
