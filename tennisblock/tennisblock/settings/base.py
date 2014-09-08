@@ -232,7 +232,7 @@ EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Contact Form
-CONTACT_FORM_SUBJECT = 'Tennisblock.com Contact'
+CONTACT_FORM_SUBJECT = 'Tenn    isblock.com Contact'
 CONTACT_FORM_RECIPIENTS = (
     "ed@tennisblock.com",
     "vicki@gardenbuzz.com",

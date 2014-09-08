@@ -3,44 +3,21 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block page_style %}
-    {{ block.super }}
-    <!-- about.html: page_style -->
-
-    <link rel="stylesheet/less" type="text/less" href="{% static 'less/schedule.less' %}">
-{% endblock %}
-
-{% block angular_script %}
-    {{ block.super }}
-
-    <script src="{% static 'js/angular/controllers/about.js' %}" type="text/javascript"></script>
-
-{% endblock %}
-
-
 {% block body %}
-    <div id="container" class="home dynamic">
-        <div id="content" class="dynamic">
+    <div id="textContent">
+        <div id="blockheading" class="dynamic">
+            <h2>About Us</h2>
 
-            {% verbatim %}
-            <div id="textContent">
-                <div id="blockheading" class="dynamic">
-                    <h2>About Us</h2>
+            <p>
+                Tennisblock.com is the one and only online tennis block manager.
+                Our site provides a number of useful and convenient features that every
+                tennisblock needs, but most have to figure out on their own.
 
-                    <p>
-                        Tennisblock.com is the one and only online tennis block manager.
-                        Our site provides a number of useful and convenient features that every
-                        tennisblock needs, but most have to figure out on their own.
+                Subs
+                Play Sheet
+                Notify your members.
 
-                        Subs
-                        Play Sheet
-                        Notify your members.
-
-                    </p>
-                </div>
-            </div>
-            {% endverbatim %}
-
+            </p>
         </div>
     </div>
 
