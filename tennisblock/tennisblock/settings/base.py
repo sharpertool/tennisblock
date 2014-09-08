@@ -259,3 +259,5 @@ CACHES = {
 }
 
 COMPRESS_OUTPUT_DIR = ''
+
+ANGULAR_BASE = '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/'

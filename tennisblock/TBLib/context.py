@@ -10,5 +10,6 @@ def tennisblock(request):
     return {
         'debug' : settings.DEBUG,
         'less_poll': settings.LESS_POLL,
+        'angular_base': settings.ANGULAR_BASE,
         }
 

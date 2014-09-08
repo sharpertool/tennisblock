@@ -10,10 +10,7 @@
     <!-- site_base.html: head_script -->
     <script type="text/javascript"
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <script type="text/javascript"
-            src="{% static 'js/library/angular/angular.min.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/library/angular/angular-resource.min.js' %}"></script>
+
     <script type="text/javascript"
             src="{% static 'js/HeadFinal.js' %}"></script>
 
@@ -89,6 +86,7 @@
 {% endblock header_bar_images %}
 
 {% block header_bar_nav %}
+    <span class="title-text">Tennisblock.com</span>
     <nav class="nav header" id="header_bar_nav">
         <a href="{% url 'home' %}">HOME</a>
         {% if request.user.is_authenticated %}
@@ -111,15 +109,15 @@
 {% endblock header_bar_nav %}
 
 {% block page_header_top %}
-    <h2>The Premier Site for</h2>
+    <h3>The Premier Site for</h3>
     <h2>Tennis Block Management!</h2>
 {% endblock %}
 
 {% block page_header_bottom %}
-    <nav class="nav-list pure-menu pure-menu-upen">
+    <nav class="">
         <a href="#">Home</a>
         {% if user.is_authenticated %}
-            <a class="pure-menu-selected" href="{% url 'schedule' %}">Block Schedule</a>
+            <a class="" href="{% url 'schedule' %}">Block Schedule</a>
             <a href="{% url 'availability' %}">Availability</a>
             <a href="{% url 'seasonplayers' %}">Block Members</a>
             <a href="{% url 'seasons' %}">Seasons</a>
@@ -175,8 +173,6 @@
             src="{% static 'js/library/jquery.download.js' %}"></script>
     <script type="text/javascript"
             src="{% static 'js/library/json2.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/library/log4javascript.js' %}"></script>
 
     <script type="text/javascript"
             src="{% static 'js/Client.js' %}"></script>
@@ -192,8 +188,7 @@
 
     <script src="{% static 'js/library/jquery-1.10.2.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/library/jquery-ui-1.10.3.custom.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/library/underscore.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/library/jquery.download.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/library/underscore-min.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/library/json2.js' %}" type="text/javascript"></script>
 
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
@@ -203,12 +198,15 @@
 
     {% block angular_script %}
         <!-- site_base.html: angular_script -->
-        <script src="{% static 'js/library/angular/angular.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'js/library/angular/angular-resource.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'js/library/angular/angular-route.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'js/library/angular/angular-cookies.min.js' %}" type="text/javascript"></script>
+        <script type="text/javascript" src="{{ angular_base }}angular.min.js"></script>
+        <script type="text/javascript" src="{{ angular_base }}angular-resource.min.js"></script>
+        <script type="text/javascript" src="{{ angular_base }}angular-route.min.js"></script>
+        <script type="text/javascript" src="{{ angular_base }}angular-cookies.min.js"></script>
 
-        <script src="{% static 'js/angular/apps/tennisblock.js' %}" type="text/javascript"></script>
+        <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'js/angular/services/factories.js' %}"> </script>
+        <script type="text/javascript" src="{% static 'js/angular/services/services.js' %}"></script>
     {% endblock %}
 
     {% block tennisblock_script %}

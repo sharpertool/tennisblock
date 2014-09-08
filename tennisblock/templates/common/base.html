@@ -53,14 +53,12 @@
 
     </head>
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
-        <section class="body_wrapper pure-g
+        <section class="body_wrapper
             {% block wrapper_class %}{% endblock %}">
             {% block header_bar_base %}
                 <section id="top_banner"
                          class="topbar
-                            pure-u-1
                             {% block navbar_class %}
-                                navbar-fixed-top
                             {% endblock %}
                             ">
                     {% block header_bar_images %}
@@ -96,7 +94,7 @@
 
             {% block page_header_base %}
                 <section id="page_header"
-                         class="page_header pure-u-1">
+                         class="">
                     {% block page_header_top %}
                         <h3>Gardening in</h3>
                         <h2>Treasure Valley.</h2>
