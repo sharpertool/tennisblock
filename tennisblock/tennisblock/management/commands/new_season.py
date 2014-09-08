@@ -15,30 +15,35 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--season',
                     dest='season',
-                    help=''),
+                    help='The name of the season, i.e. Fall, 2014.'),
         make_option('--num_courts',
                     dest='num_courts',
                     type='int',
-                    help=''),
+                    help='The number of courts.'),
         make_option('--first_court',
                     dest='first_court',
                     type='int',
-                    help=''),
+                    help='The first court number. Must be one of 1,6 or 9.'),
         make_option('--season_start',
                     dest='season_start',
-                    help=''),
+                    help='The date that the official block season starts.'),
         make_option('--season_end',
                     dest='season_end',
-                    help=''),
+                    help='The date that the official block season ends.'),
         make_option('--block_start',
                     dest='block_start',
-                    help=''),
+                    help=dedent('''
+                    The date of the first block meeting.
+                    This value sets the day of the week for the block, i.e.
+                     if the block_start is a Thursday, then each thursday between
+                     the season_start and season_end will be possible values.
+                    ''')),
         make_option('--block_time',
                     dest='block_time',
-                    help=''),
+                    help='The block time as a string value, i.e. 7PM.'),
         make_option('--holdouts',
                     dest='holdouts',
-                    help=''),
+                    help='Specify the list of holdouts dates in a comma seperated list.'),
     )
 
     def handle(self, *args, **options):
