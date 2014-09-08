@@ -1,18 +1,7 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
 
-{% block page_style %}
-    {{ block.super }}
-    <!-- about.html: page_style -->
-
-    <link rel="stylesheet/less" type="text/less" href="{% static 'less/schedule.less' %}">
-{% endblock %}
-
-{% block title %}
-contact
-{% endblock %}
 {% block body %}
-<div class='container form_wrap'>
     <h1 class="header_bar">
         Send Schedule Notification
     </h1>
@@ -60,6 +49,5 @@ contact
             </div>
         </div>
     </form>
-</div>
 
 {% endblock %}

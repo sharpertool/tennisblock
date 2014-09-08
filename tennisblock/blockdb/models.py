@@ -51,7 +51,7 @@ class Player(models.Model):
             un = self.microntrp
         else:
             un = self.ntrp
-        return self.first + " " + self.last + ",%3.1f,%4.2f" % (self.ntrp,un)
+        return "{} {} {:3.1f},{:4.2f}".format(self.first,self.last,self.ntrp,un)
 
     def Name(self):
         return self.first + " " + self.last
@@ -64,7 +64,7 @@ class SeasonPlayers(models.Model):
     objects = BlockManager()
 
     def __unicode__(self):
-        return self.player
+        return self.player.__unicode__()
 
 class Couple(models.Model):
     season              = models.ForeignKey(Season)

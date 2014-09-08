@@ -99,7 +99,7 @@ class CouplesView(TennisLoginView):
 
         context['players'] = players
         context['couples'] = couples
-        context['form']   = CoupleForm(season)
+        context['form'] = CoupleForm(season)
 
     def get(self,request,pk=None, **kwargs):
         context = self.get_context_data(**kwargs)

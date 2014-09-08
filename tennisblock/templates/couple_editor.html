@@ -1,11 +1,6 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
 
-{% block page_style %}
-    {{ block.super }}
-    <!-- about.html: page_style -->
-{% endblock %}
-
 {% block body %}
     <div id="blockheading" class="dynamic">
         <h2>Couple Editor</h2>
@@ -35,7 +30,8 @@
 
     <div>
         <h3>New Couple</h3>
-        <form action="{% url 'couple_editor' season.pk %}" method="post">{% csrf_token %}
+        <form action="{% url 'couple_editor' season.pk %}" method="post">
+            {% csrf_token %}
             {{ form.as_p}}
             <input type="submit" value="Submit" />
         </form>

@@ -1,73 +1,58 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
 
-{% block page_style %}
-    {{ block.super }}
-    <!-- about.html: page_style -->
-
-    <link rel="stylesheet/less" type="text/less" href="{% static 'less/home.less' %}">
-{% endblock %}
-
-{% block title %}
-home
-{% endblock %}
 {% block body %}
-            <div id="textContent">
-                <div id="blockheading" class="dynamic">
-                    <h2>Block Seasons</h2>
-                </div>
-                <div>
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <td>Name</td>
-                                <td>Courts</td>
-                                <td>First Court</td>
-                                <td>Start</td>
-                                <td>End</td>
-                                <td>Block Start</td>
-                                <td>Time</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for season in seasons %}
-                                <tr>
-                                    <td><a href="{% url 'season_view' season.pk %}">{{ season.name }}</a></td>
-                                    <td>{{ season.courts}}</td>
-                                    <td>{{ season.firstcourt }}</td>
-                                    <td>{{ season.startdate }}</td>
-                                    <td>{{ season.enddate }}</td>
-                                    <td>{{ season.blockstart }}</td>
-                                    <td>{{ season.blocktime }}</td>
-                                    <td><a href="{% url 'couple_editor' season.pk %}">Couple Editor</a></td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    {% if season %}
-                        <h3>Current Season:{{ season.name }}</h3>
-                        <table border="1">
-                            <thead>
-                                <tr>
-                                    <td>Date</td>
-                                    <td>Holdout</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for mtg in meetings %}
-                                    <tr>
-                                        <td>{{mtg.date}}</td>
-                                        <td>{{mtg.holdout}}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% endif %}
-                </div>
-
-            </div>
-
-
+    <div id="blockheading" class="dynamic">
+        <h2>Block Seasons</h2>
+    </div>
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Courts</td>
+                    <td>First Court</td>
+                    <td>Start</td>
+                    <td>End</td>
+                    <td>Block Start</td>
+                    <td>Time</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for season in seasons %}
+                    <tr>
+                        <td><a href="{% url 'season_view' season.pk %}">{{ season.name }}</a></td>
+                        <td>{{ season.courts}}</td>
+                        <td>{{ season.firstcourt }}</td>
+                        <td>{{ season.startdate }}</td>
+                        <td>{{ season.enddate }}</td>
+                        <td>{{ season.blockstart }}</td>
+                        <td>{{ season.blocktime }}</td>
+                        <td><a href="{% url 'couple_editor' season.pk %}">Couple Editor</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        {% if season %}
+            <h3>Current Season:{{ season.name }}</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td>Date</td>
+                        <td>Holdout</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mtg in meetings %}
+                        <tr>
+                            <td>{{mtg.date}}</td>
+                            <td>{{mtg.holdout}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
 {% endblock %}

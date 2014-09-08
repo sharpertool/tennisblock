@@ -1,13 +1,6 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
 
-{% block page_style %}
-    {{ block.super }}
-    <!-- about.html: page_style -->
-
-    <link rel="stylesheet/less" type="text/less" href="{% static 'less/home.less' %}">
-{% endblock %}
-
 {% block angular_script %}
     {{ block.super }}
 
@@ -16,19 +9,3 @@
 
 {% endblock %}
 
-{% block title %}
-home
-{% endblock %}
-
-{% block body_base %}
-    <div id="container" class="home dynamic">
-        <div id="content" class="dynamic">
-
-            {% verbatim %}
-            {% endverbatim %}
-
-        </div>
-    </div>
-
-
-{% endblock %}

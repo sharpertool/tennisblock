@@ -15,62 +15,55 @@
 
 {% endblock %}
 
-{% block title %}
-availability
-{% endblock %}
 {% block body %}
-    <div id="container" class="home dynamic">
-        <div id="content" class="dynamic" ng-controller="Availability">
+    <div id="content" class="dynamic" ng-controller="Availability">
 
-            <div id="textContent" ng-cloak>
-                <div id="blockheading" class="dynamic" >
-                    <h2>Availability for {{ user.get_full_name }}
-                        {%  if perms.blockdb.availability %}
-                        <span>Editable</span>
-                        {% endif %}
-                    </h2>
-                </div>
-
-                {% verbatim %}
-
-                <div ng-hide="initialized">
-                    <h2>Loading Data</h2>
-                </div>
-                <div id="available" class="member_list" ng-show="initialized" >
-                    <table class="member_list">
-                        <tr class="member_list_header">
-                            <th colspan="1">Block Member</th>
-                            <th colspan="{{ dates.length + 2 }}">Check if Unavailable</th>
-                        </tr>
-                        <tr class="even">
-                            <th>Name</th>
-                            <th ng-repeat="date in dates"
-                                ng-class="{true: 'holdout',false:'play'}[date.holdout == true]">
-                                {{ date.date | date:'M-d' }}
-                            </th>
-                            <th>Played</th>
-                            <th>Scheduled</th>
-                        </tr>
-                        <tr ng-repeat="player in players"
-                            ng-class-odd="'odd'" ng-class-even="'even'"
-                                >
-                            <td>{{ player.name }}</td>
-                            <td
-                                    ng-repeat="avail in player.isavail track by $index"
-                                    ng-class="{cplayed:player.scheduled[$index]}"
-                                    >
-                                <input ng-disabled="!canEdit(player)" type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
-                            </td>
-                            <td>{{ player.nplayed }}</td>
-                            <td>{{ player.nscheduled }}</td>
-                        </tr>
-                    </table>
-                </div>
-                {% endverbatim %}
+        <div id="textContent" ng-cloak>
+            <div id="blockheading" class="dynamic" >
+                <h2>Availability for {{ user.get_full_name }}
+                    {%  if perms.blockdb.availability %}
+                    <span>Editable</span>
+                    {% endif %}
+                </h2>
             </div>
 
+            {% verbatim %}
+
+            <div ng-hide="initialized">
+                <h2>Loading Data</h2>
+            </div>
+            <div id="available" class="member_list" ng-show="initialized" >
+                <table class="member_list">
+                    <tr class="member_list_header">
+                        <th colspan="1">Block Member</th>
+                        <th colspan="{{ dates.length + 2 }}">Check if Unavailable</th>
+                    </tr>
+                    <tr class="even">
+                        <th>Name</th>
+                        <th ng-repeat="date in dates"
+                            ng-class="{true: 'holdout',false:'play'}[date.holdout == true]">
+                            {{ date.date | date:'M-d' }}
+                        </th>
+                        <th>Played</th>
+                        <th>Scheduled</th>
+                    </tr>
+                    <tr ng-repeat="player in players"
+                        ng-class-odd="'odd'" ng-class-even="'even'"
+                            >
+                        <td>{{ player.name }}</td>
+                        <td
+                                ng-repeat="avail in player.isavail track by $index"
+                                ng-class="{cplayed:player.scheduled[$index]}"
+                                >
+                            <input ng-disabled="!canEdit(player)" type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
+                        </td>
+                        <td>{{ player.nplayed }}</td>
+                        <td>{{ player.nscheduled }}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endverbatim %}
         </div>
+
     </div>
-
-
 {% endblock %}

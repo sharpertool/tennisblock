@@ -18,20 +18,14 @@
 
 {% endblock %}
 
-{% block title %}
-    members
-{% endblock %}
 {% block body %}
-    <div id="container" class="home dynamic">
-        <div id="content" class="dynamic">
+    <div id="content" class="dynamic">
 
-            {% verbatim %}
-            <block-members id="members" >
-            </block-members>
-            {% endverbatim %}
+        {% verbatim %}
+        <block-members id="members" >
+        </block-members>
+        {% endverbatim %}
 
-        </div>
     </div>
-
 
 {% endblock %}
