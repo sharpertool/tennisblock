@@ -1,0 +1,33 @@
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
+{% load gbtags %}
+
+{% block body %}
+    <div id="textContent">
+        <div id="blockheading" class="dynamic" >
+            <h2>Availability for {{ user.get_full_name }}
+                {%  if perms.blockdb.availability %}
+                <span>Editable</span>
+                {% endif %}
+            </h2>
+        </div>
+
+        <div id="available" class="member_list">
+            <form action="{% url 'availability_form' %}" method="post">
+                {{ formset.management_form }}
+                {% csrf_token %}
+                <ul>
+                    {% for form in formset %}
+                        <ul class="availability">
+                            <li>{{ form.name }}</li>
+                            {% for f in form.field_list %}
+                                <li>{{ form|getitem:f }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </ul>
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+{% endblock %}

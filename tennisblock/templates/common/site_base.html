@@ -119,6 +119,7 @@
         {% if user.is_authenticated %}
             <a class="" href="{% url 'schedule' %}">Block Schedule</a>
             <a href="{% url 'availability' %}">Availability</a>
+            <a href="{% url 'availability_form' %}">Availability Form</a>
             <a href="{% url 'seasonplayers' %}">Block Members</a>
             <a href="{% url 'seasons' %}">Seasons</a>
         {% else %}

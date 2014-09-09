@@ -9,6 +9,10 @@ import re
 lessFiles = []
 cssFiles = []
 
+@register.filter
+def getitem(item, string):
+    return item[string]
+
 # settings value
 @register.simple_tag
 def settings_value(name):

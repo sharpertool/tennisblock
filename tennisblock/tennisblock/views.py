@@ -8,10 +8,12 @@ from django.conf import settings
 from django.core.mail import send_mail
 from forms import ContactForm
 
-from .forms import CoupleForm,NotifyForm
+from .forms import CoupleForm,NotifyForm,AvailabilityForm
 from TBLib.schedule import Scheduler
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
+from django.forms.formsets import formset_factory,BaseFormSet
+from django import forms
 
 class HomeView(TennisView):
     template_name = "home.html"
@@ -21,6 +23,60 @@ class BlockSchedule(TennisLoginView):
 
 class AvailabilityView(TennisLoginView):
     template_name = "availability.html"
+
+
+class AvailabilityFormSet(BaseFormSet):
+    def add_fields(self,form,index):
+        super(AvailabilityFormSet,self).add_fields(form,index)
+        form.field_list=[]
+        for x in xrange(12):
+            f = forms.BooleanField(required=False,label='')
+            field_nm = "avail_{}".format(x)
+            form.fields[field_nm] = f
+            form.field_list.append(field_nm)
+
+
+
+class AvailabilityFormView(TennisLoginView):
+    template_name = "availability_form.html"
+    thankyou_template = "thankyou.html"
+
+    def _get_formset(self,data=None):
+        """ Create the formset object """
+        fs = formset_factory(AvailabilityForm,extra=31,formset=AvailabilityFormSet)
+        initial_data = [{'name':'Billy Bob'}]
+        if data:
+            return fs(data=data,initial=initial_data)
+        return fs(initial=initial_data)
+
+    def get(self,request,**kwargs):
+        context = self.get_context_data(**kwargs)
+        context['formset'] = self._get_formset()
+
+        return render(request,
+               self.template_name,
+               context
+            )
+
+    def post(self,request):
+        context = self.get_context_data()
+        fs = self._get_formset(data=request.POST)
+
+        if fs.is_valid():
+            print("Valid Formset!")
+
+            return render(request,
+                          self.thankyou_template,
+                          context)
+        else:
+            print("Form is invalid")
+            context['formset'] = fs
+            return render(request,
+                          self.template_name,
+                          context
+            )
+
+
 
 class PlaysheetView(TennisLoginView):
     template_name = "playsheet.html"
@@ -99,7 +155,13 @@ class CouplesView(TennisLoginView):
 
         context['players'] = players
         context['couples'] = couples
-        context['form'] = CoupleForm(season)
+        initial = {
+            'season' : season.pk,
+            'fulltime' : False,
+            'blockcouple' : True,
+            'canschedule' : True
+        }
+        context['form'] = CoupleForm(season,initial=initial)
 
     def get(self,request,pk=None, **kwargs):
         context = self.get_context_data(**kwargs)

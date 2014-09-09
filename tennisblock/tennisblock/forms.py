@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from blockdb.models import Couple,SeasonPlayers
 
 class CoupleForm(ModelForm):
-    fields=['name','male','female','fulltime','blockcouple']
+    fields=['name','male','female','fulltime','blockcouple','canschedule']
 
     def __init__(self,season,*args,**kwargs):
         super (CoupleForm,self).__init__(*args,**kwargs)
@@ -56,3 +56,7 @@ class NotifyForm(forms.Form):
                                   'id':'bootstrap-message',
                                   'cols': '60', 'rows': '10'})
     )
+
+class AvailabilityForm(forms.Form):
+    name = forms.CharField(label=_('Player name'),)
+    #availability = forms.BooleanField(required=False)

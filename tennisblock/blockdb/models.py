@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
 
@@ -8,6 +9,7 @@ class BlockManager(models.Manager):
     def seasonPlayers(self,**kwargs):
         return self.filter()
 
+@python_2_unicode_compatible
 class Season(models.Model):
      name               = models.CharField(max_length=20)
      courts             = models.IntegerField()
@@ -17,7 +19,7 @@ class Season(models.Model):
      blockstart         = models.DateField()
      blocktime          = models.TimeField()
 
-     def __unicode__(self):
+     def __str__(self):
          return self.name
 
 class GirlsManager(models.Manager):
@@ -28,6 +30,7 @@ class GuysManager(models.Manager):
     def get_queryset(self):
         return super(GuysManager, self).get_queryset().filter(gender='M')
 
+@python_2_unicode_compatible
 class Player(models.Model):
     GENDER_CHOICES= (
         ('F', 'Gal'),
@@ -46,7 +49,7 @@ class Player(models.Model):
     girls = GirlsManager()
     guys = GuysManager()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.microntrp:
             un = self.microntrp
         else:
@@ -56,6 +59,7 @@ class Player(models.Model):
     def Name(self):
         return self.first + " " + self.last
 
+@python_2_unicode_compatible
 class SeasonPlayers(models.Model):
     season              = models.ForeignKey(Season)
     player              = models.ForeignKey(Player)
@@ -63,9 +67,10 @@ class SeasonPlayers(models.Model):
 
     objects = BlockManager()
 
-    def __unicode__(self):
-        return self.player.__unicode__()
+    def __str__(self):
+        return self.player.__str__()
 
+@python_2_unicode_compatible
 class Couple(models.Model):
     season              = models.ForeignKey(Season)
     name                = models.CharField(max_length=50)
@@ -75,8 +80,8 @@ class Couple(models.Model):
     canschedule         = models.BooleanField(default=False)
     blockcouple         = models.BooleanField(default=False)
 
-    def __unicode__(self):
-        return  self.name
+    def __str__(self):
+        return self.name
 
 class Meetings(models.Model):
     season              = models.ForeignKey(Season)
