@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -32,11 +33,17 @@ class GuysManager(models.Manager):
 
 @python_2_unicode_compatible
 class Player(models.Model):
+    """
+    Player object.
+
+    This will be deprecated, as I add the player associated with the User account.
+    """
     GENDER_CHOICES= (
         ('F', 'Gal'),
         ('M', 'Guy')
     )
 
+    user = models.OneToOneField(User,null=True)
     first               = models.CharField(max_length=40)
     last                = models.CharField(max_length=60)
     gender              = models.CharField(max_length=1,choices= GENDER_CHOICES)
@@ -61,6 +68,14 @@ class Player(models.Model):
 
 @python_2_unicode_compatible
 class SeasonPlayers(models.Model):
+    """
+    Entry for each player for each season. Indicates that a given
+    player is a member of the specified season.
+    TODO: Expand to have unique values for a block, i.e. support more
+    than just one block!
+
+
+    """
     season              = models.ForeignKey(Season)
     player              = models.ForeignKey(Player)
     blockmember         = models.BooleanField(default=False)
@@ -72,6 +87,19 @@ class SeasonPlayers(models.Model):
 
 @python_2_unicode_compatible
 class Couple(models.Model):
+    """
+    Link together players into couples. The couple are scheduled together.
+    Individual players can be added as a substitute for a given night.
+
+    Fulltime is a boolean. If False, then the couple will be considered as
+    halftime. There are no options for 1/3 time, etc.
+
+    I don't remember what canschedule is for....
+
+    blockcouple: True if this couple is a member of the block. False for
+    substitute couples.
+
+    """
     season              = models.ForeignKey(Season)
     name                = models.CharField(max_length=50)
     male                = models.ForeignKey(Player,related_name='guy')
@@ -84,17 +112,39 @@ class Couple(models.Model):
         return self.name
 
 class Meetings(models.Model):
+    """
+    Entry for each meeting night during the block season.
+    There are entries for all nights, even holdouts. The holdout
+    boolean indicates that this night is a holdout.
+
+    Comments are not used, bug could indicate special information, i.e.
+    special party night, etc.
+    """
     season              = models.ForeignKey(Season)
     date                = models.DateField()
     holdout             = models.BooleanField(default=False)
     comments            = models.CharField(max_length=128)
 
 class Availability(models.Model):
+    """
+    Entry for each player and each night. Boolean indicates that the
+    player is available.
+    """
     meeting             = models.ForeignKey(Meetings)
     player              = models.ForeignKey(Player)
     available           = models.BooleanField(default=True)
 
 class Schedule(models.Model):
+    """
+    Each entry schedules a player to play on the given meeting.
+    The player may be a sub.
+
+    Verified is a boolean to indicate that the player has confirmed via
+    text, phone, email, etc.
+
+    NOT USED:The partner is the players partner for the night
+
+    """
 
     class Meta:
         permissions = (
@@ -108,6 +158,11 @@ class Schedule(models.Model):
     partner             = models.ForeignKey(Player,related_name='partner',null=True)
 
 class Matchup(models.Model):
+    """
+    The matchup for a given meeting, set and court.
+    Organizes players into two teams, t1 and t2, and a set of players
+    each.
+    """
     meeting             = models.ForeignKey(Meetings)
     set                 = models.IntegerField()
     court               = models.IntegerField()

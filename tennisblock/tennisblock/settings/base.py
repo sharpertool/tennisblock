@@ -186,6 +186,7 @@ INSTALLED_APPS = (
     'tennisblock',
     'accounts',
     'api',
+    'tennis_profile',
     'blockdb',
     'members',
 )

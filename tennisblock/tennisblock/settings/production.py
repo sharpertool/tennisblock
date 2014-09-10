@@ -12,6 +12,8 @@ STATIC_ROOT = PROJECT_ROOT.child('collectedstatic')
 # Define in a local_settings.py file.
 SECRET_KEY = ''
 
+DATABASES['default']['NAME'] = 'tennisblock_prod'
+
 try:
     from local_settings import *
 except ImportError:
