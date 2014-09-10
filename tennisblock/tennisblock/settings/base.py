@@ -179,11 +179,14 @@ INSTALLED_APPS = (
     "account",
     'bootstrapform',
     'compressor',
+    'raven.contrib.django.raven_compat',
 
+    # Local Apps
     'tennisblock',
+    'accounts',
+    'api',
     'blockdb',
     'members',
-    'raven.contrib.django.raven_compat',
 )
 
 REST_FRAMEWORK = {

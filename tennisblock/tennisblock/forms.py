@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from blockdb.models import Couple,SeasonPlayers
 
 class CoupleForm(ModelForm):
-    fields=['name','male','female','fulltime','blockcouple','canschedule']
+
 
     def __init__(self,season,*args,**kwargs):
         super (CoupleForm,self).__init__(*args,**kwargs)
@@ -29,7 +29,8 @@ class CoupleForm(ModelForm):
         return True
 
     class Meta:
-        model= Couple
+        model = Couple
+        fields = ['name', 'male', 'female', 'fulltime', 'blockcouple', 'canschedule']
 
 
 class ContactForm(forms.Form):

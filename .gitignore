@@ -21,3 +21,4 @@ tennisblock/static/css/tbdefs.css
 tennisblock/static/css/tennisblock_min.css
 env.txt
 local_config.py
+freeze.txt

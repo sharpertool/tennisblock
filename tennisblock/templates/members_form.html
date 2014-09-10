@@ -1,0 +1,34 @@
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
+{% load gbtags %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
+
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/members.less' %}">
+{% endblock %}
+
+{% block body %}
+    <div id="textContent">
+        <div id="blockheading" class="dynamic" >
+            <h2>Block Members</h2>
+        </div>
+
+        <div id="members" class="member_list">
+            <form action="{% url 'members_update' %}" method="post">
+                {{ formset.management_form }}
+                {% csrf_token %}
+                <ul class="members">
+                    {% for form in formset %}
+                        <li class="member">
+                            {{ form.as_p }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

@@ -3,16 +3,16 @@
 from TBLib.view import TennisView,TennisLoginView
 from blockdb.models import Season,Meetings,Couple,Player,SeasonPlayers
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.conf import settings
-from django.core.mail import send_mail
 from forms import ContactForm
 
 from .forms import CoupleForm,NotifyForm,AvailabilityForm
 from TBLib.schedule import Scheduler
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
-from django.forms.formsets import formset_factory,BaseFormSet
+from django.forms.formsets import (
+    formset_factory, BaseFormSet)
+
 from django import forms
 
 class HomeView(TennisView):
