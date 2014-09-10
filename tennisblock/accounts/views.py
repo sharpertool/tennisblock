@@ -2,12 +2,11 @@
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login,logout
+from django.views.generic import TemplateView
 from django.shortcuts import redirect
-from TBLib.view import TennisView,TennisLoginView
+from TBLib.view import TennisLoginView
 
-from sekizai.context import SekizaiContext
-
-class AccountsLogout(TennisView):
+class AccountsLogout(TemplateView):
     template_name = 'accounts/logout.html'
 
     def dispatch(self,request,*args,**kwargs):
@@ -19,7 +18,7 @@ class AccountsLogout(TennisView):
         # Redirect to a success page
         return redirect(reverse('login-success'))
 
-class AcccountsLogoutSuccess(TennisView):
+class AcccountsLogoutSuccess(TemplateView):
     template_name = 'accounts/logout_success.html'
 
 class AccountsProfile(TennisLoginView):
@@ -41,11 +40,11 @@ class AccountsProfile(TennisLoginView):
         u.save()
         return redirect(reverse('profile'))
 
-class AccountsLogin(TennisView):
+class AccountsLogin(TemplateView):
     template_name = 'accounts/login.html'
 
     def get_context_data(self,**kwargs):
-        context = super(TennisView, self).get_context_data(**kwargs)
+        context = super(TemplateView, self).get_context_data(**kwargs)
         return context
 
     def get(self,request,*args,**kwargs):
@@ -70,9 +69,9 @@ class AccountsLogin(TennisView):
             kwargs['message'] = "Invalid Login Credentials"
             return redirect(reverse('login'))
 
-class AcccountsLoginSuccess(TennisView):
+class AcccountsLoginSuccess(TemplateView):
     template_name = 'accounts/login_success.html'
 
-class AcccountsDisabled(TennisView):
+class AcccountsDisabled(TemplateView):
     template_name = 'accounts/account_disabled.html'
 

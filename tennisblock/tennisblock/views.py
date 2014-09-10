@@ -1,21 +1,23 @@
 # Create your views here.
 
-from TBLib.view import TennisView,TennisLoginView
-from blockdb.models import Season,Meetings,Couple,Player,SeasonPlayers
-from django.shortcuts import render
-from django.conf import settings
-from forms import ContactForm
-
-from .forms import CoupleForm,NotifyForm,AvailabilityForm
-from TBLib.schedule import Scheduler
+from django.views.generic import TemplateView
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.forms.formsets import (
     formset_factory, BaseFormSet)
 
 from django import forms
+from django.shortcuts import render
+from django.conf import settings
 
-class HomeView(TennisView):
+from TBLib.view import TennisLoginView
+from blockdb.models import Season,Meetings,Couple,Player,SeasonPlayers
+from forms import ContactForm
+
+from .forms import CoupleForm,NotifyForm,AvailabilityForm
+from TBLib.schedule import Scheduler
+
+class HomeView(TemplateView):
     template_name = "home.html"
 
 class BlockSchedule(TennisLoginView):
@@ -81,10 +83,10 @@ class AvailabilityFormView(TennisLoginView):
 class PlaysheetView(TennisLoginView):
     template_name = "playsheet.html"
 
-class AboutView(TennisView):
+class AboutView(TemplateView):
     template_name = "about.html"
 
-class ContactView(TennisView):
+class ContactView(TemplateView):
     template_name = "contact.html"
     thankyou_template = "thankyou.html"
 
@@ -206,7 +208,7 @@ class CouplesView(TennisLoginView):
         except:
             return self.render_to_response(context)
 
-class ScheduleNotify(TennisView):
+class ScheduleNotify(TemplateView):
     template_name = "schedule_notify.html"
     thankyou_template = "thankyou.html"
 
