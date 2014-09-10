@@ -1,17 +1,7 @@
-{% extends "common/site_base.html" %}
+{% extends "accounts/base.html" %}
 {% load staticfiles %}
 
-{% block page_style %}
-    {{ block.super }}
-    <!-- about.html: page_style -->
-
-    <link rel="stylesheet/less" type="text/less" href="{% static 'less/accounts.less' %}">
-{% endblock %}
-
-{% block title %}
-    logout
-{% endblock %}
-{% block content %}
+{% block body %}
     <div id="container" class="home dynamic">
         <div id="content" class="dynamic">
             <h2>Logged out</h2>
