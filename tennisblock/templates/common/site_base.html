@@ -40,7 +40,7 @@
         <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}less/style_base.less">
     {% else %}
         <!-- site_base.html: less_script end -->
-        <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}{% less 'less/style_base.less' %}">
+        <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'less/style_base.less' %}">
     {% endif %}
 {% endblock %}
 
