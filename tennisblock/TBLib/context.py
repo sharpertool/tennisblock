@@ -11,5 +11,6 @@ def tennisblock(request):
         'debug': settings.DEBUG,
         'less_poll': settings.LESS_POLL,
         'angular_base': settings.ANGULAR_BASE,
+        'STATIC_URL' : settings.STATIC_URL,
     }
 

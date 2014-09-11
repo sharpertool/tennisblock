@@ -3,7 +3,8 @@
 {% load i18n %}
 {% load url from future %}
 {% load gbtags %}
-{% load compress %}
+{% load compile_static %}
+{% load less %}
 
 {% block head_script %}
     {{ block.super }}
@@ -30,9 +31,17 @@
     <link rel="stylesheet"
           href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
 
-    <link rel="stylesheet/less" type="text/less" href="{% static 'less/style_base.less' %}">
-    <!-- site_base.html: page_style end -->
+{% endblock %}
 
+{% block less_script %}
+    {{ block.super }}
+    {% if debug %}
+        <!-- site_base.html: less_script end -->
+        <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}less/style_base.less">
+    {% else %}
+        <!-- site_base.html: less_script end -->
+        <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}{% less 'less/style_base.less' %}">
+    {% endif %}
 {% endblock %}
 
 {% block style_base %}
@@ -53,14 +62,6 @@
         <script type="text/javascript" src="//use.typekit.net/den5ddu.js"></script>
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     {% endblock typekit %}
-
-    {% compress css %}
-        <link rel="stylesheet/less" type="text/less"
-              href="{% static 'less/style_base.less' %}">
-
-        {% block extra_less %}
-        {% endblock %}
-    {% endcompress %}
 
     <link rel="stylesheet"
           href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">

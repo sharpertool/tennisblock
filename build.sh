@@ -18,7 +18,7 @@ echo "Building..."
 build/build.py
 
 # Collect static files
-python manage.py setting:build collectstatic --clear --noinput --ignore eeweb
+python manage.py setting:build collectstatic --clear --noinput
 
 # Combine all of the required artifacts into a zip file.
 build/buildArchive.py --gz $arfile

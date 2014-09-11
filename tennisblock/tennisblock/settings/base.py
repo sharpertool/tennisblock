@@ -3,9 +3,6 @@
 from unipath import Path
 import sys
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
 DJANGO_ROOT = Path(__file__).ancestor(3)
 PROJECT_ROOT = DJANGO_ROOT.ancestor(1)
 print("DJANGO_ROOT:%s" % DJANGO_ROOT)
@@ -117,7 +114,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-    'compressor.finders.CompressorFinder',
+    'static_precompiler.finders.StaticPrecompilerFinder',
 )
 
 # List of callables that know how to import templates from various sources.
@@ -179,7 +176,7 @@ INSTALLED_APPS = (
     'pinax_theme_bootstrap',
     "account",
     'bootstrapform',
-    'compressor',
+    'static_precompiler',
     'raven.contrib.django.raven_compat',
 
     # Local Apps
@@ -248,14 +245,13 @@ CONTACT_FORM_RECIPIENTS = (
 BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
 
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
+STATIC_PRECOMPILER_COMPILERS = (
+    'static_precompiler.compilers.LESS',
 )
 
 USE_LESS = False
 LESS_POLL = 100000
 
-COMPRESS_ENABLED = False
 
 CACHES = {
     'default': {
@@ -264,6 +260,5 @@ CACHES = {
     }
 }
 
-COMPRESS_OUTPUT_DIR = ''
 
 ANGULAR_BASE = '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/'
