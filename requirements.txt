@@ -15,6 +15,7 @@ django-compressor==1.4
 django-cors-headers==0.13
 django-debug-toolbar==1.2.1
 django-sekizai==0.7
+django-static-precompiler==0.7
 django-user-accounts==1.0c9
 djangorestframework==2.4.2
 docutils==0.12
@@ -22,6 +23,7 @@ fpdf==1.7
 path.py==5.2
 pinax-theme-bootstrap==5.5.1
 pinax-theme-bootstrap-account==1.0b2
+pyparsing==2.0.2
 python-dateutil==2.2
 pytz==2014.7
 raven==5.0.0
