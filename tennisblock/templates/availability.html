@@ -1,11 +1,17 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
+{% load less %}
 
 {% block page_style %}
     {{ block.super }}
     <!-- about.html: page_style -->
-
-    <link rel="stylesheet/less" type="text/less" href="{% static 'less/availability.less' %}">
+    {% if debug %}
+        <!-- site_base.html: less_script end -->
+        <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}less/availability.less">
+    {% else %}
+        <!-- site_base.html: less_script end -->
+        <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'less/availability.less' %}">
+    {% endif %}
 {% endblock %}
 
 {% block angular_script %}

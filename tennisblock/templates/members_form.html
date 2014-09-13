@@ -1,10 +1,18 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
 {% load gbtags %}
+{% load less %}
 
 {% block page_style %}
     {{ block.super }}
     <!-- about.html: page_style -->
+    {% if debug %}
+        <!-- site_base.html: less_script end -->
+        <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}less/members.less">
+    {% else %}
+        <!-- site_base.html: less_script end -->
+        <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'less/members.less' %}">
+    {% endif %}
 
     <link rel="stylesheet/less" type="text/less" href="{% static 'less/members.less' %}">
 {% endblock %}
