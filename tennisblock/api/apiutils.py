@@ -66,6 +66,7 @@ def _nextMeeting(season=None):
 
     return mtg
 
+
 def _getMeetingForDate(date=None):
     """
     Return the meeting object for the specified date.

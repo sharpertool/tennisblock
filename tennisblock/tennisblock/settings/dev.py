@@ -13,6 +13,13 @@ RAVEN_CONFIG = {
 # Set this for development, but clear for PROD
 BLOCK_NOTIFY_RECIPIENTS = ['ed@tennisblock.com','viquee@me.com']
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'LOCATION': 'tennisblock_flake'
+    }
+}
+
 try:
     from local_settings import *
 except ImportError:

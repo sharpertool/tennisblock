@@ -98,7 +98,7 @@ class Scheduler(object):
         Get the next group of players.
         """
 
-        season = _currentSeason
+        season = _currentSeason()
         if date:
             mtg = _getMeetingForDate(date)
         else:
@@ -106,7 +106,7 @@ class Scheduler(object):
         if mtg:
             print("Scheduling for date:%s" % mtg.date)
 
-        needed = 6
+        needed = season.courts * 2
         group = []
 
         ft = self.getAvailableCoulpes(season,mtg,fulltime=True)

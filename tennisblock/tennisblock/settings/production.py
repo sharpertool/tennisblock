@@ -21,6 +21,14 @@ RAVEN_CONFIG = {
     'dsn': 'https://bb218b1fa4274266aea0a33a4a10c0a5:9772e132d1904c99909fc13e2fc16da7@app.getsentry.com/24185',
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'tennisblock_prod_flake'
+    }
+}
+
+
 try:
     from local_settings import *
 except ImportError:
