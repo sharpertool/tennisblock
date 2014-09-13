@@ -33,7 +33,7 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-def _currentSeason():
+def get_current_season():
     """
     Return the current season object.
     """
@@ -45,14 +45,14 @@ def _currentSeason():
     return None
 
 
-def _nextMeeting(season=None):
+def get_next_meeting(season=None):
     """
     Return the next scheduled match for the given season.
     If season is not specified, use the current season.
 
     """
     if not season:
-        season = _currentSeason()
+        season = get_current_season()
 
     meetings = Meetings.objects \
         .order_by('date') \
@@ -67,15 +67,15 @@ def _nextMeeting(season=None):
     return mtg
 
 
-def _getMeetingForDate(date=None):
+def get_meeting_for_date(date=None):
     """
     Return the meeting object for the specified date.
     """
 
-    season = _currentSeason()
+    season = get_current_season()
 
     if not date:
-        return _nextMeeting(season)
+        return get_next_meeting(season)
 
     dt = parser.parse(date)
     meetings = Meetings.objects \
@@ -89,13 +89,13 @@ def _getMeetingForDate(date=None):
     return None
 
 
-def _BuildMeetings(force=False):
+def build_meetings_for_season(force=False):
     """
     Build the meetings for the current season if they don't exist..
 
     """
 
-    currSeason = _currentSeason()
+    currSeason = get_current_season()
     if not currSeason:
         return
 
@@ -128,4 +128,7 @@ def _BuildMeetings(force=False):
 
 
 def time_to_js(tval):
+    """
+    Convert a Python time value to the format needed for Javascript.
+    """
     return int(time.mktime(tval.timetuple())) * 1000

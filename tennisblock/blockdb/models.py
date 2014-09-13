@@ -4,24 +4,23 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-class BlockManager(models.Manager):
-    use_for_related_fields=True
-
-    def seasonPlayers(self,**kwargs):
-        return self.filter()
-
 @python_2_unicode_compatible
 class Season(models.Model):
-     name               = models.CharField(max_length=20)
-     courts             = models.IntegerField()
-     firstcourt         = models.IntegerField()
-     startdate          = models.DateField()
-     enddate            = models.DateField()
-     blockstart         = models.DateField()
-     blocktime          = models.TimeField()
+    """
+    Define a block season.
+    Gives a name, court information, and information about
+    the start/end dates and block start date and time.
+    """
+    name               = models.CharField(max_length=20)
+    courts             = models.IntegerField()
+    firstcourt         = models.IntegerField()
+    startdate          = models.DateField()
+    enddate            = models.DateField()
+    blockstart         = models.DateField()
+    blocktime          = models.TimeField()
 
-     def __str__(self):
-         return self.name
+    def __str__(self):
+        return self.name
 
 class GirlsManager(models.Manager):
     def get_queryset(self):
@@ -61,10 +60,22 @@ class Player(models.Model):
             un = self.microntrp
         else:
             un = self.ntrp
-        return "{} {} {:3.1f},{:4.2f}".format(self.first,self.last,self.ntrp,un)
+        return "{} {} {:3.1f},{:4.2f}".format(
+            self.user.first_name,self.user.last_name,self.ntrp,un)
 
     def Name(self):
-        return self.first + " " + self.last
+        return self.user.first_name + " " + self.user.last_name
+
+    @property
+    def name(self):
+        return self.user.first_name + " " + self.user.last_name
+
+
+class BlockManager(models.Manager):
+    use_for_related_fields=True
+
+    def seasonPlayers(self,**kwargs):
+        return self.filter()
 
 @python_2_unicode_compatible
 class SeasonPlayers(models.Model):
@@ -76,7 +87,7 @@ class SeasonPlayers(models.Model):
 
 
     """
-    season              = models.ForeignKey(Season)
+    season              = models.ForeignKey(Season,related_name='players')
     player              = models.ForeignKey(Player)
     blockmember         = models.BooleanField(default=False)
 
@@ -85,10 +96,16 @@ class SeasonPlayers(models.Model):
     def __str__(self):
         return self.player.__str__()
 
+def limit_to_gals():
+    return {'gender' : 'F'}
+
+def limit_to_guys():
+    return {'gender' : 'M'}
+
 @python_2_unicode_compatible
 class Couple(models.Model):
     """
-    Link together players into couples. The couple are scheduled together.
+    Link together players into couples. The couples are scheduled together.
     Individual players can be added as a substitute for a given night.
 
     Fulltime is a boolean. If False, then the couple will be considered as
@@ -100,17 +117,26 @@ class Couple(models.Model):
     substitute couples.
 
     """
+
     season              = models.ForeignKey(Season)
     name                = models.CharField(max_length=50)
-    male                = models.ForeignKey(Player,related_name='guy')
-    female              = models.ForeignKey(Player,related_name='gal')
+    male                = models.ForeignKey(Player,
+                                            related_name='couple_guy',
+                                            limit_choices_to=limit_to_guys)
+    female              = models.ForeignKey(Player,
+                                            related_name='couple_gal',
+                                            limit_choices_to=limit_to_gals)
     fulltime            = models.BooleanField(default=False)
     canschedule         = models.BooleanField(default=False)
     blockcouple         = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return "{} {} and {} as {}".format(
+            self.season, self.female.name,self.male.name,
+            self.name
+        )
 
+@python_2_unicode_compatible
 class Meetings(models.Model):
     """
     Entry for each meeting night during the block season.
@@ -125,15 +151,27 @@ class Meetings(models.Model):
     holdout             = models.BooleanField(default=False)
     comments            = models.CharField(max_length=128)
 
+    def __str__(self):
+        return "{}->{} holdout:{}".format(
+            self.season,self.date,self.holdout
+        )
+
+@python_2_unicode_compatible
 class Availability(models.Model):
     """
     Entry for each player and each night. Boolean indicates that the
     player is available.
     """
     meeting             = models.ForeignKey(Meetings)
-    player              = models.ForeignKey(Player)
+    player              = models.ForeignKey(Player,related_name='available')
     available           = models.BooleanField(default=True)
 
+    def __str__(self):
+        return "availability for {} on {} is {}".format(
+            self.player.name, self.meeting.date, self.available
+        )
+
+@python_2_unicode_compatible
 class Schedule(models.Model):
     """
     Each entry schedules a player to play on the given meeting.
@@ -152,11 +190,18 @@ class Schedule(models.Model):
         )
 
     meeting             = models.ForeignKey(Meetings)
-    player              = models.ForeignKey(Player)
+    player              = models.ForeignKey(Player,related_name='scheduled')
     issub               = models.BooleanField(default=False)
     verified            = models.BooleanField(default=False)
-    partner             = models.ForeignKey(Player,related_name='partner',null=True)
+    partner             = models.ForeignKey(Player,related_name='scheduled_partner',null=True)
 
+    def __str__(self):
+        return "{} {} sub:{} verified:{}".format(
+            self.meeting,self.player.name,
+            self.issub, self.verified
+        )
+
+@python_2_unicode_compatible
 class Matchup(models.Model):
     """
     The matchup for a given meeting, set and court.
@@ -170,5 +215,13 @@ class Matchup(models.Model):
     team1_p2            = models.ForeignKey(Player,related_name="t1_p2",null=True)
     team2_p1            = models.ForeignKey(Player,related_name="t2_p1",null=True)
     team2_p2            = models.ForeignKey(Player,related_name="t2_p2",null=True)
+
+    def __str__(self):
+        return "{}:{} set:{} court:{} {}+{} vs {}+{}".format(
+            self.meeting.season,self.meeting.date,
+            self.set, self.court,
+            self.team1_p1.name,self.team1_p2.name,
+            self.team2_p1.name,self.team1_p2.name
+        )
 
 

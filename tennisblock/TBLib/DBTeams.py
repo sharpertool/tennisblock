@@ -5,7 +5,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 
 from django.db import connection
 from blockdb.models import Matchup,Schedule
-from api.apiutils import _getMeetingForDate
+from api.apiutils import get_meeting_for_date
 
 class DBTeams(object):
 
@@ -19,7 +19,7 @@ class DBTeams(object):
         if self.meeting:
             return self.meeting
 
-        m = _getMeetingForDate(date)
+        m = get_meeting_for_date(date)
         self.meeting = m
         return m
 

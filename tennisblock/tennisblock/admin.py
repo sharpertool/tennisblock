@@ -25,5 +25,6 @@ admin.site.register(Player)
 admin.site.register(SeasonPlayers)
 admin.site.register(Meetings)
 admin.site.register(Season)
+admin.site.register(Couple)
 
 print("Admin was called.")

@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework import serializers
 from blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
 
-from .apiutils import JSONResponse, _currentSeason, SeasonSerializer
+from .apiutils import JSONResponse, get_current_season, SeasonSerializer
 
 def getSeasons(request):
     """
@@ -26,7 +26,7 @@ def getCurrentSeason(request):
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        cs = _currentSeason()
+        cs = get_current_season()
         if cs:
             serializer = SeasonSerializer(cs, many=False)
             return JSONResponse(serializer.data)
@@ -38,7 +38,7 @@ def getCurrentSeasonDates(request):
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        cs = _currentSeason()
+        cs = get_current_season()
         if cs:
             startDate = cs.startdate
             endDate = cs.enddate

@@ -10,7 +10,7 @@ from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
 from blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
 
-from .apiutils import JSONResponse, _currentSeason, _getMeetingForDate,time_to_js
+from .apiutils import JSONResponse, get_current_season, get_meeting_for_date,time_to_js
 from  TBLib.teams import TeamManager
 from  TBLib.schedule import Scheduler
 
@@ -20,7 +20,7 @@ def _BuildMeetings(force=False):
 
     """
 
-    currSeason = _currentSeason()
+    currSeason = get_current_season()
     if not currSeason:
         return
 
@@ -76,8 +76,8 @@ def getBlockPlayers(request):
         for c in couples:
             d = {
                 'name' : c.name,
-                'him' : c.male.first + ' ' + c.male.last,
-                'her' : c.female.first + ' ' + c.female.last
+                'him' : c.male.user.first_name + ' ' + c.male.user.last_name,
+                'her' : c.female.user.first_name + ' ' + c.female.user.last_name
             }
             data.append(d)
 
@@ -91,7 +91,7 @@ def getSubList(request,date=None):
     r = Request(request)
 
     if r.method == 'GET':
-        mtg = _getMeetingForDate(date)
+        mtg = get_meeting_for_date(date)
 
         if mtg:
             data =  {'date' : mtg.date}
@@ -180,8 +180,8 @@ def getBlockDates(request):
     """
 
     if request.method == 'GET':
-        currSeason = _currentSeason()
-        currmtg = _getMeetingForDate()
+        currSeason = get_current_season()
+        currmtg = get_meeting_for_date()
 
         meetings = Meetings.objects.filter(season=currSeason).order_by('date')
         mtgData = []

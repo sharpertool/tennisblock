@@ -5,7 +5,7 @@ from django.views.generic.base import View
 from rest_framework.parsers import JSONParser
 from blockdb.models import Player,SeasonPlayers,Meetings,Availability,Schedule
 
-from .apiutils import JSONResponse, _currentSeason, _getMeetingForDate
+from .apiutils import JSONResponse, get_current_season, get_meeting_for_date
 
 
 def _AvailabilityInit(player,meetings):
@@ -29,7 +29,7 @@ class AvailabilityView(View):
 
     def get(self,request):
 
-        currseason = _currentSeason()
+        currseason = get_current_season()
         mtgs = Meetings.objects.filter(season = currseason).order_by('date')
         players = SeasonPlayers.objects.filter(season = currseason)
 
@@ -49,7 +49,7 @@ class AvailabilityView(View):
             nscheduled = 0
 
             p = {
-                'name' : player.first + ' ' + player.last,
+                'name' : player.user.first_name + ' ' + player.user.last_name,
                 'id' : player.id,
                 'isavail' : avail,
                 'scheduled' : scheduled,
@@ -89,7 +89,7 @@ class AvailabilityView(View):
     #elif request.method == 'PUT':
 
         data = JSONParser().parse(request)
-        currseason = _currentSeason()
+        currseason = get_current_season()
         mtgs = Meetings.objects.filter(season = currseason).order_by('date')
         try:
             mtg = mtgs[data['mtgidx']]

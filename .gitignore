@@ -23,3 +23,4 @@ env.txt
 local_config.py
 freeze.txt
 tennisblock/static/COMPILED
+*.gz

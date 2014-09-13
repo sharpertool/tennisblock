@@ -6,7 +6,7 @@ from django.forms.models import inlineformset_factory
 
 from forms import PlayerForm
 from blockdb.models import Player,SeasonPlayers
-from api.apiutils import _currentSeason
+from api.apiutils import get_current_season
 from TBLib.view import TennisLoginView
 
 class MemberCreate(CreateView):
@@ -21,7 +21,7 @@ class MembersView(TennisLoginView):
     members_only = False
 
     def getPlayers(self):
-        s = _currentSeason()
+        s = get_current_season()
         sp = SeasonPlayers.objects.filter(season = s)
         return [p.player for p in sp if (not self.members_only or p.blockmember)]
 
@@ -46,7 +46,7 @@ class SeasonPlayersFormSet(BaseModelFormSet):
 
     def __init__(self,*args,**kwargs):
         super(SeasonPlayersFormSet,self).__init__(*args,**kwargs)
-        s = _currentSeason()
+        s = get_current_season()
         self.queryset = SeasonPlayers.objects.filter(season = s)
 
 class SeasonPlayersFormView(MembersView):
@@ -58,7 +58,7 @@ class SeasonPlayersFormView(MembersView):
         """
 
         AvailFormSet = inlineformset_factory(Player,SeasonPlayers)
-        s = _currentSeason()
+        s = get_current_season()
         queryset = SeasonPlayers.objects.filter(season = s)
         return AvailFormSet(queryset=queryset)
 

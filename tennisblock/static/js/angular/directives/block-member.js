@@ -41,7 +41,6 @@ tennisblockapp.directive('blockMember',['Members','$q',
                 };
 
                 $scope.updateMember = function(member) {
-                    console.log("Updating " + member.first + " " + member.last);
                     var mdef = $q.defer();
                     Members.save({},{'member':member},function() {
                         mdef.resolve();
@@ -60,7 +59,6 @@ tennisblockapp.directive('blockMember',['Members','$q',
                 };
 
                 $scope.insertNewMember = function(member) {
-                    console.log("Inserting " + member.first + " " + member.last);
                     var mdef = $q.defer();
                     Members.insert({},{'member':member},function(data) {
                         mdef.resolve(data);

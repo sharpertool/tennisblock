@@ -7,7 +7,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 import random
 
 from blockdb.models import *
-from api.apiutils import _currentSeason,_nextMeeting,_getMeetingForDate
+from api.apiutils import get_current_season,get_next_meeting,get_meeting_for_date
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -98,11 +98,11 @@ class Scheduler(object):
         Get the next group of players.
         """
 
-        season = _currentSeason()
+        season = get_current_season()
         if date:
-            mtg = _getMeetingForDate(date)
+            mtg = get_meeting_for_date(date)
         else:
-            mtg = _nextMeeting(season)
+            mtg = get_next_meeting(season)
         if mtg:
             print("Scheduling for date:%s" % mtg.date)
 
@@ -171,7 +171,7 @@ class Scheduler(object):
 
     def addCouplesToSchedule(self,date,couples):
 
-        mtg = _getMeetingForDate(date)
+        mtg = get_meeting_for_date(date)
 
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
@@ -199,7 +199,7 @@ class Scheduler(object):
         """
         Remove all couples from the given date.
         """
-        mtg = _getMeetingForDate(date)
+        mtg = get_meeting_for_date(date)
 
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
@@ -221,7 +221,7 @@ class Scheduler(object):
         """
         Query the schedule of players for the given date.
         """
-        mtg = _getMeetingForDate(date)
+        mtg = get_meeting_for_date(date)
 
         data = {}
         if mtg:
@@ -269,7 +269,7 @@ class Scheduler(object):
         """
         Update the schedule with the given list.
         """
-        mtg = _getMeetingForDate(date)
+        mtg = get_meeting_for_date(date)
 
         if mtg:
             data = {'date' : mtg.date}
@@ -325,7 +325,7 @@ class Scheduler(object):
         """
         Return a list of all e-mail addresses for block players.
         """
-        players = SeasonPlayers.objects.filter(season=_currentSeason(),blockmember=True).only('player')
+        players = SeasonPlayers.objects.filter(season=get_current_season(),blockmember=True).only('player')
         addresses = []
         for player in players:
             addr = player.player.email
