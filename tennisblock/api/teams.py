@@ -1,16 +1,9 @@
 # Create your views here.
 
-import datetime
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
-from rest_framework import serializers
-from blockdb.models import Season,Couple,Player,SeasonPlayers,Meetings,Availability
 from rest_framework.request import Request
+from .apiutils import get_current_season
 
-from TBLib.schedule import Scheduler
-from  TBLib.teams import TeamManager
+from TBLib.teams import TeamManager
 
 from .apiutils import JSONResponse
 
@@ -22,9 +15,12 @@ def pickTeams(request,date = None):
     if r.method == 'POST':
         print("pickTeams POST for date %s" % date)
         matchData = {}
-        if date:
+        season = get_current_season()
+        if date and season:
             mgr = TeamManager()
-            mgr.pickTeams(date,test=False,courts=3,sequences=3)
+            mgr.pickTeams(date,test=False,
+                          courts=season.courts,
+                          sequences=3)
 
             matchData = mgr.queryMatch(date)
 

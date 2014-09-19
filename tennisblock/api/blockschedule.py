@@ -4,15 +4,14 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 from django.conf import settings
-from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
 from blockdb.models import Schedule,Couple,Player,SeasonPlayers,Meetings,Availability
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date,time_to_js
-from  TBLib.teams import TeamManager
-from  TBLib.schedule import Scheduler
+from TBLib.teams import TeamManager
+from TBLib.schedule import Scheduler
 
 def _BuildMeetings(force=False):
     """

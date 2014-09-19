@@ -1,0 +1,177 @@
+from io import BytesIO
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter,landscape
+from reportlab.lib.units import cm, inch
+
+
+class PlaySheet(object):
+    def __init__(self, **kwargs):
+        super(PlaySheet, self).__init__()
+
+        self.marginLeft = 0.25
+        self.marginTop = 0.25
+        self.pageWidth = 11 - 2 * self.marginLeft
+
+        self.num_courts = kwargs.get('num_courts',3)
+        self.num_matches = kwargs.get('num_matches',3)
+
+        self.pagesize = landscape(letter)
+        self.buffer = BytesIO()
+        self.canvas = canvas.Canvas(self.buffer,
+                                    pagesize=self.pagesize)
+
+    @property
+    def width(self):
+        return self.pagesize[0]
+
+    @property
+    def height(self):
+        return self.pagesize[1]
+
+    def setFillColorRGB(self,r,g,b,alpha=None):
+        """
+        Translate the ColorPicker values (0-255) to the Reportlab
+        values, 0-1
+        """
+        self.canvas.setFillColorRGB(r/255.0,g/255.0,b/255.0,alpha)
+
+    def get_sheet_params(self):
+
+        w = self.width
+        h = self.height
+        margin = 0.5*inch
+
+        w_inner = w-(2*margin)
+        h_inner = h-(2*margin)
+
+        h_header = 0.5*inch
+
+        w_block = w_inner/self.num_matches
+        h_block = (h_inner-h_header)/self.num_courts
+
+        return w,h,margin,w_inner,h_inner,h_header,w_block,h_block
+
+
+    def generate_sheet(self, header="Friday Night Block", sched=None):
+
+        c = self.canvas
+        c.setFont('Helvetica',14)
+
+        c.setStrokeColorRGB(0.2,0.5,0.3)
+        self.setFillColorRGB(255,255,255)
+
+        self.draw_borders(c)
+
+        w,h,margin,w_inner,h_inner,h_header,w_block,h_block = self.get_sheet_params()
+
+        # self.set_margins(self.marginLeft, self.marginTop)
+        #
+        # self.set_font('Arial', 'B', 15)
+        # self.set_xy(0, 0.5)
+        # self.cell(0, 0, header, 0, 1, 'C')
+        #
+        # matchTitleHeight = 0.4
+        # matchHeight = (7.0 / float(len(sched[0])))
+        # matchY = 0.75
+        # matchNum = 1
+        #
+        # for set in sched:
+        #     x = self.marginLeft
+        #     self.set_fill_color(0, 0xcc, 0xff)
+        #     self.set_margins(0, 0)
+        #     self.set_xy(self.marginLeft, matchY)
+        #     self.cell(w=self.pageWidth, h=matchTitleHeight, txt="Match %d" % matchNum,
+        #               border=1, ln=1, align='C', fill=True)
+        #
+        #     cellWidth = self.pageWidth / float(len(set))
+        #     cellHeight = (matchHeight - matchTitleHeight) / 5
+        #     crtidx = 1
+        #     for match in set:
+        #         self.outputMatch(match,
+        #                          crtidx,
+        #                          self.marginLeft,
+        #                          matchY + matchTitleHeight,
+        #                          cellWidth,
+        #                          cellHeight - 0.05)
+        #         crtidx += 1
+        #
+        #     matchY += matchHeight
+        #     matchNum += 1
+
+        c.showPage()
+        c.save()
+
+        pdffile = self.buffer.getvalue()
+        self.buffer.close()
+        return pdffile
+
+    def draw_borders(self,c):
+        """
+        Draw the borders.
+        """
+
+        w,h,margin,w_inner,h_inner,h_header,w_block,h_block = self.get_sheet_params()
+
+        # Border
+        c.rect(margin,margin,w_inner,h_inner,fill=0)
+
+        # Header Border
+        self.setFillColorRGB(209,251,255)
+        c.rect(margin,margin+h_inner-h_header,w_inner,h_header,fill=1)
+
+        # Draw Blocks
+        self.setFillColorRGB(204,204,204)
+        for n in range(0,self.num_matches):
+            for m in range(0,self.num_courts):
+                c.rect(margin+n*w_block,margin+m*h_block,w_block,h_block,fill=1)
+
+    def outputMatch(self, match, crtidx, marginLeft, matchY, cellWidth, cellHeight):
+
+        x = marginLeft + cellWidth * (crtidx - 1)
+        y = matchY
+        # self.rect(x,y,cellWidth,0.4*5)
+        self.set_left_margin(x - 0.5)
+        self.set_fill_color(0xff, 0xfd, 0xd0)
+
+        lineHeight = 0.25
+        self.set_xy(x, y)
+        self.cell(cellWidth, cellHeight, "Court %d" % crtidx, 1, 1, 'C', 1)
+        self.rect(x, self.get_y(), cellWidth, 6 * lineHeight + 0.2)
+
+        x += 0.4
+        y += cellHeight + 0.4
+        self.centerText(x, y, cellWidth, match['team1']['m']['name'])
+        y += lineHeight
+        self.centerText(x, y, cellWidth, match['team1']['f']['name'])
+
+        y += lineHeight
+        self.centerText(x, y, cellWidth, '----- versus -----')
+
+        y += lineHeight
+        self.centerText(x, y, cellWidth, match['team2']['m']['name'])
+        y += lineHeight
+        self.centerText(x, y, cellWidth, match['team2']['f']['name'])
+
+    def centerText(self, x, y, width, text):
+        print("StringWidth:%f" % self.get_string_width(text))
+        self.text(
+            x,
+            y,
+            text
+        )
+
+    def get_file(self):
+        """
+        Return the file for HTTPResponse
+        """
+
+
+
+
+
+
+
+
+
+
