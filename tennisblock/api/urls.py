@@ -22,6 +22,7 @@ urlpatterns += patterns('api.teams',
 urlpatterns += patterns('api.blocksheet',
                         url(r'blocksheet/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', 'blockSheet'),
                         url(r'blocksheet/?$', 'blockSheet'),
+                        url(r'blocksheet2/?$', 'blockSheetReportlab'),
                         #url(r'blockplayers/$', 'blockschedule.getBlockPlayers'),
 )
 urlpatterns += patterns('api.blockschedule',
