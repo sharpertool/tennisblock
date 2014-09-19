@@ -1,5 +1,6 @@
 import os
 
+import datetime
 
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
@@ -7,7 +8,7 @@ from django.core.servers.basehttp import FileWrapper
 from TBLib.teams import TeamManager
 from TBLib.playsheet import PlaySheet as PlaySheetFPDF
 from TBLib.playsheetrl import PlaySheet as PlaySheet
-from .apiutils import get_current_season
+from .apiutils import get_current_season,get_next_meeting
 
 def blockSheet(request, date=None):
     """
@@ -51,10 +52,17 @@ def blockSheetReportlab(request, date=None):
         matchData = mgr.queryMatch(date)
         season = get_current_season()
 
+        if date:
+            date_string = datetime.datetime.strptime(date,"%Y-%m-%d").strftime("%A,%B %d")
+            header = "Friday Night Block:{}".format(date_string)
+        else:
+            mtg = get_next_meeting()
+            date_string = mtg.date.strftime("%A,%B %d")
+            header = "Block sheet for {}".format(date_string)
 
         gen = PlaySheet(num_courts=season.courts,num_matches=3)
 
-        pdffile = gen.generate_sheet(header = "Friday Night Block",
+        pdffile = gen.generate_sheet(header=header,
                                      firstcourt=season.firstcourt,
                                      sched=matchData)
 
