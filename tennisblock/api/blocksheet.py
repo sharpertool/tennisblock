@@ -55,6 +55,7 @@ def blockSheetReportlab(request, date=None):
         gen = PlaySheet(num_courts=season.courts,num_matches=3)
 
         pdffile = gen.generate_sheet(header = "Friday Night Block",
+                                     firstcourt=season.firstcourt,
                                      sched=matchData)
 
 
