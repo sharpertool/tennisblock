@@ -1,31 +1,29 @@
 #!/usr/bin/env python
 
-from MeetingStats import *
+from MeetingStats import MeetingStats
 
 class Meeting(object):
-    def __init__(self,nCourts,nSets,men,women):
+    def __init__(self, nCourts, nSets, men, women):
         self.nCourts = nCourts
         self.nSets = nSets
         self.men = men
         self.women = women
         self.sets = []
         
-        self.ms = MeetingStats(nCourts,nSets,men,women)
+        self.ms = MeetingStats(nCourts, nSets, men, women)
         
     def Restart(self):
         self.ms.Restart()
         self.sets = []
         
-    def AddSet(self,set):
-        self.sets.append(set)
-        self.ms.AddSet(set)
+    def AddSet(self,blockset):
+        self.sets.append(blockset)
+        self.ms.AddSet(blockset)
         
     def Display(self):
-        for set in self.ms.GetSets():
-            setnum = 1
-            print "Set %d" % setnum
-            setnum = setnum + 1
-            set.Display()
+        for index, blockset in enumerate(self.ms.GetSets()):
+            print "Set %d" % index+1
+            blockset.Display()
             
     def SetCount(self):
         return len(self.sets)

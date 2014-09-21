@@ -28,7 +28,7 @@ def PickTeams(fp,dbTeam,nCourts,nSequences,dups,testing=False):
         return
 
     tg = TeamGen(nCourts,nSequences,men,women)
-    sequences = tg.GenerateSetSequences(dups)
+    sequences = tg.generate_set_sequences(dups)
 
     if sequences == None or len(sequences) < nSequences:
         fp.write("Could not generate the required sequences.")
@@ -36,8 +36,8 @@ def PickTeams(fp,dbTeam,nCourts,nSequences,dups,testing=False):
     else:
         # Put the worst sequences last.
         sequences.reverse()
-        tg.DisplaySequences(sequences)
-        tg.showAllDiffs(sequences)
+        tg.display_sequences(sequences)
+        tg.show_all_diffs(sequences)
 
         if not testing:
             dbTeam.InsertRecords(sequences)

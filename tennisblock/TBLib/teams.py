@@ -37,7 +37,7 @@ class TeamManager(object):
             return {"status" : {"error" : errmsg}}
 
         tg = TeamGen(nCourts,nSequences,men,women)
-        sequences = tg.GenerateSetSequences(noDupes)
+        sequences = tg.generate_set_sequences(noDupes)
 
         if sequences == None or len(sequences) < nSequences:
             return {"status" : {"error" : "Could not generate the required sequences"}}
@@ -45,8 +45,8 @@ class TeamManager(object):
         else:
             # Put the worst sequences last.
             sequences.reverse()
-            tg.DisplaySequences(sequences)
-            tg.showAllDiffs(sequences)
+            tg.display_sequences(sequences)
+            tg.show_all_diffs(sequences)
 
             if not isTesting:
                 self.dbTeams.InsertRecords(date,sequences)

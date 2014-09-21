@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 
-import sys
-from Team import *
-from Match import *
-from Set import *
-from Meeting import *
-
 import random
 
+from Match import Match
+from Team import Team
+from Set import Set
+
+
 def MakeKey(m,f):
-    #return a.pid * 1000 + b.pid
-    #return "%03d:%03d" % (a.pid,b.pid)
     return "%s %s:%s %s" % (m.first,m.last,f.first,f.last)
 
 def MakeSortedKey(a,b):
@@ -96,12 +93,11 @@ class MeetingStats(object):
         Grrr - this is special for Sheryl, who asks to play with Kirby!
         Hah!!! Mike isn't on our block, and neither is Sheryl/
         """
-        return False
-        for m in self.men:
-            if m.Name() == 'Dickhead':
-                for w in self.women:
-                    if w.Name() == 'Vagina':
-                        return True
+        # for m in self.men:
+        #     if m.Name() == 'Dickhead':
+        #         for w in self.women:
+        #             if w.Name() == 'Vagina':
+        #                 return True
         return False
 
     def DiffHistoryMin(self):

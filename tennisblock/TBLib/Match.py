@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-from Team import *
-
 class Match(object):
     
     def __init__(self,t1, t2):
@@ -9,14 +7,14 @@ class Match(object):
         self.t2 = t2
         
     def Diff(self):
-        c1 = self.t1.Combined()
-        c2 = self.t2.Combined()
+        c1 = self.t1.microntrp()
+        c2 = self.t2.microntrp()
         return abs(c1-c2)
         
     def Display(self):
-        self.t1.Display()
+        self.t1.display()
         print "Versus"
-        self.t2.Display()
+        self.t2.display()
         print "Diff: %4.2f\n" % self.Diff()
 
     def __repr__(self):
