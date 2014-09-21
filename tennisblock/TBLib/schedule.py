@@ -1,14 +1,13 @@
 import os
-import datetime
 import re
-
-os.environ['PYTHONPATH'] = '../../gbrest'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 import random
+from collections import defaultdict
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q,Count,F
 
 from blockdb.models import *
 from api.apiutils import get_current_season,get_next_meeting,get_meeting_for_date
-from django.core.exceptions import ObjectDoesNotExist
 
 
 class Scheduler(object):
@@ -54,19 +53,8 @@ class Scheduler(object):
 
         meetings = Meetings.objects.filter(season=season)
 
-        def _sumPlays(p):
-            """
-            Sum plays from he, she or they
-            """
-            return p['he'] + p['she'] + p['they']
 
-        def _weightPlays(p):
-            """
-            Weight plays from he, she or they
-            Give more weight to the he or she, thus giving
-            he or she plays higher priority when sorted
-            """
-            return max(p['he'],p['she'])*1.1 + p['they']
+        scheduled_meetings = Schedule.objects.filter(meeting__in=meetings)
 
         for c in couples:
             cid = c.id
@@ -82,14 +70,36 @@ class Scheduler(object):
                 'weight' : 0.0
             }
             coupleInfo[c.name] = cinfo
+
+            either = list(scheduled_meetings.filter(Q(player=c.male) | Q(player=c.female)).values('meeting_id','player'))
+
             he = Schedule.objects.filter(meeting__in=meetings,player=c.male).count()
             she = Schedule.objects.filter(meeting__in=meetings,player=c.female).count()
-            cinfo['plays']['he'] = he
-            cinfo['plays']['she'] = she
-            cinfo['plays']['they'] = min(he,she)
 
-            cinfo['weight'] = _weightPlays(cinfo['plays'])
-            cinfo['plays']['total'] = _sumPlays(cinfo['plays'])
+            meeting_sum = defaultdict(int)
+
+            cp = cinfo['plays']
+            cp_he = cp['he']
+            cp_she = cp['she']
+            cp_they =cp['they']
+
+            for e in either:
+                mtgid = e.get('meeting_id')
+                playerid = e.get('player')
+                if playerid == c.male.pk:
+                    cp_he += 1
+                    meeting_sum[mtgid] += 1
+                elif playerid == c.female.pk:
+                    cp_she += 1
+                    meeting_sum[mtgid] += 1
+
+
+            cp_they = sum(1 for x in meeting_sum.values() if x == 2)
+            cp_he -= cp_they
+            cp_she -= cp_they
+
+            cinfo['weight'] = cp_they + cp_he * 0.5 + cp_she * 0.5
+            cinfo['plays']['total'] = cp_they + cp_he + cp_she
 
         return coupleInfo
 

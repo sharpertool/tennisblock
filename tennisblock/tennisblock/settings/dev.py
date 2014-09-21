@@ -20,6 +20,10 @@ CACHES = {
     }
 }
 
+FIXTURE_DIRS = (
+    PROJECT_ROOT.child('fixtures'),
+)
+
 try:
     from local_settings import *
 except ImportError:
