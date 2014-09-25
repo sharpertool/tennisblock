@@ -5,6 +5,7 @@ from django.views.generic.edit import View
 
 from blockdb.models import Player, SeasonPlayers
 from django.contrib.auth.models import User
+from rest_framework.parsers import JSONParser
 
 from .apiutils import JSONResponse, get_current_season
 
