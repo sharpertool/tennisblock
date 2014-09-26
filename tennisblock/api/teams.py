@@ -1,5 +1,3 @@
-# Create your views here.
-
 from rest_framework.request import Request
 from .apiutils import get_current_season
 

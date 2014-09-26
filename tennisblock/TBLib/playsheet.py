@@ -1,6 +1,11 @@
 from fpdf import FPDF
 
 class PlaySheet(FPDF):
+    """
+    Create the tennisblock sheet using the FPDF library.
+
+    deprecated.. the reportlab works much better.
+    """
     def __init__(self, **kwargs):
         super(PlaySheet, self).__init__(**kwargs)
 

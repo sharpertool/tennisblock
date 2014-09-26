@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 class Match(object):
     
     def __init__(self,t1, t2):

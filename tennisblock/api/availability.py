@@ -1,5 +1,3 @@
-# Create your views here.
-
 import datetime
 from django.views.generic.base import View
 from rest_framework.parsers import JSONParser

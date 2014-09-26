@@ -3,10 +3,12 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter,landscape
 from reportlab.lib.units import cm, inch
-from reportlab.pdfbase.pdfmetrics import stringWidth
 
 
 class PlaySheet(object):
+    """
+    Create the play sheet using Reportlab.
+    """
     def __init__(self, **kwargs):
         super(PlaySheet, self).__init__()
 

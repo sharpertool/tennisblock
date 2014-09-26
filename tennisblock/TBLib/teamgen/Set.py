@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 class Set(object):
     def __init__(self):
         self.matches = []

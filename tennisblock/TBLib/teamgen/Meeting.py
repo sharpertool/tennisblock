@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-from MeetingStats import MeetingStats
+from .MeetingStats import MeetingStats
 
 class Meeting(object):
     def __init__(self, nCourts, nSets, men, women):

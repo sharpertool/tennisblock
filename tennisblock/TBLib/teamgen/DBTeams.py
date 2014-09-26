@@ -1,18 +1,12 @@
-
-import os
-import datetime
-os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
-
-from django.db import connection
-from blockdb.models import Matchup,Schedule
+from blockdb.models import Matchup, Schedule
 from api.apiutils import get_meeting_for_date
 
-class DBTeams(object):
 
+class DBTeams(object):
     def __init__(self):
         self.meeting = None
 
-    def getMeeting(self,date=None):
+    def getMeeting(self, date=None):
         """
         Return the cached matchid, or get a new one.
         """
@@ -23,7 +17,7 @@ class DBTeams(object):
         self.meeting = m
         return m
 
-    def getPlayers(self,date=None):
+    def getPlayers(self, date=None):
 
         m = self.getMeeting(date)
 
@@ -38,25 +32,25 @@ class DBTeams(object):
             elif p.gender == 'M':
                 men.append(p)
             else:
-                raise("No proper Gender!")
+                raise ("No proper Gender!")
 
-        return men,women
+        return men, women
 
     def initTeamGen(self):
         """
         Remove all of the slots for the given date.
         """
-        Matchup.objects.filter(meeting = self.getMeeting()).delete()
+        Matchup.objects.filter(meeting=self.getMeeting()).delete()
 
-    def deleteMatchup(self,date):
+    def deleteMatchup(self, date):
         """
         Delete the matchup for the given date.
         """
         meeting = self.getMeeting(date)
         if meeting:
-            Matchup.objects.filter(meeting = meeting).delete()
+            Matchup.objects.filter(meeting=meeting).delete()
 
-    def InsertRecords(self,date,seq):
+    def InsertRecords(self, date, seq):
         """
         Insert the sequence
         """
@@ -69,15 +63,14 @@ class DBTeams(object):
         for s in seq:
             court = 1
             for m in s.matches:
-
                 matchup = Matchup.objects.create(
-                    meeting     = meeting,
-                    set         = set,
-                    court       = court,
-                    team1_p1    = m.t1.m,
-                    team1_p2    = m.t1.f,
-                    team2_p1    = m.t2.m,
-                    team2_p2    = m.t2.f
+                    meeting=meeting,
+                    set=set,
+                    court=court,
+                    team1_p1=m.t1.m,
+                    team1_p2=m.t1.f,
+                    team2_p1=m.t2.m,
+                    team2_p2=m.t2.f
                 )
                 matchup.save()
 
@@ -86,39 +79,35 @@ class DBTeams(object):
             set += 1
 
 
-    def queryMatch(self,date):
+    def queryMatch(self, date):
         """
         Query all of the records for the given date.
         """
 
-        def serializeTeam(p1,p2):
+        def serializeTeam(p1, p2):
             return {
-                'm' : {
-                    'name' : p1.Name(),
-                    'ntrp' : p1.ntrp,
+                'm': {
+                    'name': p1.Name(),
+                    'ntrp': p1.ntrp,
                     'untrp': p1.microntrp,
-                    },
-                'f' : {
-                    'name' : p2.Name(),
-                    'ntrp' : p2.ntrp,
+                },
+                'f': {
+                    'name': p2.Name(),
+                    'ntrp': p2.ntrp,
                     'untrp': p2.microntrp,
-                    }
+                }
             }
-
 
         meeting = self.getMeeting(date)
 
-        matchups = Matchup.objects.order_by('set','court').filter(meeting=meeting)
-
+        matchups = Matchup.objects.order_by('set', 'court').filter(meeting=meeting)
 
         if len(matchups) == 0:
             return None
 
-
         data = []
 
         currSet = 1
-        currCourt = 1
         courtArray = []
         for matchup in matchups:
             if currSet != matchup.set:
@@ -127,30 +116,11 @@ class DBTeams(object):
                 currSet = matchup.set
 
             matchData = {
-                'team1' : serializeTeam(matchup.team1_p1,matchup.team1_p2),
-                'team2' : serializeTeam(matchup.team2_p1,matchup.team2_p2)
+                'team1': serializeTeam(matchup.team1_p1, matchup.team1_p2),
+                'team2': serializeTeam(matchup.team2_p1, matchup.team2_p2)
             }
             courtArray.append(matchData)
 
-        data.append(courtArray) # Don't forget the last one!
+        data.append(courtArray)  # Don't forget the last one!
 
         return data
-
-
-
-
-
-
-
-
-
-
-def main():
-
-    pass
-
-
-if __name__ == '__main__':
-    main()
-
-

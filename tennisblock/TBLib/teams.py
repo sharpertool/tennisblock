@@ -1,26 +1,16 @@
 
 #!/usr/bin/env python
 
-import sys
-#import getpass, imaplib
-import os
-import sys
-#import email
-import errno
-import mimetypes
-import re
-import smtplib
-from TeamGen2 import TeamGen
+from teamgen.TeamGen2 import TeamGen
+from teamgen.DBTeams import DBTeams
 
-from optparse import OptionParser
-
-from DBTeams import *
 
 class TeamManager(object):
 
-    def __init__(self,matchid = None):
+    def __init__(self, matchid = None):
 
         self.dbTeams = DBTeams()
+        self.matchid = matchid
 
     def pickTeams(self,date=None,**kwargs):
 

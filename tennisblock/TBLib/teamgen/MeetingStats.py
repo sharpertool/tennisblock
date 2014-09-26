@@ -1,10 +1,8 @@
-#!/usr/bin/env python
-
 import random
 
-from Match import Match
-from Team import Team
-from Set import Set
+from .Match import Match
+from .Team import Team
+from .Set import Set
 
 
 def MakeKey(m,f):

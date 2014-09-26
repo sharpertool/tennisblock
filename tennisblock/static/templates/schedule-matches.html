@@ -30,6 +30,11 @@
                 <div class="untrp_diff">
                     Diff: {{ (court.team1.m.untrp + court.team1.f.untrp)-(court.team2.m.untrp + court.team2.f.untrp)|number:2 }}
                 </div>
+                <div class="untrp_spread">
+                    {{ (court.team1.m.untrp - court.team1.f.untrp)|number:2 }}
+                    /
+                    {{ (court.team2.m.untrp - court.team2.f.untrp)|number:2 }}
+                </div>
             </td>
         </tr>
     </table>
