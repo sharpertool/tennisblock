@@ -114,8 +114,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-    'static_precompiler.finders.StaticPrecompilerFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 # List of callables that know how to import templates from various sources.
@@ -177,7 +176,7 @@ INSTALLED_APPS = (
     'pinax_theme_bootstrap',
     "account",
     'bootstrapform',
-    'static_precompiler',
+    'compressor',
     'raven.contrib.django.raven_compat',
 
     # Local Apps
@@ -245,6 +244,10 @@ CONTACT_FORM_RECIPIENTS = (
 
 BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc --clean-css --clean-option=--keep-line-breaks {infile} {outfile}'),
+)
 
 STATIC_PRECOMPILER_COMPILERS = (
     'static_precompiler.compilers.LESS',

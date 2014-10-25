@@ -3,8 +3,7 @@
 {% load i18n %}
 {% load url from future %}
 {% load gbtags %}
-{% load compile_static %}
-{% load less %}
+{% load compress %}
 
 {% block head_script %}
     {{ block.super }}
@@ -12,8 +11,10 @@
     <script type="text/javascript"
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 
-    <script type="text/javascript"
+    {% compress js %}
+        <script type="text/javascript"
             src="{% static 'js/HeadFinal.js' %}"></script>
+    {% endcompress %}
 
     <script type="text/javascript"
             src="{% static 'js/library/jquery-1.10.2.min.js' %}"></script>
@@ -35,13 +36,11 @@
 
 {% block less_script %}
     {{ block.super }}
-    {% if debug %}
+    {% compress css %}
         <!-- site_base.html: less_script end -->
-        <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}less/style_base.less">
-    {% else %}
-        <!-- site_base.html: less_script end -->
-        <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'less/style_base.less' %}">
-    {% endif %}
+        <link rel="stylesheet/less" type="text/less" href="{% static 'less/style_base.less' %}">
+    {% endcompress %}
+
 {% endblock %}
 
 {% block style_base %}
@@ -168,10 +167,14 @@
     <script type="text/javascript"
             src="{% static 'js/library/json2.js' %}"></script>
 
-    <script type="text/javascript"
-            src="{% static 'js/Client.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/Load.js' %}"></script>
+    {% compress js %}
+        <script type="text/javascript" src="{% static 'js/Client.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/tennislib/TennisEnvironment.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/tennislib/tennisconstants.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/tennislib/TennisGui.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/tennislib/TennisUtils.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/tennislib/TennisMain.js' %}"></script>
+    {% endcompress %}
 {% endblock %}
 
 {% block extra_script %}
@@ -197,10 +200,11 @@
         <script type="text/javascript" src="{{ angular_base }}angular-route.min.js"></script>
         <script type="text/javascript" src="{{ angular_base }}angular-cookies.min.js"></script>
 
-        <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
-
-        <script type="text/javascript" src="{% static 'js/angular/services/factories.js' %}"> </script>
-        <script type="text/javascript" src="{% static 'js/angular/services/services.js' %}"></script>
+        {% compress js %}
+            <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
+            <script type="text/javascript" src="{% static 'js/angular/services/factories.js' %}"> </script>
+            <script type="text/javascript" src="{% static 'js/angular/services/services.js' %}"></script>
+        {% endcompress %}
     {% endblock %}
 
     {% block tennisblock_script %}

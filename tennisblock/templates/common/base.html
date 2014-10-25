@@ -40,20 +40,19 @@
 
         {% block less_engine %}
             <!-- base.html: less_engine -->
-            {% if debug %}
+            {% if USE_LESS %}
                 <script type="text/javascript">
                     less = {
                         env: "development",
                         logLevel: 2,
                         async: false,
                         fileAsync: false,
-                        poll: {{ less_poll }},
+                        poll: {{ LESS_POLL }},
                         dumpLineNumbers: "comments",
                         relativeUrls: false
                     };
                 </script>
                 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.4/less.min.js" type="text/javascript"></script>
-                <script>less.watch();</script>
             {% endif %}
         {% endblock less_engine %}
 

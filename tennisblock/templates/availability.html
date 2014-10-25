@@ -1,23 +1,22 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
-{% load less %}
+{% load compress %}
 
 {% block page_style %}
     {{ block.super }}
     <!-- about.html: page_style -->
-    {% if debug %}
+    {% compress css %}
         <!-- site_base.html: less_script end -->
-        <link rel="stylesheet/less" type="text/less" href="{{ STATIC_URL }}less/availability.less">
-    {% else %}
-        <!-- site_base.html: less_script end -->
-        <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'less/availability.less' %}">
-    {% endif %}
+        <link rel="stylesheet/less" type="text/less" href="{% static 'less/availability.less' %}">
+    {% endcompress %}
 {% endblock %}
 
 {% block angular_script %}
     {{ block.super }}
 
+    {% compress js %}
     <script src="{% static 'js/angular/controllers/availability.js' %}" type="text/javascript"></script>
+    {% endcompress %}
 
 {% endblock %}
 
