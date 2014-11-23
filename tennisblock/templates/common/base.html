@@ -2,18 +2,19 @@
 {% load url from future %}
 {% load i18n %}
 {% load gbtags %}
+{% load compress %}
 
 <!DOCTYPE HTML>
 
 <html lang="{{ LANGUAGE_CODE }}" ng-app="{{ angularapp }}" class="main">
     <head>
-        <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}
-        {% endblock %}{% endblock %}</title>
         <link rel="icon" href="{% static 'img/favicon.png' %}">
         <meta name="viewport" content="width=device-width, width=device-width, initial-scale=1.0">
 
         {% block style_base %}
             <!-- base.html: style_base -->
+            <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+            <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
             {% block extra_style %}{% endblock %}
         {% endblock %}
 
@@ -33,9 +34,9 @@
             <!-- base.html: page_style -->
         {% endblock %}
 
-
         {% block less_script %}
             <!-- base.html: less_script -->
+            <link rel="stylesheet/less" type="text/css" href="{% static 'less/style_base.less' %}">
         {% endblock less_script %}
 
         {% block less_engine %}
@@ -52,9 +53,14 @@
                         relativeUrls: false
                     };
                 </script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.min.js"></script>
+                {% comment %}
                 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.4/less.min.js" type="text/javascript"></script>
+                {% endcomment %}
             {% endif %}
         {% endblock less_engine %}
+        <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}
+        {% endblock %}{% endblock %}</title>
 
     </head>
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
@@ -67,13 +73,14 @@
                             {% endblock %}
                             ">
                     {% block header_bar_images %}
+                        <a class="navbar_brand" href="">
                         <img id="header_logo"
-                             src="{% static 'images/assets/header_logo.png' %}"/>
-                        <img id="header_title"
-                             src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
+                             src="{% static 'images/assets/Racquet_and_balls.png' %}"/>
+                        Company Title
+                        </a>
                     {% endblock header_bar_images %}
                     {% block header_bar_nav %}
-                        <nav class="nav header" id="header_bar_nav">
+                        <nav class="pure-menu pure-menu-horizontal nav header" id="header_bar_nav">
                             <a href="{% url 'home' %}">HOME</a>
                             {% if request.user.is_authenticated %}
                                 <a href="{{ request.user.profile.get_absolute_url }}">
@@ -86,11 +93,11 @@
                                         {% trans "ADMIN" %}
                                     </a>
                                 {% endif %}
-                                <a id="account_logout" href="{% url "account_logout" %}">
+                                <a id="account_logout" href="{% url "logout" %}">
                                     <i class="icon-off"></i> {% trans "LOG OUT" %}
                                 </a>
                             {% else %}
-                                <a href="{% url "account_login" %}">{% trans "SIGN IN" %}</a>
+                                <a href="{% url "login" %}">{% trans "SIGN IN" %}</a>
                             {% endif %}
                         </nav>
                     {% endblock header_bar_nav %}
@@ -101,37 +108,25 @@
                 <section id="page_header"
                          class="">
                     {% block page_header_top %}
-                        <h3>Gardening in</h3>
-                        <h2>Treasure Valley.</h2>
+                        <h2>Page Header</h2>
                     {% endblock %}
                     {% block page_header_bottom %}
-                        <div class="page_header_bottom">
-                            <nav>
-                                <a href="{% url 'gardentips' %}">BEGINNER'S GUIDE TO GARDENING</a>
-                                <a href="{% url 'featured_gardeners' %}">FEATURED GARDENS</a>
-                                <a href="{% url 'nurseries' %}">TREASURE VALLEY NURSERIES</a>
-                            </nav>
-                        </div>
                     {% endblock page_header_bottom %}
                 </section>
             {% endblock page_header_base %}
 
             {% block body_base %}
-                <section class="container">
+                <section class="body_container">
                     {% include "_messages.html" %}
                     {% block body %}
                     {% endblock body %}
                 </section>
             {% endblock body_base %}
 
-            {% block footer_base %}
-                <section id="footer_base">
-                    <hr/>
-                    <footer>
-                    </footer>
+            {% block page_footer %}
+                {% include "common/footer.html" %}
+            {% endblock page_footer %}
 
-                </section>
-            {% endblock footer_base %}
         </section>
 
 

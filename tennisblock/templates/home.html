@@ -12,3 +12,12 @@
 
 {% endblock %}
 
+{% block body_base %}
+<section class="body_base">
+    {% include "_messages.html" %}
+    {% block body %}
+        <h1>Welcome to the Tennis Roster.com site.</h1>
+    {% endblock body %}
+</section>
+{% endblock body_base %}
+

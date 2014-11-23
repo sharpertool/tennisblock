@@ -36,18 +36,14 @@
 
 {% block less_script %}
     {{ block.super }}
-    {% compress css %}
-        <!-- site_base.html: less_script end -->
-        <link rel="stylesheet/less" type="text/less" href="{% static 'less/style_base.less' %}">
-    {% endcompress %}
+    <!-- site_base.html: less_script end -->
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/style_base.less' %}">
 
 {% endblock %}
 
 {% block style_base %}
     {{ block.super }}
     <!-- site_base.html: style_base -->
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
 
     {% comment %}
     {% block google_fonts %}
@@ -78,77 +74,54 @@
 
 {% block wrapper_class %}wrapper{% endblock %}
 
+{% block page_header_base %}
+{% endblock page_header_base %}
+
 {% block header_bar_images %}
+    <a class="brand navbar_brand" href="">
     <img id="header_logo"
-         src="{% static 'images/assets/header_logo.png' %}"/>
-    <img id="header_title"
-         src="{% static 'images/assets/gardenbuzz_title.png' %}"/>
+         src="{% static 'images/assets/BestRacquet.png' %}"/>
+    TennisRoster.com
+    </a>
 {% endblock header_bar_images %}
 
 {% block header_bar_nav %}
-    <span class="title-text">Tennisblock.com</span>
-    <nav class="nav header" id="header_bar_nav">
-        <a href="{% url 'home' %}">HOME</a>
+    <nav class="main-menu pure-menu pure-menu-open pure-menu-horizontal" id="header_bar_nav_old">
+        <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
         {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">
-                <i class="icon-briefcase"></i> {% trans "PROFILE" %}
-            </a>
+            <!-- User Authenticatred -->
+            <li><a class="" href="{% url 'schedule' %}">Block Schedule</a></li>
+            <li><a href="{% url 'availability' %}">Availability</a></li>
+            {% comment %}
+            <li><a href="{% url 'availability_form' %}">Availability Form</a></li>
+            {% endcomment %}
+            <li><a href="{% url 'seasonplayers' %}">Block Members</a></li>
+            <li><a href="{% url 'seasons' %}">Seasons</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            {% comment %}
+            <li><a href="{{ request.user.profile.get_absolute_url }}">
+                <i class="icon-briefcase"></i> {% trans "Profile" %}
+            </a></li>
+            {% endcomment %}
             {% if user.is_staff %}
-                <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}">
-                    <i class="icon-cog"></i> {% trans "ADMIN" %}
-                </a>
+                <li><a href="{% url THEME_ADMIN_URL|default:"admin:index" %}">
+                    <i class="icon-cog">
+                    </i>
+                    {% trans "Admin" %}
+                </a></li>
             {% endif %}
-            <a id="account_logout" href="{% url "logout" %}">
-                <i class="icon-off"></i> {% trans "LOG OUT" %}
-            </a>
+            <li><a id="account_logout" href="{% url "logout" %}">
+                <i class="icon-off"></i> {% trans "Log Out" %}
+            </a></li>
         {% else %}
-            <a href="{% url "login" %}">{% trans "SIGN IN" %}
-            </a>
+            <!-- User Not Authenticated -->
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url "login" %}">{% trans "Sign In" %}</a></li>
         {% endif %}
+        </ul>
     </nav>
 {% endblock header_bar_nav %}
-
-{% block page_header_top %}
-    <h3>The Premier Site for</h3>
-    <h2>Tennis Block Management!</h2>
-{% endblock %}
-
-{% block page_header_bottom %}
-    <nav class="">
-        <a href="{% url 'home' %}">Home</a>
-        {% if user.is_authenticated %}
-            <a class="" href="{% url 'schedule' %}">Block Schedule</a>
-            <a href="{% url 'availability' %}">Availability</a>
-            <a href="{% url 'availability_form' %}">Availability Form</a>
-            <a href="{% url 'seasonplayers' %}">Block Members</a>
-            <a href="{% url 'seasons' %}">Seasons</a>
-        {% else %}
-            <a href="{% url 'about' %}">ABOUT</a>
-        {% endif %}
-    </nav>
-{% endblock page_header_bottom %}
-
-
-{% block footer_base %}
-    <!-- site_base.html: footer_base -->
-    <div id="block_footer" class="col-lg-12">
-
-        <ul class="">
-            <li class="foottext"><a href="{% url 'contact' %}" class="first">Contact Us</a></li>
-            <li class="foottext"><a href="{% url 'about' %}" >About Us</a></li>
-            <li id="foot_facebook"
-                class="icon"><a href="https://www.facebook.com/tennisblock"
-                                target="_blank"><img src="/static/images/facebook/FB-f-Logo__blue_29.png"/></a></li>
-            <li id="foot_twitter"
-                class="icon">
-                <a href="https://twitter.com/tennisblock"
-                   target="_blank"><img src="/static/images/twitter-bird-light-bgs.png" height="30" width="30"/>
-                </a>
-            </li>
-        </ul>
-
-    </div>
-{% endblock %}
 
 {% block body_script %}
     {{ block.super }}
