@@ -29,7 +29,7 @@ def prod_release():
 def get_prod_dump():
     with cd("backups"):
         out = run("dbbackup tennisblock")
-        m = re.search(r'backups/(.*)',out)
+        m = re.search(r'backups/(.*)', out)
         if m:
             backup_file = m.group(1).strip()
             files = get(backup_file)

@@ -11,56 +11,55 @@ from django.shortcuts import render
 from django.conf import settings
 
 from TBLib.view import TennisLoginView
-from blockdb.models import Season,Meetings,Couple,Player,SeasonPlayers
+from blockdb.models import Season, Meetings, Couple, Player, SeasonPlayers
 from forms import ContactForm
 
-from .forms import CoupleForm,NotifyForm,AvailabilityForm
+from .forms import CoupleForm, NotifyForm, AvailabilityForm
 from TBLib.schedule import Scheduler
+
 
 class HomeView(TemplateView):
     template_name = "home.html"
 
+
 class BlockSchedule(TennisLoginView):
     template_name = "schedule.html"
+
 
 class AvailabilityView(TennisLoginView):
     template_name = "availability.html"
 
 
 class AvailabilityFormSet(BaseFormSet):
-    def add_fields(self,form,index):
-        super(AvailabilityFormSet,self).add_fields(form,index)
-        form.field_list=[]
+    def add_fields(self, form, index):
+        super(AvailabilityFormSet, self).add_fields(form, index)
+        form.field_list = []
         for x in xrange(12):
-            f = forms.BooleanField(required=False,label='')
+            f = forms.BooleanField(required=False, label='')
             field_nm = "avail_{}".format(x)
             form.fields[field_nm] = f
             form.field_list.append(field_nm)
-
 
 
 class AvailabilityFormView(TennisLoginView):
     template_name = "availability_form.html"
     thankyou_template = "thankyou.html"
 
-    def _get_formset(self,data=None):
+    def _get_formset(self, data=None):
         """ Create the formset object """
-        fs = formset_factory(AvailabilityForm,extra=31,formset=AvailabilityFormSet)
-        initial_data = [{'name':'Billy Bob'}]
+        fs = formset_factory(AvailabilityForm, extra=31, formset=AvailabilityFormSet)
+        initial_data = [{'name': 'Billy Bob'}]
         if data:
-            return fs(data=data,initial=initial_data)
+            return fs(data=data, initial=initial_data)
         return fs(initial=initial_data)
 
-    def get(self,request,**kwargs):
+    def get(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
         context['formset'] = self._get_formset()
 
-        return render(request,
-               self.template_name,
-               context
-            )
+        return render(request, self.template_name, context)
 
-    def post(self,request):
+    def post(self, request):
         context = self.get_context_data()
         fs = self._get_formset(data=request.POST)
 
@@ -73,18 +72,16 @@ class AvailabilityFormView(TennisLoginView):
         else:
             print("Form is invalid")
             context['formset'] = fs
-            return render(request,
-                          self.template_name,
-                          context
-            )
-
+            return render(request, self.template_name, context)
 
 
 class PlaysheetView(TennisLoginView):
     template_name = "playsheet.html"
 
+
 class AboutView(TemplateView):
     template_name = "about.html"
+
 
 class ContactView(TemplateView):
     template_name = "contact.html"
@@ -121,18 +118,19 @@ class ContactView(TemplateView):
                       self.template_name,
                       {'form': form})
 
+
 class SeasonsView(TennisLoginView):
     template_name = "seasons.html"
 
-    #queryset = Season.objects.all()
+    # queryset = Season.objects.all()
 
-    def get_context_data(self,**kwargs):
-        context = super(SeasonsView,self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(SeasonsView, self).get_context_data(**kwargs)
         context['seasons'] = Season.objects.all()
 
         return context
 
-    def get(self,request,pk=None, **kwargs):
+    def get(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
         if pk:
             s = Season.objects.filter(pk=pk)
@@ -147,25 +145,25 @@ class SeasonsView(TennisLoginView):
 class CouplesView(TennisLoginView):
     template_name = "couple_editor.html"
 
-    def get_context_data(self,**kwargs):
-        context = super(CouplesView,self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(CouplesView, self).get_context_data(**kwargs)
         return context
 
-    def getcurentcouples(self,context,season):
+    def getcurentcouples(self, context, season):
         players = SeasonPlayers.objects.filter(season=season)
         couples = Couple.objects.filter(season=season)
 
         context['players'] = players
         context['couples'] = couples
         initial = {
-            'season' : season.pk,
-            'fulltime' : False,
-            'blockcouple' : True,
-            'canschedule' : True
+            'season': season.pk,
+            'fulltime': False,
+            'blockcouple': True,
+            'canschedule': True
         }
-        context['form'] = CoupleForm(season,initial=initial)
+        context['form'] = CoupleForm(season, initial=initial)
 
-    def get(self,request,pk=None, **kwargs):
+    def get(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
         if pk:
             s = Season.objects.filter(pk=pk)
@@ -173,28 +171,27 @@ class CouplesView(TennisLoginView):
                 season = s[0]
                 context['season'] = season
 
-                self.getcurentcouples(context,season)
-
+                self.getcurentcouples(context, season)
 
         return self.render_to_response(context)
 
-    def post(self,request,pk=None, **kwargs):
+    def post(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
 
         try:
             s = Season.objects.get(pk=pk)
             context['season'] = s
 
-            form = CoupleForm(s,request.POST)
+            form = CoupleForm(s, request.POST)
             if form.is_valid():
                 print("Valid Couple form..updating...")
                 Couple.objects.create(
                     season=s,
                     name=form.data['name'],
-                    male = form.spguy.player,
-                    female = form.spgal.player,
-                    fulltime = form.data.get('fulltime','off') == 'on',
-                    blockcouple = form.data.get('blockcouple','off') == 'on',
+                    male=form.spguy.player,
+                    female=form.spgal.player,
+                    fulltime=form.data.get('fulltime', 'off') == 'on',
+                    blockcouple=form.data.get('blockcouple', 'off') == 'on',
                     canschedule=True
                 ).save()
                 print("Inserted couple")
@@ -203,36 +200,38 @@ class CouplesView(TennisLoginView):
                 print("Invalid Couple")
                 context['form'] = form
 
-            self.getcurentcouples(context,s)
+            self.getcurentcouples(context, s)
             return self.render_to_response(context)
         except:
             return self.render_to_response(context)
+
 
 class ScheduleNotify(TemplateView):
     template_name = "schedule_notify.html"
     thankyou_template = "thankyou.html"
 
-    def getCouples(self,sch):
+    def getCouples(self, sch):
 
         import random
+
         couples = []
         gals = sch.get('gals')
         guys = sch.get('guys')
 
-        for x in range(0,len(gals)):
-            couple = [gals[x].get('name'),guys[x].get('name')]
+        for x in range(0, len(gals)):
+            couple = [gals[x].get('name'), guys[x].get('name')]
             random.shuffle(couple)
             couples.append(couple)
 
         return couples
 
-    def generateNotifyMessage(self,date,players,extramsg):
+    def generateNotifyMessage(self, date, players, extramsg):
         """
         Generate plain text version of message.
         """
 
         couples = self.getCouples(players)
-        cstrings = ["%s and %s" % (c[0],c[1]) for c in couples]
+        cstrings = ["%s and %s" % (c[0], c[1]) for c in couples]
         prefix = "      - "
         msg = """
 
@@ -242,18 +241,18 @@ Here is the schedule for Friday, %s:
 
 %s
 
-        """ % (date,extramsg,prefix + prefix.join(cstrings))
+        """ % (date, extramsg, prefix + prefix.join(cstrings))
 
         return msg
 
-    def generateHtmlNotifyMessage(self,date,players,extramsg):
+    def generateHtmlNotifyMessage(self, date, players, extramsg):
         """
         Generate an HTML Formatted version of the message.
         """
 
         couples = self.getCouples(players)
         cstrings = ["<li><span>%s</span> and <span>%s</span></li>"
-                    % (c[0],c[1]) for c in couples]
+                    % (c[0], c[1]) for c in couples]
 
         msg = """
 
@@ -268,19 +267,19 @@ Here is the schedule for Friday, %s:
             %s
         </ul>
 
-        """ % (date,extramsg,"\n".join(cstrings))
+        """ % (date, extramsg, "\n".join(cstrings))
 
         return msg
 
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
 
-        context = super(ScheduleNotify,self).get_context_data(**kwargs)
+        context = super(ScheduleNotify, self).get_context_data(**kwargs)
 
-        date =kwargs.get('date')
+        date = kwargs.get('date')
 
         tb = Scheduler()
         if settings.BLOCK_NOTIFY_RECIPIENTS:
-            recipient_list = ['ed@tennisblock.com','viquee@me.com']
+            recipient_list = ['ed@tennisblock.com', 'viquee@me.com']
         else:
             recipient_list = tb.getBlockEmailList()
 
@@ -291,7 +290,7 @@ Here is the schedule for Friday, %s:
         context['recipients'] = recipient_list
         return context
 
-    def get(self, request,date):
+    def get(self, request, date):
         context = self.get_context_data(date=date)
         form = NotifyForm()
 
@@ -302,7 +301,7 @@ Here is the schedule for Friday, %s:
                       context
         )
 
-    def post(self, request,date):
+    def post(self, request, date):
 
         form = NotifyForm(request.POST)
 
@@ -317,18 +316,18 @@ Here is the schedule for Friday, %s:
             from_email = settings.EMAIL_HOST_USER
 
             # Generate Text and HTML versions.
-            message = self.generateNotifyMessage(date,players,extramsg)
-            html = self.generateHtmlNotifyMessage(date,players,extramsg)
+            message = self.generateNotifyMessage(date, players, extramsg)
+            html = self.generateHtmlNotifyMessage(date, players, extramsg)
 
             subject = settings.BLOCK_NOTIFY_SUBJECT % date
 
             if settings.BLOCK_NOTIFY_RECIPIENTS:
-                recipient_list = ['ed@tennisblock.com','viquee@me.com']
+                recipient_list = ['ed@tennisblock.com', 'viquee@me.com']
             else:
                 recipient_list = tb.getBlockEmailList()
 
             msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
-            msg.attach_alternative(html,'text/html')
+            msg.attach_alternative(html, 'text/html')
 
             msg.send()
 
