@@ -1,11 +1,14 @@
 # Create your views here.
 
-import datetime,time
-from django.http import HttpResponse
+import datetime
+import time
 from dateutil import parser
+
+from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework import serializers
-from blockdb.models import Season,Meetings
+
+from blockdb.models import Season, Meetings
 
 class SeasonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,7 +37,7 @@ def get_current_season():
     Return the current season object.
     """
 
-    seasons = Season.objects.filter(enddate__gte = datetime.date.today())
+    seasons = Season.objects.filter(enddate__gte=datetime.date.today())
     if len(seasons) > 0:
         return seasons[0]
 
@@ -54,7 +57,7 @@ def get_next_meeting(season=None):
         .order_by('date') \
         .filter(season=season,
                 holdout=False,
-                date__gte = datetime.date.today())
+                date__gte=datetime.date.today())
 
     mtg = None
     if len(meetings) > 0:
@@ -77,7 +80,7 @@ def get_meeting_for_date(date=None):
     meetings = Meetings.objects \
         .filter(season=season,
                 holdout=0,
-                date__exact = dt.strftime("%Y-%m-%d"))
+                date__exact=dt.strftime("%Y-%m-%d"))
 
     if len(meetings) == 1:
         return meetings[0]
@@ -85,42 +88,43 @@ def get_meeting_for_date(date=None):
     return None
 
 
-def build_meetings_for_season(force=False):
+def build_meetings_for_season(season=None, force=False):
     """
     Build the meetings for the current season if they don't exist..
 
     """
 
-    currSeason = get_current_season()
-    if not currSeason:
-        return
+    if season is None:
+        season = get_current_season()
+        if not season:
+            return
 
     if force:
         # Remove existing meetings if we are forcing this.
         # Note that this will also remove all 'Availability' for these meetings.
-        Meetings.objects.filter(season=currSeason).delete()
+        Meetings.objects.filter(season=season).delete()
 
-    meetings = Meetings.objects.filter(season=currSeason)
+    meetings = Meetings.objects.filter(season=season)
 
     if len(meetings) > 0:
         # Looks like we are good
         return
 
-    startDate = currSeason.startdate
-    endDate = currSeason.enddate
-    blockStart = currSeason.blockstart
-    blocktime = currSeason.blocktime
+    startDate = season.startdate
+    endDate = season.enddate
+    blockStart = season.blockstart
+    blocktime = season.blocktime
 
     dates = []
     currDate = blockStart
     while currDate <= endDate:
         mtg = Meetings.objects.create(
-            season=currSeason,
+            season=season,
             date=currDate,
             holdout=False,
             comments="")
         mtg.save()
-        currDate += datetime.timedelta(days = 7)
+        currDate += datetime.timedelta(days=7)
 
 
 def time_to_js(tval):

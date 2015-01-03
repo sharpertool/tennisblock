@@ -1,0 +1,24 @@
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
+
+    <!--
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/schedule.less' %}">
+    -->
+{% endblock %}
+
+{% block angular_script %}
+{% endblock %}
+
+{% block title %}
+    Create Season
+{% endblock %}
+{% block body %}
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create" />
+    </form>
+{% endblock %}

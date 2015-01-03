@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 
@@ -21,6 +22,9 @@ class Season(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('season_detail', kwargs={'pk': self.pk})
 
 class GirlsManager(models.Manager):
     def get_queryset(self):
@@ -153,7 +157,7 @@ class Meetings(models.Model):
 
     def __str__(self):
         return "{}->{} holdout:{}".format(
-            self.season,self.date,self.holdout
+            self.season, self.date, self.holdout
         )
 
 @python_2_unicode_compatible

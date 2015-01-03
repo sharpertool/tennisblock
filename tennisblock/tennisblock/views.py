@@ -1,32 +1,43 @@
 # Create your views here.
 
+
 from django.views.generic import TemplateView
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
+from django.views.generic.edit import CreateView
+
 from django.forms.formsets import (
     formset_factory, BaseFormSet)
 
 from django import forms
 from django.shortcuts import render
 from django.conf import settings
+from django.utils.decorators import method_decorator
 
 from TBLib.view import TennisLoginView
 from blockdb.models import Season, Meetings, Couple, Player, SeasonPlayers
 from forms import ContactForm
 
 from .forms import CoupleForm, NotifyForm, AvailabilityForm
+from .decorators import login_required
 from TBLib.schedule import Scheduler
+
+def class_login_required(View):
+    View.dispatch = method_decorator(login_required)(View.dispatch)
+    return View
 
 
 class HomeView(TemplateView):
     template_name = "home.html"
 
 
-class BlockSchedule(TennisLoginView):
+@class_login_required
+class BlockSchedule(TemplateView):
     template_name = "schedule.html"
 
 
-class AvailabilityView(TennisLoginView):
+@class_login_required
+class AvailabilityView(TemplateView):
     template_name = "availability.html"
 
 
@@ -41,7 +52,8 @@ class AvailabilityFormSet(BaseFormSet):
             form.field_list.append(field_nm)
 
 
-class AvailabilityFormView(TennisLoginView):
+@class_login_required
+class AvailabilityFormView(TemplateView):
     template_name = "availability_form.html"
     thankyou_template = "thankyou.html"
 
@@ -75,6 +87,7 @@ class AvailabilityFormView(TennisLoginView):
             return render(request, self.template_name, context)
 
 
+@class_login_required
 class PlaysheetView(TennisLoginView):
     template_name = "playsheet.html"
 
@@ -119,7 +132,8 @@ class ContactView(TemplateView):
                       {'form': form})
 
 
-class SeasonsView(TennisLoginView):
+@class_login_required
+class SeasonsView(TemplateView):
     template_name = "seasons.html"
 
     # queryset = Season.objects.all()
@@ -142,7 +156,60 @@ class SeasonsView(TennisLoginView):
         return self.render_to_response(context)
 
 
-class CouplesView(TennisLoginView):
+@class_login_required
+class SeasonDetailView(TemplateView):
+    template_name = "season_detail.html"
+
+    # queryset = Season.objects.all()
+
+    def get(self, request, pk=None, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if pk:
+            s = Season.objects.filter(pk=pk)
+            if s.count():
+                context['season'] = s[0]
+
+                context['meetings'] = Meetings.objects.filter(season=s)
+
+        return self.render_to_response(context)
+
+    def post(self, request, pk=None, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if pk:
+            s = Season.objects.get(pk=pk)
+            meetings = Meetings.objects.filter(season=s)
+            context['season'] = s
+            context['meetings'] = meetings
+
+            if request.POST.get('update_holdouts', False):
+                holdouts = request.POST.getlist('meetings')
+                for m in meetings:
+                    m.holdout = False
+                for h in holdouts:
+                    h = int(h)
+                    meetings[h].holdout = True
+                for m in meetings:
+                    m.save()
+
+
+        return self.render_to_response(context)
+
+
+@class_login_required
+class SeasonCreate(CreateView):
+    model = Season
+    fields = [
+        'name',
+        'courts',
+        'firstcourt',
+        'startdate',
+        'enddate',
+        'blockstart',
+        'blocktime'
+    ]
+
+@class_login_required
+class CouplesView(TemplateView):
     template_name = "couple_editor.html"
 
     def get_context_data(self, **kwargs):

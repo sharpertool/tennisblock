@@ -21,7 +21,7 @@
             <tbody>
                 {% for season in seasons %}
                     <tr>
-                        <td><a href="{% url 'season_view' season.pk %}">{{ season.name }}</a></td>
+                        <td><a href="{% url 'season_detail' season.pk %}">{{ season.name }}</a></td>
                         <td>{{ season.courts}}</td>
                         <td>{{ season.firstcourt }}</td>
                         <td>{{ season.startdate }}</td>
@@ -54,5 +54,8 @@
                 </tbody>
             </table>
         {% endif %}
+    </div>
+    <div>
+        <a href="{% url 'create_season' %}">Create Season</a>
     </div>
 {% endblock %}
