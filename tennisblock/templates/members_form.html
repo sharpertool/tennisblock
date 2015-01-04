@@ -3,6 +3,9 @@
 {% load gbtags %}
 {% load compress %}
 
+{% block angular_script %}
+{% endblock %}
+
 {% block page_style %}
     {{ block.super }}
     <!-- about.html: page_style -->
@@ -19,16 +22,25 @@
         </div>
 
         <div id="members" class="member_list">
+            {% comment %}
             <form action="{% url 'members_update' %}" method="post">
+            {% endcomment %}
+            <form action="" method="post">
                 {{ formset.management_form }}
                 {% csrf_token %}
-                <ul class="members">
+                <table>
                     {% for form in formset %}
-                        <li class="member">
-                            {{ form.as_p }}
-                        </li>
+                        <tr>
+                            <td>{{ form.first }}</td>
+                            <td>{{ form.last }}</td>
+                            <td>{{ form.gender }}</td>
+                            <td>{{ form.ntrp }}</td>
+                            <td>{{ form.microntrp }}</td>
+                            <td>{{ form.email }}</td>
+                            <td>{{ form.phone }}</td>
+                        </tr>
                     {% endfor %}
-                </ul>
+                </table>
                 <input type="submit" value="Submit" />
             </form>
         </div>

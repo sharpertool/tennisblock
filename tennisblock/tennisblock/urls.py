@@ -23,7 +23,8 @@ urlpatterns = patterns('',
                url(r'^$', HomeView.as_view(), name='home'),
                url(r'^schedule/notify/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',
                    ScheduleNotify.as_view(), name="schedule_notify"),
-               url(r'^schedule/', BlockSchedule.as_view(), name='schedule'),
+               url(r'^schedule/$', BlockSchedule.as_view(), name='schedule'),
+               url(r'^schedule/(?P<pk>\d+)/$', BlockSchedule.as_view(), name='season_schedule'),
                url(r'^availability/', AvailabilityView.as_view(),
                    name='availability'),
                url(r'^availability_form/$', AvailabilityFormView.as_view(),
@@ -41,6 +42,8 @@ urlpatterns = patterns('',
                url(r'^seasons/(?P<pk>\d+)/$', SeasonDetailView.as_view(), name="season_detail"),
                url(r'season/create/', SeasonCreate.as_view(), name='create_season'),
                url(r'^couples/(?P<pk>\d+)/$', CouplesView.as_view(), name="couple_editor"),
+
+               url(r"^announcements/", include("announcements.urls")),
 
                # Uncomment the next line to enable the admin:
                url(r'^kag3hewb/', include(admin.site.urls)),

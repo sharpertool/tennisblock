@@ -19,23 +19,23 @@ def create_user_accounts(apps,schemea_editor):
     for player in Player.objects.all():
         if not player.user:
             # Need to create a new user for this player.
-            username = "{}.{}".format(player.first.lower(),player.last.lower())
+            username = "{}.{}".format(player.user.first_name.lower(), player.user.last_name.lower())
 
             try:
                 user = User.objects.get(username=username)
             except ObjectDoesNotExist:
-                email = player.email
+                email = player.user.email
 
                 password = ''.join(
                     random.choice(string.ascii_uppercase + string.digits)
                     for _ in range(password_length))
 
                 now = timezone.now()
-                user = User(username=username,email=email,
-                            is_staff=False,is_active=False,
-                            is_superuser=False,last_login=now,
-                            first_name=player.first,
-                            last_name=player.last,
+                user = User(username=username, email=email,
+                            is_staff=False, is_active=False,
+                            is_superuser=False, last_login=now,
+                            first_name=player.user.first_name,
+                            last_name=player.user.last_name,
                             date_joined=now)
 
                 #user.set_password(password)

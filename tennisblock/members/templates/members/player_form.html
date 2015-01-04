@@ -1,0 +1,40 @@
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
+{% load compress %}
+{% load i18n %}
+{% load bootstrap %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
+    {% compress css %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/members.less' %}">
+    {% endcompress %}
+
+{% endblock %}
+
+{% block body %}
+    <div id="content" class="dynamic">
+
+        <h1>{% if player %}{% trans "Edit Player" %}{% else %}{% trans "Create Player" %}{% endif %}</h1>
+        {% if player %}
+            {% url "player_update" pk=player.pk as post_url %}
+        {% else %}
+            {% url "player_create" as post_url %}
+        {% endif %}
+
+        <form action="{{ post_url }}" method="POST" class="form form-horizontal">
+            {% csrf_token %}
+            {{ form|bootstrap }}
+            <div class="form-actions">
+                <a href="{% url "player_list" %}" class="btn">{% trans "Cancel" %}</a>
+                {% if player %}
+                    <a href="{% url "player_delete" pk=player.pk %}" class="btn btn-danger">{% trans "Delete" %}</a>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

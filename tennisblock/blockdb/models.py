@@ -18,6 +18,7 @@ class Season(models.Model):
     startdate          = models.DateField()
     enddate            = models.DateField()
     blockstart         = models.DateField()
+    lastdate           = models.DateField(null=True)
     blocktime          = models.TimeField()
 
     def __str__(self):
@@ -41,19 +42,19 @@ class Player(models.Model):
 
     This will be deprecated, as I add the player associated with the User account.
     """
-    GENDER_CHOICES= (
+    GENDER_CHOICES=(
         ('F', 'Gal'),
         ('M', 'Guy')
     )
 
-    user = models.OneToOneField(User,null=True)
+    user = models.OneToOneField(User, null=True)
     first               = models.CharField(max_length=40)
     last                = models.CharField(max_length=60)
-    gender              = models.CharField(max_length=1,choices= GENDER_CHOICES)
+    gender              = models.CharField(max_length=1, choices= GENDER_CHOICES)
     ntrp                = models.FloatField()
-    microntrp           = models.FloatField(null=True,blank=True)
+    microntrp           = models.FloatField(null=True, blank=True)
+    phone               = models.CharField(max_length=14, blank=True)
     email               = models.CharField(max_length=50,blank=True)
-    phone               = models.CharField(max_length=14,blank=True)
 
     objects = models.Manager()
     girls = GirlsManager()
@@ -74,12 +75,20 @@ class Player(models.Model):
     def name(self):
         return self.user.first_name + " " + self.user.last_name
 
+    def in_season(self, season):
+        """
+        Return true if this player is a player in the given season.
+        """
+        seasons = [s.season for s in self.seasonplayers_set.all()]
+        return season in seasons
+
 
 class BlockManager(models.Manager):
     use_for_related_fields=True
 
     def seasonPlayers(self,**kwargs):
         return self.filter()
+
 
 @python_2_unicode_compatible
 class SeasonPlayers(models.Model):
@@ -91,7 +100,7 @@ class SeasonPlayers(models.Model):
 
 
     """
-    season              = models.ForeignKey(Season,related_name='players')
+    season              = models.ForeignKey(Season, related_name='players')
     player              = models.ForeignKey(Player)
     blockmember         = models.BooleanField(default=False)
 

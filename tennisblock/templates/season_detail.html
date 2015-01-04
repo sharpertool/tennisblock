@@ -64,5 +64,25 @@
             {% endfor %}
             <input type="submit" name="update_holdouts" value="Update" />
         </form>
+
+        <form class="pure-form pure-form-aligned" action="" method="post">
+            {% csrf_token %}
+            <ul>
+                {% for player in players %}
+                    <li>
+                        <span>{{ player.name }}</span>
+                        <span>{{ player.ntrp }}</span>
+                        <label for="mtg_{{ forloop.counter0 }}">{{ mtg.date}}</label>
+                        <input id="mtg_{{ forloop.counter0 }}" name="members" type="checkbox"
+                               value="{{ forloop.counter0 }}"
+                                {% if player.season_player %}
+                               checked="checked"
+                                {% endif %}
+                                >
+                    </li>
+                {% endfor %}
+            </ul>
+            <input type="submit" name="season_players" value="Update" />
+        </form>
     </div>
 {% endblock %}

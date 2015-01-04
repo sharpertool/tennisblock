@@ -37,9 +37,19 @@ def get_current_season():
     Return the current season object.
     """
 
-    seasons = Season.objects.filter(enddate__gte=datetime.date.today())
+    seasons = Season.objects.order_by('startdate').filter(lastdate__gte=datetime.date.today())
     if len(seasons) > 0:
-        return seasons[0]
+        season = seasons[0]
+        meetings = Meetings.objects.filter(
+                season=season,
+                holdout=False,
+                date__gte=datetime.date.today())
+        if meetings.count() > 0:
+            return season
+
+        # There are no more meetings in THIS season. Get the next one
+        # if there is one.
+        seasons = Season.objects.filter(startdate__gte=datetime.date.today())
 
     return None
 
@@ -125,6 +135,25 @@ def build_meetings_for_season(season=None, force=False):
             comments="")
         mtg.save()
         currDate += datetime.timedelta(days=7)
+
+    update_last_meeting_date(season)
+
+
+def update_last_meeting_date(season):
+    """
+    Find the last meeting, and update the lastmeeting date. This value
+    is a convenience to make it easier to get the last date, rather
+    than having to search through it.
+    """
+    meetings = Meetings.objects.order_by('-date').filter(
+        season=season,
+        holdout=False)
+
+    if meetings.count() > 0:
+        last = meetings[0]
+        if season.lastdate != last.date:
+            season.lastdate = last.date
+            season.save()
 
 
 def time_to_js(tval):

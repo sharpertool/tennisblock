@@ -1,0 +1,55 @@
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
+{% load compress %}
+{% load i18n %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
+    {% compress css %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/members.less' %}">
+    {% endcompress %}
+
+{% endblock %}
+
+{% block body %}
+    <div id="content" class="dynamic">
+
+        <table class="pure-table">
+            <thead>
+                <tr>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Gender</th>
+                    <th>NTRP</th>
+                    <th>uNTRP</th>
+                    <th>email</th>
+                    <th>phone</th>
+                    <th>Blockmember</th>
+                    <th>SeasonPlayer</th>
+                </tr>
+            </thead>
+            {% for player in players %}
+                <tr>
+                    <td>{{player.user.first_name}}</td>
+                    <td>{{player.user.last_name}}</td>
+                    <td>{{player.gender}}</td>
+                    <td>{{player.ntrp}}</td>
+                    <td>{{player.microntrp}}</td>
+                    <td>{{player.user.email}}</td>
+                    <td>{{player.phone}}</td>
+                    <td>BlockMember</td>
+                    <td>SeasonPlayer</td>
+                    <td>
+                        <a href="{% url "player_update" pk=player.pk %}" class="btn btn-mini">
+                            <i class="icon icon-pencil"></i>
+                            {% trans "Edit" %}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+{% endblock %}

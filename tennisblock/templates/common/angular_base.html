@@ -1,0 +1,21 @@
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load url from future %}
+{% load gbtags %}
+{% load compress %}
+
+{% block angular_script %}
+    <!-- site_base.html: angular_script -->
+    <script type="text/javascript" src="{{ angular_base }}angular.min.js"></script>
+    <script type="text/javascript" src="{{ angular_base }}angular-resource.min.js"></script>
+    <script type="text/javascript" src="{{ angular_base }}angular-route.min.js"></script>
+    <script type="text/javascript" src="{{ angular_base }}angular-cookies.min.js"></script>
+
+    {% compress js %}
+        <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/angular/services/factories.js' %}"> </script>
+        <script type="text/javascript" src="{% static 'js/angular/services/services.js' %}"></script>
+    {% endcompress %}
+{% endblock %}
+

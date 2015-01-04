@@ -33,7 +33,16 @@ class HomeView(TemplateView):
 
 @class_login_required
 class BlockSchedule(TemplateView):
+    """
+    Display the block schedule for the current, or specified block.
+
+    If the block pk is not specified, use the 'current block'
+    """
     template_name = "schedule.html"
+
+    def get(self, request, pk=None, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
 
 
 @class_login_required
@@ -165,21 +174,41 @@ class SeasonDetailView(TemplateView):
     def get(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
         if pk:
-            s = Season.objects.filter(pk=pk)
-            if s.count():
-                context['season'] = s[0]
-
-                context['meetings'] = Meetings.objects.filter(season=s)
+            s = Season.objects.get(pk=pk)
+            context['season'] = s
+            context['meetings'] = Meetings.objects.filter(season=s)
+            context['players'] = self.get_player_list(s)
 
         return self.render_to_response(context)
+
+    def get_player_list(self, season):
+        """
+        Return a list of players and boolean if they are in the given season.
+
+        Set the 'update' flag to false. This is used when updating the values to
+        know which players were update to be in the season, and which we can remove.
+        """
+
+        players = Player.objects.all().prefetch_related('seasonplayers_set')
+
+        player_data = []
+        for p in players:
+            player_data.append({
+                'pk': p.pk,
+                'name': "{} {}".format(p.first, p.last),
+                'ntrp': p.ntrp,
+                'season_player': p.in_season(season),
+                'update': False
+            })
+
+        return player_data
+
 
     def post(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
         if pk:
             s = Season.objects.get(pk=pk)
             meetings = Meetings.objects.filter(season=s)
-            context['season'] = s
-            context['meetings'] = meetings
 
             if request.POST.get('update_holdouts', False):
                 holdouts = request.POST.getlist('meetings')
@@ -191,8 +220,35 @@ class SeasonDetailView(TemplateView):
                 for m in meetings:
                     m.save()
 
+            elif request.POST.get('season_players', False):
+                self.update_season_players(s, request)
+
+            context['season'] = s
+            context['meetings'] = meetings
+            context['players'] = self.get_player_list(s)
 
         return self.render_to_response(context)
+
+    def update_season_players(self, season, request):
+        player_keys = request.POST.getlist('members')
+
+        all_players = self.get_player_list(season)
+        for idx in player_keys:
+            idx = int(idx)
+            player = all_players[idx]
+            player['update'] = True
+
+        for p in all_players:
+            player = Player.objects.get(pk=p['pk'])
+            if p['update']:
+                if not p['season_player']:
+                    sp = SeasonPlayers(
+                        season=season,
+                        player=player,
+                        blockmember=True)
+                    sp.save()
+            elif p['season_player']:
+                SeasonPlayers.objects.filter(season=season, player=player).delete()
 
 
 @class_login_required

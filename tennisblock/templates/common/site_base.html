@@ -95,6 +95,7 @@
             {% comment %}
             <li><a href="{% url 'availability_form' %}">Availability Form</a></li>
             {% endcomment %}
+            <li><a href="{% url 'player_list' %}">All Players</a></li>
             <li><a href="{% url 'seasonplayers' %}">Block Members</a></li>
             <li><a href="{% url 'seasons' %}">Seasons</a></li>
             <li><a href="{% url 'about' %}">About Us</a></li>
@@ -166,17 +167,7 @@
     {% endif %}
 
     {% block angular_script %}
-        <!-- site_base.html: angular_script -->
-        <script type="text/javascript" src="{{ angular_base }}angular.min.js"></script>
-        <script type="text/javascript" src="{{ angular_base }}angular-resource.min.js"></script>
-        <script type="text/javascript" src="{{ angular_base }}angular-route.min.js"></script>
-        <script type="text/javascript" src="{{ angular_base }}angular-cookies.min.js"></script>
-
-        {% compress js %}
-            <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
-            <script type="text/javascript" src="{% static 'js/angular/services/factories.js' %}"> </script>
-            <script type="text/javascript" src="{% static 'js/angular/services/services.js' %}"></script>
-        {% endcompress %}
+        <!-- Use angular_base.html to get angular setup -->
     {% endblock %}
 
     {% block tennisblock_script %}

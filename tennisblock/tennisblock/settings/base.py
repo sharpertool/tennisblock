@@ -179,6 +179,8 @@ INSTALLED_APPS = (
     'compressor',
     'raven.contrib.django.raven_compat',
 
+    'announcements',
+
     # Local Apps
     'tennisblock',
     'accounts',
