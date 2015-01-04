@@ -19,7 +19,7 @@ def create_user_accounts(apps,schemea_editor):
     for player in Player.objects.all():
         if not player.user:
             # Need to create a new user for this player.
-            username = "{}.{}".format(player.user.first_name.lower(), player.user.last_name.lower())
+            username = "{}.{}".format(player.first.lower(), player.last.lower())
 
             try:
                 user = User.objects.get(username=username)
@@ -34,14 +34,14 @@ def create_user_accounts(apps,schemea_editor):
                 user = User(username=username, email=email,
                             is_staff=False, is_active=False,
                             is_superuser=False, last_login=now,
-                            first_name=player.user.first_name,
-                            last_name=player.user.last_name,
+                            first_name=player.first,
+                            last_name=player.last,
                             date_joined=now)
 
                 #user.set_password(password)
                 user.save()
 
-            player.user=user
+            player.user = user
             player.save()
 
 

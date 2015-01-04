@@ -47,7 +47,7 @@ class AvailabilityView(View):
             nscheduled = 0
 
             p = {
-                'name' : player.user.first_name + ' ' + player.user.last_name,
+                'name' : player.first + ' ' + player.last,
                 'id' : player.id,
                 'isavail' : avail,
                 'scheduled' : scheduled,

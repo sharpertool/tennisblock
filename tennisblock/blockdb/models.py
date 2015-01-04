@@ -66,14 +66,14 @@ class Player(models.Model):
         else:
             un = self.ntrp
         return "{} {} {:3.1f},{:4.2f}".format(
-            self.user.first_name,self.user.last_name,self.ntrp,un)
+            self.first, self.last, self.ntrp, un)
 
     def Name(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.first + " " + self.last
 
     @property
     def name(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.first + " " + self.last
 
     def in_season(self, season):
         """

@@ -75,8 +75,8 @@ def getBlockPlayers(request):
         for c in couples:
             d = {
                 'name' : c.name,
-                'him' : c.male.user.first_name + ' ' + c.male.user.last_name,
-                'her' : c.female.user.first_name + ' ' + c.female.user.last_name
+                'him' : c.male.first + ' ' + c.male.last,
+                'her' : c.female.first + ' ' + c.female.last
             }
             data.append(d)
 

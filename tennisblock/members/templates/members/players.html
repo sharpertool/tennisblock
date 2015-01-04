@@ -15,6 +15,10 @@
 {% block body %}
     <div id="content" class="dynamic">
 
+        <a href="{% url "player_create" %}" class="btn btn-mini">
+            <i class="icon icon-pencil"></i>
+            {% trans "Create Player" %}
+        </a>
         <table class="pure-table">
             <thead>
                 <tr>
@@ -31,12 +35,12 @@
             </thead>
             {% for player in players %}
                 <tr>
-                    <td>{{player.user.first_name}}</td>
-                    <td>{{player.user.last_name}}</td>
+                    <td>{{player.first}}</td>
+                    <td>{{player.last}}</td>
                     <td>{{player.gender}}</td>
                     <td>{{player.ntrp}}</td>
                     <td>{{player.microntrp}}</td>
-                    <td>{{player.user.email}}</td>
+                    <td>{{player.email}}</td>
                     <td>{{player.phone}}</td>
                     <td>BlockMember</td>
                     <td>SeasonPlayer</td>

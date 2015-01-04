@@ -63,6 +63,26 @@ class PlayerUpdate(UpdateView):
         return reverse("player_list")
 
 
+class CreatePlayerView(CreateView):
+    model = Player
+    template_name = "members/player_form.html"
+    form_class = PlayerForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.creator = self.request.user
+        self.object.save()
+        signals.player_created.send(
+            sender=self.object,
+            player=self.object,
+            request=self.request
+        )
+        return super(CreatePlayerView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("player_list")
+
+
 class DeletePlayerView(DeleteView):
     model = Player
 

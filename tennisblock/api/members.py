@@ -19,12 +19,12 @@ class SeasonPlayersView(View):
 
         p = {
             'id': player.id,
-            'first': player.user.first_name,
-            'last': player.user.last_name,
+            'first': player.first,
+            'last': player.last,
             'gender': player.gender,
             'ntrp': player.ntrp,
             'microntrp': player.microntrp,
-            'email': player.user.email,
+            'email': player.email,
             'phone': player.phone,
             'blockmember': sp.blockmember
         }
