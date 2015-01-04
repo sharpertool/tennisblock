@@ -6,7 +6,6 @@ from django.forms.models import inlineformset_factory
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse
-from announcements import signals
 
 from forms import PlayerForm
 from blockdb.models import Player, SeasonPlayers

@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from views import (MembersView, MemberCreate,
-                    PlayersView, PlayerList, PlayerDetail, PlayerUpdate, DeletePlayerView,
+                    PlayerList, PlayerDetail, PlayerUpdate, DeletePlayerView,
                     CreatePlayerView, SeasonPlayersFormView, SeasonPlayersUpdate)
 
 

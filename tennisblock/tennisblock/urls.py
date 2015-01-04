@@ -43,8 +43,6 @@ urlpatterns = patterns('',
                url(r'season/create/', SeasonCreate.as_view(), name='create_season'),
                url(r'^couples/(?P<pk>\d+)/$', CouplesView.as_view(), name="couple_editor"),
 
-               url(r"^announcements/", include("announcements.urls")),
-
                # Uncomment the next line to enable the admin:
                url(r'^kag3hewb/', include(admin.site.urls)),
        )
