@@ -7,9 +7,11 @@ from django.shortcuts import render
 from django.conf import settings
 
 from TBLib.schedule import Scheduler
+from TBLib.season import SeasonManager
 from TBLib.view import class_login_required
 
 from .forms import NotifyForm
+from .serializers import MeetingSerializer
 
 
 @class_login_required
@@ -23,6 +25,10 @@ class BlockSchedule(TemplateView):
 
     def get(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
+        sm = SeasonManager()
+        meetings = sm.get_meeting_list()
+        serialized = MeetingSerializer(meetings, many=True)
+        context['meetings'] = serialized.data
         return self.render_to_response(context)
 
 

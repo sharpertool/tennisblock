@@ -2,12 +2,12 @@
 {
     "fields": {
         "firstcourt": 9,
-        "enddate": "2015-01-04",
-        "name": "Fall, 2014",
-        "startdate": "2014-09-15",
+        "enddate": "2015-04-05",
+        "name": "Fall, 2015",
+        "startdate": "2015-01-09",
         "blocktime": "19:00:00",
         "courts": 4,
-        "blockstart": "2014-09-19"
+        "blockstart": "2015-01-05"
     },
     "model": "blockdb.season",
     "pk": 5
