@@ -19,7 +19,7 @@ class BlockSchedule(TemplateView):
 
     If the block pk is not specified, use the 'current block'
     """
-    template_name = "schedule.html"
+    template_name = "schedule/index.html"
 
     def get(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -27,8 +27,8 @@ class BlockSchedule(TemplateView):
 
 
 class ScheduleNotify(TemplateView):
-    template_name = "schedule_notify.html"
-    thankyou_template = "thankyou.html"
+    template_name = "schedule/notify.html"
+    thankyou_template = "schedule/thankyou.html"
 
     def getCouples(self, sch):
 

@@ -2,8 +2,6 @@ from textwrap import dedent
 
 from django.views.generic import TemplateView
 from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
-from django.views.generic.edit import CreateView
 
 from django.forms.formsets import (
     formset_factory, BaseFormSet)
@@ -11,15 +9,12 @@ from django.forms.formsets import (
 from django import forms
 from django.shortcuts import render
 from django.conf import settings
-from django.utils.decorators import method_decorator
 
 from TBLib.view import TennisLoginView
-from blockdb.models import Season, Meetings, Couple, Player, SeasonPlayers
+from blockdb.models import Season, Couple, SeasonPlayers
 from forms import ContactForm
 
 from .forms import CoupleForm, AvailabilityForm
-from .decorators import login_required
-from TBLib.schedule import Scheduler
 from TBLib.view import class_login_required
 
 class HomeView(TemplateView):
@@ -121,129 +116,6 @@ class ContactView(TemplateView):
                       self.template_name,
                       {'form': form})
 
-
-@class_login_required
-class SeasonsView(TemplateView):
-    template_name = "seasons.html"
-
-    # queryset = Season.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super(SeasonsView, self).get_context_data(**kwargs)
-        context['seasons'] = Season.objects.all()
-
-        return context
-
-    def get(self, request, pk=None, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if pk:
-            s = Season.objects.filter(pk=pk)
-            if s.count():
-                context['season'] = s[0]
-
-                context['meetings'] = Meetings.objects.filter(season=s)
-
-        return self.render_to_response(context)
-
-
-@class_login_required
-class SeasonDetailView(TemplateView):
-    template_name = "season_detail.html"
-
-    # queryset = Season.objects.all()
-
-    def get(self, request, pk=None, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if pk:
-            s = Season.objects.get(pk=pk)
-            context['season'] = s
-            context['meetings'] = Meetings.objects.filter(season=s)
-            context['players'] = self.get_player_list(s)
-
-        return self.render_to_response(context)
-
-    def get_player_list(self, season):
-        """
-        Return a list of players and boolean if they are in the given season.
-
-        Set the 'update' flag to false. This is used when updating the values to
-        know which players were update to be in the season, and which we can remove.
-        """
-
-        players = Player.objects.all().prefetch_related('seasonplayers_set')
-
-        player_data = []
-        for p in players:
-            player_data.append({
-                'pk': p.pk,
-                'name': "{} {}".format(p.first, p.last),
-                'ntrp': p.ntrp,
-                'season_player': p.in_season(season),
-                'update': False
-            })
-
-        return player_data
-
-
-    def post(self, request, pk=None, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if pk:
-            s = Season.objects.get(pk=pk)
-            meetings = Meetings.objects.filter(season=s)
-
-            if request.POST.get('update_holdouts', False):
-                holdouts = request.POST.getlist('meetings')
-                for m in meetings:
-                    m.holdout = False
-                for h in holdouts:
-                    h = int(h)
-                    meetings[h].holdout = True
-                for m in meetings:
-                    m.save()
-
-            elif request.POST.get('season_players', False):
-                self.update_season_players(s, request)
-
-            context['season'] = s
-            context['meetings'] = meetings
-            context['players'] = self.get_player_list(s)
-
-        return self.render_to_response(context)
-
-    def update_season_players(self, season, request):
-        player_keys = request.POST.getlist('members')
-
-        all_players = self.get_player_list(season)
-        for idx in player_keys:
-            idx = int(idx)
-            player = all_players[idx]
-            player['update'] = True
-
-        for p in all_players:
-            player = Player.objects.get(pk=p['pk'])
-            if p['update']:
-                if not p['season_player']:
-                    sp = SeasonPlayers(
-                        season=season,
-                        player=player,
-                        blockmember=True)
-                    sp.save()
-            elif p['season_player']:
-                SeasonPlayers.objects.filter(season=season, player=player).delete()
-
-
-@class_login_required
-class SeasonCreate(CreateView):
-    model = Season
-    fields = [
-        'name',
-        'courts',
-        'firstcourt',
-        'startdate',
-        'enddate',
-        'blockstart',
-        'blocktime'
-    ]
 
 @class_login_required
 class CouplesView(TemplateView):

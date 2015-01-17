@@ -10,9 +10,6 @@ from .views import (
     PlaysheetView,
     ContactView,
     AboutView,
-    SeasonsView,
-    SeasonDetailView,
-    SeasonCreate,
     CouplesView
 )
 
@@ -29,13 +26,11 @@ urlpatterns = patterns('',
 
                url(r'^playsheet/', PlaysheetView.as_view()),
                url(r'^accounts/', include('accounts.urls')),
-               url(r'^seasons/$', SeasonsView.as_view(), name="seasons"),
-               url(r'^seasons/(?P<pk>\d+)/$', SeasonDetailView.as_view(), name="season_detail"),
-               url(r'season/create/', SeasonCreate.as_view(), name='create_season'),
                url(r'^couples/(?P<pk>\d+)/$', CouplesView.as_view(), name="couple_editor"),
                url(r'^contact/?', ContactView.as_view(), name="contact"),
                url(r'^about/?', AboutView.as_view(), name="about"),
 
+               url(r'^season/', include('season.urls')),
                url(r'^members/', include('members.urls')),
                url(r'^schedule/', include('schedule.urls')),
                url(r'^api/', include('api.urls')),

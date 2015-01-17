@@ -144,19 +144,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'tennisblock.urls'
+ROOT_URLCONF = 'webapp.urls'
 
 APPEND_SLASH = False
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'tennisblock.wsgi.application'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    DJANGO_ROOT.child('templates'),
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -181,11 +174,14 @@ INSTALLED_APPS = (
 
     # Local Apps
     'tennisblock',
+    'webapp',
     'accounts',
     'api',
     'tennis_profile',
     'blockdb',
     'members',
+    'schedule',
+    'season',
 )
 
 REST_FRAMEWORK = {
