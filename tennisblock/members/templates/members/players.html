@@ -19,7 +19,7 @@
             <i class="icon icon-pencil"></i>
             {% trans "Create Player" %}
         </a>
-        <table class="pure-table">
+        <table class="pure-table pure-table-bordered pure-table-striped">
             <thead>
                 <tr>
                     <th>First</th>
@@ -45,7 +45,7 @@
                     <td>BlockMember</td>
                     <td>SeasonPlayer</td>
                     <td>
-                        <a href="{% url "player_update" pk=player.pk %}" class="btn btn-mini">
+                        <a href="{% url "player_update" pk=player.pk %}" class="pure-button pure-button-primary">
                             <i class="icon icon-pencil"></i>
                             {% trans "Edit" %}
                         </a>

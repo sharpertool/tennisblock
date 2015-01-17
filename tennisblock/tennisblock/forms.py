@@ -49,15 +49,6 @@ class ContactForm(forms.Form):
     )
 
 
-class NotifyForm(forms.Form):
-    message = forms.CharField(max_length=500,
-                              required=True,
-                              label=_('Enter your message'),
-                              widget=forms.Textarea({
-                                  'id':'bootstrap-message',
-                                  'cols': '60', 'rows': '10'})
-    )
-
 class AvailabilityForm(forms.Form):
     name = forms.CharField(label=_('Player name'),)
     #availability = forms.BooleanField(required=False)

@@ -37,11 +37,13 @@ def get_prod_dump():
                 return files [0]
         return None
 
+@hosts('ec2-user@gardenbuzz.com')
 def sync_prod(dbname=None):
     if not dbname:
         raise Exception("Cannot work my magic if you don't give me names!")
 
     dumpfile = get_prod_dump()
-    local('resetdb.sh {}'.format(dbname))
-    local('mysql {} < {}'.format(dbname, dumpfile))
+    print("Downloaded dumpfile {}".format(dumpfile))
+    local('./resetdb.sh {}'.format(dbname))
+    local('gzcat {} | mysql {}'.format(dumpfile, dbname))
 
