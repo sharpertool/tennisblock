@@ -4,55 +4,52 @@ import random
 from collections import defaultdict
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q,Count,F
+from django.db.models import Q, Count, F
 
 from blockdb.models import *
-from api.apiutils import get_current_season,get_next_meeting,get_meeting_for_date
+from api.apiutils import get_current_season, get_next_meeting, get_meeting_for_date
 
 
 class Scheduler(object):
-
     def __init__(self):
         pass
 
-    def isPlayerAvailable(self,mtg,player):
+    def isPlayerAvailable(self, mtg, player):
         """
         Return True if this player is available on the meeting date.
         """
         try:
-            av = Availability.objects.get(meeting = mtg,player = player)
+            av = Availability.objects.get(meeting=mtg, player=player)
             return av.available;
         except ObjectDoesNotExist:
             print("Added availability for %s" % player)
-            Availability.objects.create(meeting = mtg,
-                                        player = player,
+            Availability.objects.create(meeting=mtg,
+                                        player=player,
                                         available=True)
 
         return True
 
-
-    def isCoupleAvailable(self,mtg,couple):
+    def isCoupleAvailable(self, mtg, couple):
         """
         Check if both members of the given couple are available.
         """
 
-        return self.isPlayerAvailable(mtg,couple.male) \
-            and self.isPlayerAvailable(mtg,couple.female)
+        return self.isPlayerAvailable(mtg, couple.male) \
+               and self.isPlayerAvailable(mtg, couple.female)
 
-    def getAvailableCoulpes(self,season,mtg,fulltime=True):
+    def getAvailableCouples(self, season, mtg, fulltime=True):
         couples = Couple.objects.filter(
-            season=season,fulltime = fulltime,blockcouple=True)
+            season=season, fulltime=fulltime, blockcouple=True)
 
-        availableCouples = [c for c in couples if self.isCoupleAvailable(mtg,c)]
+        availableCouples = [c for c in couples if self.isCoupleAvailable(mtg, c)]
 
         return availableCouples
 
-    def getCouplePlayStats(self,season,couples):
+    def getCouplePlayStats(self, season, couples):
         # Organize by # of plays
         coupleInfo = {}
 
         meetings = Meetings.objects.filter(season=season)
-
 
         scheduled_meetings = Schedule.objects.filter(meeting__in=meetings)
 
@@ -60,28 +57,29 @@ class Scheduler(object):
             cid = c.id
 
             cinfo = {
-                'couple'    : c,
-                'plays'     : {
-                    'he' : 0,
-                    'she' : 0,
-                    'they' :0,
-                    'total' : 0
+                'couple': c,
+                'plays': {
+                    'he': 0,
+                    'she': 0,
+                    'they': 0,
+                    'total': 0
                 },
-                'weight' : 0.0
+                'weight': 0.0
             }
             coupleInfo[c.name] = cinfo
 
-            either = list(scheduled_meetings.filter(Q(player=c.male) | Q(player=c.female)).values('meeting_id','player'))
+            either = list(
+                scheduled_meetings.filter(Q(player=c.male) | Q(player=c.female)).values('meeting_id', 'player'))
 
-            he = Schedule.objects.filter(meeting__in=meetings,player=c.male).count()
-            she = Schedule.objects.filter(meeting__in=meetings,player=c.female).count()
+            he = Schedule.objects.filter(meeting__in=meetings, player=c.male).count()
+            she = Schedule.objects.filter(meeting__in=meetings, player=c.female).count()
 
             meeting_sum = defaultdict(int)
 
             cp = cinfo['plays']
             cp_he = cp['he']
             cp_she = cp['she']
-            cp_they =cp['they']
+            cp_they = cp['they']
 
             for e in either:
                 mtgid = e.get('meeting_id')
@@ -93,7 +91,6 @@ class Scheduler(object):
                     cp_she += 1
                     meeting_sum[mtgid] += 1
 
-
             cp_they = sum(1 for x in meeting_sum.values() if x == 2)
             cp_he -= cp_they
             cp_she -= cp_they
@@ -103,7 +100,7 @@ class Scheduler(object):
 
         return coupleInfo
 
-    def getNextGroup(self,date = None):
+    def getNextGroup(self, date=None):
         """
         Get the next group of players.
         """
@@ -119,26 +116,26 @@ class Scheduler(object):
         needed = season.courts * 2
         group = []
 
-        ft = self.getAvailableCoulpes(season,mtg,fulltime=True)
+        ft = self.getAvailableCouples(season, mtg, fulltime=True)
         if ft:
             for f in ft:
                 group.append(f)
                 needed -= 1
 
-        pt = self.getAvailableCoulpes(season,mtg,fulltime=False)
+        pt = self.getAvailableCouples(season, mtg, fulltime=False)
 
-        stats = self.getCouplePlayStats(season,pt)
+        stats = self.getCouplePlayStats(season, pt)
 
         numberOfPlaysMap = {}
         maxNumberOfPlays = 0
         for info in stats.itervalues():
             nplays = info['plays']['total']
-            a = numberOfPlaysMap.setdefault(nplays,[])
+            a = numberOfPlaysMap.setdefault(nplays, [])
 
             a.append(info)
-            maxNumberOfPlays = max(maxNumberOfPlays,nplays)
+            maxNumberOfPlays = max(maxNumberOfPlays, nplays)
 
-        for i in range(0,maxNumberOfPlays+1):
+        for i in range(0, maxNumberOfPlays + 1):
             cinfo = numberOfPlaysMap.get(i)
             if cinfo:
                 cinfo = self.sortShuffle(cinfo)
@@ -155,7 +152,7 @@ class Scheduler(object):
         # Should have a full block now..
         return group
 
-    def sortShuffle(self,cinfo):
+    def sortShuffle(self, cinfo):
         """
         Sort and shuffle the list of couples.
 
@@ -171,7 +168,7 @@ class Scheduler(object):
 
         cinfosortedshuffled = []
 
-        for weight in sorted(weights.iterkeys(),reverse=True):
+        for weight in sorted(weights.iterkeys(), reverse=True):
             couples = [c for c in cinfo if c['weight'] == weight]
             random.shuffle(couples)
             cinfosortedshuffled.extend(couples)
@@ -179,7 +176,7 @@ class Scheduler(object):
         return cinfosortedshuffled
 
 
-    def addCouplesToSchedule(self,date,couples):
+    def addCouplesToSchedule(self, date, couples):
 
         mtg = get_meeting_for_date(date)
 
@@ -188,24 +185,24 @@ class Scheduler(object):
 
         for cpl in couples:
             sm = Schedule.objects.create(
-                meeting = mtg,
-                player = cpl.male,
-                issub = False,
+                meeting=mtg,
+                player=cpl.male,
+                issub=False,
                 verified=False,
                 partner=cpl.female
             )
             sm.save()
 
             sh = Schedule.objects.create(
-                meeting = mtg,
-                player = cpl.female,
-                issub = False,
+                meeting=mtg,
+                player=cpl.female,
+                issub=False,
                 verified=False,
                 partner=cpl.male
             )
             sh.save()
 
-    def removeAllCouplesFromSchedule(self,date):
+    def removeAllCouplesFromSchedule(self, date):
         """
         Remove all couples from the given date.
         """
@@ -214,7 +211,7 @@ class Scheduler(object):
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
 
-    def getParnerId(self,player):
+    def getPartnerId(self, player):
 
         if player.gender == 'f':
             c = Couple.objects.filter(female=player)
@@ -227,7 +224,7 @@ class Scheduler(object):
 
         return None
 
-    def querySchedule(self,date=None):
+    def querySchedule(self, date=None):
         """
         Query the schedule of players for the given date.
         """
@@ -235,7 +232,7 @@ class Scheduler(object):
 
         data = {}
         if mtg:
-            data = {'date' : mtg.date}
+            data = {'date': mtg.date}
 
             guys = []
             gals = []
@@ -246,14 +243,14 @@ class Scheduler(object):
                 if sch.partner:
                     partner = sch.partner
                 else:
-                    partner = self.getParnerId(player)
+                    partner = self.getPartnerId(player)
                 s = {
-                    'name' : player.Name(),
-                    'id'   : player.id,
-                    'ntrp' : player.ntrp,
+                    'name': player.Name(),
+                    'id': player.id,
+                    'ntrp': player.ntrp,
                     'untrp': player.microntrp,
                     'verify': sch.verified,
-                    'issub' : sch.issub
+                    'issub': sch.issub
                 }
                 if partner:
                     s['partner'] = partner.id
@@ -271,30 +268,30 @@ class Scheduler(object):
             data['gals'] = gals
         else:
             data['date'] = "Invalid"
-            data['mtg'] = {'error' : 'Could not determine meeting.'}
+            data['mtg'] = {'error': 'Could not determine meeting.'}
 
         return data
 
-    def updateSchedule(selfself,date,couples):
+    def updateSchedule(selfself, date, couples):
         """
         Update the schedule with the given list.
         """
         mtg = get_meeting_for_date(date)
 
         if mtg:
-            data = {'date' : mtg.date}
+            data = {'date': mtg.date}
 
             playersById = {}
             for c in couples:
                 guy = c['currguy']
                 playersById[guy['id']] = {
-                        'player' : guy,
-                        'partner' : c['currgal']
-                    }
+                    'player': guy,
+                    'partner': c['currgal']
+                }
                 gal = c['currgal']
                 playersById[gal['id']] = {
-                    'player' : gal,
-                    'partner' : c['currguy']
+                    'player': gal,
+                    'partner': c['currguy']
                 }
 
             # Clear any existing one first.
@@ -307,19 +304,19 @@ class Scheduler(object):
                     guy = Player.objects.get(id=md['id'])
                     gal = Player.objects.get(id=fd['id'])
                     sm = Schedule.objects.create(
-                        meeting = mtg,
-                        player = guy,
-                        issub = md.get('issub',False),
-                        verified=md.get('verified',False),
+                        meeting=mtg,
+                        player=guy,
+                        issub=md.get('issub', False),
+                        verified=md.get('verified', False),
                         partner=gal
                     )
                     sm.save()
 
                     sh = Schedule.objects.create(
-                        meeting = mtg,
-                        player = gal,
-                        issub = fd.get('issub',False),
-                        verified=fd.get('verified',False),
+                        meeting=mtg,
+                        player=gal,
+                        issub=fd.get('issub', False),
+                        verified=fd.get('verified', False),
                         partner=guy
                     )
                     sh.save()
@@ -335,12 +332,12 @@ class Scheduler(object):
         """
         Return a list of all e-mail addresses for block players.
         """
-        players = SeasonPlayers.objects.filter(season=get_current_season(),blockmember=True).only('player')
+        players = SeasonPlayers.objects.filter(season=get_current_season(), blockmember=True).only('player')
         addresses = []
         for player in players:
             addr = player.player.email
             if ',' in addr:
-                alist = [s.strip() for s in re.split(',',addr)]
+                alist = [s.strip() for s in re.split(',', addr)]
                 addresses.extend(alist)
             else:
                 if addr.strip():
@@ -349,10 +346,7 @@ class Scheduler(object):
         return addresses
 
 
-
-
 def main():
-
     tb = Scheduler()
 
     group = tb.getNextGroup()
@@ -360,7 +354,6 @@ def main():
     tb.addCouplesToSchedule(group)
 
     print("Cool")
-
 
 
 if __name__ == '__main__':
