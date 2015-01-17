@@ -5,8 +5,8 @@ import sys
 
 DJANGO_ROOT = Path(__file__).ancestor(3)
 PROJECT_ROOT = DJANGO_ROOT.ancestor(1)
-print("DJANGO_ROOT:%s" % DJANGO_ROOT)
-print("PROJECT_ROOT:%s" % PROJECT_ROOT)
+print("DJANGO_ROOT:{}".format(DJANGO_ROOT))
+print("PROJECT_ROOT:{}".format(PROJECT_ROOT))
 
 sys.path.append(Path(PROJECT_ROOT).child("scripts"))
 
@@ -64,6 +64,8 @@ LOGIN_REDIRECT_URL = '/accounts/login/success/'
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'America/Chicago'
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

@@ -7,8 +7,3 @@ from .base import *
 # Define in a local_settings.py file.
 SECRET_KEY = ''
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
