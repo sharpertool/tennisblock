@@ -103,6 +103,12 @@ class Scheduler(object):
     def getNextGroup(self, date=None):
         """
         Get the next group of players.
+
+        We have different types of players.
+        Couples that want to be scheduled together
+        Singles that could be scheduled independently.
+
+        TODO: Figure out how to schedule these fairly.
         """
 
         season = get_current_season()

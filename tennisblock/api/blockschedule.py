@@ -202,6 +202,10 @@ def getBlockDates(request):
 
 @csrf_exempt
 def blockSchedule(request,date = None):
+    """
+    Update the schedule for the given date.
+
+    """
     from  TBLib.schedule import Scheduler
     tb = Scheduler()
 

@@ -36,18 +36,22 @@
 
         {% block less_script %}
             <!-- base.html: less_script -->
-            {% compress css %}
-            <link rel="stylesheet" type="text/less" href="{% static 'less/style_base.less' %}">
-            {% endcompress %}
+            {% if USE_LESS %}
+                <link rel="stylesheet/less" type="text/css" href="{% static 'less/style_base.less' %}">
+            {% else %}
+                {% compress css %}
+                    <link rel="stylesheet" type="text/less" href="{% static 'less/style_base.less' %}">
+                {% endcompress %}
+            {% endif %}
         {% endblock less_script %}
 
         {% block less_engine %}
             <!-- base.html: less_engine -->
             {% if USE_LESS %}
+                <!-- less enabled -->
                 <script type="text/javascript">
                     less = {
                         env: "development",
-                        logLevel: 2,
                         async: false,
                         fileAsync: false,
                         poll: {{ LESS_POLL }},
@@ -55,10 +59,10 @@
                         relativeUrls: false
                     };
                 </script>
-                <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.min.js"></script>
-                {% comment %}
-                <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.4/less.min.js" type="text/javascript"></script>
-                {% endcomment %}
+                <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.2.0/less.min.js"></script>
+                <script type="text/javascript">
+                    less.watch();
+                </script>
             {% endif %}
         {% endblock less_engine %}
         <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}

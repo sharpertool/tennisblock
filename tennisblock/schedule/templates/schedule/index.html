@@ -2,12 +2,18 @@
 {% load compress %}
 {% load staticfiles %}
 
-{% block page_style %}
+{% block less_script %}
     {{ block.super }}
     <!-- about.html: page_style -->
-    {% compress css %}
-        <link rel="stylesheet" type='text/less' href="{% static 'less/schedule.less' %}">
-    {% endcompress %}
+    {% if USE_LESS %}
+        <!-- using less -->
+        <link rel="stylesheet/less" type='text/css' href="{% static 'less/schedule.less' %}">
+    {% else %}
+        <!-- not using less -->
+        {% compress css %}
+            <link rel="stylesheet" type='text/less' href="{% static 'less/schedule.less' %}">
+        {% endcompress %}
+    {% endif %}
 {% endblock %}
 
 {% block angular_script %}
@@ -34,6 +40,15 @@
             {%  if perms.blockdb.schedule.change_sched %}
                 <h1>Granted change schedule permissions.</h1>
             {% endif %}
+
+            <div class="pure-menu pure-menu-open pure-menu-horizontal">
+                <h2>Meeting Selectors</h2>
+                <ul class="meeting_selectors">
+                    {% for meeting in meetings %}
+                        <li><button class="pure-button">{{ meeting.date }}</button></li>
+                    {% endfor %}
+                </ul>
+            </div>
 
             {% verbatim %}
             <div id="textContent" >

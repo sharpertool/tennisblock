@@ -22,9 +22,6 @@ tennisblockapp.directive('scheduleNav',['Members','$q',
                 block : '='
             },
             link: function($scope,$element,$attributes,ctrl) {
-                console.log("Link blockMember");
-
-                var attrs = ['first','last','gender','ntrp','microntrp','phone','email'];
             }
         }
     }
