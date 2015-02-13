@@ -124,6 +124,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     #'sekizai.context_processors.sekizai',
     #'sekizai.context.SekizaiContext',
     'TBLib.context.tennisblock',
+    'django.core.context_processors.request',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -156,6 +157,8 @@ INSTALLED_APPS = (
     # CORS
     'corsheaders',
 
+    # Must have Django-suit before the admin.
+    'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
 
@@ -165,6 +168,8 @@ INSTALLED_APPS = (
     'bootstrapform',
     'compressor',
     'raven.contrib.django.raven_compat',
+
+
 
     # Local Apps
     'tennisblock',

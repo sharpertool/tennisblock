@@ -39,3 +39,4 @@ Sphinx==1.2.3
 sqlparse==0.1.14
 Unipath==1.0
 uWSGI==2.0.9
+django-suit==0.2.12
