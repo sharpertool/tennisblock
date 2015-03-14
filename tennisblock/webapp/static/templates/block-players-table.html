@@ -8,7 +8,7 @@
     <th>Guys</th>
     <th>Gals</th>
     </thead>
-    <tr ng-repeat="couple in players.couples">
+    <tr ng-repeat="couple in players.couples track by $index">
         <td>
             <select ng-model="couple.guy"
                     ng-change="onGuyChanged($index)"

@@ -81,6 +81,16 @@ tennisblockapp.directive('blockPlayersTable',[
                                 };
                             }
                         }
+                        return {
+                            guy: {
+                                id: guy.id,
+                                name: guy.name
+                            },
+                            gal: {
+                                name: '----'
+
+                            }
+                        };
                     });
                     $scope.players.originalcouples = JSON.parse(JSON.stringify($scope.players.couples));
                     //$scope.players.couples = _.zip($scope.players.guys,$scope.players.gals);

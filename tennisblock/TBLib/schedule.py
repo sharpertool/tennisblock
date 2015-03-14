@@ -235,6 +235,8 @@ class Scheduler(object):
         Query the schedule of players for the given date.
         """
         mtg = get_meeting_for_date(date)
+        season = get_current_season()
+        num_courts = season.courts
 
         data = {}
         if mtg:
@@ -269,6 +271,15 @@ class Scheduler(object):
                     gals.append(s)
                 else:
                     guys.append(s)
+
+            required_num_players = num_courts*2
+            missing_guys = required_num_players - len(guys)
+            for i in xrange(0,missing_guys):
+                guys.append({'name': '----', 'id': -1})
+
+            missing_gals = required_num_players - len(gals)
+            for i in xrange(0,missing_gals):
+                gals.append({'name': '----', 'id': -1})
 
             data['guys'] = guys
             data['gals'] = gals
