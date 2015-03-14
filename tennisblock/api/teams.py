@@ -17,7 +17,7 @@ def pickTeams(request,date = None):
         if date and season:
             mgr = TeamManager()
             mgr.pickTeams(date,test=False,
-                          courts=season.courts,
+                          courts=3,
                           sequences=3)
 
             matchData = mgr.queryMatch(date)

@@ -78,6 +78,8 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
             BlockSubs.get({'date' : $scope.block.queryDate},function bsubs(data) {
                 $scope.subs.guys = data.guysubs;
                 $scope.subs.gals = data.galsubs;
+                $scope.subs.guys.push({'name': '----'});
+                $scope.subs.gals.push({'name': '----'});
                 $scope.subs.initialized = true;
                 updateInitialized();
             });

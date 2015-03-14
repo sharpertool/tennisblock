@@ -60,10 +60,10 @@ def blockSheetReportlab(request, date=None):
             date_string = mtg.date.strftime("%A,%B %d")
             header = "Block sheet for {}".format(date_string)
 
-        gen = PlaySheet(num_courts=season.courts,num_matches=3)
+        gen = PlaySheet(num_courts=3,num_matches=3)
 
         pdffile = gen.generate_sheet(header=header,
-                                     firstcourt=season.firstcourt,
+                                     firstcourt=6,
                                      sched=matchData)
 
 

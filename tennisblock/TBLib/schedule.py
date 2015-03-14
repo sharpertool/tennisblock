@@ -248,8 +248,8 @@ class Scheduler(object):
                 player = sch.player
                 if sch.partner:
                     partner = sch.partner
-                else:
-                    partner = self.getPartnerId(player)
+                #else:
+                #    partner = self.getPartnerId(player)
                 s = {
                     'name': player.Name(),
                     'id': player.id,
@@ -263,7 +263,7 @@ class Scheduler(object):
                     s['parntername'] = partner.Name()
                 else:
                     s['partner'] = None
-                    s['parntername'] = ''
+                    s['parntername'] = '----'
 
                 if player.gender == 'F':
                     gals.append(s)
@@ -278,7 +278,39 @@ class Scheduler(object):
 
         return data
 
-    def updateSchedule(selfself, date, couples):
+
+    def _addToSchedule(self, mtg, player, partner):
+        """
+        Add a player to the schedule.
+
+        If the player does not have an ID, then skip
+        this player.
+
+        If the player has a partner and that ID is valid
+        add their partner.
+        """
+
+        try:
+            player_obj = Player.objects.get(id=player.get('id', -1))
+            if partner.get('id', 0):
+                partner = Player.objects.get(id=partner.get('id'))
+            else:
+                partner = None
+
+            sm = Schedule.objects.create(
+                meeting=mtg,
+                player=player_obj,
+                issub=player.get('issub', False),
+                verified=player.get('verified', False),
+                partner=partner
+            )
+            sm.save()
+        except ObjectDoesNotExist:
+            pass
+
+
+
+    def updateSchedule(self, date, couples):
         """
         Update the schedule with the given list.
         """
@@ -287,19 +319,6 @@ class Scheduler(object):
         if mtg:
             data = {'date': mtg.date}
 
-            playersById = {}
-            for c in couples:
-                guy = c['currguy']
-                playersById[guy['id']] = {
-                    'player': guy,
-                    'partner': c['currgal']
-                }
-                gal = c['currgal']
-                playersById[gal['id']] = {
-                    'player': gal,
-                    'partner': c['currguy']
-                }
-
             # Clear any existing one first.
             Schedule.objects.filter(meeting=mtg).delete()
 
@@ -307,25 +326,9 @@ class Scheduler(object):
                 try:
                     md = cpl['currguy']
                     fd = cpl['currgal']
-                    guy = Player.objects.get(id=md['id'])
-                    gal = Player.objects.get(id=fd['id'])
-                    sm = Schedule.objects.create(
-                        meeting=mtg,
-                        player=guy,
-                        issub=md.get('issub', False),
-                        verified=md.get('verified', False),
-                        partner=gal
-                    )
-                    sm.save()
+                    self._addToSchedule(mtg, md, fd)
+                    self._addToSchedule(mtg, fd, md)
 
-                    sh = Schedule.objects.create(
-                        meeting=mtg,
-                        player=gal,
-                        issub=fd.get('issub', False),
-                        verified=fd.get('verified', False),
-                        partner=guy
-                    )
-                    sh.save()
                 except:
                     pass
 

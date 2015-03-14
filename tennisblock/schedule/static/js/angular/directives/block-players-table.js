@@ -91,6 +91,9 @@ tennisblockapp.directive('blockPlayersTable',[
                 var updateSubs = function(data) {
                     $scope.subs.guys = data.guysubs;
                     $scope.subs.gals = data.galsubs;
+
+                    $scope.subs.guys.push({'name': '----'});
+                    $scope.subs.gals.push({'name': '----'});
                     $scope.subs.initialized = true;
                 };
 
@@ -103,7 +106,9 @@ tennisblockapp.directive('blockPlayersTable',[
                     });
 
                     var sdef = $q.defer();
-                    BlockSubs.get({'date' : $scope.queryDate, 'ver' : ver},function(data) { sdef.resolve(data)});
+                    BlockSubs.get({'date' : $scope.queryDate, 'ver' : ver},function(data) {
+                        sdef.resolve(data)
+                    });
 
                     $q.all([pdef.promise,sdef.promise]).then(function(results) {
                         console.log("Both are done");
@@ -115,6 +120,12 @@ tennisblockapp.directive('blockPlayersTable',[
                 update();
 
 
+                /**
+                 * p.name for p in getGuySubs($index,couple.guy)
+                 * @param idx
+                 * @param currPlayer
+                 * @returns {*}
+                 */
                 $scope.getGuySubs = function(idx,currPlayer) {
                     if (currPlayer && $scope.players.couples[idx]) {
 
@@ -149,27 +160,42 @@ tennisblockapp.directive('blockPlayersTable',[
                     return changed;
                 };
 
-                $scope.onGuyChanged = function(idx) {
-                    if ($scope.players.couples[idx]) {
-                        var is = $scope.players.couples[idx].guy;
-                        var was = $scope.players.couples[idx].currguy;
-                        console.log("onGuyChanged[" + idx + "] was " + was.name + " now is " + is.name);
-                        $scope.players.couples[idx].currguy = is;
-                        var isidx = $scope.subs.guys.indexOf(is);
-                        $scope.subs.guys[isidx] = was;
+                /**
+                 * Update the player and sub list when a new player is selected.
+                 *
+                 * idx is the couple index, and ptype is 'gal' or 'guy'
+                 *
+                 * When the selection changes, the couple[ptype] is updated.
+                 * Keep track of the current guy in couple['curr+ptype] so we can tell
+                 * who was previously selected, and put them back in as a possible sub.
+                 *
+                 * We remove the new 'is' ptype, and add the previous ptype in the same index.
+                 * @param idx
+                 */
+                $scope.onPlayerChanged = function onPlayerChanged(idx, ptype) {
+                    var couple = $scope.players.couples[idx];
+                    var subs = $scope.subs[ptype+'s'];
+
+                    var is = couple[ptype]; // Controlled by selector
+                    var was = couple['curr'+ptype]; // So I can track previous value on change
+                    console.log("onPlayerChanged[" + idx + "] was " + was.name + " now is " + is.name);
+                    couple['curr'+ptype] = is;
+
+                    if (is.name === '----') {
+                        // Don't remove this one, just add the new player to the sub list.
+                        subs.splice(-1,0,was);
                     } else {
-
+                        var isidx = subs.indexOf(is);
+                        if (was.name === '----') {
+                            // Remove the is from the list
+                            subs.splice(isidx,1);
+                        } else {
+                            var isidx = subs.indexOf(is);
+                            if (isidx >=0 ){
+                                subs[isidx] = was;
+                            }
+                        }
                     }
-                };
-
-
-                $scope.onGalChanged = function(idx) {
-                    var is = $scope.players.couples[idx].gal;
-                    var was = $scope.players.couples[idx].currgal;
-                    console.log("onGalChanged[" + idx + "] was " + was.name + " now is " + is.name);
-                    $scope.players.couples[idx].currgal = is;
-                    var isidx = $scope.subs.gals.indexOf(is);
-                    $scope.subs.gals[isidx] = was;
                 };
 
                 $scope.updateSchedule = function() {
