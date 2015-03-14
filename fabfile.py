@@ -27,9 +27,9 @@ def prod_release():
 
 @hosts('ec2-user@gardenbuzz.com')
 def get_prod_dump():
-    with cd("backups"):
+    with cd("/mnt/myebs/backups"):
         out = run("dbbackup tennisblock")
-        m = re.search(r'backups/(.*)', out)
+        m = re.search(r'/mnt/myebs/backups/(.*)', out)
         if m:
             backup_file = m.group(1).strip()
             files = get(backup_file)
