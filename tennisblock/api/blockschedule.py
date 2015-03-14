@@ -83,8 +83,6 @@ def getBlockPlayers(request):
         return JSONResponse(data)
 
 
-
-@csrf_exempt
 def getSubList(request,date=None):
 
     r = Request(request)
@@ -200,7 +198,6 @@ def getBlockDates(request):
     return JSONResponse({'status' : "Failed"})
 
 
-@csrf_exempt
 def blockSchedule(request,date = None):
     """
     Update the schedule for the given date.
@@ -239,7 +236,6 @@ def blockSchedule(request,date = None):
 
         return JSONResponse({})
 
-@csrf_exempt
 def getMatchData(request,date = None):
 
     r = Request(request)

@@ -15,16 +15,19 @@ urlpatterns = patterns('api.views',
                        url(r'buzz/?$', 'getLatestBuzz'),
                        #url(r'ptc/$',                'getPartTimeCouples'),
 )
+
 urlpatterns += patterns('api.teams',
                         url(r'pickteams/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', 'pickTeams'),
                         url(r'pickteams/?$', 'pickTeams'),
 )
+
 urlpatterns += patterns('api.blocksheet',
                         url(r'blocksheet/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', 'blockSheet'),
                         url(r'blocksheet/?$', 'blockSheet'),
                         url(r'blocksheet2/?$', 'blockSheetReportlab'),
                         #url(r'blockplayers/$', 'blockschedule.getBlockPlayers'),
 )
+
 urlpatterns += patterns('api.blockschedule',
                         url(r'blockdates/?$', 'getBlockDates'),
 
@@ -40,9 +43,11 @@ urlpatterns += patterns('api.blockschedule',
                         url(r'matchdata/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', 'getMatchData'),
                         url(r'matchdata/?', 'getMatchData'),
 )
+
 urlpatterns += patterns('',
                         url(r'availability/?$', AvailabilityView.as_view()),
 )
+
 urlpatterns += patterns('api.members',
                         url(r'members/(?P<id>\d+)/?$', SeasonPlayersView.as_view()),
                         url(r'members/?$', SeasonPlayersView.as_view()),
