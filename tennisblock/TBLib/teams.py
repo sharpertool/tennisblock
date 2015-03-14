@@ -14,12 +14,18 @@ class TeamManager(object):
 
     def pickTeams(self,date=None,**kwargs):
 
+        men,women = self.dbTeams.getPlayers(date)
+
+        assert(len(men) == len(women))
+
         isTesting = kwargs.get('test',True)
         noDupes = kwargs.get('nodupes',False)
-        nCourts = kwargs.get('courts',3)
+
+        # Calculate number fo courts based on # of men.
+        # Assume # of women is the same.
+        nCourts = kwargs.get('courts', len(men)/2)
         nSequences = kwargs.get('sequences',3)
 
-        men,women = self.dbTeams.getPlayers(date)
 
         if len(men) < nCourts*2 or len(women) < nCourts*2:
             errmsg = "Cannot pick teams, there are not enough men or women."
