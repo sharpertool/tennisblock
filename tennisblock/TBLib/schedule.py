@@ -240,7 +240,7 @@ class Scheduler(object):
 
         cursor = connection.cursor()
 
-        cursor.execute("call scheduled_players(74);")
+        cursor.execute("call scheduled_players({});".format(mtg.pk))
 
         desc = cursor.description
         columns = [d[0] for d in desc]
