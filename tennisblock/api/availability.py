@@ -55,7 +55,7 @@ class AvailabilityView(View):
                 'isavail' : avail,
                 'scheduled' : scheduled,
                 'nplayed' : nplayed,
-                'nscheduled': nscheduled
+                'nscheduled': nscheduled + nplayed
             }
 
             avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
