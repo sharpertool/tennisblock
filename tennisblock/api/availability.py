@@ -31,6 +31,9 @@ class AvailabilityView(View):
         mtgs = Meetings.objects.filter(season = currseason).order_by('date')
         players = SeasonPlayers.objects.filter(season = currseason)
 
+        past_mtgs = Meetings.objects.filter(season=currseason, date__lte=datetime.date.today())
+        future_mtgs = Meetings.objects.filter(season=currseason, date__gt=datetime.date.today())
+
         pdata = []
         for sp in players:
             if not sp.blockmember:
@@ -43,8 +46,8 @@ class AvailabilityView(View):
             avail = []
             scheduled = []
 
-            nplayed = 0
-            nscheduled = 0
+            nplayed = Schedule.objects.filter(meeting__in=past_mtgs, player=player).count()
+            nscheduled = Schedule.objects.filter(meeting__in=future_mtgs, player=player).count()
 
             p = {
                 'name' : player.first + ' ' + player.last,
@@ -55,29 +58,20 @@ class AvailabilityView(View):
                 'nscheduled': nscheduled
             }
 
-            for mtg in mtgs:
-                av = Availability.objects.filter(player=player, meeting=mtg)
-                sch = Schedule.objects.filter(meeting=mtg,player=player)
+            avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
+            if avlist.count() == 0:
+                _AvailabilityInit(player,mtgs)
+                avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
 
-                if len(av) == 0:
-                    _AvailabilityInit(player,mtgs)
-                    av = Availability.objects.filter(player=player, meeting=mtg)
+            sched = Schedule.objects.filter(player=player, meeting__in=future_mtgs).order_by('meeting__date')
 
-                if len(av) > 0 and av[0].available:
-                    avail.append(True)
-                else:
-                    avail.append(False)
+            for idx, mtg in enumerate(mtgs):
+                av = avlist[idx]
 
-                if len(sch):
-                    scheduled.append(True)
-                    nscheduled += 1
-                    if mtg.date < datetime.date.today():
-                        nplayed += 1
-                else:
-                    scheduled.append(False)
+                avail.append(av.available)
+                sch = Schedule.objects.filter(player=player, meeting=mtg)
+                scheduled.append(sch.count() > 0)
 
-            p['nplayed'] = nplayed
-            p['nscheduled'] = nscheduled
 
             pdata.append(p)
 

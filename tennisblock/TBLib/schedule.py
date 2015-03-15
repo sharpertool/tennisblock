@@ -2,9 +2,11 @@ import os
 import re
 import random
 from collections import defaultdict
+import textwrap
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, Count, F
+from django.db import connection
 
 from blockdb.models import *
 from api.apiutils import get_current_season, get_next_meeting, get_meeting_for_date
@@ -230,6 +232,24 @@ class Scheduler(object):
 
         return None
 
+    def _queryScheduledPlayers(self, mtg):
+        """
+        Call the stored procedure that does a low-level complex
+        full outer join of our players.
+        """
+
+        cursor = connection.cursor()
+
+        cursor.execute("call scheduled_players(74);")
+
+        desc = cursor.description
+        columns = [d[0] for d in desc]
+        rows = cursor.fetchall()
+
+        data = [dict(zip(columns, r)) for r in rows]
+        return data
+
+
     def querySchedule(self, date=None):
         """
         Query the schedule of players for the given date.
@@ -244,45 +264,43 @@ class Scheduler(object):
 
             guys = []
             gals = []
+            couples = []
 
-            schedulePlayers = Schedule.objects.filter(meeting=mtg)
-            for sch in schedulePlayers:
-                player = sch.player
-                if sch.partner:
-                    partner = sch.partner
-                #else:
-                #    partner = self.getPartnerId(player)
-                s = {
-                    'name': player.Name(),
-                    'id': player.id,
-                    'ntrp': player.ntrp,
-                    'untrp': player.microntrp,
-                    'verify': sch.verified,
-                    'issub': sch.issub
+            results = self._queryScheduledPlayers(mtg)
+            for cdata in results:
+                couple = {
+                    'guy': {'name': '----'},
+                    'gal': {'name': '----'}
                 }
-                if partner:
-                    s['partner'] = partner.id
-                    s['parntername'] = partner.Name()
-                else:
-                    s['partner'] = None
-                    s['parntername'] = '----'
+                if cdata.get('guy'):
+                    partner = cdata.get('gal')
+                    g = {
+                        'name': cdata.get('guy'),
+                        'id': cdata.get('guy_pid'),
+                        'ntrp': cdata.get('guy_ntrp'),
+                        'untrp': cdata.get('guy_untrp'),
+                        'partner': cdata.get('gal_pid'),
+                        'partnername': cdata.get('gal') or '----'
+                    }
+                    guys.append(g)
+                    couple['guy'] = g
+                if cdata.get('gal'):
+                    g = {
+                        'name': cdata.get('gal'),
+                        'id': cdata.get('gal_pid'),
+                        'ntrp': cdata.get('gal_ntrp'),
+                        'untrp': cdata.get('gal_untrp'),
+                        'partner': cdata.get('guy_pid'),
+                        'partnername': cdata.get('guy') or '----'
+                    }
+                    gals.append(g)
+                    couple['gal'] = g
 
-                if player.gender == 'F':
-                    gals.append(s)
-                else:
-                    guys.append(s)
-
-            required_num_players = num_courts*2
-            missing_guys = required_num_players - len(guys)
-            for i in xrange(0,missing_guys):
-                guys.append({'name': '----', 'id': -1})
-
-            missing_gals = required_num_players - len(gals)
-            for i in xrange(0,missing_gals):
-                gals.append({'name': '----', 'id': -1})
+                couples.append(couple)
 
             data['guys'] = guys
             data['gals'] = gals
+            data['couples'] = couples
         else:
             data['date'] = "Invalid"
             data['mtg'] = {'error': 'Could not determine meeting.'}

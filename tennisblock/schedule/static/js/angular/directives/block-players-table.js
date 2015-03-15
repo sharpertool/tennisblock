@@ -61,37 +61,8 @@ tennisblockapp.directive('blockPlayersTable',[
                     $scope.players.selgals = data.gals.slice(0);
                     $scope.players.original.guys = data.guys.slice(0);
                     $scope.players.original.gals = data.gals.slice(0);
+                    $scope.players.couples = data.couples;
 
-                    $scope.players.couples = _.map($scope.players.guys,function(guy) {
-                        var pid = guy.partner;
-                        if (pid) {
-                            var pgal = _.find($scope.players.gals,function(gal) {
-                                return gal.id == pid;
-                            });
-                            if (pgal) {
-                                return {
-                                    guy: {
-                                        id      : guy.id,
-                                        name    : guy.name
-                                    },
-                                    gal : {
-                                        id      : pgal.id,
-                                        name    : pgal.name
-                                    }
-                                };
-                            }
-                        }
-                        return {
-                            guy: {
-                                id: guy.id,
-                                name: guy.name
-                            },
-                            gal: {
-                                name: '----'
-
-                            }
-                        };
-                    });
                     $scope.players.originalcouples = JSON.parse(JSON.stringify($scope.players.couples));
                     //$scope.players.couples = _.zip($scope.players.guys,$scope.players.gals);
                     $scope.players.initialized = true;
