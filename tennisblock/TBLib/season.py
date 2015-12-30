@@ -11,8 +11,6 @@ class SeasonManager(object):
     def __init__(self, season=None):
 
         self.season = season or self.get_current_season()
-        if not self.season:
-            raise Exception("Could not determine the current season.")
 
     def get_current_season(self, season=None):
         """
@@ -44,9 +42,11 @@ class SeasonManager(object):
 
         """
 
-        meetings = Meetings.objects.filter(season=self.season).order_by('date')
-        if not holdouts:
-            meetings = meetings.filter(holdout=False)
+        meetings = []
+        if self.season:
+            meetings = Meetings.objects.filter(season=self.season).order_by('date')
+            if not holdouts:
+                meetings = meetings.filter(holdout=False)
 
         return meetings
 
