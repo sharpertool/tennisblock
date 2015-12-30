@@ -111,22 +111,6 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    #'sekizai.context_processors.sekizai',
-    #'sekizai.context.SekizaiContext',
-    'TBLib.context.tennisblock',
-    'django.core.context_processors.request',
-)
-
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -139,6 +123,25 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                # 'sekizai.context_processors.sekizai',
+                # 'sekizai.context.SekizaiContext',
+                'TBLib.context.tennisblock',
+                'django.core.context_processors.request',
+
+            ]
+
+        }
+    }
+]
 ROOT_URLCONF = 'webapp.urls'
 
 APPEND_SLASH = False
@@ -169,15 +172,13 @@ INSTALLED_APPS = (
     'compressor',
     'raven.contrib.django.raven_compat',
 
-
-
     # Local Apps
     'tennisblock',
     'webapp',
     'accounts',
     'api',
     'tennis_profile',
-    'blockdb',
+    'blockdb.apps.BlockDBConfig',
     'members',
     'schedule',
     'season',
@@ -225,15 +226,14 @@ LOGGING = {
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ed@tennisblock.com'
-EMAIL_HOST_PASSWORD= ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Contact Form
-CONTACT_FORM_SUBJECT = 'Tenn    isblock.com Contact'
+CONTACT_FORM_SUBJECT = 'Tennisblock.com Contact'
 CONTACT_FORM_RECIPIENTS = (
     "ed@tennisblock.com",
-    "vicki@gardenbuzz.com",
     "viquee@me.com"
 )
 
@@ -251,13 +251,11 @@ STATIC_PRECOMPILER_COMPILERS = (
 USE_LESS = False
 LESS_POLL = 100000
 
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'tennisblock_flake'
     }
 }
-
 
 ANGULAR_BASE = '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/'

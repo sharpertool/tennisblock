@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -13,7 +13,7 @@ from .views import (
     CouplesView
 )
 
-urlpatterns = patterns('',
+urlpatterns = (
                # Examples:
                url(r'^$', HomeView.as_view(), name='home'),
 

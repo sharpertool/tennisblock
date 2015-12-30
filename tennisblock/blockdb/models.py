@@ -1,9 +1,9 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
-from django.contrib.auth.models import User
 
-# Create your models here.
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
 
 @python_2_unicode_compatible
 class Season(models.Model):
@@ -47,10 +47,10 @@ class Player(models.Model):
         ('M', 'Guy')
     )
 
-    user = models.OneToOneField(User, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
     first               = models.CharField(max_length=40)
     last                = models.CharField(max_length=60)
-    gender              = models.CharField(max_length=1, choices= GENDER_CHOICES)
+    gender              = models.CharField(max_length=1, choices=GENDER_CHOICES)
     ntrp                = models.FloatField()
     microntrp           = models.FloatField(null=True, blank=True)
     phone               = models.CharField(max_length=14, blank=True)

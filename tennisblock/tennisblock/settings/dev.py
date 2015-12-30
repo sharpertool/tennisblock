@@ -3,7 +3,6 @@ print ("Running Development Settings.")
 from .base import *
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 # Set your DSN value
 RAVEN_CONFIG = {
