@@ -1,5 +1,5 @@
-from textwrap import dedent
 
+from dateutil.parser import parse
 from django.views.generic import TemplateView, CreateView
 
 from TBLib.view import class_login_required
@@ -76,7 +76,18 @@ class SeasonDetailView(TemplateView):
             s = Season.objects.get(pk=pk)
             meetings = Meetings.objects.filter(season=s)
 
-            if request.POST.get('update_holdouts', False):
+            if request.POST.get('update_season', False):
+                print("Update Season data..")
+                p = request.POST
+                #s.blocktime = p.get('blocktime')
+                s.courts = p.get('courts')
+                s.firstcourt = p.get('firstcourt')
+                s.name = p.get('name')
+                s.enddate = parse(p.get('seasonend'))
+                s.startdate = parse(p.get('seasonstart'))
+                s.blockstart = parse(p.get('blockstart'))
+                s.save()
+            elif request.POST.get('update_holdouts', False):
                 holdouts = request.POST.getlist('meetings')
                 for m in meetings:
                     m.holdout = False

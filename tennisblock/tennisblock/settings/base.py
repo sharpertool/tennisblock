@@ -179,7 +179,7 @@ INSTALLED_APPS = (
     'api',
     'tennis_profile',
     'blockdb.apps.BlockDBConfig',
-    'members',
+    'members.apps.MembersConfig',
     'schedule',
     'season',
 )

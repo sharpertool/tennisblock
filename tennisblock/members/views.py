@@ -43,6 +43,7 @@ class PlayerUpdate(UpdateView):
     model = Player
     template_name = "members/player_form.html"
     context_object_name = 'player'
+    fields = ['first', 'last', 'gender', 'ntrp', 'microntrp', 'phone', 'email']
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
