@@ -154,7 +154,11 @@ class ScheduleNotify(TemplateView):
             msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
             msg.attach_alternative(html, 'text/html')
 
+            print("Message ready to send.. sending.")
+
             msg.send()
+
+            print("Message sent.")
 
             return render(request,
                           self.thankyou_template,
