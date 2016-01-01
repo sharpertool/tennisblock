@@ -223,12 +223,16 @@ LOGGING = {
 }
 
 # Email Server Settings. Change as needed
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'secure.emailsrvr.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'ed@tennisblock.com'
+
+# Left blank here.
+# Add this to local_config.py on the server
 EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Contact Form
 CONTACT_FORM_SUBJECT = 'Tennisblock.com Contact'

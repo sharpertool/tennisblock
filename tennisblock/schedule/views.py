@@ -147,7 +147,7 @@ class ScheduleNotify(TemplateView):
             subject = settings.BLOCK_NOTIFY_SUBJECT % date
 
             if settings.BLOCK_NOTIFY_RECIPIENTS:
-                recipient_list = ['ed@tennisblock.com', 'viquee@me.com']
+                recipient_list = settings.BLOCK_NOTIFY_RECIPIENTS
             else:
                 recipient_list = tb.getBlockEmailList()
 
