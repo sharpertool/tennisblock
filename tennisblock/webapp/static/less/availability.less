@@ -1,4 +1,6 @@
 
+@odd_row: #bccdd3;
+@even_row: #b6b6b6;
 
 .member_list {
 
@@ -19,10 +21,21 @@ table {
 
     tr {
         &.odd {
-            background-color: #bccdd3;
+            background-color: @odd_row;
+
+            &.single {
+                background-color: spin(saturate(@odd_row, 30%), 50);
+            }
         }
         &.even {
-            background-color: #b6b6b6;
+            background-color: @even_row;
+            &.single {
+                background-color: spin(saturate(@even_row, 30%), 50);
+            }
+        }
+
+        &.single {
+            backgrond-color: darkgrey;
         }
 
         &.member_list_header {

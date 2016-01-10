@@ -1,7 +1,7 @@
 import datetime
 from django.views.generic.base import View
 from rest_framework.parsers import JSONParser
-from blockdb.models import Player, SeasonPlayers, Meetings, Availability, Schedule
+from blockdb.models import Player, SeasonPlayers, Couple, Meetings, Availability, Schedule
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date
 
@@ -24,54 +24,64 @@ def _AvailabilityInit(player, meetings):
 
 
 class AvailabilityView(View):
+
+    def get_player_data(self, player, mtgs=None, past=None, future=None, single=False):
+        """
+        Assemble the player data into a structure for the availability index.
+        """
+
+        avail = []
+        scheduled = []
+
+        # Should be empty arrays if None
+        if past is None:
+            past =[]
+        if future is None:
+            future = []
+
+        nplayed = Schedule.objects.filter(meeting__in=past, player=player).count()
+        nscheduled = Schedule.objects.filter(meeting__in=future, player=player).count()
+
+        p = {
+            'name': player.first + ' ' + player.last,
+            'id': player.id,
+            'isavail': avail,
+            'scheduled': scheduled,
+            'nplayed': nplayed,
+            'nscheduled': nscheduled + nplayed,
+            'single': single
+        }
+
+        avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
+        if avlist.count() == 0:
+            _AvailabilityInit(player, mtgs)
+            avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
+
+        for idx, mtg in enumerate(mtgs):
+            av = avlist[idx]
+
+            avail.append(av.available)
+            sch = Schedule.objects.filter(player=player, meeting=mtg)
+            scheduled.append(sch.count() > 0)
+
+        return p
+
     def get(self, request):
 
         currseason = get_current_season()
         mtgs = Meetings.objects.filter(season=currseason).order_by('date')
-        players = SeasonPlayers.objects.filter(season=currseason)
+        couples = Couple.objects.filter(season=currseason, blockcouple=True).order_by('as_singles')
 
         past_mtgs = Meetings.objects.filter(season=currseason, date__lte=datetime.date.today())
         future_mtgs = Meetings.objects.filter(season=currseason, date__gt=datetime.date.today())
 
         pdata = []
-        for sp in players:
-            if not sp.blockmember:
-                continue
+        for couple in couples:
+            pdata.append(self.get_player_data(couple.male,
+                                              single=couple.as_singles, mtgs=mtgs, past=past_mtgs, future=future_mtgs))
 
-            print("Getting availability data for %s" % sp.player.Name())
-
-            player = sp.player
-
-            avail = []
-            scheduled = []
-
-            nplayed = Schedule.objects.filter(meeting__in=past_mtgs, player=player).count()
-            nscheduled = Schedule.objects.filter(meeting__in=future_mtgs, player=player).count()
-
-            p = {
-                'name': player.first + ' ' + player.last,
-                'id': player.id,
-                'isavail': avail,
-                'scheduled': scheduled,
-                'nplayed': nplayed,
-                'nscheduled': nscheduled + nplayed
-            }
-
-            avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
-            if avlist.count() == 0:
-                _AvailabilityInit(player, mtgs)
-                avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
-
-            sched = Schedule.objects.filter(player=player, meeting__in=future_mtgs).order_by('meeting__date')
-
-            for idx, mtg in enumerate(mtgs):
-                av = avlist[idx]
-
-                avail.append(av.available)
-                sch = Schedule.objects.filter(player=player, meeting=mtg)
-                scheduled.append(sch.count() > 0)
-
-            pdata.append(p)
+            pdata.append(self.get_player_data(couple.female,
+                                              single=couple.as_singles, mtgs=mtgs, past=past_mtgs, future=future_mtgs))
 
         return JSONResponse(pdata)
 

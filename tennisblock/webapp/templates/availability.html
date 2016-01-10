@@ -54,6 +54,7 @@
                     </tr>
                     <tr ng-repeat="player in players"
                         ng-class-odd="'odd'" ng-class-even="'even'"
+                        ng-class="{true: 'single'}[player.single == true]"
                             >
                         <td>{{ player.name }}</td>
                         <td
