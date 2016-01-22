@@ -5,6 +5,7 @@ from __future__ import absolute_import
 import random
 import string
 
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
@@ -55,7 +56,8 @@ def player_post_save(sender, instance=None, created=False, **kwargs):
         username = "{}.{}".format(player.first.lower(), player.last.lower())
 
         try:
-            user = User.objects.get(username=username)
+
+            user = get_user_model().objects.get(username=username)
             player.user = user
             player.save()
 
@@ -67,7 +69,7 @@ def player_post_save(sender, instance=None, created=False, **kwargs):
                 for _ in range(password_length))
 
             now = timezone.now()
-            user = User(username=username, email=email,
+            user = get_user_model()(username=username, email=email,
                         is_staff=False, is_active=False,
                         is_superuser=False, last_login=now,
                         first_name=player.first,
