@@ -64,20 +64,19 @@ class DBTeams(object):
             court = 1
             for m in s.matches:
                 matchup = Matchup.objects.create(
-                    meeting=meeting,
-                    set=set,
-                    court=court,
-                    team1_p1=m.t1.m,
-                    team1_p2=m.t1.f,
-                    team2_p1=m.t2.m,
-                    team2_p2=m.t2.f
+                        meeting=meeting,
+                        set=set,
+                        court=court,
+                        team1_p1=m.t1.m,
+                        team1_p2=m.t1.f,
+                        team2_p1=m.t2.m,
+                        team2_p2=m.t2.f
                 )
                 matchup.save()
 
                 court += 1
 
             set += 1
-
 
     def queryMatch(self, date):
         """

@@ -6,10 +6,10 @@ class Set(object):
         s = Set()
         s.matches = [m for m in self.matches]
         return s
-        
-    def AddMatch(self,match):
+
+    def AddMatch(self, match):
         self.matches.append(match)
-        
+
     def Diff(self):
         """
         Take all diff values, put them in a list.
@@ -38,7 +38,7 @@ class Set(object):
         diffs.sort()
 
         return diffs
-        
+
     def DiffStats(self):
         diffMax = 0
         diffAvg = 0
@@ -53,11 +53,11 @@ class Set(object):
             if diff > diffMax:
                 diffMax = diff
             diffs.append(diff)
-                
-        diffAvg = diffAvg/diffCnt
+
+        diffAvg = diffAvg / diffCnt
         diffs.sort()
-        return diffMax,diffAvg,diffs
-    
+        return diffMax, diffAvg, diffs
+
     def Display(self):
         for match in self.matches:
             match.Display()
@@ -70,4 +70,3 @@ class Set(object):
     def __repr__(self):
 
         return " ".join([str(m) for m in self.matches])
-        
