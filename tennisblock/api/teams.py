@@ -5,7 +5,8 @@ from TBLib.teams import TeamManager
 
 from .apiutils import JSONResponse
 
-def pickTeams(request,date = None):
+
+def pickTeams(request, date=None):
     """
     """
     r = Request(request)
@@ -16,14 +17,15 @@ def pickTeams(request,date = None):
         season = get_current_season()
         if date and season:
             mgr = TeamManager()
-            mgr.pickTeams(date,test=False,
+            mgr.pickTeams(date, test=False,
                           sequences=3)
 
             matchData = mgr.queryMatch(date)
 
-        return JSONResponse({'status' : 'POST Done','date' : date,'teams':matchData})
+        return JSONResponse({'status': 'POST Done', 'date': date, 'teams': matchData})
 
-def queryTeams(request,date = None):
+
+def queryTeams(request, date=None):
     """
     """
     r = Request(request)
@@ -36,6 +38,4 @@ def queryTeams(request,date = None):
 
             matchData = mgr.queryMatch(date)
 
-        return JSONResponse({'status' : 'GET Done','date' : date,'teams':matchData})
-
-
+        return JSONResponse({'status': 'GET Done', 'date': date, 'teams': matchData})

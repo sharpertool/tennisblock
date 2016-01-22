@@ -124,7 +124,7 @@ class ScheduleNotify(TemplateView):
         return render(request,
                       self.template_name,
                       context
-        )
+                      )
 
     def post(self, request, date):
 
@@ -167,5 +167,3 @@ class ScheduleNotify(TemplateView):
         return render(request,
                       self.template_name,
                       {'form': form})
-
-
