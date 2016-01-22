@@ -14,7 +14,7 @@ class TeamGen(object):
         self.meeting.Restart()
         diff_max = 0.1
 
-        self.meeting.ms.setSeeGirlsOnce(dups)
+        self.meeting.setSeeGirlsOnce(dups)
 
         while self.meeting.SetCount() < self.nSequences:
             set = None
