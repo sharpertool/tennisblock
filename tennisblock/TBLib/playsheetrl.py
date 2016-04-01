@@ -93,7 +93,7 @@ class PlaySheet(object):
         c.resetTransforms()
 
         self.setTextColor(57, 57, 57)
-        c.setFont('Helvetica', 18)
+        c.setFont('Helvetica', 20)
         for n, set in enumerate(sched):
 
             for m, match in enumerate(set):
