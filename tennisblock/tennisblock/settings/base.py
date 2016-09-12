@@ -25,7 +25,7 @@ DATABASES = {
         'USER': 'tennisblock',
         'PASSWORD': '',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '3306',
     }
 }
 

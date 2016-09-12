@@ -13,19 +13,19 @@ env.key_filename = [os.path.join(os.environ['HOME'], '.ssh', 'gardenbuzz.pem')]
 
 ssh.util.log_to_file("paramiko.log", 10)
 
-@hosts('ec2-user@gardenbuzz.com')
+@hosts('gb')
 def dev_release():
     with cd("/var/www/sites/dev.tennisblock.com"):
         run("./siteupdate.sh")
 
 
-@hosts('ec2-user@gardenbuzz.com')
+@hosts('gb')
 def prod_release():
     with cd("/var/www/sites/tennisblock.com"):
         run("./siteupdate.sh")
 
 
-@hosts('ec2-user@gardenbuzz.com')
+@hosts('gb')
 def get_prod_dump():
     with cd("/mnt/myebs/backups"):
         out = run("dbbackup tennisblock")
@@ -37,7 +37,7 @@ def get_prod_dump():
                 return files [0]
         return None
 
-@hosts('ec2-user@gardenbuzz.com')
+@hosts('gb')
 def sync_prod(dbname=None):
     if not dbname:
         raise Exception("Cannot work my magic if you don't give me names!")
