@@ -31,7 +31,6 @@ raven==5.26.0
 reportlab==3.3.0
 sh==1.11
 six==1.10.0
-South==1.0.2
 Sphinx==1.4.6
 sqlparse==0.2.1
 Unipath==1.1
