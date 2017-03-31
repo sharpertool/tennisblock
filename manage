@@ -6,14 +6,13 @@
 # It's also 3 fewer characters to type.. and in some projects,
 # at the root instead of buried.
 
-if [ -f env.txt ];then
-    environment=`cat env.txt`
-    source $WORKON_HOME/$environment/bin/activate
-else
-    echo "Please add your preferred virtualenv to env.txt"
-    echo ">> echo \"envname\" > env.txt"
-    exit 1
+if [ -z "$VIRTUAL_ENV" ];then
+    activate
+fi
 
+if [ -z "$VIRTUAL_ENV" ];then
+    echo "You must setup a local virtualenv and install requirements first"
+    exit 2
 fi
 
 pushd tennisblock >> /dev/null

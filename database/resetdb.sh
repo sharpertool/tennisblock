@@ -16,5 +16,9 @@ echo "CREATE DATABASE $dbname CHARACTER SET utf8 COLLATE utf8_general_ci;" | mys
 
 echo "Updating permissions"
 echo "grant all on \`$dbname\`.* to tennisblock@localhost;" | mysql
+echo "grant all on \`$dbname\`.* to gbadmin@localhost;" | mysql
+
+mysql $dbname < `dirname $0`/scheduled_players.sql
+
 
 
