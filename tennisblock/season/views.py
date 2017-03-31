@@ -64,6 +64,7 @@ class SeasonDetailView(TemplateView):
                 'name': "{} {}".format(p.first, p.last),
                 'ntrp': p.ntrp,
                 'season_player': p.in_season(season),
+                'block_member': False,
                 'update': False
             })
 
