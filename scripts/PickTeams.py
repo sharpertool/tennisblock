@@ -1,33 +1,31 @@
 #!/usr/bin/env python
 
 import sys
-#import getpass, imaplib
+# import getpass, imaplib
 import os
 import sys
-#import email
+# import email
 import errno
 import mimetypes
 import re
 import smtplib
-os.environ['PYTHONPATH'] = 'scripts'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'tennisblock_dj.settings.dev'
 
-from  TBLib.TeamGen2 import TeamGen
+from TBLib.teamgen.TeamGen2 import TeamGen
 
 from optparse import OptionParser
 
-from  TBLib.DBTeams import *
+from TBLib.teamgen.DBTeams import DBTeams
 
-def PickTeams(fp,dbTeam,nCourts,nSequences,dups,testing=False):
 
-    men,women = dbTeam.getPlayers()
+def pick_teams(fp, dbTeam, nCourts, nSequences, dups, testing=False):
+    men, women = dbTeam.getPlayers()
 
-    if len(men) < nCourts*2 or len(women) < nCourts*2:
+    if len(men) < nCourts * 2 or len(women) < nCourts * 2:
         print("Cannot pick teams, there are not enough men or women.")
-        print("Need %d of both. Have %d men and %d women." % (nCourts*2,len(men),len(women)))
+        print("Need %d of both. Have %d men and %d women." % (nCourts * 2, len(men), len(women)))
         return
 
-    tg = TeamGen(nCourts,nSequences,men,women)
+    tg = TeamGen(nCourts, nSequences, men, women)
     sequences = tg.generate_set_sequences(dups)
 
     if sequences == None or len(sequences) < nSequences:
@@ -44,8 +42,8 @@ def PickTeams(fp,dbTeam,nCourts,nSequences,dups,testing=False):
 
     fp.write("Done")
 
-def main():
 
+def main():
     usage = "usage: %prog -n -m -s]"
     parser = OptionParser(usage)
     parser.add_option("-m", dest="matchid",
@@ -62,17 +60,17 @@ def main():
                       type="int",
                       default=3,
                       help="Number of sequences.")
-    parser.add_option("-f",dest="outfile",
-                       action="store",
-                       type="string",
-                       default="/tmp/schedule.log",
-                       help="File to output debug data to")
+    parser.add_option("-f", dest="outfile",
+                      action="store",
+                      type="string",
+                      default="/tmp/schedule.log",
+                      help="File to output debug data to")
     parser.add_option('-n', dest='nodups',
-                        action="store_true",
-                        default=False,
-                        help="Option to disable seeing an opponent 2 times.")
-    parser.add_option("-v",action="store_false",dest="verbose")
-    parser.add_option("-t",action="store_true",dest="test")
+                      action="store_true",
+                      default=False,
+                      help="Option to disable seeing an opponent 2 times.")
+    parser.add_option("-v", action="store_false", dest="verbose")
+    parser.add_option("-t", action="store_true", dest="test")
 
     (options, args) = parser.parse_args()
 
@@ -89,14 +87,15 @@ def main():
 
     fp.write("Scheduling for Matchid:%s\n" % dbTeams.matchid)
 
-    PickTeams(fp,
-        dbTeams,
-        options.courts,
-        options.sequences,
-        options.nodups,
-        options.test)
+    pick_teams(fp,
+              dbTeams,
+              options.courts,
+              options.sequences,
+              options.nodups,
+              options.test)
 
     fp.close()
+
 
 if __name__ == '__main__':
     main()
