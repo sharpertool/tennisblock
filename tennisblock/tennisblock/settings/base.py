@@ -1,7 +1,10 @@
 # Django settings for tennisblock_project project.
 
+import environ
 from unipath import Path
 import sys
+
+env = environ.Env()
 
 DJANGO_ROOT = Path(__file__).ancestor(3)
 PROJECT_ROOT = DJANGO_ROOT.ancestor(1)
@@ -18,15 +21,14 @@ DEFAULT_FROM_EMAIL = 'ed@tennisblock.com'
 
 MANAGERS = ADMINS
 
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+# Note: This key only used for development and testing.
+SECRET_KEY = env("DJANGO_SECRET_KEY", default='')
+
+
+# DATABASE
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tennisblock',
-        'USER': 'tennisblock',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+    'default': env.db("DATABASE_URL", default='mysql://tennisblock:tennisblock@localhost:3306/tennisblock'),
 }
 
 # Added the django cors module
@@ -223,11 +225,12 @@ LOGGING = {
 }
 
 # Email Server Settings. Change as needed
+EMAIL_BACKEND = env("DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = 'smtpd'
+EMAIL_PORT = 25
+
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'secure.emailsrvr.com'
-EMAIL_PORT = 465
 EMAIL_HOST_USER = 'ed@tennisblock.com'
 
 # Left blank here.
@@ -263,3 +266,9 @@ CACHES = {
 }
 
 ANGULAR_BASE = '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/'
+
+# Set your DSN value
+RAVEN_CONFIG = {
+    'dsn' : env("RAVEN_CONFIG", default='https://bb218b1fa4274266aea0a33a4a10c0a5:9772e132d1904c99909fc13e2fc16da7@sentry.io/24185')
+}
+

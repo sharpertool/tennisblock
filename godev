@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export COMPOSE_FILE=dev.yml
+
+# These are needed for dev.yml file
+export DJANGO_ROOT_PATH=./tennisblock
+

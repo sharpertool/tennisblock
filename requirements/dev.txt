@@ -2,3 +2,6 @@
 
 django-debug-toolbar==1.5
 fabric==1.13.1
+
+# Python-PostgreSQL Database Adapter
+psycopg2==2.7.1
