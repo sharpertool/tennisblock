@@ -38,8 +38,8 @@ Note, the default dev.yml will put backups to:
 
 	~/Dropbox/Development/tennisblock/backups
 
-This directory kind of needs to exist.. But, you can change dev.yml to have whatever path you want. Don't commit
-this.. it's okay if it's different... you can also make a copy fo that and change godev to use your copy.
+`docker-compose up` will create this directory for you. You can change dev.yml to have whatever path you want. Don't commit
+this.. it's okay if it's different... you can also make a copy of that and change godev to use your copy.
 
 For all of the operations, we use docker-compose, and we exec an operation on the service. The services are named:
 	

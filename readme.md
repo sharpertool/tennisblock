@@ -14,7 +14,7 @@ GR is the base of the repo, DR is tennisblock.. just so you know.
 In GR, you need to copy .env.example to .env.
 This file is used by docker, so the values in there configure the docker system.
 
-In DJANGO_ROOT, there are two local files that are used configurable.
+In DJANGO_ROOT, there are two local files that are used for configuration.
 
 Copy .env.local.example to .env.loocal
 
