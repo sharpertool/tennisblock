@@ -1,7 +1,15 @@
 -r base.txt
 
-django-debug-toolbar==1.5
-fabric==1.13.1
+fabric
+
+ipython[notebook]
 
 # Python-PostgreSQL Database Adapter
 psycopg2==2.7.1
+
+django-debug-toolbar
+
+django-extensions
+
+Werkzeug
+
