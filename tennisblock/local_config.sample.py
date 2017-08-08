@@ -1,14 +1,24 @@
+import environ
+import os
+import sys
+from os.path import join, normpath
 
-# Do an import * on the module version you would like to use
-from tennisblock.settings.dev import *
+print("Loaded local_config from %s." % __file__)
 
-# Disable the local_config.py mechanism - Optional
-DISABLE_LOCAL_CONFIG = True
+env = environ.Env()
 
-# Then, you are able to override or extend existing data structure.
-# For example:
-#DATABASES['default']['NAME'] = 'my_test_db'
+print("Argv length:{} Contents:{}".format(len(sys.argv), ",".join(sys.argv)))
+if len(sys.argv) > 1 and sys.argv[1] == 'test':
+    print("Running test mode..")
+    from tennisblock.settings.test import *
+else:
+    if env.bool('DJANGO_DOCKER', False):
+        env.read_env('.env.local.docker')
+    else:
+        env.read_env('.env.local')
 
-# ALLOWED_HOSTS += [ 'mysite.com' ]
+    from tennisblock.settings.dev import *
 
-
+ALLOWED_HOSTS += [
+    'tennis.local'
+]
