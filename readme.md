@@ -8,6 +8,21 @@ There are two directories I'll talk about. GIT_ROOT, and DJANGO_ROOT, or GR, and
 
 GR is the base of the repo, DR is tennisblock.. just so you know.
 
+# Python Setup
+
+This project works on Python 2.7.x.. latest is better.
+
+Create a new local virtualenv
+
+	virtualenv .venv
+
+Activate your virtualenv
+
+	source .venv/bin/activate
+
+Install requirements -- these are for development
+
+	pip install -r requirements/test.txt
 
 ## Local Config Files
 

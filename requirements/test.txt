@@ -1,0 +1,17 @@
+-r dev.txt
+
+django_coverage_plugin
+
+django-test-plus
+factory_boy
+model_mommy
+
+pytest-django
+pytest-sugar
+
+flake8
+
+django-nose
+unittest-xml-reporting
+
+
