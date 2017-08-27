@@ -2,24 +2,41 @@ version: '2'
 
 volumes:
   postgres_data_dev: {}
-  webpack_node_modules: {}
+  mysql_data_dev: {}
 
 services:
-  postgres:
-    container_name: tennis-postgres
-    build: ./compose/postgres
+  mysql:
+    container_name: tennis-mysql
+    build: ./compose/mysql
     volumes:
-      - postgres_data_dev:/var/lib/postgresql/data
+      - mysql_data_dev:/var/lib/mysql/data
       #- ./database/backups:/backups
       # You can also modify this to point to your local Dropbox location where the shared
       # backups are stored. For me this is:
-      - "~/Dropbox/Development/tennisblock/backups:/backups"
+      - "~/Dropbox/Development/tennisblock/msyql/backups:/backups"
     environment:
-      - POSTGRES_USER=tennisblock
-      - POSTGRES_DB=tennisblock
+        - MYSQL_ROOT_PASSWORD=tennisroot
+        - MYSQL_DATABASE=tennisblock
+        - MYSQL_USER=tennisblock
+        - MYSQL_PASSWORD=tennisblock
     ports:
-      - "5440:5432"
+      - "3316:3306"
 
+#  postgres:
+#    container_name: tennis-postgres
+#    build: ./compose/postgres
+#    volumes:
+#      - postgres_data_dev:/var/lib/postgresql/data
+#      #- ./database/backups:/backups
+#      # You can also modify this to point to your local Dropbox location where the shared
+#      # backups are stored. For me this is:
+#      - "~/Dropbox/Development/tennisblock/backups:/backups"
+#    environment:
+#      - POSTGRES_USER=tennisblock
+#      - POSTGRES_DB=tennisblock
+#    ports:
+#      - "5440:5432"
+#
   smtpd:
     container_name: tennis-smtpd
     build: ./compose/smtpd

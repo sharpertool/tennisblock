@@ -1,0 +1,19 @@
+#!/bin/bash
+# stop on errors
+set -e
+
+# Set the default database to be the username
+: ${MYSQLDB_DATABASE:=$MYSQL_USER}
+export MYSQL_DATABASE
+
+# export the postgres password so that subsequent commands don't ask for it
+
+echo "creating backup"
+echo "---------------"
+
+FILENAME=backup_$(date +'%Y_%m_%dT%H_%M_%S').sql
+mysqldump --lock-tables=false --user=$MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE >> /backups/$FILENAME
+
+echo "successfully created backup $FILENAME"
+echo $FILENAME
+

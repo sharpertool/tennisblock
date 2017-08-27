@@ -4,8 +4,6 @@ fabric
 
 ipython[notebook]
 
-# Python-PostgreSQL Database Adapter
-psycopg2==2.7.1
 
 django-debug-toolbar
 

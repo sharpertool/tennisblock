@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# stop on errors
+set -e
+
+# check that we have an argument for a filename candidate
+if [[ $# -eq 0 ]] ; then
+    echo 'usage:'
+    echo '    docker-compose run mysql restore <backup-file>'
+    echo ''
+    echo 'to get a list of available backups, run:'
+    echo '    docker-compose run mysql list-backups'
+    exit 1
+fi
+
+# set the backupfile variable
+BACKUPFILE=/backups/$1
+
+echo -e "[mysql]\nuser=root\npassword=${MYSQL_ROOT_PASSWORD}\n" > ${HOME}/.my.cnf
+
+echo "Show the build .my.cnf"
+cat ${HOME}/.my.cnf
+
+# check that the file exists
+if ! [ -f $BACKUPFILE ]; then
+    echo "backup file not found"
+    echo 'to get a list of available backups, run:'
+    echo '    docker-compose run postgres list-backups'
+    exit 1
+fi
+
+echo "beginning restore from $1"
+echo "-------------------------"
+
+
+# delete the db
+# deleting the db can fail. Spit out a comment if this happens but continue since the db
+# is created in the next step
+# Set the default database to be the username
+: ${MYSQLDB_DATABASE:=$MYSQL_USER}
+export MYSQL_DATABASE
+
+echo "deleting old database $MYSQL_DATABASE"
+echo "drop database if exists $MYSQL_DATABASE;" | mysql
+
+# create a new database
+echo "creating new database $MYSQL_DATABASE"
+echo "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci;" | mysql
+echo "grant all on $MYSQL_DATABASE.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}';" | mysql
+
+# restore the database
+echo "restoring database $MYSQL_DATABASE"
+mysql $MYSQL_DATABASE < $BACKUPFILE

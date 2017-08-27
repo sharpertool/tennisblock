@@ -28,7 +28,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default='')
 
 # DATABASE
 DATABASES = {
-    'default': env.db("DATABASE_URL", default='mysql://tennisblock:tennisblock@localhost:3306/tennisblock'),
+    'default': env.db("DATABASE_URL", default='mysql://tennisblock:tennisblock@localhost:3316/tennisblock'),
 }
 
 # Added the django cors module
@@ -247,8 +247,10 @@ CONTACT_FORM_RECIPIENTS = (
 BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
 
+LESS_CMDLINE = env("LESS_CMDLINE", default="lessc --clean-css --clean-option=--keep-line-breaks {infile} {outfile}")
+print("Using less compiler from {}".format(LESS_CMDLINE))
 COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc --clean-css --clean-option=--keep-line-breaks {infile} {outfile}'),
+    ('text/less', LESS_CMDLINE),
 )
 
 STATIC_PRECOMPILER_COMPILERS = (
