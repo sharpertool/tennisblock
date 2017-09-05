@@ -12,10 +12,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'test':
     print("Running test mode..")
     from tennisblock.settings.test import *
 else:
-    if env.bool('DJANGO_DOCKER', False):
-        env.read_env('.env.local.docker')
-    else:
-        env.read_env('.env.local')
+    env.read_env('.env.local')
 
     from tennisblock.settings.dev import *
 
