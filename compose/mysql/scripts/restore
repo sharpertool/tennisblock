@@ -48,6 +48,9 @@ echo "creating new database $MYSQL_DATABASE"
 echo "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci;" | mysql
 echo "grant all on $MYSQL_DATABASE.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}';" | mysql
 
+# Need this users.. it's tied into the database export.
+echo "grant all on $MYSQL_DATABASE.* to 'gbadmin'@'localhost' identified by '${MYSQL_PASSWORD}';" | mysql
+
 # restore the database
 echo "restoring database $MYSQL_DATABASE"
 mysql $MYSQL_DATABASE < $BACKUPFILE
