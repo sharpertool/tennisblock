@@ -226,14 +226,14 @@ LOGGING = {
 
 # Email Server Settings. Change as needed
 EMAIL_BACKEND = env("DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
-EMAIL_HOST = 'smtpd'
-EMAIL_PORT = 25
 
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'ed@tennisblock.com'
 
-# Left blank here.
+# Left blank here.EMAIL_HOST = 'smtpd'
+EMAIL_PORT = 25
+
 # Add this to local_config.py on the server
 EMAIL_HOST_PASSWORD = ''
 

@@ -9,7 +9,7 @@ services:
     container_name: tennis-mysql
     build: ./compose/mysql
     volumes:
-      - mysql_data_dev:/var/lib/mysql/data
+      - mysql_data_dev:/var/lib/mysql
       #- ./database/backups:/backups
       # You can also modify this to point to your local Dropbox location where the shared
       # backups are stored. For me this is:
