@@ -1,7 +1,6 @@
 version: '2'
 
 volumes:
-  postgres_data_dev: {}
   mysql_data_dev: {}
 
 services:
