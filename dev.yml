@@ -19,7 +19,7 @@ services:
         - MYSQL_USER=tennisblock
         - MYSQL_PASSWORD=tennisblock
     ports:
-      - "3316:3306"
+      - "3318:3306"
 
 #  postgres:
 #    container_name: tennis-postgres
