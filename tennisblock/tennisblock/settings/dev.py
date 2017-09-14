@@ -9,8 +9,6 @@ from .base import *
 
 DEBUG = True
 
-# Set this for development, but clear for PROD
-BLOCK_NOTIFY_RECIPIENTS = ['ed@tennisblock.com', 'viquee@me.com']
 
 CACHES = {
     'default': {
