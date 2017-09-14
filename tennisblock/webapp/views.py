@@ -17,6 +17,7 @@ from forms import ContactForm
 from .forms import CoupleForm, AvailabilityForm
 from TBLib.view import class_login_required
 
+
 class HomeView(TemplateView):
     template_name = "home.html"
 
@@ -90,7 +91,7 @@ class ContactView(TemplateView):
         return render(request,
                       self.template_name,
                       {'form': form}
-        )
+                      )
 
     def post(self, request):
         form = ContactForm(request.POST)
@@ -180,5 +181,3 @@ class CouplesView(TemplateView):
             return self.render_to_response(context)
         except:
             return self.render_to_response(context)
-
-

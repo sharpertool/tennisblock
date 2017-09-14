@@ -47,5 +47,3 @@ django-environ==0.4.3
 
 mysqlclient
 
-# Python-PostgreSQL Database Adapter
-psycopg2==2.7.1
