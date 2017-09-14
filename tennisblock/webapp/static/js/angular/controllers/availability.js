@@ -34,7 +34,7 @@ tennisblockapp.controller('Availability', function($scope,$http,BlockDates,Avail
     };
 
     $scope.canEdit = function(player) {
-        if (django.username == 'kutenai') { return true;}
+        if (django.username == 'kutenai' || django.username == 'jan.treadway') { return true;}
         if (player.name.indexOf(django.first) != -1 && player.name.indexOf(django.last) != -1) {
             return true;
         }
