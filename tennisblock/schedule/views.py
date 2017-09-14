@@ -104,7 +104,7 @@ class ScheduleNotify(TemplateView):
 
         tb = Scheduler()
         if settings.BLOCK_NOTIFY_RECIPIENTS:
-            recipient_list = ['ed@tennisblock.com', 'viquee@me.com']
+            recipient_list = settings.BLOCK_NOTIFY_RECIPIENTS
         else:
             recipient_list = tb.getBlockEmailList()
 
