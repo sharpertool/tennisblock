@@ -25,11 +25,12 @@ MANAGERS = ADMINS
 # Note: This key only used for development and testing.
 SECRET_KEY = env("DJANGO_SECRET_KEY", default='')
 
-
 # DATABASE
 DATABASES = {
     'default': env.db("DATABASE_URL", default='mysql://tennisblock:tennisblock@localhost:3316/tennisblock'),
 }
+
+print("Databases: {}".format(DATABASES['default']))
 
 # Added the django cors module
 CORS_ORIGIN_WHITELIST = (
@@ -259,8 +260,8 @@ STATIC_PRECOMPILER_COMPILERS = (
     'static_precompiler.compilers.LESS',
 )
 
-USE_LESS = False
-LESS_POLL = 100000
+USE_LESS = env('USE_LESS', default=False)
+LESS_POLL = env('LESS_POLL', default=100000)
 
 CACHES = {
     'default': {

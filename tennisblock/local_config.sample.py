@@ -1,21 +1,31 @@
-import environ
+
+import glob
 import os
 import sys
-from os.path import join, normpath
+import environ
 
-print("Loaded local_config from %s." % __file__)
+env=environ.Env()
 
-env = environ.Env()
+print("Loaded local_config from {}".format(__file__))
+# Do an import * on the module version you would like to use
 
-print("Argv length:{} Contents:{}".format(len(sys.argv), ",".join(sys.argv)))
-if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    print("Running test mode..")
-    from tennisblock.settings.test import *
+envfiles=glob.glob('.env') + glob.glob('*.env')
+for envfile in envfiles:
+    print("Reading environment from {}".format(envfile))
+    env.read_env(envfile)
+
+if sys.argv[1] == 'test':
+    os.environ['USE_LESS'] = False
+    os.environ['DEBUG'] = False
+    from tennisblock.settings.testing import *
+
 else:
-    env.read_env('.env.local')
-
     from tennisblock.settings.dev import *
 
-ALLOWED_HOSTS += [
-    'tennis.local'
-]
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'LOCATION': 'tennisblock_flake'
+    }
+}
+
