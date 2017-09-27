@@ -7,6 +7,7 @@ set -e
 export MYSQL_DATABASE
 
 # export the postgres password so that subsequent commands don't ask for it
+echo -e "[mysql]\nuser=root\npassword=${MYSQL_ROOT_PASSWORD}\nhost=localhost\nport=3306\n" > ${HOME}/.my.cnf
 
 echo "creating backup"
 echo "---------------"

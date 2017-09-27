@@ -16,7 +16,7 @@ fi
 # set the backupfile variable
 BACKUPFILE=/backups/$1
 
-echo -e "[mysql]\nuser=root\npassword=${MYSQL_ROOT_PASSWORD}\n" > ${HOME}/.my.cnf
+echo -e "[mysql]\nuser=root\npassword=${MYSQL_ROOT_PASSWORD}\nhost=localhost\nport=3306\n" > ${HOME}/.my.cnf
 
 echo "Show the build .my.cnf"
 cat ${HOME}/.my.cnf
