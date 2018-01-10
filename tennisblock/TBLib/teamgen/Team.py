@@ -13,10 +13,10 @@ class Team(object):
     def display(self):
         m = self.m
         f = self.f
-        print "%s %s (%3.1f/%3.1f) and %s %s (%3.1f/%3.1f) = %3.1f" \
+        print("%s %s (%3.1f/%3.1f) and %s %s (%3.1f/%3.1f) = %3.1f" \
               % (m.first,
                  m.last, m.ntrp, m.microntrp, f.first, f.last, f.ntrp,
-                 f.microntrp, m.microntrp + f.microntrp)
+                 f.microntrp, m.microntrp + f.microntrp))
 
     def __repr__(self):
         return str(self.m) + ":" + str(self.f)

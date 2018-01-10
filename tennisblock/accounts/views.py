@@ -1,7 +1,6 @@
 # Create your views here.
 
-from django.core.urlresolvers import reverse
-from django.contrib.auth import authenticate, login,logout
+from django.urls import reverse
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from TBLib.view import TennisLoginView

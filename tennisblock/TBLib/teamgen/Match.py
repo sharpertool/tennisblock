@@ -10,9 +10,9 @@ class Match(object):
 
     def Display(self):
         self.t1.display()
-        print "Versus"
+        print("Versus")
         self.t2.display()
-        print "Diff: %4.2f\n" % self.Diff()
+        print("Diff: %4.2f\n" % self.Diff())
 
     def __repr__(self):
         return "%4.2f" % self.Diff()

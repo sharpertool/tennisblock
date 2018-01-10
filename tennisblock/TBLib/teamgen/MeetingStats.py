@@ -83,7 +83,7 @@ class MeetingStats(object):
 
             self.InvalidFemPartners[p.Name()] = set()
 
-        print "Restart Done"
+        print("Restart Done")
 
     def isSpecialCase(self):
         """
@@ -148,7 +148,7 @@ class MeetingStats(object):
                 p_invalid = self.Partners[mn].union(self.Opposites2X[mn])
             self.InvalidFemPartners[mn] = p_invalid
 
-        print "Added a set"
+        print("Added a set")
 
     def GetSets(self):
         return self.sets
@@ -159,8 +159,8 @@ class MeetingStats(object):
         self.minDiff = 10
 
     def PrintCheckStats(self):
-        print "Failed Stats:Partner:%d Diff:%d Mindiff:%4.2f" \
-              % (self.nFailuresByInvalidPartner, self.nFailuresByDiff, self.minDiff)
+        print("Failed Stats:Partner:%d Diff:%d Mindiff:%4.2f" \
+              % (self.nFailuresByInvalidPartner, self.nFailuresByDiff, self.minDiff))
 
     def GetNewSet(self, diffMax):
         """
@@ -178,7 +178,7 @@ class MeetingStats(object):
         maxTries = 1
 
         while tries < maxTries:
-            print "Trying to build a set DiffMax:%5.3f Try # %d." % (diffMax, tries)
+            print("Trying to build a set DiffMax:%5.3f Try # %d." % (diffMax, tries))
             s = self.BuildSet(diffMax)
             if s:
                 return s
@@ -241,7 +241,7 @@ class MeetingStats(object):
                 except:
                     pass
 
-            print "Assigned men. Try to assign women. Seqs:%d Try:%d Diff=%5.3f" % (self.nCurrSetCount, nTries, diffMax)
+            print("Assigned men. Try to assign women. Seqs:%d Try:%d Diff=%5.3f" % (self.nCurrSetCount, nTries, diffMax))
             self.ClearCheckStats()
             if self.AddWomen(newSet, t_women, diffMax, self.maxIterations):
                 return newSet

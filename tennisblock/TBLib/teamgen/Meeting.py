@@ -29,7 +29,7 @@ class Meeting(object):
 
     def Display(self):
         for index, blockset in enumerate(self.ms.GetSets()):
-            print "Set %d" % index + 1
+            print("Set {index+1}")
             blockset.Display()
 
     def SetCount(self):

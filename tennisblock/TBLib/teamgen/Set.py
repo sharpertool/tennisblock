@@ -61,7 +61,7 @@ class Set(object):
     def Display(self):
         for match in self.matches:
             match.Display()
-            print ""
+            print("")
 
     def showDiffs(self):
         diffs = ["%4.2f" % match.Diff() for match in self.matches]

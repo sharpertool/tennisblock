@@ -1,7 +1,7 @@
 from django.conf.urls import url
 import django.contrib.auth.views
 
-from views import (
+from .views import (
     AcccountsLoginSuccess,
     AcccountsLogoutSuccess,
     AcccountsDisabled,

@@ -12,7 +12,7 @@ from django.conf import settings
 
 from TBLib.view import TennisLoginView
 from blockdb.models import Season, Couple, SeasonPlayers
-from forms import ContactForm
+from .forms import ContactForm
 
 from .forms import CoupleForm, AvailabilityForm
 from TBLib.view import class_login_required

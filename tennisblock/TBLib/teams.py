@@ -1,7 +1,7 @@
 # !/usr/bin/env python
 
-from teamgen.TeamGen2 import TeamGen
-from teamgen.DBTeams import DBTeams
+from .teamgen.TeamGen2 import TeamGen
+from .teamgen.DBTeams import DBTeams
 
 
 class TeamManager(object):

@@ -114,6 +114,11 @@ class Scheduler(object):
         """
 
         season = get_current_season()
+
+        if not season:
+            print("No current season configured")
+            return None
+
         if date:
             mtg = get_meeting_for_date(date)
         else:

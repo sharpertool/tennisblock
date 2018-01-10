@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from views import (MembersView, MemberCreate,
+from .views import (MembersView, MemberCreate,
                    PlayerList, PlayerDetail, PlayerUpdate, DeletePlayerView,
                    CreatePlayerView, SeasonPlayersFormView, SeasonPlayersUpdate)
 

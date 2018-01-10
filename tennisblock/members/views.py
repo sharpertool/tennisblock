@@ -5,9 +5,9 @@ from django.forms.models import modelformset_factory, BaseModelFormSet
 from django.forms.models import inlineformset_factory
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
-from forms import PlayerForm
+from .forms import PlayerForm
 from blockdb.models import Player, SeasonPlayers
 from api.apiutils import get_current_season
 from TBLib.view import TennisLoginView

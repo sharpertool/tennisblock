@@ -24,18 +24,18 @@ class TeamGen(object):
 
                 if set is None:
                     diff_max = self.meeting.DiffHistoryMin()
-                    print "DiffMax Increased to %5.3f" % diff_max
+                    print("DiffMax Increased to %5.3f" % diff_max)
 
             if set is None:
                 self.meeting.PrintCheckStats()
-                print "Failed to build the sequence."
+                print("Failed to build the sequence.")
                 return None
             else:
                 set.Display()
                 d_max, d_avg, diff_list = set.DiffStats()
                 diffs = ",".join(["%5.3f" % x for x in diff_list])
-                print "Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
-                    self.diffMax, d_max, d_avg, diffs)
+                print("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
+                    self.diffMax, d_max, d_avg, diffs))
                 self.meeting.AddSet(set)
 
         return self.meeting.sets

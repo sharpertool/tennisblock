@@ -1,12 +1,8 @@
 -r base.txt
 
 fabric
-
 ipython[notebook]
-
-
 django-debug-toolbar
-
 django-extensions
 
 Werkzeug
