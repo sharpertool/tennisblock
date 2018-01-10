@@ -14,7 +14,7 @@ for envfile in envfiles:
     print("Reading environment from {}".format(envfile))
     env.read_env(envfile)
 
-if sys.argv[1] == 'test':
+if len(sys.argv) > 1 and sys.argv[1] == 'test':
     os.environ['USE_LESS'] = False
     os.environ['DEBUG'] = False
     from tennisblock.settings.testing import *
