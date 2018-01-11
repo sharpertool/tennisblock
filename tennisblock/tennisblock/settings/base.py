@@ -138,8 +138,6 @@ TEMPLATES = [
                 # 'sekizai.context_processors.sekizai',
                 # 'sekizai.context.SekizaiContext',
                 'TBLib.context.tennisblock',
-                'django.core.context_processors.request',
-
             ]
 
         }
