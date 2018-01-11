@@ -1,0 +1,53 @@
+@import "tbdefs";
+
+
+
+#navwrapper {
+    position: relative;
+    //top:$bannerHeight;
+    //left:0px;
+    //right:0px;
+    float:left;
+    height:$navHeight;
+    margin: 2px 2.5%;
+    width:95%;
+    text-align: center;
+    //background-color: $navbar_color;
+
+    #navigation{
+        position: relative;
+        display:inline-block;
+
+        background-color: $navbar_color;
+        color: #377E27;
+        text-align:middle;
+        height: $navHeight;
+        font-size: 20px;
+
+        ul{
+            list-style:none;
+            margin-top:5px;
+            margin-left:6px;
+
+            li{
+                float:left;
+                color: #377E27;
+                margin-right:5px;
+                display: block;
+
+                a {
+                    color:#377E27;
+                    font-weight:bold;
+                    //text-decoration:underline;
+
+                    &:hover{
+                        color:#377E27;
+                        //background-color:White;
+                        text-decoration:none;
+                    }
+                }
+            }
+        }
+    }
+}
+

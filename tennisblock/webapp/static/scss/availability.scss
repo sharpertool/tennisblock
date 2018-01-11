@@ -1,0 +1,64 @@
+
+$odd_row: #bccdd3;
+$even_row: #b6b6b6;
+
+.member_list {
+
+}
+
+#textContent {
+    padding-left: 20px;
+}
+
+table {
+
+    width: 100%;
+    border: 1px solid black;
+
+    tr,th,td {
+        border: 1px solid black;
+    }
+
+    tr {
+        &.odd {
+            background-color: $odd_row;
+
+            &.single {
+                background-color: adjust-hue(saturate($odd_row, 30%), 50);
+            }
+        }
+        &.even {
+            background-color: $even_row;
+            &.single {
+                background-color: adjust-hue(saturate($even_row, 30%), 50);
+            }
+        }
+
+        &.single {
+            backgrond-color: darkgrey;
+        }
+
+        &.member_list_header {
+            background-color: #449aff;
+        }
+    }
+
+    tdxx {
+        .odd {
+            background-color: #d3d3d3;
+        }
+        .even {
+            background-color: gray;
+        }
+    }
+
+    td.cplayed {
+        background-color: #8bffb3;
+    }
+}
+
+.holdout {
+    background-color: indianred;
+}
+
+

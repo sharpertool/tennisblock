@@ -1,0 +1,135 @@
+/* ==========================================================================
+    Base styles
+   ========================================================================== */
+
+html,
+button,
+input,
+select,
+textarea {
+    color : $base_color;
+}
+
+html,
+body {
+    height : 100%;
+}
+
+body {
+    @include light-background;
+    &.image-background {
+        background-image : url('#{$imgbase}/Gardenbuzz-Dark-Background.jpg');
+        background-size  : cover;
+        p {
+            color : $body_text_color;
+        }
+    }
+    section {
+    }
+}
+
+body,
+.pure-g [class *= "pure-u"],
+.pure-g-r [class *= "pure-u"] {
+    font-size   : 1em;
+    line-height : 1.4;
+    font-family : $sans_serifs;
+    margin      : 0;
+}
+
+.pure-g > div {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+::selection {
+    background : $selectionColor;
+}
+
+::-moz-selection {
+    background : $selectionColor;
+}
+
+.chromeframe {
+    margin     : 0.2em 0;
+    background : #ccc;
+    color      : #000;
+    padding    : 0.2em 0;
+}
+
+.small-text {
+    font-size : .75em;
+}
+
+.large-text {
+    font-size : 1.5em;
+}
+
+.title-text {
+    font-size : 2.5em;
+}
+
+.ss-icon {
+    cursor : pointer;
+}
+
+a {
+    text-decoration : none;
+    color           : $accent;
+
+    &:hover {
+        color  : $dark_accent;
+        cursor : pointer;
+    }
+
+    &:active {
+        color : $light_accent;
+    }
+
+    &:focus {
+        outline : none;
+    }
+
+}
+
+iframe {
+    border : none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color       : $default_text_color;
+    line-height : 1.5em;
+}
+
+hr {
+    border           : none;
+    height           : 1px;
+    background-color : $body_bg_color;
+    margin           : 0 1em;
+}
+
+.dark-background {
+    background-color: $dark_bg_color;
+    color: $dark_bg_text_color;
+    .light-text {
+        color: $dark_bg_lighttext_color;
+    }
+}
+
+.light-background {
+    background-color: $light_bg_color;
+    color: $light_bg_text_color;
+}
+
+.accent-background {
+    background-color: $accent_bg_color;
+    color: $accent_color;
+}
+
