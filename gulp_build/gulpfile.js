@@ -17,12 +17,6 @@ function handleError(err) {
     this.emit('end');
 }
 
-gulp.task('bootstrap-install', function() {
-    return gulp
-        .src('./node_modules/bootstrap/scss/**/*.scss')
-        .pipe(gulp.dest(path.join(config.src, 'scss/libs/bootstrap')));
-});
-
 gulp.task('sass-build', function() {
     return gulp
         .src([
@@ -36,18 +30,12 @@ gulp.task('sass-build', function() {
         .pipe(gulp.dest(path.join(config.dest, 'css')));
 });
 
-gulp.task('copy-css', function() {
-    return gulp
-        .src([path.join(config.src, 'css/**/*')])
-        .pipe(gulp.dest(path.join(config.dest, 'css')));
-});
-
-gulp.task('build', ['bootstrap-install', 'sass-build'], function() {
+gulp.task('build', ['sass-build'], function() {
 
 });
 
 gulp.task('build-all', function(done) {
-    runSeq('bootstrap-install', 'build', function() {
+    runSeq('build', function() {
         done();
     });
 });

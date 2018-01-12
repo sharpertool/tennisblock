@@ -36,3 +36,4 @@ db_learning.txt
 /tennisblock/default.env
 /.venv3
 /gulp_build/node_modules
+/tennisblock/webapp/static/assets
