@@ -25,17 +25,6 @@
             <!-- base.html: page_style -->
         {% endblock %}
 
-        {% block less_script %}
-            <!-- base.html: less_script -->
-            {% if USE_LESS %}
-                <link rel="stylesheet/less" type="text/css" href="{% static 'less/style_base.less' %}">
-            {% else %}
-                {% compress css %}
-                    <link rel="stylesheet" type="text/less" href="{% static 'less/style_base.less' %}">
-                {% endcompress %}
-            {% endif %}
-        {% endblock less_script %}
-
         {% block less_engine %}
             <!-- base.html: less_engine -->
             {% if USE_LESS %}

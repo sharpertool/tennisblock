@@ -20,12 +20,9 @@
     padding         : .5em;
     border          : 1px solid $red;
     color           : $error_color;
-    @include rounded-corners;
-    @include small-text;
 
     &:before {
         content      : "Warning";
-        @include ss-icon;
         float        : left;
         display      : block;
         margin-right : .5em;

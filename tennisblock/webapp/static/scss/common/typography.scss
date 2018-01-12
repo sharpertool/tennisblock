@@ -7,7 +7,7 @@
 
 $sans_serifs: 'FF Tisa Sans Pro', 'Museo Slab', helvetica, arial, sans-serif;
 
-.font-reset {
+@mixin font-reset {
     margin         : 0;
     padding        : 0;
     font-size      : 1em;
@@ -19,18 +19,18 @@ $sans_serifs: 'FF Tisa Sans Pro', 'Museo Slab', helvetica, arial, sans-serif;
 
 /* Base Font Styles */
 
-.base-serif {
+@mixin base-serif {
     font-family : $sans_serifs;
     @include font-reset;
 }
 
-.base-header {
+@mixin base-header {
     @include base-serif;
     color       : $base_header_color;
     font-weight : 700;
 }
 
-.base-paragraph {
+@mixin base-paragraph {
     @include base-serif;
     color : $base_p_color;
 }

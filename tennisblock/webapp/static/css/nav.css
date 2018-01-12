@@ -1,0 +1,38 @@
+/*
+    The overall structure is:
+    header Bar - top, width of window
+    frame - contains all other elements, fixed width
+*/
+body {
+  color: black; }
+
+#navwrapper {
+  position: relative;
+  float: left;
+  height: 50px;
+  margin: 2px 2.5%;
+  width: 95%;
+  text-align: center; }
+  #navwrapper #navigation {
+    position: relative;
+    display: inline-block;
+    background-color: #9a9ab3;
+    color: #377E27;
+    text-align: middle;
+    height: 50px;
+    font-size: 20px; }
+    #navwrapper #navigation ul {
+      list-style: none;
+      margin-top: 5px;
+      margin-left: 6px; }
+      #navwrapper #navigation ul li {
+        float: left;
+        color: #377E27;
+        margin-right: 5px;
+        display: block; }
+        #navwrapper #navigation ul li a {
+          color: #377E27;
+          font-weight: bold; }
+          #navwrapper #navigation ul li a:hover {
+            color: #377E27;
+            text-decoration: none; }

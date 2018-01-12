@@ -18,10 +18,10 @@ $largeWidth: 1280px;
 $headerBarHeight: 10px;
 
 $frameWidth: 1250px;
-@media screen and (max-width: 1250) {
+@media screen and (max-width: 1250px) {
     $frameWidth: 960px;
 }
-@media screen and (max-width: 768) {
+@media screen and (max-width: 768px) {
     $frameWidth: 768px;
 }
 $frameMargin: 36px;

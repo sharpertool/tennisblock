@@ -1,0 +1,5 @@
+{
+  "breakOnError": true,
+  "srcmap": false,
+  "minify": true
+}

@@ -15,6 +15,12 @@ body {
     height : 100%;
 }
 
+@mixin light-background {
+    background-color: $light_bg_color;
+    color: $light_bg_text_color;
+}
+
+
 body {
     @include light-background;
     &.image-background {
@@ -121,11 +127,6 @@ hr {
     .light-text {
         color: $dark_bg_lighttext_color;
     }
-}
-
-.light-background {
-    background-color: $light_bg_color;
-    color: $light_bg_text_color;
 }
 
 .accent-background {

@@ -17,29 +17,6 @@
     More info at: http://lesselements.com
   ---------------------------------------------------*/
 
-@mixin gradient($color: #F5F5F5, $start: #EEE, $stop: #FFF) {
-    background : $color;
-    background : -webkit-gradient(linear, left bottom, left top, color-stop(0, $start), color-stop(1, $stop));
-    background : -ms-linear-gradient(bottom,
-    $start,
-    $stop);
-    background : -moz-linear-gradient(center bottom,
-    $start 0%,
-    $stop 100%);
-    background : -o-linear-gradient($stop,
-    $start);
-    filter     : e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",$stop,$start));
-}
-
-@mixin bw-gradient($color: #F5F5F5, $start: 0, $stop: 255) {
-    background : $color;
-    background : -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb($start,$start,$start)), color-stop(1, rgb($stop,$stop,$stop)));
-    background : -ms-linear-gradient(bottom, rgb($start,$start,$start) 0%, rgb($stop,$stop,$stop) 100%);
-    background : -moz-linear-gradient(center bottom, rgb($start,$start,$start) 0%, rgb($stop,$stop,$stop) 100%);
-    background : -o-linear-gradient(rgb($stop,$stop,$stop), rgb($start,$start,$start));
-    filter     : e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",rgb($stop,$stop,$stop), rgb($start,$start,$start)));
-}
-
 @mixin bordered($top-color: #EEE, $right-color: #EEE, $bottom-color: #EEE, $left-color: #EEE) {
     border-top    : solid 1px $top-color;
     border-left   : solid 1px $left-color;
@@ -72,7 +49,6 @@
     border-bottom-right-radius         : $bottomright;
     border-bottom-left-radius          : $bottomleft;
     border-top-left-radius             : $topleft;
-    @mixin background-clip(padding-box),
 }
 
 @mixin opacity($opacity: 0.5) {
@@ -92,17 +68,17 @@
     transition-duration         : $duration;
 }
 
-@mixin transform(...) {
-    -webkit-transform : $arguments;
-    -moz-transform    : $arguments;
-    -o-transform      : $arguments;
-    -ms-transform     : $arguments;
-    transform         : $arguments;
-}
+//@mixin transform(...) {
+//    -webkit-transform : $arguments;
+//    -moz-transform    : $arguments;
+//    -o-transform      : $arguments;
+//    -ms-transform     : $arguments;
+//    transform         : $arguments;
+//}
 
-@mixin rotation($deg:5deg) {
-    @mixin transform(rotate($deg)),
-}
+//@mixin rotation($deg:5deg) {
+//    @mixin transform(rotate($deg))
+//}
 
 @mixin scale($ratio:1.5) {
     @include transform(scale($ratio));
@@ -166,7 +142,7 @@
     @include transform(translate($x, $y));
 }
 
-@mixin background-clip($argument: padding-box) {
+@mixin background-clip($argument:padding-box) {
     -moz-background-clip    : $argument;
     -webkit-background-clip : $argument;
     background-clip         : $argument;
