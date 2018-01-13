@@ -21,10 +21,10 @@ services:
     build: ./compose/mysql
     volumes:
       - tennis_data_dev:/var/lib/mysql
-      #- ./database/backups:/backups
+      - ./database/backups:/backups
       # You can also modify this to point to your local Dropbox location where the shared
       # backups are stored. For me this is:
-      - "~/Dropbox/Development/tennisblock/msyql/backups:/backups"
+      #- "~/Dropbox/Development/tennisblock/msyql/backups:/backups"
     environment:
         - MYSQL_ROOT_PASSWORD=tennisroot
         - MYSQL_DATABASE=tennisblock

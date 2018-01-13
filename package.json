@@ -1,0 +1,9 @@
+{
+  "name": "tennisblock",
+  "version": "1.0.0",
+  "description": "Initial package for tennisblock site",
+  "main": "index.js",
+  "repository": "git@bitbucket.org:sharpertool/tennisblock.git",
+  "author": "Ed Henderson <ed@sharpertool.com>",
+  "license": "MIT"
+}

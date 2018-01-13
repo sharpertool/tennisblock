@@ -1,6 +1,7 @@
 # Django settings for tennisblock_project project.
 
 import environ
+from os.path import join
 from unipath import Path
 import sys
 
@@ -12,6 +13,9 @@ print("DJANGO_ROOT:{}".format(DJANGO_ROOT))
 print("PROJECT_ROOT:{}".format(PROJECT_ROOT))
 
 sys.path.append(Path(PROJECT_ROOT).child("scripts"))
+
+# DEBUG
+DEBUG = env.bool("DEBUG", False)
 
 ADMINS = (
     ('Ed Henderson', 'ed@tennisblock.com'),
@@ -86,6 +90,13 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
+
+# URL prefix for static files.
+# Example: "http://media.lawrence.com/static/"
+STATICFILES_DIRS = []
+
+# Add any additional dirs defined in environment variable
+STATICFILES_DIRS += env.list('STATICFILES_DIRS', default=[])
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -183,6 +194,7 @@ INSTALLED_APPS = (
     'members.apps.MembersConfig',
     'schedule',
     'season',
+    "webpack_loader",
 )
 
 REST_FRAMEWORK = {
@@ -268,7 +280,26 @@ CACHES = {
     }
 }
 
-ANGULAR_BASE = '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/'
+# Set this to true to load the editor and dependencies locally for development
+USE_LOCAL_BUNDLE = env.bool('USE_LOCAL_BUNDLE', default=False)
+if USE_LOCAL_BUNDLE:
+    # React Project Editor Javascript build directory default location.
+    # We expect that the RPE scaffold project lives at the same level
+    # as the synoptic project
+    JS_DIST_DIR = env.str("JS_DIST_DIR")
+
+    STATICFILES_DIRS += [str(JS_DIST_DIR)]
+
+    WEBPACK_LOADER = {
+        'DEFAULT': {
+            'CACHE': not DEBUG,
+            'BUNDLE_DIR_NAME': env.str('BUNDLE_DIR_NAME', default='/'),  # must end with slash
+            'STATS_FILE': join(str(JS_DIST_DIR), 'webpack-stats.json'),
+            'POLL_INTERVAL': 0.1,
+            'IGNORE': ['.+\.hot-update.js', '.+\.map']
+        }
+    }
+
 
 # Set your DSN value
 RAVEN_CONFIG = {

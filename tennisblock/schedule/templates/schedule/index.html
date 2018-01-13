@@ -1,6 +1,7 @@
 {% extends "common/angular_base.html" %}
 {% load compress %}
 {% load staticfiles %}
+{% load render_bundle from webpack_loader %}
 
 {% block less_script %}
     {{ block.super }}
