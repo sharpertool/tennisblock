@@ -122,7 +122,7 @@ def getSubList(request, date=None):
 
             others = SeasonPlayers.objects.filter(blockmember=False)
             for sp in others:
-                if not playingIds.has_key(sp.player.id):
+                if sp.player.id not in playingIds:
                     s = {
                         'name': sp.player.Name(),
                         'id': sp.player.id,
