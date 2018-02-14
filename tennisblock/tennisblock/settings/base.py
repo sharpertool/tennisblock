@@ -161,7 +161,7 @@ APPEND_SLASH = False
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'tennisblock.wsgi.application'
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -195,7 +195,7 @@ INSTALLED_APPS = (
     'schedule',
     'season',
     "webpack_loader",
-)
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
