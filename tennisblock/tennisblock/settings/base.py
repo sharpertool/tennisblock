@@ -2,17 +2,17 @@
 
 import environ
 from os.path import join
-from unipath import Path
 import sys
 
 env = environ.Env()
 
-DJANGO_ROOT = Path(__file__).ancestor(3)
-PROJECT_ROOT = DJANGO_ROOT.ancestor(1)
+CONF_DIR = environ.Path(__file__)
+DJANGO_ROOT = CONF_DIR - 3
+PROJECT_ROOT = DJANGO_ROOT - 1
 print("DJANGO_ROOT:{}".format(DJANGO_ROOT))
 print("PROJECT_ROOT:{}".format(PROJECT_ROOT))
 
-sys.path.append(Path(PROJECT_ROOT).child("scripts"))
+sys.path.append(PROJECT_ROOT("scripts"))
 
 # DEBUG
 DEBUG = env.bool("DEBUG", False)
@@ -100,7 +100,7 @@ STATICFILES_DIRS += env.list('STATICFILES_DIRS', default=[])
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = PROJECT_ROOT.child('media')
+MEDIA_ROOT = PROJECT_ROOT('media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -111,7 +111,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = PROJECT_ROOT.child('collectedstatic')
+STATIC_ROOT = PROJECT_ROOT('collectedstatic')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"

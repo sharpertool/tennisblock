@@ -18,6 +18,10 @@ CACHES = {
 }
 
 FIXTURE_DIRS = (
-    PROJECT_ROOT.child('fixtures'),
+    PROJECT_ROOT('fixtures'),
+)
+
+INSTALLED_APPS += (
+    'django_extensions',
 )
 
