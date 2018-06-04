@@ -27,7 +27,10 @@ fpdf==1.7.2
 gnureadline==6.3.3
 oauthlib==2.0.0
 path.py==10.5
-pinax-theme-bootstrap-account==1.0b2
+
+# Remove, not compatible. See if we can live without it
+#pinax-theme-bootstrap-account==1.0b2
+
 pinax-theme-bootstrap==7.10.2
 pyparsing==2.2.0
 python-dateutil==2.6.1
@@ -44,4 +47,5 @@ sqlparse==0.2.3
 django-environ==0.4.4
 
 mysqlclient
+psycopg2==2.7.4
 
