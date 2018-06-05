@@ -10,19 +10,23 @@ class TeamManager(object):
         self.dbTeams = DBTeams()
         self.matchid = matchid
 
-    def pickTeams(self, date=None, **kwargs):
-
+    def getPlayers(self, date=None):
+        """ Retrive players for given date """
         men, women = self.dbTeams.getPlayers(date)
 
         assert (len(men) == len(women))
+        return men, women
 
-        isTesting = kwargs.get('test', True)
-        noDupes = kwargs.get('nodupes', False)
+    def pickTeams(self, men=None, women=None, date=None, isTesting=False,
+                  noDupes=False, nCourts=None, nSequences=3):
+
+        if men is None or women is None:
+            men, women = self.getPlayers(date)
 
         # Calculate number fo courts based on # of men.
         # Assume # of women is the same.
-        nCourts = kwargs.get('courts', len(men) / 2)
-        nSequences = kwargs.get('sequences', 3)
+        if nCourts is None:
+            nCourts = len(men)/2
 
         if len(men) < nCourts * 2 or len(women) < nCourts * 2:
             errmsg = "Cannot pick teams, there are not enough men or women."
@@ -32,7 +36,7 @@ class TeamManager(object):
         tg = TeamGen(nCourts, nSequences, men, women)
         sequences = tg.generate_set_sequences(noDupes)
 
-        if sequences == None or len(sequences) < nSequences:
+        if sequences is None or len(sequences) < nSequences:
             return {"status": {"error": "Could not generate the required sequences"}}
 
         else:
@@ -48,14 +52,5 @@ class TeamManager(object):
 
     def queryMatch(self, date=None):
 
-        matchdata = self.dbTeams.queryMatch(date)
-        return matchdata
-
-
-def main():
-    # Do some testing
-    pass
-
-
-if __name__ == '__main__':
-    main()
+        data = self.dbTeams.queryMatch(date)
+        return data
