@@ -2,6 +2,7 @@ version: '2'
 
 volumes:
   postgres_data_dev: {}
+  tennis_data_dev: {}
 
 services:
 
@@ -10,7 +11,7 @@ services:
     build: ./compose/postgres
     volumes:
       #- postgres_data_dev:/var/lib/postgresql/data
-      #- ./database/backups:/backups
+      - ./database/backups:/backups
       # You can also modify this to point to your local Dropbox location where the shared
       # backups are stored. For me this is:
       - "~/Dropbox (Big Zeta)/Development/backups/datasheet:/backups"
@@ -20,24 +21,25 @@ services:
       - POSTGRES_USER=tennisblock
       - POSTGRES_DB=tennisblock
     ports:
-      - "5442:5432"
+      - "5443:5432"
 
-#  mysql:
-#    container_name: tennis-mysql
-#    build: ./compose/mysql
-#    volumes:
-#      - tennis_data_dev:/var/lib/mysql
-#      - ./database/backups:/backups
-#      # You can also modify this to point to your local Dropbox location where the shared
-#      # backups are stored. For me this is:
-#      #- "~/Dropbox/Development/tennisblock/msyql/backups:/backups"
-#    environment:
-#        - MYSQL_ROOT_PASSWORD=tennisroot
-#        - MYSQL_DATABASE=tennisblock
-#        - MYSQL_USER=tennisblock
-#        - MYSQL_PASSWORD=tennisblock
-#    ports:
-#      - "3318:3306"
+  mysql:
+    container_name: tennis-mysql
+    build: ./compose/mysql
+    volumes:
+      - tennis_data_dev:/var/lib/mysql
+      - ./database/backups:/backups
+      # You can also modify this to point to your local Dropbox location where the shared
+      # backups are stored. For me this is:
+      #- "~/Dropbox/Development/tennisblock/msyql/backups:/backups"
+    environment:
+        - MYSQL_ROOT_PASSWORD=tennisroot
+        - MYSQL_ROOT_HOST=172.*.*.*
+        - MYSQL_DATABASE=tennisblock
+        - MYSQL_USER=tennisblock
+        - MYSQL_PASSWORD=tennisblock
+    ports:
+      - "3319:3306"
 
   smtpd:
     container_name: tennis-smtpd

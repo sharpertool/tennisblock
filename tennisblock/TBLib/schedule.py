@@ -141,7 +141,7 @@ class Scheduler(object):
 
         numberOfPlaysMap = {}
         maxNumberOfPlays = 0
-        for info in stats.itervalues():
+        for info in iter(stats.values()):
             nplays = info['plays']['total']
             a = numberOfPlaysMap.setdefault(nplays, [])
 
@@ -242,16 +242,31 @@ class Scheduler(object):
         Call the stored procedure that does a low-level complex
         full outer join of our players.
         """
+        scheduled_players = Schedule.objects.filter(meeting=mtg)
+        guys = scheduled_players.filter(player__gender='M')
+        gals = scheduled_players.filter(player__gender='F')
 
-        cursor = connection.cursor()
+        mkdata = lambda s: {
+            'name': s.player.name,
+            'id': s.player.id,
+            'ntrp': s.player.ntrp,
+            'untrp': s.player.microntrp,
+        }
 
-        cursor.execute("call scheduled_players({});".format(mtg.pk))
+        #data = [{'guy': mkdata(guy), 'gal': mkdata(gals.get(player_pk=guy.partner_id).player)} for guy in guys]
 
-        desc = cursor.description
-        columns = [d[0] for d in desc]
-        rows = cursor.fetchall()
+        data = [{'guy': mkdata(guy), 'gal': mkdata(gals.get(player__pk=guy.partner_id))} for guy in guys]
 
-        data = [dict(zip(columns, r)) for r in rows]
+        # cursor = connection.cursor()
+        #
+        # cursor.execute("call scheduled_players({});".format(mtg.pk))
+        #
+        # desc = cursor.description
+        # columns = [d[0] for d in desc]
+        # rows = cursor.fetchall()
+        #
+        # data = [dict(zip(columns, r)) for r in rows]
+
         return data
 
 

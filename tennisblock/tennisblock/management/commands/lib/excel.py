@@ -160,7 +160,7 @@ class Excel(object):
     def importExcelWorksheet(self,sheet):
 
         wsData = ExcelWorksheet(sheet['name'])
-        if sheet.has_key('requiredCols'):
+        if 'requiredCols' in sheet:
             self.setRequiredColumns(sheet['requiredCols'])
         else:
             self.setRequiredColumns([])
@@ -191,7 +191,7 @@ class Excel(object):
 
         valid = True
         for col in self.requiredColumns:
-            if not rowData.has_key(col):
+            if not col in rowData:
                 valid = False
             else:
                 if rowData[col] == "":
