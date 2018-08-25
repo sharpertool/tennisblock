@@ -2,6 +2,7 @@ from rest_framework.request import Request
 from .apiutils import get_current_season
 
 from TBLib.teams import TeamManager
+from TBLib.teamgen import DBTeams
 
 from .apiutils import JSONResponse
 
@@ -16,8 +17,12 @@ def pickTeams(request, date=None):
         matchData = {}
         season = get_current_season()
         if date and season:
+
+            dbTeams = DBTeams()
+
+            men, women = dbTeams.getPlayers(date)
             mgr = TeamManager()
-            mgr.pickTeams(date, test=False,
+            mgr.pickTeams(men=men, women=women, test=False,
                           sequences=3)
 
             matchData = mgr.queryMatch(date)

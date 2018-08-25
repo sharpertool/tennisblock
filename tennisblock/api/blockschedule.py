@@ -107,7 +107,7 @@ def getSubList(request, date=None):
             fsubs = []
             msubs = []
             for a in avail:
-                if not playingIds.has_key(a.player.id):
+                if not a.player.id in playingIds:
                     s = {
                         'name': a.player.Name(),
                         'id': a.player.id,

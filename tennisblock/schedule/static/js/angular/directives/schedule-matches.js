@@ -47,6 +47,7 @@ tennisblockapp.directive('scheduleMatches',['TeamSchedule','PickTeams','$q',
 
                 $scope.pickTeams = function() {
                     console.log("Picking Teams for " + $scope.queryDate);
+                    $scope.match = { 'sets': [] }
                     PickTeams.save({date: $scope.queryDate},function(data){
                         console.log("Done Picking Teams:" + data.status + " " + data.date);
                         update();

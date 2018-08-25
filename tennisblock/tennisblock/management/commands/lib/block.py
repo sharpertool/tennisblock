@@ -137,7 +137,7 @@ def addCouples(season,players):
         cname = player['Couplename']
 
         if cname != "":
-            if not couples.has_key(cname):
+            if not cname in couples:
                 couples[cname] = {}
             couples[cname][player['Gender']] = player
 

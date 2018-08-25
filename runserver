@@ -1,0 +1,15 @@
+#!/bin/bash
+
+port=${1:-8002}
+
+base=$(abspath $(dirname $0))
+echo "Base dir for run is ${base}"
+cd ${base}/tennisblock
+while true
+do
+    ${base}/.venv3/bin/python manage.py runserver_plus ${port}
+    sleep 2
+done
+
+
+

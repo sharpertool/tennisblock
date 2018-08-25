@@ -6,7 +6,10 @@
 # It's also 3 fewer characters to type.. and in some projects,
 # at the root instead of buried.
 
+base=$(abspath $(dirname $0))
+echo "Base: ${base}"
+
 pushd tennisblock >> /dev/null
-python manage.py "$@"
+${base}/.venv3/bin/python manage.py "$@"
 popd tennisblock >> /dev/null
 
