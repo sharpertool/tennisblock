@@ -22,7 +22,7 @@ class Scheduler(object):
         """
         try:
             av = Availability.objects.get(meeting=mtg, player=player)
-            return av.available;
+            return av.available
         except ObjectDoesNotExist:
             print("Added availability for %s" % player)
             Availability.objects.create(meeting=mtg,

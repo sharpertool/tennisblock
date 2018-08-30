@@ -1,7 +1,7 @@
 
 print("Running staging settings.")
 
-from .base import *
+from .common import *
 
 # Must define this key on the remote server
 # Define in a local_settings.py file.

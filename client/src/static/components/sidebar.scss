@@ -1,0 +1,36 @@
+.sidebar {
+    &-container {
+        overflow-y: scroll;
+        height: 75em;
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: none;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: var(--primary_color);
+        }
+        ul {
+            li {
+                a {
+                    &.active {
+                        &:before {
+                            border-left: 3px solid var(--primary_color);
+                            content: '';
+                            position: absolute;
+                            left: -15px;
+                            height: 100%;
+                            top: 0;
+                            bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

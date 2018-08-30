@@ -1,6 +1,6 @@
 print ("Running Development Settings.")
 
-from .base import *
+from .common import *
 
 DATABASES = {
     'default': {

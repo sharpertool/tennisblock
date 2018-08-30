@@ -32,6 +32,6 @@ urlpatterns = (
     url(r'^schedule/', include('schedule.urls')),
     url(r'^api/', include('api.urls')),
 
-    # Uncomment the next line to enable the admin:
-    url(r'^kag3hewb/', include(admin.site.urls)),
+    url(r'^django-admin/', admin.site.urls),
+
 )

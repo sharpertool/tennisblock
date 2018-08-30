@@ -1,5 +1,5 @@
 Babel==2.6.0
-Django >=1.11,<2.0
+Django==2.0.8
 Jinja2==2.10
 MarkupSafe==1.0
 Pillow==5.1.0
@@ -7,15 +7,15 @@ PuLP==1.6.8
 Pygments==2.2.0
 Sphinx==1.7.5
 cssmin==0.2.0
-django-allauth==0.36.0
+django-allauth==0.37.1
 django-appconf==1.0.2
 django-bootstrap-form==3.4
 django-classy-tags==0.8.0
-django-compressor==2.0
-django-cors-headers==2.2.0
+django-compressor==2.2
+django-cors-headers==2.4.0
 django-sekizai==0.10.0
 django-static-precompiler==1.8.2
-django-suit==0.2.25
+django-suit==0.2.26
 django-user-accounts==2.0.3
 djangorestframework==3.8.2
 
@@ -34,19 +34,19 @@ path.py==11.0.1
 
 pinax-theme-bootstrap==8.0.1
 pyparsing==2.2.0
-python-dateutil==2.6.1
+python-dateutil==2.7.2
 python-openid==2.2.5
-pytz==2017.2
-raven==6.4.0
-reportlab==3.4.0
-requests-oauthlib==0.8.0
-requests==2.18.4
+pytz==2018.5
+raven==6.9.0
+reportlab==3.5.6
+requests-oauthlib==1.0.0
+requests==2.19.1
 sh==1.12.14
 snowballstemmer==1.2.1
 sphinx-rtd-theme==0.1.9
 sqlparse==0.2.3
-django-environ==0.4.4
+django-environ==0.4.5
 
 mysqlclient
-psycopg2==2.7.4
+psycopg2==2.7.5
 

@@ -20,37 +20,37 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='availability',
             name='player',
-            field=models.ForeignKey(related_name='available', to='blockdb.Player'),
+            field=models.ForeignKey(related_name='available', to='blockdb.Player', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='couple',
             name='female',
-            field=models.ForeignKey(related_name='couple_gal', to='blockdb.Player'),
+            field=models.ForeignKey(related_name='couple_gal', to='blockdb.Player', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='couple',
             name='male',
-            field=models.ForeignKey(related_name='couple_guy', to='blockdb.Player'),
+            field=models.ForeignKey(related_name='couple_guy', to='blockdb.Player', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='schedule',
             name='partner',
-            field=models.ForeignKey(related_name='scheduled_partner', to='blockdb.Player', null=True),
+            field=models.ForeignKey(related_name='scheduled_partner', to='blockdb.Player', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='schedule',
             name='player',
-            field=models.ForeignKey(related_name='scheduled', to='blockdb.Player'),
+            field=models.ForeignKey(related_name='scheduled', to='blockdb.Player', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='seasonplayers',
             name='season',
-            field=models.ForeignKey(related_name='players', to='blockdb.Season'),
+            field=models.ForeignKey(related_name='players', to='blockdb.Season', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

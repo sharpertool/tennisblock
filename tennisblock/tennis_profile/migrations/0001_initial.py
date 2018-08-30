@@ -20,8 +20,8 @@ class Migration(migrations.Migration):
                 ('micro_ntrp', models.FloatField(default=2.5, null=True, blank=True)),
                 ('gender', models.CharField(blank=True, max_length=1, null=True, choices=[(b'F', b'Female'), (b'M', b'Male')])),
                 ('phone', models.CharField(max_length=30, null=True, blank=True)),
-                ('spouse', models.ForeignKey(to='tennis_profile.TennisUser', null=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('spouse', models.ForeignKey(to='tennis_profile.TennisUser', null=True, on_delete=models.CASCADE)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },

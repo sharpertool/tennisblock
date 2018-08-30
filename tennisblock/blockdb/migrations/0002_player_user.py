@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='player',
             name='user',
-            field=models.OneToOneField(null=True, to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(null=True, to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

@@ -1,0 +1,67 @@
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
+
+@import "components/card";
+@import "components/color_switcher";
+@import "components/drawing_menu";
+@import "components/modal";
+@import "components/download_modal";
+@import "components/sheets";
+@import "components/sidebar";
+
+.drawable {
+    .app-container {
+        position: relative;
+    }
+}
+
+.swatch {
+    pointer-events: all;
+}
+.swatch.active {
+    stroke-width: 2px;
+    stroke: black;
+}
+.swatch {
+  cursor: pointer;
+}
+.btn {
+    pointer-events: all;
+
+    font-family: FontAwesome;
+    fill: #333;
+    font-size: 32px;
+    text-anchor: middle;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.btn:hover {
+    fill: black;
+    cursor: pointer;
+}
+
+.canvas {
+    width: 100%;
+    padding-bottom: 69%;
+}
+
+.line {
+    fill: none;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.card {
+    box-shadow: 0 0 30px 0 rgba(0, 159, 189, 0.05), 0 0 20px 0 rgba(0, 0, 0, 0.33);
+    &-link {
+        &.active {
+            color: var(--primary_color) !important;
+        }
+    }
+}

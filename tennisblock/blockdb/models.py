@@ -52,7 +52,7 @@ class Player(models.Model):
         ('M', 'Guy')
     )
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     first = models.CharField(max_length=40)
     last = models.CharField(max_length=60)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
@@ -105,8 +105,8 @@ class SeasonPlayers(models.Model):
 
 
     """
-    season = models.ForeignKey(Season, related_name='players')
-    player = models.ForeignKey(Player)
+    season = models.ForeignKey(Season, related_name='players', on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
     blockmember = models.BooleanField(default=False)
 
     objects = BlockManager()
@@ -139,14 +139,14 @@ class Couple(models.Model):
 
     """
 
-    season = models.ForeignKey(Season)
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     male = models.ForeignKey(Player,
                              related_name='couple_guy',
-                             limit_choices_to=limit_to_guys)
+                             limit_choices_to=limit_to_guys, on_delete=models.CASCADE)
     female = models.ForeignKey(Player,
                                related_name='couple_gal',
-                               limit_choices_to=limit_to_gals)
+                               limit_choices_to=limit_to_gals, on_delete=models.CASCADE)
     fulltime = models.BooleanField(default=False)
     as_singles = models.BooleanField(default=False)
     canschedule = models.BooleanField(default=False)
@@ -169,7 +169,7 @@ class Meetings(models.Model):
     Comments are not used, bug could indicate special information, i.e.
     special party night, etc.
     """
-    season = models.ForeignKey(Season)
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
     date = models.DateField()
     holdout = models.BooleanField(default=False)
     comments = models.CharField(max_length=128)
@@ -186,8 +186,8 @@ class Availability(models.Model):
     Entry for each player and each night. Boolean indicates that the
     player is available.
     """
-    meeting = models.ForeignKey(Meetings)
-    player = models.ForeignKey(Player, related_name='available')
+    meeting = models.ForeignKey(Meetings, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, related_name='available', on_delete=models.CASCADE)
     available = models.BooleanField(default=True)
 
     def __str__(self):
@@ -214,11 +214,11 @@ class Schedule(models.Model):
             ("change_sched", "Can change the schedule"),
         )
 
-    meeting = models.ForeignKey(Meetings)
-    player = models.ForeignKey(Player, related_name='scheduled')
+    meeting = models.ForeignKey(Meetings, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, related_name='scheduled', on_delete=models.CASCADE)
     issub = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
-    partner = models.ForeignKey(Player, related_name='scheduled_partner', null=True)
+    partner = models.ForeignKey(Player, related_name='scheduled_partner', null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{} {} sub:{} verified:{}".format(
@@ -234,13 +234,13 @@ class Matchup(models.Model):
     Organizes players into two teams, t1 and t2, and a set of players
     each.
     """
-    meeting = models.ForeignKey(Meetings)
+    meeting = models.ForeignKey(Meetings, on_delete=models.CASCADE)
     set = models.IntegerField()
     court = models.IntegerField()
-    team1_p1 = models.ForeignKey(Player, related_name="t1_p1", null=True)
-    team1_p2 = models.ForeignKey(Player, related_name="t1_p2", null=True)
-    team2_p1 = models.ForeignKey(Player, related_name="t2_p1", null=True)
-    team2_p2 = models.ForeignKey(Player, related_name="t2_p2", null=True)
+    team1_p1 = models.ForeignKey(Player, related_name="t1_p1", null=True, on_delete=models.CASCADE)
+    team1_p2 = models.ForeignKey(Player, related_name="t1_p2", null=True, on_delete=models.CASCADE)
+    team2_p1 = models.ForeignKey(Player, related_name="t2_p1", null=True, on_delete=models.CASCADE)
+    team2_p2 = models.ForeignKey(Player, related_name="t2_p2", null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{}:{} set:{} court:{} {}+{} vs {}+{}".format(

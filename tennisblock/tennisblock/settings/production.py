@@ -1,7 +1,7 @@
 
 print ("Running Production Settings.")
 
-from .base import *
+from .common import *
 
 ADMINS = (
     ('Ed Henderson', 'ed@tennisblock.com'),

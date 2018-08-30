@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='tennisuser',
             name='spouse',
-            field=models.ForeignKey(blank=True, to='tennis_profile.TennisUser', null=True),
+            field=models.ForeignKey(blank=True, to='tennis_profile.TennisUser', null=True, on_delete=models.CASCADE),
         ),
     ]

@@ -5,7 +5,7 @@ env = environ.Env()
 
 env("RAVEN_CONFIG", default='https://d5b96362c1574d68bf050ecfd8d4a2f4:8024bcdfe7b143acab9be3ad4ba38118@sentry.io/29740')
 
-from .base import *
+from .common import *
 
 DEBUG = True
 
@@ -24,7 +24,4 @@ FIXTURE_DIRS = (
     PROJECT_ROOT('fixtures'),
 )
 
-INSTALLED_APPS += (
-    'django_extensions',
-)
 

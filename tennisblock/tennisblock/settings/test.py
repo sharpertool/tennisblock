@@ -1,7 +1,7 @@
 
 print ("Running Test Settings.")
 
-from .base import *
+from .common import *
 
 DATABASES['default']['NAME'] = 'tennisblock_test'
 
