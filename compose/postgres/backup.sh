@@ -35,6 +35,7 @@ if [[ $(dirname ${FILENAME}) == '.' ]];then
     FILENAME=/backups/$(basename ${FILENAME})
 fi
 echo "Full backup filename ${FILENAME}"
+echo "User: $POSTGRES_USER DB: $POSTGRES_DB"
 
 pg_dump -h postgres -U $POSTGRES_USER $POSTGRES_DB >> $FILENAME
 
