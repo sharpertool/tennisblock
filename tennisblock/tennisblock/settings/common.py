@@ -31,7 +31,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 # DATABASE
 DATABASES = {
-    'default': env.db("DATABASE_URL", default='mysql://tennisblock:tennisblock@localhost:3316/tennisblock'),
+    'default': env.db("DATABASE_URL"),
 }
 
 print("Databases: {}".format(DATABASES['default']))
@@ -54,14 +54,13 @@ CORS_ALLOW_METHODS = (
     'OPTIONS'
 )
 
+WAGTAIL_SITE_NAME = env.str("WAGTAIL_SITE_NAME", default="tennisblock.com")
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = [
-    'tennisblock.com',
-    '127.0.0.1',
-    'tennisblock.local',
-    '54.245.89.249',
-]
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[WAGTAIL_SITE_NAME])
+
+print(f"Allowed hosts: {ALLOWED_HOSTS}")
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/login/success/'
@@ -125,16 +124,16 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 )
 
 TEMPLATES = [
@@ -300,9 +299,8 @@ if USE_LOCAL_BUNDLE:
         }
     }
 
-
 # Set your DSN value
 RAVEN_CONFIG = {
-    'dsn' : env("RAVEN_CONFIG", default='https://bb218b1fa4274266aea0a33a4a10c0a5:9772e132d1904c99909fc13e2fc16da7@sentry.io/24185')
+    'dsn': env("RAVEN_CONFIG",
+               default='https://bb218b1fa4274266aea0a33a4a10c0a5:9772e132d1904c99909fc13e2fc16da7@sentry.io/24185')
 }
-

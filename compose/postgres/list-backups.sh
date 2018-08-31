@@ -1,4 +1,6 @@
 #!/bin/bash
 echo "listing available backups"
 echo "-------------------------"
-ls /backups/
+backup_dir=${1:-/backups}
+ls ${backup_dir}/ /local_backups
+

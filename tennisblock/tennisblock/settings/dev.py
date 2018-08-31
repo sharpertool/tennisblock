@@ -1,5 +1,6 @@
-print ("Running Development Settings.")
 import environ
+
+print("Running Development Settings.")
 
 env = environ.Env()
 
@@ -23,5 +24,3 @@ CACHES = {
 FIXTURE_DIRS = (
     PROJECT_ROOT('fixtures'),
 )
-
-
