@@ -1,0 +1,175 @@
+[
+{
+    "fields": {
+        "firstcourt": 9,
+        "enddate": "2015-04-05",
+        "name": "Fall, 2015",
+        "startdate": "2015-01-09",
+        "blocktime": "19:00:00",
+        "courts": 4,
+        "blockstart": "2015-01-05"
+    },
+    "model": "blockdb.season",
+    "pk": 5
+},
+{
+    "fields": {
+        "date": "2014-09-19",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 48
+},
+{
+    "fields": {
+        "date": "2014-09-26",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 49
+},
+{
+    "fields": {
+        "date": "2014-10-03",
+        "season": 5,
+        "holdout": true,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 50
+},
+{
+    "fields": {
+        "date": "2014-10-10",
+        "season": 5,
+        "holdout": true,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 51
+},
+{
+    "fields": {
+        "date": "2014-10-17",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 52
+},
+{
+    "fields": {
+        "date": "2014-10-24",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 53
+},
+{
+    "fields": {
+        "date": "2014-10-31",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 54
+},
+{
+    "fields": {
+        "date": "2014-11-07",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 55
+},
+{
+    "fields": {
+        "date": "2014-11-14",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 56
+},
+{
+    "fields": {
+        "date": "2014-11-21",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 57
+},
+{
+    "fields": {
+        "date": "2014-11-28",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 58
+},
+{
+    "fields": {
+        "date": "2014-12-05",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 59
+},
+{
+    "fields": {
+        "date": "2014-12-12",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 60
+},
+{
+    "fields": {
+        "date": "2014-12-19",
+        "season": 5,
+        "holdout": true,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 61
+},
+{
+    "fields": {
+        "date": "2014-12-26",
+        "season": 5,
+        "holdout": true,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 62
+},
+{
+    "fields": {
+        "date": "2015-01-02",
+        "season": 5,
+        "holdout": false,
+        "comments": ""
+    },
+    "model": "blockdb.meetings",
+    "pk": 63
+}
+]

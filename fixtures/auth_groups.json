@@ -1,0 +1,28 @@
+[
+{
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+        "name": "block captain",
+        "permissions": [
+            40,
+            41,
+            42,
+            35,
+            28,
+            43,
+            44,
+            45,
+            25
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+        "name": "block member",
+        "permissions": []
+    }
+}
+]
