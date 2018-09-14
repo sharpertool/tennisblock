@@ -1,13 +1,11 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.encoding import python_2_unicode_compatible
 
 from django.conf import settings
 
 User = settings.AUTH_USER_MODEL
 
 
-@python_2_unicode_compatible
 class Season(models.Model):
     """
     Define a block season.
@@ -40,7 +38,6 @@ class GuysManager(models.Manager):
         return super(GuysManager, self).get_queryset().filter(gender='M')
 
 
-@python_2_unicode_compatible
 class Player(models.Model):
     """
     Player object.
@@ -95,7 +92,6 @@ class BlockManager(models.Manager):
         return self.filter()
 
 
-@python_2_unicode_compatible
 class SeasonPlayers(models.Model):
     """
     Entry for each player for each season. Indicates that a given
@@ -123,7 +119,6 @@ def limit_to_guys():
     return {'gender': 'M'}
 
 
-@python_2_unicode_compatible
 class Couple(models.Model):
     """
     Link together players into couples. The couples are scheduled together.
@@ -159,7 +154,6 @@ class Couple(models.Model):
         )
 
 
-@python_2_unicode_compatible
 class Meetings(models.Model):
     """
     Entry for each meeting night during the block season.
@@ -180,7 +174,6 @@ class Meetings(models.Model):
         )
 
 
-@python_2_unicode_compatible
 class Availability(models.Model):
     """
     Entry for each player and each night. Boolean indicates that the
@@ -196,7 +189,6 @@ class Availability(models.Model):
         )
 
 
-@python_2_unicode_compatible
 class Schedule(models.Model):
     """
     Each entry schedules a player to play on the given meeting.
@@ -227,7 +219,6 @@ class Schedule(models.Model):
         )
 
 
-@python_2_unicode_compatible
 class Matchup(models.Model):
     """
     The matchup for a given meeting, set and court.

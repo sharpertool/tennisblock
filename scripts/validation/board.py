@@ -7,7 +7,6 @@ import copy
 import datetime
 
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-from django.utils.encoding import python_2_unicode_compatible
 from django.forms.utils import flatatt, ErrorDict, ErrorList
 from django.utils.translation import ugettext as _
 
@@ -53,7 +52,6 @@ def pretty_name(name):
         return ''
     return name.replace('_', ' ').capitalize()
 
-@python_2_unicode_compatible
 class BoundValidation(object):
     "A Field plus data"
     def __init__(self, form, field, name):

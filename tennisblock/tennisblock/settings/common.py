@@ -132,7 +132,6 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'corsheaders.middleware.CorsMiddleware',
 )
 
@@ -172,7 +171,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Must have Django-suit before the admin.
-    'suit',
+    #'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
 
