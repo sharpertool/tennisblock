@@ -1,9 +1,9 @@
 import datetime
 from django.views.generic.base import View
 from rest_framework.parsers import JSONParser
-from blockdb.models import Player, SeasonPlayer, Couple, Meetings, Availability, Schedule
+from blockdb.models import Player, Couple, Meetings, Availability, Schedule
 
-from .apiutils import JSONResponse, get_current_season, get_meeting_for_date
+from .apiutils import JSONResponse, get_current_season
 
 
 def _AvailabilityInit(player, meetings):

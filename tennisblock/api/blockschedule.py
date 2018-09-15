@@ -44,10 +44,10 @@ def _BuildMeetings(force=False):
     currDate = blockStart
     while currDate <= endDate:
         mtg = Meetings.objects.create(
-                season=currSeason,
-                date=currDate,
-                holdout=False,
-                comments="")
+            season=currSeason,
+            date=currDate,
+            holdout=False,
+            comments="")
         mtg.save()
         currDate += datetime.timedelta(days=7)
 
@@ -62,9 +62,9 @@ def _AvailabilityInit(player, meetings):
 
         if len(av) == 0:
             av = Availability.objects.create(
-                    meeting=mtg,
-                    player=player,
-                    available=True
+                meeting=mtg,
+                player=player,
+                available=True
             )
             av.save()
 
@@ -203,7 +203,7 @@ def blockSchedule(request, date=None):
     Update the schedule for the given date.
 
     """
-    from  TBLib.schedule import Scheduler
+    from TBLib.schedule import Scheduler
     tb = Scheduler()
 
     r = Request(request)

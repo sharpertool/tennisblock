@@ -4,13 +4,14 @@ from os.path import exists
 from optparse import make_option
 from textwrap import dedent
 
-from lib.block import (
+from .lib.block import (
     PlayerExcel,
     currentSeason,
     addCouples,
     addPlayers,
     addSeasonPlayer
 )
+
 
 class Command(BaseCommand):
     args = ''
@@ -23,8 +24,6 @@ class Command(BaseCommand):
                     dest='xlfile',
                     help='XL File containing the player lists.'),
     )
-
-
 
     def handle(self, *args, **options):
         """
@@ -44,6 +43,6 @@ class Command(BaseCommand):
         season = currentSeason()
         addPlayers(players)
 
-        addSeasonPlayer(season,players)
+        addSeasonPlayer(season, players)
 
-        addCouples(season,players)
+        addCouples(season, players)

@@ -161,7 +161,6 @@ class Scheduler(object):
             if needed == 0:
                 break
 
-
         # Should have a full block now..
         return group
 
@@ -187,7 +186,6 @@ class Scheduler(object):
             cinfosortedshuffled.extend(couples)
 
         return cinfosortedshuffled
-
 
     def addCouplesToSchedule(self, date, couples):
 
@@ -253,7 +251,7 @@ class Scheduler(object):
             'untrp': s.player.microntrp,
         }
 
-        #data = [{'guy': mkdata(guy), 'gal': mkdata(gals.get(player_pk=guy.partner_id).player)} for guy in guys]
+        # data = [{'guy': mkdata(guy), 'gal': mkdata(gals.get(player_pk=guy.partner_id).player)} for guy in guys]
 
         data = [{'guy': mkdata(guy), 'gal': mkdata(gals.get(player__pk=guy.partner_id))} for guy in guys]
 
@@ -268,7 +266,6 @@ class Scheduler(object):
         # data = [dict(zip(columns, r)) for r in rows]
 
         return data
-
 
     def querySchedule(self, date=None):
         """
@@ -327,7 +324,6 @@ class Scheduler(object):
 
         return data
 
-
     def _addToSchedule(self, mtg, player, partner):
         """
         Add a player to the schedule.
@@ -357,8 +353,6 @@ class Scheduler(object):
         except ObjectDoesNotExist:
             pass
 
-
-
     def updateSchedule(self, date, couples):
         """
         Update the schedule with the given list.
@@ -384,7 +378,6 @@ class Scheduler(object):
             return "Schedule updated"
         else:
             return "Could not update schedule."
-
 
     def getBlockEmailList(self):
         """

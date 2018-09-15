@@ -1,4 +1,3 @@
-
 from django.views.generic.edit import CreateView
 from django.shortcuts import render
 from django.forms.models import modelformset_factory, BaseModelFormSet
@@ -13,6 +12,7 @@ from api.apiutils import get_current_season
 from TBLib.view import TennisLoginView
 
 from members import signals
+
 
 class MemberCreate(CreateView):
     form_class = PlayerForm
@@ -131,7 +131,7 @@ class MembersView(TennisLoginView):
         return [p.player for p in sp if (not self.members_only or p.blockmember)]
 
     def get_queryset(self):
-        queryset =super(MembersView, self).get_queryset()
+        queryset = super(MembersView, self).get_queryset()
 
         q = self.request.GET.get("q")
         if q:
@@ -155,6 +155,7 @@ class SeasonPlayerFormSet(BaseModelFormSet):
         s = get_current_season()
         self.queryset = Player.objects.all()
 
+
 class SeasonPlayerFormView(MembersView):
     template_name = "members_form.html"
     members_only = True
@@ -164,7 +165,7 @@ class SeasonPlayerFormView(MembersView):
         """
 
         AvailFormSet = modelformset_factory(Player)
-        #s = get_current_season()
+        # s = get_current_season()
         queryset = Player.objects.all()
         return AvailFormSet(queryset=queryset)
 
@@ -182,9 +183,9 @@ class SeasonPlayerFormView(MembersView):
         return render(request,
                       self.template_name,
                       context
-        )
+                      )
 
-    def post(self,request):
+    def post(self, request):
         context = self.get_context_data()
         PlayerFormSet = self._get_formset()
         fs = PlayerFormSet(request.POST)
@@ -201,7 +202,7 @@ class SeasonPlayerFormView(MembersView):
             return render(request,
                           self.template_name,
                           context
-            )
+                          )
 
 
 class SeasonPlayerUpdate(MembersView):

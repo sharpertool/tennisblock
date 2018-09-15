@@ -1,4 +1,3 @@
-
 from dateutil.parser import parse
 from django.views.generic import TemplateView, CreateView
 
@@ -70,7 +69,6 @@ class SeasonDetailView(TemplateView):
 
         return player_data
 
-
     def post(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
         if pk:
@@ -80,7 +78,7 @@ class SeasonDetailView(TemplateView):
             if request.POST.get('update_season', False):
                 print("Update Season data..")
                 p = request.POST
-                #s.blocktime = p.get('blocktime')
+                # s.blocktime = p.get('blocktime')
                 s.courts = p.get('courts')
                 s.firstcourt = p.get('firstcourt')
                 s.name = p.get('name')
@@ -141,4 +139,3 @@ class SeasonCreate(CreateView):
         'blockstart',
         'blocktime'
     ]
-
