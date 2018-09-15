@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from tennis_profile.models import TennisUser
-from blockdb.models import Player, SeasonPlayer, Couple, Meeting, Matchup, Season
+from blockdb.models import Player
 
 
 # Define an inline admin descriptor for Employee model

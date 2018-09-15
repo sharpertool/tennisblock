@@ -3,12 +3,36 @@ from .models import (Season, Player, SeasonPlayer,
                      Couple, Meeting, Availability,
                      Schedule, Matchup)
 
+
 class SeasonAdmin(admin.ModelAdmin):
     pass
 
 
 class PlayerAdmin(admin.ModelAdmin):
-    pass
+    # fields = ('user', ('first', 'last'),
+    #           'email', 'gender',
+    #           ('ntrp', 'microntrp'),
+    #           'phone',
+    #           'season',)
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'gender', 'phone',)
+        }),
+        ('Tennis Stats', {
+            'fields': ('ntrp', 'microntrp')
+        }),
+        ('Season Info', {'fields': ('season',)}),
+    )
+
+    def user_email(self):
+        return self.user.email
+
+    def emails_match(self):
+        return self.user.email == self.email
+    emails_match.boolean = True
+
+    list_display = ('full_name', 'email', emails_match, 'gender', 'ntrp', 'microntrp')
+
 
 
 class SeasonPlayerAdmin(admin.ModelAdmin):
@@ -43,4 +67,3 @@ admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Availability, AvailabilityAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Matchup, MatchupAdmin)
-

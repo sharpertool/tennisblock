@@ -1,8 +1,7 @@
-from django.views.generic.edit import CreateView
+from django.contrib.auth import get_user_model
 from django.shortcuts import render
-from django.forms.models import modelformset_factory, BaseModelFormSet
-from django.forms.models import inlineformset_factory
-from django.views.generic import TemplateView, ListView, DetailView
+from django.forms.models import modelformset_factory, inlineformset_factory, BaseModelFormSet
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse
 
@@ -39,11 +38,16 @@ class PlayerDetail(DetailView):
         return context
 
 
+PlayerUserFormSet = inlineformset_factory(get_user_model(), Player,
+                                          fields=('ntrp', 'microntrp', 'phone',))
+
+
 class PlayerUpdate(UpdateView):
     model = Player
     template_name = "members/player_form.html"
     context_object_name = 'player'
-    fields = ['first', 'last', 'gender', 'ntrp', 'microntrp', 'phone', 'email']
+    form_class = PlayerUserFormSet
+    fields = ('first', 'last', 'email', 'gender', 'ntrp', 'microntrp', 'phone', )
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

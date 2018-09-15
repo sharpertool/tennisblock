@@ -50,18 +50,38 @@ class Player(models.Model):
     )
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
-    first = models.CharField(max_length=40)
-    last = models.CharField(max_length=60)
+
+    # first = models.CharField(max_length=40)
+    # last = models.CharField(max_length=60)
+    # email = models.CharField(max_length=50, blank=True)
+
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     ntrp = models.FloatField()
     microntrp = models.FloatField(null=True, blank=True)
     phone = models.CharField(max_length=14, blank=True)
-    email = models.CharField(max_length=50, blank=True)
+
+    season = models.ManyToManyField(Season, related_name='season_player', blank=True)
 
     objects = models.Manager()
     girls = GirlsManager()
     guys = GuysManager()
-    season = models.ManyToManyField(Season, related_name='season_player')
+
+    def get_full_name(self):
+        return self.user.first_name + ' ' + self.user.last_name
+    get_full_name.short_description = 'Full name of player'
+    full_name = property(get_full_name)
+
+    @property
+    def first(self):
+        return self.user.first_name
+
+    @property
+    def last(self):
+        return self.user.last_name
+
+    @property
+    def email(self):
+        return self.user.email
 
     def __str__(self):
         if self.microntrp:
