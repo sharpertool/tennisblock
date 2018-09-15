@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
-from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meetings, Availability
+from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, time_to_js
 from TBLib.teams import TeamManager
@@ -27,9 +27,9 @@ def _BuildMeetings(force=False):
     if force:
         # Remove existing meetings if we are forcing this.
         # Note that this will also remove all 'Availability' for these meetings.
-        Meetings.objects.filter(season=currSeason).delete()
+        Meeting.objects.filter(season=currSeason).delete()
 
-    meetings = Meetings.objects.filter(season=currSeason)
+    meetings = Meeting.objects.filter(season=currSeason)
 
     if len(meetings) > 0:
         # Looks like we are good
@@ -43,7 +43,7 @@ def _BuildMeetings(force=False):
     dates = []
     currDate = blockStart
     while currDate <= endDate:
-        mtg = Meetings.objects.create(
+        mtg = Meeting.objects.create(
             season=currSeason,
             date=currDate,
             holdout=False,
@@ -181,7 +181,7 @@ def getBlockDates(request):
         currSeason = get_current_season()
         currmtg = get_meeting_for_date()
 
-        meetings = Meetings.objects.filter(season=currSeason).order_by('date')
+        meetings = Meeting.objects.filter(season=currSeason).order_by('date')
         mtgData = []
         for mtg in meetings:
             jstime = time_to_js(mtg.date)

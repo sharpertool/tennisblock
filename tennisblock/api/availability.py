@@ -1,7 +1,7 @@
 import datetime
 from django.views.generic.base import View
 from rest_framework.parsers import JSONParser
-from blockdb.models import Player, Couple, Meetings, Availability, Schedule
+from blockdb.models import Player, Couple, Meeting, Availability, Schedule
 
 from .apiutils import JSONResponse, get_current_season
 
@@ -69,11 +69,11 @@ class AvailabilityView(View):
     def get(self, request):
 
         currseason = get_current_season()
-        mtgs = Meetings.objects.filter(season=currseason).order_by('date')
+        mtgs = Meeting.objects.filter(season=currseason).order_by('date')
         couples = Couple.objects.filter(season=currseason, blockcouple=True).order_by('as_singles')
 
-        past_mtgs = Meetings.objects.filter(season=currseason, date__lte=datetime.date.today())
-        future_mtgs = Meetings.objects.filter(season=currseason, date__gt=datetime.date.today())
+        past_mtgs = Meeting.objects.filter(season=currseason, date__lte=datetime.date.today())
+        future_mtgs = Meeting.objects.filter(season=currseason, date__gt=datetime.date.today())
 
         pdata = []
         for couple in couples:
@@ -90,7 +90,7 @@ class AvailabilityView(View):
 
         data = JSONParser().parse(request)
         currseason = get_current_season()
-        mtgs = Meetings.objects.filter(season=currseason).order_by('date')
+        mtgs = Meeting.objects.filter(season=currseason).order_by('date')
         try:
             mtg = mtgs[data['mtgidx']]
             p = Player.objects.get(pk=data['id'])

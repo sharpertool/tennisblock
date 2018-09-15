@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
 
-from .models import User, Season, Meetings, Player
+from .models import User, Season, Meeting, Player
 from api.apiutils import build_meetings_for_season, update_last_meeting_date
 
 @receiver(post_save, sender=User)
@@ -108,6 +108,6 @@ def season_post_save(sender, instance=None, created=False, **kwargs):
     build_meetings_for_season(season=instance)
 
 
-@receiver(post_save, sender=Meetings)
+@receiver(post_save, sender=Meeting)
 def meetings_post_save(sender, instance=None, created=False, **kwargs):
     update_last_meeting_date(instance.season)

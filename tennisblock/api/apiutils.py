@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework import serializers
 
-from blockdb.models import Season, Meetings
+from blockdb.models import Season, Meeting
 
 class SeasonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,7 +40,7 @@ def get_current_season():
     seasons = Season.objects.order_by('startdate').filter(lastdate__gte=datetime.date.today())
     if len(seasons) > 0:
         season = seasons[0]
-        meetings = Meetings.objects.filter(
+        meetings = Meeting.objects.filter(
                 season=season,
                 holdout=False,
                 date__gte=datetime.date.today())
@@ -63,7 +63,7 @@ def get_next_meeting(season=None):
     if not season:
         season = get_current_season()
 
-    meetings = Meetings.objects \
+    meetings = Meeting.objects \
         .order_by('date') \
         .filter(season=season,
                 holdout=False,
@@ -87,7 +87,7 @@ def get_meeting_for_date(date=None):
         return get_next_meeting(season)
 
     dt = parser.parse(date)
-    meetings = Meetings.objects \
+    meetings = Meeting.objects \
         .filter(season=season,
                 holdout=0,
                 date__exact=dt.strftime("%Y-%m-%d"))
@@ -112,9 +112,9 @@ def build_meetings_for_season(season=None, force=False):
     if force:
         # Remove existing meetings if we are forcing this.
         # Note that this will also remove all 'Availability' for these meetings.
-        Meetings.objects.filter(season=season).delete()
+        Meeting.objects.filter(season=season).delete()
 
-    meetings = Meetings.objects.filter(season=season)
+    meetings = Meeting.objects.filter(season=season)
 
     if len(meetings) > 0:
         # Looks like we are good
@@ -128,7 +128,7 @@ def build_meetings_for_season(season=None, force=False):
     dates = []
     currDate = blockStart
     while currDate <= endDate:
-        mtg = Meetings.objects.create(
+        mtg = Meeting.objects.create(
             season=season,
             date=currDate,
             holdout=False,
@@ -145,7 +145,7 @@ def update_last_meeting_date(season):
     is a convenience to make it easier to get the last date, rather
     than having to search through it.
     """
-    meetings = Meetings.objects.order_by('-date').filter(
+    meetings = Meeting.objects.order_by('-date').filter(
         season=season,
         holdout=False)
 

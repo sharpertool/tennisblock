@@ -45,7 +45,7 @@ class SeasonManager(object):
         """
         Add/Update the given season
         """
-        from blockdb.models import Season, Meetings
+        from blockdb.models import Season, Meeting
 
         res = Season.objects.filter(name=sobj.season)
         if res.count() > 0:
@@ -104,16 +104,16 @@ class SeasonManager(object):
 
     def create_or_update_mtg(self, season, date, isHoldout):
 
-        from blockdb.models import Season, Meetings
+        from blockdb.models import Season, Meeting
 
         try:
-            mtg = Meetings.objects.get(season=season, date=date)
+            mtg = Meeting.objects.get(season=season, date=date)
             mtg.holdout = isHoldout
             mtg.save()
 
         except ObjectDoesNotExist:
 
-            mtg = Meetings.objects.create(
+            mtg = Meeting.objects.create(
                 season=season,
                 date=date,
                 holdout=isHoldout,

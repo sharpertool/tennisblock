@@ -3,7 +3,7 @@ from django.views.generic import TemplateView, CreateView
 
 from TBLib.view import class_login_required
 
-from blockdb.models import Season, Meetings, Player, SeasonPlayer
+from blockdb.models import Season, Meeting, Player, SeasonPlayer
 
 
 @class_login_required
@@ -25,7 +25,7 @@ class SeasonsView(TemplateView):
             if s.count():
                 context['season'] = s[0]
 
-                context['meetings'] = Meetings.objects.filter(season=s)
+                context['meetings'] = Meeting.objects.filter(season=s)
 
         return self.render_to_response(context)
 
@@ -41,7 +41,7 @@ class SeasonDetailView(TemplateView):
         if pk:
             s = Season.objects.get(pk=pk)
             context['season'] = s
-            context['meetings'] = Meetings.objects.filter(season=s)
+            context['meetings'] = Meeting.objects.filter(season=s)
             context['players'] = self.get_player_list(s)
 
         return self.render_to_response(context)
@@ -73,7 +73,7 @@ class SeasonDetailView(TemplateView):
         context = self.get_context_data(**kwargs)
         if pk:
             s = Season.objects.get(pk=pk)
-            meetings = Meetings.objects.filter(season=s)
+            meetings = Meeting.objects.filter(season=s)
 
             if request.POST.get('update_season', False):
                 print("Update Season data..")

@@ -155,7 +155,7 @@ class Couple(models.Model):
         )
 
 
-class Meetings(models.Model):
+class Meeting(models.Model):
     """
     Entry for each meeting night during the block season.
     There are entries for all nights, even holdouts. The holdout
@@ -180,7 +180,7 @@ class Availability(models.Model):
     Entry for each player and each night. Boolean indicates that the
     player is available.
     """
-    meeting = models.ForeignKey(Meetings, on_delete=models.CASCADE)
+    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, related_name='available', on_delete=models.CASCADE)
     available = models.BooleanField(default=True)
 
@@ -207,7 +207,7 @@ class Schedule(models.Model):
             ("change_sched", "Can change the schedule"),
         )
 
-    meeting = models.ForeignKey(Meetings, on_delete=models.CASCADE)
+    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, related_name='scheduled', on_delete=models.CASCADE)
     issub = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
@@ -226,7 +226,7 @@ class Matchup(models.Model):
     Organizes players into two teams, t1 and t2, and a set of players
     each.
     """
-    meeting = models.ForeignKey(Meetings, on_delete=models.CASCADE)
+    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     set = models.IntegerField()
     court = models.IntegerField()
     team1_p1 = models.ForeignKey(Player, related_name="t1_p1", null=True, on_delete=models.CASCADE)

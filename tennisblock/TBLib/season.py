@@ -1,7 +1,7 @@
 __author__ = 'kutenai'
 import datetime
 
-from blockdb.models import Season, Meetings
+from blockdb.models import Season, Meeting
 
 class SeasonManager(object):
     """
@@ -21,7 +21,7 @@ class SeasonManager(object):
         if seasons.count() > 0:
             season = seasons[0]
 
-            meetings = Meetings.objects.filter(
+            meetings = Meeting.objects.filter(
                     season=season,
                     holdout=False,
                     date__gte=datetime.date.today())
@@ -44,7 +44,7 @@ class SeasonManager(object):
 
         meetings = []
         if self.season:
-            meetings = Meetings.objects.filter(season=self.season).order_by('date')
+            meetings = Meeting.objects.filter(season=self.season).order_by('date')
             if not holdouts:
                 meetings = meetings.filter(holdout=False)
 

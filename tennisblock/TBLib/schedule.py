@@ -51,7 +51,7 @@ class Scheduler(object):
         # Organize by # of plays
         coupleInfo = {}
 
-        meetings = Meetings.objects.filter(season=season)
+        meetings = Meeting.objects.filter(season=season)
 
         scheduled_meetings = Schedule.objects.filter(meeting__in=meetings)
 
