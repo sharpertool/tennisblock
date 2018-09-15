@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, CreateView
 
 from TBLib.view import class_login_required
 
-from blockdb.models import Season, Meetings, Player, SeasonPlayers
+from blockdb.models import Season, Meetings, Player, SeasonPlayer
 
 
 @class_login_required
@@ -55,7 +55,7 @@ class SeasonDetailView(TemplateView):
         know which players were update to be in the season, and which we can remove.
         """
 
-        players = Player.objects.all().prefetch_related('seasonplayers_set')
+        players = Player.objects.all().prefetch_related('seasonplayer_set')
 
         player_data = []
         for p in players:
@@ -120,13 +120,13 @@ class SeasonDetailView(TemplateView):
             player = Player.objects.get(pk=p['pk'])
             if p['update']:
                 if not p['season_player']:
-                    sp = SeasonPlayers(
+                    sp = SeasonPlayer(
                         season=season,
                         player=player,
                         blockmember=True)
                     sp.save()
             elif p['season_player']:
-                SeasonPlayers.objects.filter(season=season, player=player).delete()
+                SeasonPlayer.objects.filter(season=season, player=player).delete()
 
 
 @class_login_required

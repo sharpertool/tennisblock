@@ -3,14 +3,14 @@
 
 from django.views.generic.edit import View
 
-from blockdb.models import Player, SeasonPlayers
+from blockdb.models import Player, SeasonPlayer
 from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
 
 from .apiutils import JSONResponse, get_current_season
 
 
-class SeasonPlayersView(View):
+class SeasonPlayerView(View):
     members_only = True
 
     def serializeSeasonPlayer(self, sp):
@@ -36,7 +36,7 @@ class SeasonPlayersView(View):
 
         if kwargs.get('id'):
             print("Getting one player..")
-            players = SeasonPlayers.objects.filter(season=currseason, player__id=kwargs.get('id'))
+            players = SeasonPlayer.objects.filter(season=currseason, player__id=kwargs.get('id'))
             if len(players):
                 p = self.serializeSeasonPlayer(players[0])
                 return JSONResponse(p)
@@ -46,7 +46,7 @@ class SeasonPlayersView(View):
         else:
             pdata = []
 
-            players = SeasonPlayers.objects.filter(season=currseason) \
+            players = SeasonPlayer.objects.filter(season=currseason) \
                 .order_by('player__last', 'player__gender', 'player__first')
 
             for sp in players:
@@ -63,7 +63,7 @@ class SeasonPlayersView(View):
 
         if kwargs.get('id'):
             print("Updating one player..")
-            players = SeasonPlayers.objects.filter(season=currseason, player__id=kwargs.get('id'))
+            players = SeasonPlayer.objects.filter(season=currseason, player__id=kwargs.get('id'))
             if len(players):
                 sp = players[0]
                 for key, val in data.iteritems():
@@ -149,7 +149,7 @@ class SeasonPlayersView(View):
                 )
                 player.save()
 
-                sp = SeasonPlayers.objects.create(
+                sp = SeasonPlayer.objects.create(
                     season=currseason,
                     player=player,
                     blockmember=member.get('blockmember', False)
@@ -179,7 +179,7 @@ class SeasonPlayersView(View):
                 member.get('first'), member.get('last')))
 
             print("Deleting player id(%s)" % member.get('id'))
-            SeasonPlayers.objects.filter(
+            SeasonPlayer.objects.filter(
                 season=currseason, player__id=member.get('id')).delete()
             Player.objects.filter(id=member.get('id')).delete()
 

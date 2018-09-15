@@ -61,6 +61,7 @@ class Player(models.Model):
     objects = models.Manager()
     girls = GirlsManager()
     guys = GuysManager()
+    season = models.ManyToManyField(Season, related_name='season_player')
 
     def __str__(self):
         if self.microntrp:
@@ -81,18 +82,18 @@ class Player(models.Model):
         """
         Return true if this player is a player in the given season.
         """
-        seasons = [s.season for s in self.seasonplayers_set.all()]
+        seasons = [s.season for s in self.seasonplayer_set.all()]
         return season in seasons
 
 
 class BlockManager(models.Manager):
     use_for_related_fields = True
 
-    def seasonPlayers(self, **kwargs):
+    def seasonPlayers(self):
         return self.filter()
 
 
-class SeasonPlayers(models.Model):
+class SeasonPlayer(models.Model):
     """
     Entry for each player for each season. Indicates that a given
     player is a member of the specified season.

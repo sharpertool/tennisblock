@@ -390,7 +390,7 @@ class Scheduler(object):
         """
         Return a list of all e-mail addresses for block players.
         """
-        players = SeasonPlayers.objects.filter(season=get_current_season(), blockmember=True).only('player')
+        players = SeasonPlayer.objects.filter(season=get_current_season(), blockmember=True).only('player')
         addresses = []
         for player in players:
             addr = player.player.email

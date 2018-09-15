@@ -3,8 +3,12 @@
 fabric
 django-debug-toolbar
 django-extensions
+pipdeptree
 
 Werkzeug
 
 ipython
 ipython[notebook]
+
+sh==1.12.14
+path.py==11.1.0

@@ -5,7 +5,7 @@ from django.contrib import admin
 
 admin.autodiscover()
 from .availability import AvailabilityView
-from .members import SeasonPlayersView
+from .members import SeasonPlayerView
 from .blockschedule import BlockNotifyer
 
 from .views import getSeasons, getCurrentSeason, getCurrentSeasonDates, getLatestBuzz
@@ -51,8 +51,8 @@ urlpatterns += (
 )
 
 urlpatterns += (
-    url(r'members/(?P<id>\d+)/?$', SeasonPlayersView.as_view()),
-    url(r'members/?$', SeasonPlayersView.as_view()),
+    url(r'members/(?P<id>\d+)/?$', SeasonPlayerView.as_view()),
+    url(r'members/?$', SeasonPlayerView.as_view()),
 )
 
 urlpatterns += (

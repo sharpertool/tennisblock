@@ -1,18 +1,16 @@
-
 from django import forms
 from django.forms import ModelForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
+from blockdb.models import Couple, SeasonPlayer
 
-from blockdb.models import Couple,SeasonPlayers
 
 class CoupleForm(ModelForm):
 
-
-    def __init__(self,season,*args,**kwargs):
-        super (CoupleForm,self).__init__(*args,**kwargs)
-        allPlayers = SeasonPlayers.objects.filter(season=season)
+    def __init__(self, season, *args, **kwargs):
+        super(CoupleForm, self).__init__(*args, **kwargs)
+        allPlayers = SeasonPlayer.objects.filter(season=season)
         self.fields['male'].queryset = allPlayers.filter(player__gender='M')
         self.fields['female'].queryset = allPlayers.filter(player__gender='F')
 
@@ -21,8 +19,8 @@ class CoupleForm(ModelForm):
             return False
 
         try:
-            self.spguy = SeasonPlayers.objects.get(pk=self.data['male'])
-            self.spgal = SeasonPlayers.objects.get(pk=self.data['female'])
+            self.spguy = SeasonPlayer.objects.get(pk=self.data['male'])
+            self.spgal = SeasonPlayer.objects.get(pk=self.data['female'])
         except ObjectDoesNotExist:
             return False
 
@@ -39,16 +37,16 @@ class ContactForm(forms.Form):
                              label=_('Please enter your e-mail address.'),
                              widget=forms.EmailInput({
                                  'id': 'bootstrap-email',
-                                 }))
+                             }))
     message = forms.CharField(max_length=500,
                               required=True,
                               label=_('Enter your message'),
                               widget=forms.Textarea({
-                                  'id':'bootstrap-message',
+                                  'id': 'bootstrap-message',
                                   'cols': '60', 'rows': '10'})
-    )
+                              )
 
 
 class AvailabilityForm(forms.Form):
-    name = forms.CharField(label=_('Player name'),)
-    #availability = forms.BooleanField(required=False)
+    name = forms.CharField(label=_('Player name'), )
+    # availability = forms.BooleanField(required=False)

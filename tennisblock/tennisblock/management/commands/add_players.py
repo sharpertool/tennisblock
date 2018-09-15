@@ -9,7 +9,7 @@ from lib.block import (
     currentSeason,
     addCouples,
     addPlayers,
-    addSeasonPlayers
+    addSeasonPlayer
 )
 
 class Command(BaseCommand):
@@ -44,6 +44,6 @@ class Command(BaseCommand):
         season = currentSeason()
         addPlayers(players)
 
-        addSeasonPlayers(season,players)
+        addSeasonPlayer(season,players)
 
         addCouples(season,players)

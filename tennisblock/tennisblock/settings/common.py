@@ -184,12 +184,12 @@ INSTALLED_APPS = [
 
     # Local Apps
     'tennisblock',
+    'blockdb',
     'webapp',
     'accounts',
     'api',
     'tennis_profile',
-    'blockdb.apps.BlockDBConfig',
-    'members.apps.MembersConfig',
+    'members',
     'schedule',
     'season',
     "webpack_loader",

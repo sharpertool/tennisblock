@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.conf import settings
 
 from TBLib.view import TennisLoginView
-from blockdb.models import Season, Couple, SeasonPlayers
+from blockdb.models import Season, Couple, SeasonPlayer
 from .forms import ContactForm
 
 from .forms import CoupleForm, AvailabilityForm
@@ -127,7 +127,7 @@ class CouplesView(TemplateView):
         return context
 
     def getcurentcouples(self, context, season):
-        players = SeasonPlayers.objects.filter(season=season)
+        players = SeasonPlayer.objects.filter(season=season)
         couples = Couple.objects.filter(season=season)
 
         context['players'] = players

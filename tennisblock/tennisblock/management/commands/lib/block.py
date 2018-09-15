@@ -3,7 +3,7 @@
 from django.db import connection
 from excel import Excel
 
-from blockdb.models import Player,Couple,Season,SeasonPlayers
+from blockdb.models import Player,Couple,Season,SeasonPlayer
 
 
 class PlayerExcel(Excel):
@@ -97,13 +97,12 @@ def addPlayers(players):
         addPlayer(player)
 
 
-def addSeasonPlayers(season,players):
+def addSeasonPlayer(season,players):
     """
     Add players to the season players table.
 
     """
 
-    #SeasonPlayers.objects.filter(season=season).delete()
     for player in players:
         lname = player['Last']
         fname = player['First']
@@ -114,14 +113,14 @@ def addSeasonPlayers(season,players):
             p = addPlayer(player)
 
         try:
-            sp = SeasonPlayers.objects.get(
+            sp = SeasonPlayer.objects.get(
                 season=season,
                 player=p)
 
             sp.blockmember = True
             sp.save()
         except:
-            sp = SeasonPlayers.objects.create(
+            sp = SeasonPlayer.objects.create(
                 season      =season,
                 player      = hasp,
                 blockmember = True

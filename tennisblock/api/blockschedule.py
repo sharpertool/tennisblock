@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
-from blockdb.models import Schedule, Couple, Player, SeasonPlayers, Meetings, Availability
+from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meetings, Availability
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, time_to_js
 from TBLib.teams import TeamManager
@@ -120,7 +120,7 @@ def getSubList(request, date=None):
                     else:
                         msubs.append(s)
 
-            others = SeasonPlayers.objects.filter(blockmember=False)
+            others = SeasonPlayer.objects.filter(blockmember=False)
             for sp in others:
                 if sp.player.id not in playingIds:
                     s = {

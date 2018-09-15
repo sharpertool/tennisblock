@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse
 
 from .forms import PlayerForm
-from blockdb.models import Player, SeasonPlayers
+from blockdb.models import Player, SeasonPlayer
 from api.apiutils import get_current_season
 from TBLib.view import TennisLoginView
 
@@ -127,7 +127,7 @@ class MembersView(TennisLoginView):
 
     def getPlayers(self):
         s = get_current_season()
-        sp = SeasonPlayers.objects.filter(season=s)
+        sp = SeasonPlayer.objects.filter(season=s)
         return [p.player for p in sp if (not self.members_only or p.blockmember)]
 
     def get_queryset(self):
@@ -144,18 +144,18 @@ class MembersView(TennisLoginView):
         return context
 
 
-class SeasonPlayersView(MembersView):
+class SeasonPlayerView(MembersView):
     members_only = True
 
 
-class SeasonPlayersFormSet(BaseModelFormSet):
+class SeasonPlayerFormSet(BaseModelFormSet):
 
     def __init__(self, *args, **kwargs):
-        super(SeasonPlayersFormSet, self).__init__(*args, **kwargs)
+        super(SeasonPlayerFormSet, self).__init__(*args, **kwargs)
         s = get_current_season()
         self.queryset = Player.objects.all()
 
-class SeasonPlayersFormView(MembersView):
+class SeasonPlayerFormView(MembersView):
     template_name = "members_form.html"
     members_only = True
 
@@ -170,7 +170,7 @@ class SeasonPlayersFormView(MembersView):
 
     def _get_formset(self, data=None):
         """ Create the formset object """
-        fs = modelformset_factory(Player, formset=SeasonPlayersFormSet)
+        fs = modelformset_factory(Player, formset=SeasonPlayerFormSet)
         return fs
 
     def get(self, request, **kwargs):
@@ -204,5 +204,5 @@ class SeasonPlayersFormView(MembersView):
             )
 
 
-class SeasonPlayersUpdate(MembersView):
+class SeasonPlayerUpdate(MembersView):
     members_only = True

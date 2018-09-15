@@ -81,7 +81,7 @@ class SeasonManager(object):
         can go in and adjust the players to see who is on a particular block.
         """
 
-        from blockdb.models import Season,SeasonPlayers,Player
+        from blockdb.models import Season, SeasonPlayer, Player
 
         try:
             sobj = Season.objects.get(name=seasonName)
@@ -89,9 +89,9 @@ class SeasonManager(object):
 
             for player in players:
                 try:
-                    SeasonPlayers.objects.get(season=sobj,player=player)
+                    SeasonPlayer.objects.get(season=sobj,player=player)
                 except ObjectDoesNotExist:
-                    sp = SeasonPlayers.objects.create(
+                    sp = SeasonPlayer.objects.create(
                         season=sobj,
                         player=player,
                         blockmember=False
