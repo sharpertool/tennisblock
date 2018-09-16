@@ -14,34 +14,12 @@
 
 {% block body %}
     <div id="content" class="dynamic">
-
-        <table class="pure-table">
-            <thead>
-                <tr>
-                    <th>First</th>
-                    <th>Last</th>
-                    <th>Gender</th>
-                    <th>NTRP</th>
-                    <th>uNTRP</th>
-                    <th>email</th>
-                    <th>phone</th>
-                    <th>Blockmember</th>
-                    <th>SeasonPlayer</th>
-                </tr>
-            </thead>
-                <tr>
-                    <th>{{player.first}}</th>
-                    <th>{{player.last}}</th>
-                    <th>{{player.gender}}</th>
-                    <th>{{player.ntrp}}</th>
-                    <th>{{player.microntrp}}</th>
-                    <th>{{player.email}}</th>
-                    <th>{{player.phone}}</th>
-                    <th>BlockMember</th>
-                    <th>SeasonPlayer</th>
-                </tr>
-        </table>
-
+        <h3>Delete player {{player.first}} {{player.last}}?</h3>
+        <form method="post">
+            {% csrf_token %}
+            <button ><a href="{% url 'player_list' %}">Cancel</a></button>
+            <button type="submit">Delete Player</button>
+        </form>
     </div>
 
 {% endblock %}
