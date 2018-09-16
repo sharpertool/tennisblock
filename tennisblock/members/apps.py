@@ -9,5 +9,5 @@ class MembersConfig(AppConfig):
     verbose_name = "Members App Config"
 
     def ready(self):
+        super().ready()
         import members.signals
-        super(MembersConfig, self).ready()

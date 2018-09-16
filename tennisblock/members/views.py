@@ -13,49 +13,38 @@ from TBLib.view import TennisLoginView
 from members import signals
 
 
-class MemberCreate(CreateView):
-    form_class = PlayerForm
-    model = Player
-
-    def form_valid(self, form):
-        return super(MemberCreate, self).form_valid(form)
-
-
-class PlayerList(ListView):
+class PlayerListView(ListView):
     model = Player
     template_name = "members/players.html"
     context_object_name = 'players'
 
 
-class PlayerDetail(DetailView):
+class PlayerDetailView(DetailView):
     model = Player
     template_name = "members/player_detail.html"
     context_object_name = 'player'
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PlayerDetail, self).get_context_data(**kwargs)
-        return context
-
 
 PlayerUserFormSet = inlineformset_factory(get_user_model(), Player,
-                                          fields=('ntrp', 'microntrp', 'phone',))
+                                          fields=(
+                                              # 'user.first_name',
+                                              # 'user.last_name',
+                                              'ntrp',
+                                              'microntrp',
+                                              'phone',
+                                          )
+                                      )
 
 
-class PlayerUpdate(UpdateView):
-    model = Player
+class PlayerUpdateView(UpdateView):
+    model = get_user_model()
     template_name = "members/player_form.html"
     context_object_name = 'player'
     form_class = PlayerUserFormSet
-    fields = ('gender', 'ntrp', 'microntrp', 'phone', )
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PlayerUpdate, self).get_context_data(**kwargs)
-        return context
+    #fields = ('gender', 'ntrp', 'microntrp', 'phone', )
 
     def form_valid(self, form):
-        response = super(PlayerUpdate, self).form_valid(form)
+        response = super().form_valid(form)
         signals.player_updated.send(
             sender=self.object,
             player=self.object,
@@ -67,7 +56,7 @@ class PlayerUpdate(UpdateView):
         return reverse("player_list")
 
 
-class CreatePlayerView(CreateView):
+class PlayerCreateView(CreateView):
     model = Player
     template_name = "members/player_form.html"
     form_class = PlayerForm
@@ -81,17 +70,18 @@ class CreatePlayerView(CreateView):
             player=self.object,
             request=self.request
         )
-        return super(CreatePlayerView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("player_list")
 
 
-class DeletePlayerView(DeleteView):
+class PlayerDeleteView(DeleteView):
     model = Player
+    template_name = "members/player_confirm_delete.html"
 
     def form_valid(self, form):
-        response = super(DeletePlayerView, self).form_valid(form)
+        response = super().form_valid(form)
         signals.player_deleted.send(
             sender=self.object,
             player=self.object,
@@ -112,7 +102,7 @@ class PlayersView(TennisLoginView):
         return sp
 
     def get_queryset(self):
-        queryset = super(PlayersView, self).get_queryset()
+        queryset = super().get_queryset()
 
         q = self.request.GET.get("q")
         if q:
@@ -120,7 +110,7 @@ class PlayersView(TennisLoginView):
         return queryset
 
     def get_context_data(self, **kwargs):
-        context = super(PlayersView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['players'] = self.getPlayers()
         return context
 
@@ -135,7 +125,7 @@ class MembersView(TennisLoginView):
         return [p.player for p in sp if (not self.members_only or p.blockmember)]
 
     def get_queryset(self):
-        queryset = super(MembersView, self).get_queryset()
+        queryset = super().get_queryset()
 
         q = self.request.GET.get("q")
         if q:
@@ -143,7 +133,7 @@ class MembersView(TennisLoginView):
         return queryset
 
     def get_context_data(self, **kwargs):
-        context = super(MembersView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['players'] = self.getPlayers()
         return context
 
@@ -155,7 +145,7 @@ class SeasonPlayerView(MembersView):
 class SeasonPlayerFormSet(BaseModelFormSet):
 
     def __init__(self, *args, **kwargs):
-        super(SeasonPlayerFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         s = get_current_season()
         self.queryset = Player.objects.all()
 

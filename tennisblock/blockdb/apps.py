@@ -6,5 +6,5 @@ class BlockDBConfig(AppConfig):
     verbose_name = "Block Database App"
 
     def ready(self):
+        super().ready()
         import blockdb.signals
-        super(BlockDBConfig, self).ready()

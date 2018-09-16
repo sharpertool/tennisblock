@@ -29,9 +29,12 @@
             <div class="form-actions">
                 <a href="{% url 'player_list' %}" class="btn">{% trans "Cancel" %}</a>
                 {% if player %}
-                    <a href="{% url 'player_delete' pk=player.pk %}" class="btn btn-danger">{% trans "Delete" %}</a>
+                    <a href="{% url 'player_delete' pk=player.pk %}"
+                       class="btn btn-danger">
+                        {% trans "Delete" %}
+                    </a>
                 {% endif %}
-                <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+                <button type="submit" class="btn btn-primary">{% trans "Save me" %}</button>
             </div>
         </form>
 

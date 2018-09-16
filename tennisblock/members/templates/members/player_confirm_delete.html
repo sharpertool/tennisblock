@@ -1,0 +1,47 @@
+{% extends "common/site_base.html" %}
+{% load staticfiles %}
+{% load compress %}
+{% load i18n %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
+    {% compress css %}
+    <link rel="stylesheet/less" type="text/less" href="{% static 'less/members.less' %}">
+    {% endcompress %}
+
+{% endblock %}
+
+{% block body %}
+    <div id="content" class="dynamic">
+
+        <table class="pure-table">
+            <thead>
+                <tr>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Gender</th>
+                    <th>NTRP</th>
+                    <th>uNTRP</th>
+                    <th>email</th>
+                    <th>phone</th>
+                    <th>Blockmember</th>
+                    <th>SeasonPlayer</th>
+                </tr>
+            </thead>
+                <tr>
+                    <th>{{player.first}}</th>
+                    <th>{{player.last}}</th>
+                    <th>{{player.gender}}</th>
+                    <th>{{player.ntrp}}</th>
+                    <th>{{player.microntrp}}</th>
+                    <th>{{player.email}}</th>
+                    <th>{{player.phone}}</th>
+                    <th>BlockMember</th>
+                    <th>SeasonPlayer</th>
+                </tr>
+        </table>
+
+    </div>
+
+{% endblock %}
