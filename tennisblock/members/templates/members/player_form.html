@@ -17,7 +17,7 @@
     <div id="content" class="dynamic">
 
         <h1>{% if player %}{% trans "Edit Player" %}{% else %}{% trans "Create Player" %}{% endif %}</h1>
-        {% if player %}
+        {% if player_form %}
             {% url "player_update" pk=player.pk as post_url %}
         {% else %}
             {% url "player_create" as post_url %}
@@ -25,11 +25,12 @@
 
         <form action="{{ post_url }}" method="POST" class="form form-horizontal">
             {% csrf_token %}
-            {{ form|bootstrap }}
+            {{ user_form|bootstrap }}
+            {{ player_form|bootstrap }}
             <div class="form-actions">
                 <a href="{% url 'player_list' %}" class="btn">{% trans "Cancel" %}</a>
-                {% if player %}
-                    <a href="{% url 'player_delete' pk=player.pk %}"
+                {% if player_form and player_form.pk %}
+                    <a href="{% url 'player_delete' pk=player_form.pk %}"
                        class="btn btn-danger">
                         {% trans "Delete" %}
                     </a>

@@ -1,6 +1,7 @@
 {% extends "common/site_base.html" %}
 {% load staticfiles %}
 {% load compress %}
+{% load render_bundle from webpack_loader %}
 
 {% block angular_script %}
     {{ block.super }}
@@ -15,7 +16,28 @@
     {% include "_messages.html" %}
     {% block body %}
         <h1>Welcome to the Tennis Roster.com site.</h1>
+{#        <h3>Mount Point Follows</h3>#}
+{#        <div id="root"></div>#}
     {% endblock body %}
 </section>
 {% endblock body_base %}
 
+{#{% block render_bundles %}#}
+{#    {{ block.super }}#}
+{#    {% if render_bundles %}#}
+{#        <!-- Render bundles for home page -->#}
+{#        {% render_bundle 'Availability' 'js' %}#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+{##}
+{#{% block initialize_bundles %}#}
+{#    {{ block.super }}#}
+{#    {% if render_bundles %}#}
+{#        <!-- Initialize bundles -->#}
+{#        <script type="text/javascript">#}
+{#            console.log('Bootstrap Availability')#}
+{#            var element = document.getElementById('root')#}
+{#            Availability(element)#}
+{#        </script>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
