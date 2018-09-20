@@ -30,18 +30,18 @@
             {% if USE_LESS %}
                 <!-- less enabled -->
                 <script type="text/javascript">
-                    less = {
-                        env: "development",
-                        async: false,
-                        fileAsync: false,
-                        poll: {{ LESS_POLL }},
-                        dumpLineNumbers: "comments",
-                        relativeUrls: false
-                    };
+                  less = {
+                    env: "development",
+                    async: false,
+                    fileAsync: false,
+                    poll: {{ LESS_POLL }},
+                    dumpLineNumbers: "comments",
+                    relativeUrls: false
+                  };
                 </script>
                 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
                 <script type="text/javascript">
-                    less.watch();
+                  less.watch();
                 </script>
             {% endif %}
         {% endblock less_engine %}
@@ -60,9 +60,9 @@
                             ">
                     {% block header_bar_images %}
                         <a class="navbar_brand" href="">
-                        <img id="header_logo"
-                             src="{% static 'images/assets/Racquet_and_balls.png' %}"/>
-                        Company Title
+                            <img id="header_logo"
+                                 src="{% static 'images/assets/Racquet_and_balls.png' %}"/>
+                            Company Title
                         </a>
                     {% endblock header_bar_images %}
                     {% block header_bar_nav %}
@@ -126,6 +126,19 @@
 
         {% block page_script %}
             <!-- base.html: body_page_script -->
+        {% endblock %}
+
+        {% block extra_js %}
+            {# Override this in templates to add extra javascript #}
+        {% endblock %}
+
+        {% block render_bundles %}
+            {# Add logic to render bundles #}
+            <!-- Render bundles here -->
+        {% endblock %}
+
+        {% block initialize_bundles %}
+            {# Add logic to initialize bundles #}
         {% endblock %}
 
         {% block body_script_final %}

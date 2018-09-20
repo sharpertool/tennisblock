@@ -1,13 +1,14 @@
 # Django settings for tennisblock_project project.
 
 import environ
-from os.path import join
+from os.path import join, exists
 import sys
 
 env = environ.Env()
 
 CONF_DIR = environ.Path(__file__)
 DJANGO_ROOT = CONF_DIR - 3
+PROJECT_DIR = DJANGO_ROOT
 PROJECT_ROOT = DJANGO_ROOT - 1
 print("DJANGO_ROOT:{}".format(DJANGO_ROOT))
 print("PROJECT_ROOT:{}".format(PROJECT_ROOT))
@@ -15,7 +16,7 @@ print("PROJECT_ROOT:{}".format(PROJECT_ROOT))
 sys.path.append(PROJECT_ROOT("scripts"))
 
 # DEBUG
-DEBUG = env.bool("DEBUG", False)
+DEBUG = env.bool("DJANGO_DEBUG", False)
 
 ADMINS = (
     ('Ed Henderson', 'ed@tennisblock.com'),
@@ -147,6 +148,7 @@ TEMPLATES = [
                 # 'sekizai.context_processors.sekizai',
                 # 'sekizai.context.SekizaiContext',
                 'TBLib.context.tennisblock',
+                'frontend.context.frontend_context',
             ]
 
         }
@@ -171,7 +173,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Must have Django-suit before the admin.
-    #'suit',
+    # 'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
 
@@ -184,6 +186,7 @@ INSTALLED_APPS = [
 
     # Local Apps
     'tennisblock',
+    'frontend',
     'blockdb',
     'webapp',
     'accounts',
@@ -278,25 +281,51 @@ CACHES = {
     }
 }
 
-# Set this to true to load the editor and dependencies locally for development
-USE_LOCAL_BUNDLE = env.bool('USE_LOCAL_BUNDLE', default=False)
-if USE_LOCAL_BUNDLE:
-    # React Project Editor Javascript build directory default location.
-    # We expect that the RPE scaffold project lives at the same level
-    # as the synoptic project
-    JS_DIST_DIR = env.str("JS_DIST_DIR")
+# ReactJS Build import
+CLIENT_BUILD_DIR = env.str('CLIENT_BUILD_DIR', default='')
+# True to use bundles. False to use local logic
+RENDER_BUNDLES = env.bool('RENDER_BUNDLES', default=True)
+print(f"What am i? {CLIENT_BUILD_DIR}")
+if DEBUG and CLIENT_BUILD_DIR != '':
+    print(f"Client build dir defined as {CLIENT_BUILD_DIR}")
+    CLIENT_BUILD_DIR = environ.Path(CLIENT_BUILD_DIR)
 
-    STATICFILES_DIRS += [str(JS_DIST_DIR)]
+    STATICFILES_DIRS += [str(CLIENT_BUILD_DIR)]
 
-    WEBPACK_LOADER = {
-        'DEFAULT': {
-            'CACHE': not DEBUG,
-            'BUNDLE_DIR_NAME': env.str('BUNDLE_DIR_NAME', default='/'),  # must end with slash
-            'STATS_FILE': join(str(JS_DIST_DIR), 'webpack-stats.json'),
-            'POLL_INTERVAL': 0.1,
-            'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    WEBPACK_STATS_FILE = CLIENT_BUILD_DIR('webpack-stats.json')
+
+    if exists(WEBPACK_STATS_FILE):
+        WEBPACK_LOADER = {
+            'DEFAULT': {
+                'CACHE': not DEBUG,
+                'BUNDLE_DIR_NAME': env.str('BUNDLE_DIR_NAME', default='/'),
+                'STATS_FILE': WEBPACK_STATS_FILE,
+                'POLL_INTERVAL': 0.1,
+                'TIMEOUT': None,
+            }
         }
-    }
+    else:
+        RENDER_BUNDLES = False
+else:
+    # Set the components version to download upon build here
+    # This is used at build time only, so .env file does not help
+    CLIENT_VERSION = 'v0.1.0'
+
+    WEBPACK_STATS_FILE = env.str('WEBPACK_STATS_FILE',
+                                 default=PROJECT_DIR('frontend/webpack-stats.json'))
+
+    if exists(WEBPACK_STATS_FILE):
+        ''' Turn off render bundles if no config file is found. '''
+        WEBPACK_LOADER = {
+            'DEFAULT': {
+                'CACHE': True,
+                'BUNDLE_DIR_NAME': env.str('BUNDLE_DIR_NAME', default='/'),
+                'STATS_FILE': WEBPACK_STATS_FILE,
+                'IGNORE': ['.+\.hot-update.js', '.+\.map']
+            }
+        }
+    else:
+        RENDER_BUNDLES = False
 
 # Set your DSN value
 RAVEN_CONFIG = {

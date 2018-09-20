@@ -7,6 +7,5 @@ def tennisblock(request):
     return {
         'angularapp': 'tennisblock',
         'debug': settings.DEBUG,
-        'use_local_bundle': settings.USE_LOCAL_BUNDLE
     }
 
