@@ -29,8 +29,7 @@
                     <th>uNTRP</th>
                     <th>email</th>
                     <th>phone</th>
-                    <th>Blockmember</th>
-                    <th>SeasonPlayer</th>
+                    <th>Modify</th>
                 </tr>
             </thead>
             {% for player in players %}
@@ -42,8 +41,6 @@
                     <td>{{player.microntrp}}</td>
                     <td>{{player.email}}</td>
                     <td>{{player.phone}}</td>
-                    <td>BlockMember</td>
-                    <td>SeasonPlayer</td>
                     <td>
                         <a href="{% url 'player_update' pk=player.pk %}"
                            class="pure-button pure-button-primary">

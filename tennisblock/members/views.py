@@ -16,28 +16,15 @@ from members import signals
 
 
 class PlayerListView(ListView):
-    model = Player
     template_name = "members/players.html"
     context_object_name = 'players'
+    queryset = Player.objects.all().order_by('user__last_name', 'user__first_name')
 
 
 class PlayerDetailView(DetailView):
     queryset = Player.objects.all()
     template_name = "members/player_detail.html"
     context_object_name = 'player'
-
-
-PlayerUserFormSet = inlineformset_factory(get_user_model(), Player,
-                                          fields=(
-                                              # 'user.first_name',
-                                              # 'user.last_name',
-                                              #'first_name',
-                                              'gender',
-                                              'ntrp',
-                                              'microntrp',
-                                              'phone',
-                                          )
-                                      )
 
 
 class PlayerUpdateView(TemplateView):
@@ -50,11 +37,28 @@ class PlayerUpdateView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         """ Process the results to see if they have been updated.. """
-        user_form = UserForm(request.POST)
-        player_form = PlayerForm(request.POST)
+
+        player = None
+        if kwargs.get('pk', None):
+            player = Player.objects.get(pk=kwargs.get('pk'))
+            user_form = UserForm(request.POST, instance=player.user)
+            player_form = PlayerForm(request.POST, instance=player)
+        else:
+            # Create Method
+            user_form = UserForm(request.POST)
+            player_form = PlayerForm(request.POST)
+
 
         if user_form.is_valid() and player_form.is_valid():
             return self.form_valid(user_form, player_form)
+
+        if not user_form.is_valid():
+            return self.form_invalid(user_form)
+
+        if not player_form.is_valid():
+            return self.form_invalid(player_form)
+
+        return self.form_invalid(user_form)
 
     def get_success_url(self):
         return self.success_url
@@ -65,6 +69,14 @@ class PlayerUpdateView(TemplateView):
         #     player=self.object,
         #     request=self.request
         # )
+        if player_form.changed_data:
+            player = player_form.instance
+            player.save()
+
+        if user_form.changed_data:
+            user = user_form.instance
+            user.save()
+
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
@@ -75,6 +87,7 @@ class PlayerUpdateView(TemplateView):
         context = super().get_context_data(*args, **kwargs)
         player_obj = get_object_or_404(Player, pk=kwargs.get('pk', None))
         user_obj = player_obj.user
+        context['player'] = player_obj
         context['user_form'] = UserForm(instance=user_obj)
         context['player_form'] = PlayerForm(instance=player_obj)
         return context
@@ -142,7 +155,7 @@ class PlayersView(TennisLoginView):
 
     def getPlayers(self):
         s = get_current_season()
-        sp = Player.objects.all()
+        sp = Player.objects.all().order_by('last_name', 'first_name')
         return sp
 
     def get_queryset(self):

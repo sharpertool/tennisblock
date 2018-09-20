@@ -37,6 +37,10 @@ DATABASES = {
 
 print("Databases: {}".format(DATABASES['default']))
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 # Added the django cors module
 CORS_ORIGIN_WHITELIST = (
     'tennisblock.com',
@@ -179,7 +183,6 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'pinax_theme_bootstrap',
-    "account",
     'bootstrapform',
     'compressor',
     'raven.contrib.django.raven_compat',
@@ -191,11 +194,10 @@ INSTALLED_APPS = [
     'webapp',
     'accounts',
     'api',
-    'tennis_profile',
     'members',
     'schedule',
     'season',
-    "webpack_loader",
+    'webpack_loader',
 ]
 
 REST_FRAMEWORK = {
