@@ -1,9 +1,5 @@
-from django.conf.urls import url
+from django.urls import re_path
 
-# Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-
-admin.autodiscover()
 from .availability import AvailabilityView
 from .members import SeasonPlayerView
 from .blockschedule import BlockNotifyer
@@ -13,49 +9,28 @@ from .teams import pickTeams
 from .blocksheet import blockSheet
 from .blockschedule import getBlockDates, getSubList, blockPlayers, blockSchedule, getMatchData
 
+app_name = 'api'
 urlpatterns = (
-    url(r'seasons/?$', getSeasons),
-    url(r'currentseason/?$', getCurrentSeason),
-    url(r'currentseasondates/?$', getCurrentSeasonDates),
-    url(r'buzz/?$', getLatestBuzz),
-)
-
-urlpatterns += (
-    url(r'pickteams/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', pickTeams),
-    url(r'pickteams/?$', pickTeams),
-)
-
-urlpatterns += (
-    url(r'blocksheet/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', blockSheet),
-    url(r'blocksheet/?$', blockSheet),
-)
-
-urlpatterns += (
-    url(r'blockdates/?$', getBlockDates),
-
-    url(r'subs/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', getSubList),
-    url(r'subs/?$', getSubList),
-
-    url(r'blockplayers/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', blockPlayers),
-    url(r'blockplayers/?', blockPlayers),
-
-    url(r'blockschedule/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', blockSchedule),
-    url(r'blockschedule/?$', blockSchedule),
-
-    url(r'matchdata/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', getMatchData),
-    url(r'matchdata/?', getMatchData),
-)
-
-urlpatterns += (
-    url(r'availability/?$', AvailabilityView.as_view()),
-)
-
-urlpatterns += (
-    url(r'members/(?P<id>\d+)/?$', SeasonPlayerView.as_view()),
-    url(r'members/?$', SeasonPlayerView.as_view()),
-)
-
-urlpatterns += (
-    url(r'schedule/notify/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',
-        BlockNotifyer.as_view(), name="schedule_notify"),
+    re_path(r'seasons/?$', getSeasons),
+    re_path(r'currentseason/?$', getCurrentSeason),
+    re_path(r'currentseasondates/?$', getCurrentSeasonDates),
+    re_path(r'buzz/?$', getLatestBuzz),
+    re_path(r'pickteams/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', pickTeams),
+    re_path(r'pickteams/?$', pickTeams),
+    re_path(r'blocksheet/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', blockSheet),
+    re_path(r'blocksheet/?$', blockSheet),
+    re_path(r'blockdates/?$', getBlockDates),
+    re_path(r'subs/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', getSubList),
+    re_path(r'subs/?$', getSubList),
+    re_path(r'blockplayers/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', blockPlayers),
+    re_path(r'blockplayers/?', blockPlayers),
+    re_path(r'blockschedule/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', blockSchedule),
+    re_path(r'blockschedule/?$', blockSchedule),
+    re_path(r'matchdata/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?', getMatchData),
+    re_path(r'matchdata/?', getMatchData),
+    re_path(r'availability/?$', AvailabilityView.as_view()),
+    re_path(r'members/(?P<id>\d+)/?$', SeasonPlayerView.as_view()),
+    re_path(r'members/?$', SeasonPlayerView.as_view()),
+    re_path(r'schedule/notify/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?',
+            BlockNotifyer.as_view(), name="schedule_notify"),
 )

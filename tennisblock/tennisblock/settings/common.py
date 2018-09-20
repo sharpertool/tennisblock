@@ -182,7 +182,6 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
 
     'rest_framework',
-    'pinax_theme_bootstrap',
     'bootstrapform',
     'compressor',
     'raven.contrib.django.raven_compat',
@@ -198,6 +197,7 @@ INSTALLED_APPS = [
     'schedule',
     'season',
     'webpack_loader',
+    'pinax_theme_bootstrap',
 ]
 
 REST_FRAMEWORK = {

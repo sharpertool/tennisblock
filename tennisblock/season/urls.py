@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -9,8 +9,9 @@ from .views import (
     SeasonCreate,
 )
 
+app_name = 'season'
 urlpatterns = [
-    url(r'^$', SeasonsView.as_view(), name="seasons"),
-    url(r'^(?P<pk>\d+)/$', SeasonDetailView.as_view(), name="season_detail"),
-    url(r'^create/', SeasonCreate.as_view(), name='create_season'),
+    re_path(r'^$', SeasonsView.as_view(), name="seasons"),
+    re_path(r'^(?P<pk>\d+)/$', SeasonDetailView.as_view(), name="season_detail"),
+    re_path(r'^create/', SeasonCreate.as_view(), name='create_season'),
 ]

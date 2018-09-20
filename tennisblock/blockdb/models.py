@@ -25,7 +25,7 @@ class Season(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('season_detail', kwargs={'pk': self.pk})
+        return reverse('season:season_detail', kwargs={'pk': self.pk})
 
 
 class GirlsManager(models.Manager):

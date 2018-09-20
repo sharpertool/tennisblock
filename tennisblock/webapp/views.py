@@ -31,7 +31,7 @@ class AvailabilityFormSet(BaseFormSet):
     def add_fields(self, form, index):
         super(AvailabilityFormSet, self).add_fields(form, index)
         form.field_list = []
-        for x in xrange(12):
+        for x in range(12):
             f = forms.BooleanField(required=False, label='')
             field_nm = "avail_{}".format(x)
             form.fields[field_nm] = f

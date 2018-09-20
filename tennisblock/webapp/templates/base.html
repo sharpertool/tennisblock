@@ -50,18 +50,13 @@
 
     </head>
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
-        <section class="body_wrapper
-            {% block wrapper_class %}{% endblock %}">
+        <section class="body_wrapper {% block wrapper_class %}{% endblock %}">
             {% block header_bar_base %}
-                <section id="top_banner"
-                         class="topbar
-                            {% block navbar_class %}
-                            {% endblock %}
-                            ">
+                <section id="top_banner" class="topbar {% block navbar_class %}{% endblock %}">
                     {% block header_bar_images %}
                         <a class="navbar_brand" href="">
                             <img id="header_logo"
-                                 src="{% static 'images/assets/Racquet_and_balls.png' %}"/>
+                                 src="{% static 'images/assets/Racquet_and_balls2.png' %}"/>
                             Company Title
                         </a>
                     {% endblock header_bar_images %}
