@@ -41,3 +41,5 @@ db_learning.txt
 /.env
 /database/navicat_debug
 /database/backups
+/tennisblock/webapp/static/css/style_base.css
+/tennisblock/webapp/static/css/style_base.css.map

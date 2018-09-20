@@ -34,12 +34,6 @@
 
 {% endblock %}
 
-{% block less_script %}
-    {{ block.super }}
-    <!-- site_base.html: less_script end -->
-
-{% endblock %}
-
 {% block style_base %}
     {{ block.super }}
     <!-- site_base.html: style_base -->
@@ -63,9 +57,7 @@
     <link rel="stylesheet"
           href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
     <link rel="stylesheet"
-          href="{% static 'css/highslide/highslide.css' %}">
-    <link rel="stylesheet"
-          href="{% static 'assets/css/style_base.css' %}">
+          href="{% static 'css/style_base.css' %}">
 
     {% block extra_style %}
     {% endblock %}
@@ -78,8 +70,13 @@
 
 {% block wrapper_class %}wrapper{% endblock %}
 
-{% block page_header_base %}
-{% endblock page_header_base %}
+{% block header_bar %}
+    <div class="navbar_brand">
+        <img id="header_logo"
+             src="{% static 'images/assets/Racquet_and_balls2.png' %}"/>
+        TennisBlock
+    </div>
+{% endblock %}
 
 {% block header_bar_images %}
     <a class="brand navbar_brand" href="">
@@ -90,41 +87,53 @@
 {% endblock header_bar_images %}
 
 {% block header_bar_nav %}
-    <nav class="main-menu pure-menu pure-menu-open pure-menu-horizontal" id="header_bar_nav_old">
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            {% if user.is_authenticated %}
-                <!-- User Authenticated -->
-                <li><a class="" href="{% url 'schedule:schedule' %}">Block Schedule</a></li>
-                <li><a href="{% url 'availability' %}">Availability</a></li>
-                {% comment %}
-            <li><a href="{% url 'availability_form' %}">Availability Form</a></li>
-            {% endcomment %}
-                <li><a href="{% url 'members:player_list' %}">All Players</a></li>
-                <li><a href="{% url 'members:seasonplayers' %}">Block Members</a></li>
-                <li><a href="{% url 'season:seasons' %}">Seasons</a></li>
-                <li><a href="{% url 'about' %}">About Us</a></li>
-                {% comment %}
-            <li><a href="{{ request.user.profile.get_absolute_url }}">
-                <i class="icon-briefcase"></i> {% trans "Profile" %}
-            </a></li>
-            {% endcomment %}
-                {% if user.is_staff %}
-                    <li><a href="{% url THEME_ADMIN_URL|default:'admin:index' %}">
-                        <i class="icon-cog">
-                        </i>
-                        {% trans "Admin" %}
-                    </a></li>
-                {% endif %}
-                <li><a id="account_logout" href="{% url 'logout' %}">
-                    <i class="icon-off"></i> {% trans "Log Out" %}
+    <nav class="navbar navbar-toggleable-md mavbar-inverse fixed-top bg-inverse">
+     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">TennisBlock</a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a href="{% url 'home' %}">Home</a></li>
+        {% if user.is_authenticated %}
+            <!-- User Authenticated -->
+            <li class="nav-item"><a class="nav-link" href="{% url 'schedule:schedule' %}">Schedule</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'availability' %}">Availability</a></li>
+            {% comment %}
+        <li><a href="{% url 'availability_form' %}">Availability Form</a></li>
+        {% endcomment %}
+            <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link" href="{% url 'members:player_list' %}">Players</a></li>
+{#            <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link" href="{% url 'members:seasonplayers' %}">Block Members</a></li>#}
+            <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link" href="{% url 'season:seasons' %}">Seasons</a></li>
+            <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link" href="{% url 'about' %}">About</a></li>
+            {% comment %}
+        <li><a href="{{ request.user.profile.get_absolute_url }}">
+            <i class="icon-briefcase"></i> {% trans "Profile" %}
+        </a></li>
+        {% endcomment %}
+            {% if user.is_staff %}
+                <li><a class="nav-link" class="nav-link" href="{% url THEME_ADMIN_URL|default:'admin:index' %}">
+                    <i class="icon-cog">
+                    </i>
+                    {% trans "Admin" %}
                 </a></li>
-            {% else %}
-                <!-- User Not Authenticated -->
-                <li><a href="{% url 'about' %}">About Us</a></li>
-                <li><a href="{% url 'login' %}">{% trans "Sign In" %}</a></li>
             {% endif %}
+            <li class="nav-item"><a class="nav-link" id="account_logout" href="{% url 'logout' %}">
+                <i class="icon-off"></i> {% trans "Log Out" %}
+            </a></li>
+        {% else %}
+            <!-- User Not Authenticated -->
+            <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">{% trans "Sign In" %}</a></li>
+        {% endif %}
         </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+
     </nav>
 {% endblock header_bar_nav %}
 
