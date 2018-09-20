@@ -32,13 +32,11 @@ class PlayerUpdateView(TemplateView):
     success_url = 'members:player_list'
 
     def get(self, request, *args, **kwargs):
-        #self.object = self.get_object()
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """ Process the results to see if they have been updated.. """
 
-        player = None
         if kwargs.get('pk', None):
             player = Player.objects.get(pk=kwargs.get('pk'))
             user_form = UserForm(request.POST, instance=player.user)
@@ -47,7 +45,6 @@ class PlayerUpdateView(TemplateView):
             # Create Method
             user_form = UserForm(request.POST)
             player_form = PlayerForm(request.POST)
-
 
         if user_form.is_valid() and player_form.is_valid():
             return self.form_valid(user_form, player_form)
@@ -61,21 +58,21 @@ class PlayerUpdateView(TemplateView):
         return self.form_invalid(user_form)
 
     def get_success_url(self):
-        return self.success_url
+        return reverse(self.success_url)
 
     def form_valid(self, user_form, player_form):
-        # signals.player_updated.send(
-        #     sender=self.object,
-        #     player=self.object,
-        #     request=self.request
-        # )
-        if player_form.changed_data:
-            player = player_form.instance
-            player.save()
-
         if user_form.changed_data:
             user = user_form.instance
             user.save()
+
+        if player_form.changed_data:
+            player = player_form.instance
+            player.save()
+            signals.player_updated.send(
+                sender=player,
+                player=player,
+                request=self.request
+            )
 
         return HttpResponseRedirect(self.get_success_url())
 
@@ -91,9 +88,6 @@ class PlayerUpdateView(TemplateView):
         context['user_form'] = UserForm(instance=user_obj)
         context['player_form'] = PlayerForm(instance=player_obj)
         return context
-
-    def get_success_url(self):
-        return reverse("player_list")
 
 
 class PlayerCreateView(TemplateView):
@@ -130,7 +124,7 @@ class PlayerCreateView(TemplateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse("player_list")
+        return reverse(self.success_url)
 
 
 class PlayerDeleteView(DeleteView):
@@ -146,8 +140,18 @@ class PlayerDeleteView(DeleteView):
         )
         return response
 
+    def delete(self, request, *args, **kwargs):
+        """ Need to delete the user, not the player """
+        player = self.get_object()
+        success_url = self.get_success_url()
+        uid = player.user.pk
+        pid = player.id
+        player.user.delete()
+        print(f"Delete player {pid} and user {uid}")
+        return HttpResponseRedirect(success_url)
+
     def get_success_url(self):
-        return reverse("player_list")
+        return reverse("members:player_list")
 
 
 class PlayersView(TennisLoginView):

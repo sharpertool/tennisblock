@@ -15,7 +15,7 @@
 {% block body %}
     <div id="content" class="dynamic">
 
-        <a href="{% url "player_create" %}" class="btn btn-mini">
+        <a href="{% url "members:player_create" %}" class="btn btn-mini">
             <i class="icon icon-pencil"></i>
             {% trans "Create Player" %}
         </a>
@@ -42,7 +42,7 @@
                     <td>{{player.email}}</td>
                     <td>{{player.phone}}</td>
                     <td>
-                        <a href="{% url 'player_update' pk=player.pk %}"
+                        <a href="{% url 'members:player_update' pk=player.pk %}"
                            class="pure-button pure-button-primary">
                             <i class="icon icon-pencil"></i>
                             {% trans "Edit" %}

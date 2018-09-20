@@ -17,7 +17,7 @@
         <h3>Delete player {{player.first}} {{player.last}}?</h3>
         <form method="post">
             {% csrf_token %}
-            <button ><a href="{% url 'player_list' %}">Cancel</a></button>
+            <button ><a href="{% url 'members:player_list' %}">Cancel</a></button>
             <button type="submit">Delete Player</button>
         </form>
     </div>

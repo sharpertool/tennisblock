@@ -23,7 +23,7 @@
 
         <div id="members" class="member_list">
             {% comment %}
-            <form action="{% url 'members_update' %}" method="post">
+            <form action="{% url 'members:members_update' %}" method="post">
             {% endcomment %}
             <form action="" method="post">
                 {{ formset.management_form }}

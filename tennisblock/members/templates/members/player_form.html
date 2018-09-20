@@ -18,9 +18,9 @@
 
         <h1>{% if player %}{% trans "Edit Player" %}{% else %}{% trans "Create Player" %}{% endif %}</h1>
         {% if player_form %}
-            {% url "player_update" pk=player.pk as post_url %}
+            {% url "members:player_update" pk=player.pk as post_url %}
         {% else %}
-            {% url "player_create" as post_url %}
+            {% url "members:player_create" as post_url %}
         {% endif %}
 
         <form action="{{ post_url }}" method="POST" class="form form-horizontal">
@@ -28,9 +28,9 @@
             {{ user_form|bootstrap }}
             {{ player_form|bootstrap }}
             <div class="form-actions">
-                <a href="{% url 'player_list' %}" class="btn">{% trans "Cancel" %}</a>
-                {% if player_form and player_form.pk %}
-                    <a href="{% url 'player_delete' pk=player_form.pk %}"
+                <a href="{% url 'members:player_list' %}" class="btn">{% trans "Cancel" %}</a>
+                {% if player %}
+                    <a href="{% url 'members:player_delete' pk=player.pk %}"
                        class="btn btn-danger">
                         {% trans "Delete" %}
                     </a>
