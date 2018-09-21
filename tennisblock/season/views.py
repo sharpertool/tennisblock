@@ -5,6 +5,8 @@ from TBLib.view import class_login_required
 
 from blockdb.models import Season, Meeting, Player, SeasonPlayer
 
+from .forms import SeasonForm
+from api.apiutils import build_meetings_for_season
 
 @class_login_required
 class SeasonsView(TemplateView):
@@ -12,20 +14,21 @@ class SeasonsView(TemplateView):
 
     # queryset = Season.objects.all()
 
-    def get_context_data(self, **kwargs):
-        context = super(SeasonsView, self).get_context_data(**kwargs)
+    def get_context_data(self, request, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['seasons'] = Season.objects.all()
-
-        return context
-
-    def get(self, request, pk=None, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if pk:
+        pk = kwargs.get('pk', None)
+        if pk is not None:
             s = Season.objects.filter(pk=pk)
             if s.count():
                 context['season'] = s[0]
 
                 context['meetings'] = Meeting.objects.filter(season=s)
+
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(request, *args, **kwargs)
 
         return self.render_to_response(context)
 
@@ -36,42 +39,14 @@ class SeasonDetailView(TemplateView):
 
     # queryset = Season.objects.all()
 
-    def get(self, request, pk=None, **kwargs):
+    def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if pk:
-            s = Season.objects.get(pk=pk)
-            context['season'] = s
-            context['meetings'] = Meeting.objects.filter(season=s)
-            context['players'] = self.get_player_list(s)
 
         return self.render_to_response(context)
 
-    def get_player_list(self, season):
-        """
-        Return a list of players and boolean if they are in the given season.
-
-        Set the 'update' flag to false. This is used when updating the values to
-        know which players were update to be in the season, and which we can remove.
-        """
-
-        players = Player.objects.all().prefetch_related('seasonplayer_set')
-
-        player_data = []
-        for p in players:
-            player_data.append({
-                'pk': p.pk,
-                'name': "{} {}".format(p.first, p.last),
-                'ntrp': p.ntrp,
-                'season_player': p.in_season(season),
-                'block_member': False,
-                'update': False
-            })
-
-        return player_data
-
-    def post(self, request, pk=None, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if pk:
+    def post(self, request, **kwargs):
+        pk = kwargs.get('pk', None)
+        if pk is not None:
             s = Season.objects.get(pk=pk)
             meetings = Meeting.objects.filter(season=s)
 
@@ -99,11 +74,49 @@ class SeasonDetailView(TemplateView):
             elif request.POST.get('season_players', False):
                 self.update_season_players(s, request)
 
+            context = self.get_context_data(**kwargs)
+
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = kwargs.get('pk', None)
+        if pk is not None:
+            s = Season.objects.get(pk=pk)
             context['season'] = s
+            context['season_form'] = SeasonForm(instance=s)
+            meetings = Meeting.objects.filter(season=s)
+            if len(meetings) == 0:
+                build_meetings_for_season(s)
+                meetings = Meeting.objects.filter(season=s)
             context['meetings'] = meetings
             context['players'] = self.get_player_list(s)
 
-        return self.render_to_response(context)
+        return context
+
+
+    def get_player_list(self, season):
+        """
+        Return a list of players and boolean if they are in the given season.
+
+        Set the 'update' flag to false. This is used when updating the values to
+        know which players were update to be in the season, and which we can remove.
+        """
+
+        players = Player.objects.all().prefetch_related('seasonplayer_set')
+
+        player_data = []
+        for p in players:
+            player_data.append({
+                'pk': p.pk,
+                'name': "{} {}".format(p.first, p.last),
+                'ntrp': p.ntrp,
+                'season_player': p.in_season(season),
+                'block_member': False,
+                'update': False
+            })
+
+        return player_data
 
     def update_season_players(self, season, request):
         player_keys = request.POST.getlist('members')

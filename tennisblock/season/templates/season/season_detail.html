@@ -1,88 +1,58 @@
 {% extends "site_base.html" %}
 {% load staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block angular_script %}
 {% endblock %}
 
 {% block body %}
     <div>
-        <form class="pure-form pure-form-aligned" action="" method="post">
+        <form action="{% url 'season:season_detail' pk=season.pk %}" %}method="post">
             {% csrf_token %}
-            <div class="pure-control-group">
-                <label for="name">Season Name</label>
-                <input id="name" name="name" type="text"
-                       placeholder="Season Name"
-                        value="{{ season.name }}">
-            </div>
-            <div class="pure-control-group">
-                <label for="courts">Number of Courts</label>
-                <input id="courts" name="courts" type="text"
-                       placeholder="#Courts"
-                       value="{{ season.courts}}">
-            </div>
-            <div class="pure-control-group">
-                <label for="name">First Court</label>
-                <input id="firstcourt" name="firstcourt" type="text"
-                       placeholder="First Court #"
-                       value="{{ season.firstcourt}}">
-            </div>
-            <div class="pure-control-group">
-                <label for="seasonstart">Season Start Date</label>
-                <input id="seasonstart" name="seasonstart" type="text"
-                       value="{{ season.startdate}}">
-            </div>
-            <div class="pure-control-group">
-                <label for="seasonend">Season Start Date</label>
-                <input id="seasonend" name="seasonend" type="text"
-                       value="{{ season.enddate}}">
-            </div>
-            <div class="pure-control-group">
-                <label for="blockstart">Block Start Date</label>
-                <input id="blockstart" name="blockstart" type="text"
-                       value="{{ season.blockstart}}">
-            </div>
-            <div class="pure-control-group">
-                <label for="blocktime">Block Start Time</label>
-                <input id="blocktime" name="blocktime" type="text"
-                       value="{{ season.blocktime}}">
-            </div>
-            <input type="submit" name="update_season" value="Update" />
+            {% crispy season_form season_form.helper %}
+            <input class="btn btn-primary"
+                   type="submit"
+                   name="update_season" value="Update Season"/>
         </form>
 
-        <form class="pure-form pure-form-aligned" action="" method="post">
-        {% csrf_token %}
+        <form action="{% url 'season:season_detail' pk=season.pk %}" method="post">
+            {% csrf_token %}
             {% for mtg in meetings %}
                 <div class="pure-control-group">
-                    <label for="mtg_{{ forloop.counter0 }}">{{ mtg.date}}</label>
+                    <label for="mtg_{{ forloop.counter0 }}">{{ mtg.date }}</label>
                     <input id="mtg_{{ forloop.counter0 }}" name="meetings" type="checkbox"
                            value="{{ forloop.counter0 }}"
-                           {% if mtg.holdout %}
+                            {% if mtg.holdout %}
                            checked
-                           {% endif %}
-                            >
+                            {% endif %}
+                    >
                 </div>
             {% endfor %}
-            <input type="submit" name="update_holdouts" value="Update" />
+            <input class="btn btn-primary"
+                   type="submit"
+                   name="update_holdouts" value="Update Holdouts"/>
         </form>
 
-        <form class="pure-form pure-form-aligned" action="" method="post">
+        <form action="{% url 'season:season_detail' pk=season.pk %}" method="post">
             {% csrf_token %}
             <ul>
                 {% for player in players %}
                     <li>
                         <span>{{ player.name }}</span>
                         <span>{{ player.ntrp }}</span>
-                        <label for="mtg_{{ forloop.counter0 }}">{{ mtg.date}}</label>
+                        <label for="mtg_{{ forloop.counter0 }}">{{ mtg.date }}</label>
                         <input id="mtg_{{ forloop.counter0 }}" name="members" type="checkbox"
                                value="{{ forloop.counter0 }}"
                                 {% if player.season_player %}
                                checked="checked"
                                 {% endif %}
-                                >
+                        >
                     </li>
                 {% endfor %}
             </ul>
-            <input type="submit" name="season_players" value="Update" />
+            <input class="btn btn-primary"
+                   type="submit"
+                   name="season_players" value="Update Players"/>
         </form>
     </div>
 {% endblock %}

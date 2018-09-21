@@ -185,6 +185,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'compressor',
     'raven.contrib.django.raven_compat',
+    'crispy_forms',
 
     # Local Apps
     'tennisblock',
@@ -257,6 +258,8 @@ CONTACT_FORM_RECIPIENTS = (
     "ed@tennisblock.com",
     "viquee@me.com"
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
