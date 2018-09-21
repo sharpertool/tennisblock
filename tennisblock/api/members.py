@@ -47,7 +47,7 @@ class SeasonPlayerView(View):
             pdata = []
 
             players = SeasonPlayer.objects.filter(season=currseason) \
-                .order_by('player__last', 'player__gender', 'player__first')
+                .order_by('player__user__last_name', 'player__gender')
 
             for sp in players:
                 p = self.serializeSeasonPlayer(sp)

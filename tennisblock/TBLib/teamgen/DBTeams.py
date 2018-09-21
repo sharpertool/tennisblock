@@ -2,7 +2,7 @@ from blockdb.models import Matchup, Schedule
 from api.apiutils import get_meeting_for_date
 
 
-class DBTeams(object):
+class DBTeams:
     def __init__(self):
         self.meeting = None
 

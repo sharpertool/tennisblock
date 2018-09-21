@@ -238,10 +238,13 @@ class Schedule(models.Model):
     partner = models.ForeignKey(Player, related_name='scheduled_partner', null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "{} {} sub:{} verified:{}".format(
-                self.meeting, self.player.name,
-                self.issub, self.verified
-        )
+        partner_name = "---"
+        if self.partner:
+            partner_name = self.partner.name
+
+        s1 = f"{self.meeting} {self.player.name} partner:{partner_name} "
+        s2 = f"sub:{self.issub} verified:{self.verified}"
+        return s1 + s2
 
 
 class Matchup(models.Model):

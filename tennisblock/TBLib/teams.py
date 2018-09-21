@@ -17,8 +17,8 @@ class TeamManager(object):
         assert (len(men) == len(women))
         return men, women
 
-    def pickTeams(self, men=None, women=None, date=None, isTesting=False,
-                  noDupes=False, nCourts=None, nSequences=3):
+    def pickTeams(self, men=None, women=None, date=None, testing=False,
+                  noDupes=False, nCourts=None, n_sequences=3):
 
         if men is None or women is None:
             men, women = self.getPlayers(date)
@@ -26,17 +26,17 @@ class TeamManager(object):
         # Calculate number fo courts based on # of men.
         # Assume # of women is the same.
         if nCourts is None:
-            nCourts = len(men)/2
+            nCourts = len(men) / 2
 
         if len(men) < nCourts * 2 or len(women) < nCourts * 2:
             errmsg = "Cannot pick teams, there are not enough men or women."
             errmsg += "Need %d of both. Have %d men and %d women." % (nCourts * 2, len(men), len(women))
             return {"status": {"error": errmsg}}
 
-        tg = TeamGen(nCourts, nSequences, men, women)
+        tg = TeamGen(nCourts, n_sequences, men, women)
         sequences = tg.generate_set_sequences(noDupes)
 
-        if sequences is None or len(sequences) < nSequences:
+        if sequences is None or len(sequences) < n_sequences:
             return {"status": {"error": "Could not generate the required sequences"}}
 
         else:
@@ -45,7 +45,7 @@ class TeamManager(object):
             tg.display_sequences(sequences)
             tg.show_all_diffs(sequences)
 
-            if not isTesting:
+            if not testing:
                 self.dbTeams.InsertRecords(date, sequences)
 
             return sequences

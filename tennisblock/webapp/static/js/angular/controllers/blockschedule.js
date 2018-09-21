@@ -143,19 +143,6 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
             self.updateAll();
         };
 
-        $scope.previous = function() {
-            var d1 = previousBlockDate();
-            $scope.block.queryDate = tb.utils.jsDate2py(d1);
-            console.log("queryDate set to " + $scope.block.queryDate);
-            self.updateAll();
-        };
-
-        $scope.next = function() {
-            $scope.block.queryDate = tb.utils.jsDate2py(nextBlockDate());
-            console.log("queryDate set to " + $scope.block.queryDate);
-            self.updateAll();
-        };
-
         $scope.playerPairs = function() {
             return couples;
         };

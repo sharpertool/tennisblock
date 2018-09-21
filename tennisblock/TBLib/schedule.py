@@ -235,6 +235,17 @@ class Scheduler(object):
 
         return None
 
+    def _mkData(self, player):
+        if player is not None:
+            return {
+                'name': player.name,
+                'id': player.id,
+                'ntrp': player.ntrp,
+                'untrp': player.microntrp,
+            }
+        return {'name': '----'}
+
+
     def _queryScheduledPlayers(self, mtg):
         """
         Call the stored procedure that does a low-level complex
@@ -244,16 +255,12 @@ class Scheduler(object):
         guys = scheduled_players.filter(player__gender='M')
         gals = scheduled_players.filter(player__gender='F')
 
-        mkdata = lambda s: {
-            'name': s.player.name,
-            'id': s.player.id,
-            'ntrp': s.player.ntrp,
-            'untrp': s.player.microntrp,
-        }
-
-        # data = [{'guy': mkdata(guy), 'gal': mkdata(gals.get(player_pk=guy.partner_id).player)} for guy in guys]
-
-        data = [{'guy': mkdata(guy), 'gal': mkdata(gals.get(player__pk=guy.partner_id))} for guy in guys]
+        data = [
+            {
+                'guy': self._mkData(guy.player),
+                'gal': self._mkData(guy.partner)
+            } for guy in guys
+        ]
 
         # cursor = connection.cursor()
         #
@@ -290,30 +297,38 @@ class Scheduler(object):
                     'gal': {'name': '----'}
                 }
                 if cdata.get('guy'):
+                    guy = cdata.get('guy')
                     partner = cdata.get('gal')
                     g = {
-                        'name': cdata.get('guy'),
-                        'id': cdata.get('guy_pid'),
-                        'ntrp': cdata.get('guy_ntrp'),
-                        'untrp': cdata.get('guy_untrp'),
-                        'partner': cdata.get('gal_pid'),
+                        'name': guy.get('name'),
+                        'id': guy.get('id'),
+                        'ntrp': guy.get('ntrp'),
+                        'untrp': guy.get('untrp'),
+                        'partner': cdata.get('gal'),
                         'partnername': cdata.get('gal') or '----'
                     }
                     guys.append(g)
                     couple['guy'] = g
                 if cdata.get('gal'):
+                    gal = cdata.get('gal')
                     g = {
-                        'name': cdata.get('gal'),
-                        'id': cdata.get('gal_pid'),
-                        'ntrp': cdata.get('gal_ntrp'),
-                        'untrp': cdata.get('gal_untrp'),
-                        'partner': cdata.get('guy_pid'),
+                        'name': gal.get('name'),
+                        'id': gal.get('id'),
+                        'ntrp': gal.get('ntrp'),
+                        'untrp': gal.get('untrp'),
+                        'partner': cdata.get('guy'),
                         'partnername': cdata.get('guy') or '----'
                     }
                     gals.append(g)
                     couple['gal'] = g
 
                 couples.append(couple)
+
+            while len(couples) < num_courts*2:
+                couples.append({
+                    'guy': {'name': '----'},
+                    'gal': {'name': '----'}
+                })
 
             data['guys'] = guys
             data['gals'] = gals

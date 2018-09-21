@@ -177,7 +177,7 @@ class PlayersView(TennisLoginView):
 
 
 class MembersView(TennisLoginView):
-    template_name = "members.html"
+    template_name = "members/members_view.html"
     members_only = False
 
     def getPlayers(self):

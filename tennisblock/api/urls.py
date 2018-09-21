@@ -2,12 +2,13 @@ from django.urls import re_path
 
 from .availability import AvailabilityView
 from .members import SeasonPlayerView
-from .blockschedule import BlockNotifyer
+from .blocksheet import blockSheet
+from .blockschedule import (BlockNotifyer, getBlockDates,
+                            getSubList, blockPlayers, blockSchedule,
+                            getMatchData)
 
 from .views import getSeasons, getCurrentSeason, getCurrentSeasonDates, getLatestBuzz
 from .teams import pickTeams
-from .blocksheet import blockSheet
-from .blockschedule import getBlockDates, getSubList, blockPlayers, blockSchedule, getMatchData
 
 app_name = 'api'
 urlpatterns = (
