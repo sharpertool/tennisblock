@@ -3,20 +3,6 @@
 {% load staticfiles %}
 {% load render_bundle from webpack_loader %}
 
-{% block less_script %}
-    {{ block.super }}
-    <!-- about.html: page_style -->
-    {% if USE_LESS %}
-        <!-- using less -->
-        <link rel="stylesheet/less" type='text/css' href="{% static 'less/schedule.less' %}">
-    {% else %}
-        <!-- not using less -->
-        {% compress css %}
-            <link rel="stylesheet" type='text/less' href="{% static 'less/schedule.less' %}">
-        {% endcompress %}
-    {% endif %}
-{% endblock %}
-
 {% block angular_script %}
     {{ block.super }}
 

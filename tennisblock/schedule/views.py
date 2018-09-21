@@ -25,12 +25,15 @@ class BlockSchedule(TemplateView):
 
     def get(self, request, pk=None, **kwargs):
         context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
         sm = SeasonManager()
         meetings = sm.get_meeting_list()
         serialized = MeetingSerializer(meetings, many=True)
         context['meetings'] = serialized.data
-        return self.render_to_response(context)
-
 
 class ScheduleNotify(TemplateView):
     template_name = "schedule/notify.html"

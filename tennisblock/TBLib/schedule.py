@@ -180,7 +180,7 @@ class Scheduler(object):
 
         cinfosortedshuffled = []
 
-        for weight in sorted(weights.iterkeys(), reverse=True):
+        for weight in sorted(weights.keys(), reverse=True):
             couples = [c for c in cinfo if c['weight'] == weight]
             random.shuffle(couples)
             cinfosortedshuffled.extend(couples)
