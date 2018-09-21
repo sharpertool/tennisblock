@@ -12,24 +12,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        with open(options.get('tmpfile'), 'w') as fp:
-            fp.write(f"{settings.COMPONENTS_VERSION}")
-
-
-
-
-        bs = BlockSeason(season=options.get('season'),
-                         num_courts=options.get('num_courts'),
-                         first_court=options.get('first_court'),
-                         season_start=options.get('season_start'),
-                         season_end=options.get('season_end'),
-                         block_start=options.get('block_start'),
-                         block_time=options.get('block_time'),
-                         holdouts=options.get('holdouts')
-        )
-
-        mgr = SeasonManager()
-
-        mgr.addSeason(bs)
-
-        mgr.addAllCurrentPlayers(bs.season)
+        pass

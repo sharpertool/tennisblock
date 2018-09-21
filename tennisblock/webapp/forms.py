@@ -11,8 +11,12 @@ class CoupleForm(ModelForm):
     def __init__(self, season, *args, **kwargs):
         super(CoupleForm, self).__init__(*args, **kwargs)
         allPlayers = SeasonPlayer.objects.filter(season=season)
-        self.fields['male'].queryset = allPlayers.filter(player__gender='M')
-        self.fields['female'].queryset = allPlayers.filter(player__gender='F')
+        couples = Couple.objects.filter(season=season)
+        self.fields['male'].queryset = \
+            allPlayers.filter(player__gender='M')\
+            .exclude(player__id__in=couples.values('male'))
+        self.fields['female'].queryset = allPlayers.filter(player__gender='F') \
+            .exclude(player__id__in=couples.values('female'))
 
     def is_valid(self):
         if self.data['name'] == "":
@@ -28,7 +32,8 @@ class CoupleForm(ModelForm):
 
     class Meta:
         model = Couple
-        fields = ['name', 'male', 'female', 'fulltime', 'blockcouple', 'canschedule']
+        fields = ['name', 'male', 'female', 'fulltime',
+                  'blockcouple', 'canschedule']
 
 
 class ContactForm(forms.Form):

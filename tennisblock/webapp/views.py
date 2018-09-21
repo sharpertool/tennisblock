@@ -2,6 +2,8 @@ from textwrap import dedent
 
 from django.views.generic import TemplateView
 from django.core.mail import send_mail
+from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
 
 from django.forms.formsets import (
     formset_factory, BaseFormSet)
@@ -122,42 +124,35 @@ class ContactView(TemplateView):
 class CouplesView(TemplateView):
     template_name = "couple_editor.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(CouplesView, self).get_context_data(**kwargs)
-        return context
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    def getcurentcouples(self, context, season):
+        season = get_object_or_404(Season, pk=pk)
+        context['season'] = season
+
         players = SeasonPlayer.objects.filter(season=season)
         couples = Couple.objects.filter(season=season)
 
         context['players'] = players
         context['couples'] = couples
         initial = {
-            'season': season.pk,
+            'season': season,
             'fulltime': False,
             'blockcouple': True,
             'canschedule': True
         }
         context['form'] = CoupleForm(season, initial=initial)
 
+        return context
+
     def get(self, request, pk=None, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if pk:
-            s = Season.objects.filter(pk=pk)
-            if s.count():
-                season = s[0]
-                context['season'] = season
-
-                self.getcurentcouples(context, season)
-
+        context = self.get_context_data(pk=pk, **kwargs)
         return self.render_to_response(context)
 
     def post(self, request, pk=None, **kwargs):
-        context = self.get_context_data(**kwargs)
 
         try:
-            s = Season.objects.get(pk=pk)
-            context['season'] = s
+            s = get_object_or_404(Season, pk=pk)
 
             form = CoupleForm(s, request.POST)
             if form.is_valid():
@@ -172,12 +167,19 @@ class CouplesView(TemplateView):
                     canschedule=True
                 ).save()
                 print("Inserted couple")
-                context['form'] = CoupleForm(s)
             else:
                 print("Invalid Couple")
-                context['form'] = form
 
-            self.getcurentcouples(context, s)
-            return self.render_to_response(context)
-        except:
-            return self.render_to_response(context)
+        except IntegrityError:
+            print("Attempt to insert duplicate couple!")
+
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+
+    def insert_couple(self, couple=None):
+        """ Check for duplicates before inserting """
+        if not Couple.objects.filter(
+                male=couple.male,
+                female=couple.female, season=couple.season).exists():
+            couple.save()

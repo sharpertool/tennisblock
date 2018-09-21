@@ -21,6 +21,8 @@ class Season(models.Model):
     lastdate = models.DateField(null=True)
     blocktime = models.TimeField()
 
+    #players = models.ManyToManyField('Player', )
+
     def __str__(self):
         return self.name
 
@@ -60,7 +62,6 @@ class Player(models.Model):
     microntrp = models.FloatField(null=True, blank=True)
     phone = models.CharField(max_length=14, blank=True)
 
-    season = models.ManyToManyField(Season, related_name='season_player', blank=True)
 
     objects = models.Manager()
     girls = GirlsManager()
@@ -173,6 +174,9 @@ class Couple(models.Model):
                 self.season, self.female.name, self.male.name,
                 self.name
         )
+
+    class Meta:
+        unique_together = (('season', 'male', 'female',))
 
 
 class Meeting(models.Model):

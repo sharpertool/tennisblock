@@ -12,15 +12,15 @@ def _AvailabilityInit(player, meetings):
     """
 
     for mtg in meetings:
-        av = Availability.objects.filter(meeting=mtg, player=player)
+        try:
+            Availability.objects.get(meeting=mtg, player=player)
 
-        if len(av) == 0:
-            av = Availability.objects.create(
+        except Availability.DoesNotExist:
+            Availability.objects.create(
                     meeting=mtg,
                     player=player,
                     available=True
-            )
-            av.save()
+            ).save()
 
 
 class AvailabilityView(View):
@@ -53,7 +53,7 @@ class AvailabilityView(View):
         }
 
         avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
-        if avlist.count() == 0:
+        if avlist.count() != mtgs.count():
             _AvailabilityInit(player, mtgs)
             avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
 
