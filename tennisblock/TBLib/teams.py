@@ -26,7 +26,7 @@ class TeamManager(object):
         # Calculate number fo courts based on # of men.
         # Assume # of women is the same.
         if nCourts is None:
-            nCourts = len(men) / 2
+            nCourts = len(men) // 2
 
         if len(men) < nCourts * 2 or len(women) < nCourts * 2:
             errmsg = "Cannot pick teams, there are not enough men or women."

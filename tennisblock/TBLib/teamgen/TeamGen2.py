@@ -11,10 +11,10 @@ class TeamGen(object):
         self.iterLimit = 1000
 
     def generate_set_sequences(self, dups):
-        self.meeting.Restart()
+        self.meeting.restart_meeting()
         diff_max = 0.1
 
-        self.meeting.setSeeGirlsOnce(dups)
+        self.meeting.set_see_partner_once(dups)
 
         while self.meeting.SetCount() < self.nSequences:
             set = None
@@ -36,7 +36,7 @@ class TeamGen(object):
                 diffs = ",".join(["%5.3f" % x for x in diff_list])
                 print("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
                     self.diffMax, d_max, d_avg, diffs))
-                self.meeting.AddSet(set)
+                self.meeting.add_set(set)
 
         return self.meeting.sets
 

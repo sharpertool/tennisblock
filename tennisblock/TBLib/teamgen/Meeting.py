@@ -11,19 +11,19 @@ class Meeting(object):
 
         self.ms = MeetingStats(nCourts, nSets, men, women)
 
-    def Restart(self):
+    def restart_meeting(self):
         self.ms.Restart()
         self.sets = []
 
-    def setSeeGirlsOnce(self, dups):
+    def set_see_partner_once(self, dups):
         """
         Set value on meeting stats object.
         :param dups:
         :return:
         """
-        self.ms.setSeeGirlsOnce(dups)
+        self.ms.set_see_partner_once(dups)
 
-    def AddSet(self, blockset):
+    def add_set(self, blockset):
         self.sets.append(blockset)
         self.ms.AddSet(blockset)
 

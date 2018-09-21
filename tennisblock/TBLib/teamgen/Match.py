@@ -3,7 +3,7 @@ class Match(object):
         self.t1 = t1
         self.t2 = t2
 
-    def Diff(self):
+    def match_diff(self):
         c1 = self.t1.microntrp()
         c2 = self.t2.microntrp()
         return abs(c1 - c2)
@@ -12,7 +12,10 @@ class Match(object):
         self.t1.display()
         print("Versus")
         self.t2.display()
-        print("Diff: %4.2f\n" % self.Diff())
+        print("diff: %4.2f\n" % self.match_diff())
+
+    def __str__(self):
+        return f"{self.match_diff():3.2}"
 
     def __repr__(self):
-        return "%4.2f" % self.Diff()
+        return str(self)

@@ -18,6 +18,6 @@ class Command(BaseCommand):
 
         mgr = TeamManager()
         mgr.pickTeams(options['date'],
-                      test=options['test'],
-                      sequences=options['sequences'],
-                      nodupes=options['nodupes'])
+                      testing=options['test'],
+                      n_sequences=options['sequences'],
+                      noDupes=options['nodupes'])
