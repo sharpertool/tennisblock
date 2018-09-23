@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from django.conf import settings
 
 
@@ -8,4 +6,3 @@ def tennisblock(request):
         'angularapp': 'tennisblock',
         'debug': settings.DEBUG,
     }
-
