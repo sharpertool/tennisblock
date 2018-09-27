@@ -1,0 +1,390 @@
+version: 2.0
+
+references:
+
+  container_config: &container_config
+    working_directory: ~/build
+    docker:
+      - image: bigzeta/docker_ci_python3:1.1.1
+        environment:
+          ZIP_PREFIX: tennisblock
+
+
+      - image: bigzeta/ci_postgres:1.0.0
+        environment:
+          POSTGRES_PASSWORD: testing-password
+          POSTGRES_USER: circleci
+          POSTGRES_DB: tennisblock
+
+      - image: bigzeta/smtpd:1.0.0
+
+  container_config_min: &container_config_min
+    working_directory: ~/build
+    docker:
+      - image: bigzeta/docker_ci_python3:1.1.1
+        environment:
+          ZIP_PREFIX: tennisblock
+          DEPLOY_BUCKET: tennisblock.deploy
+          DEPLOY_BUCKET_PATH: backend_versions
+
+  workspace_root: &workspace_root
+    ~/build
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+        - v1-repo-{{ .Branch }}-{{ .Revision }}
+        - v1-repo-{{ .Branch }}
+        - v1-repo
+
+  venv_cache_key: &venv_cache_key
+    v2-dependency-venv-{{ checksum "requirements/test.txt" }}-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/prod.txt" }}
+
+  restore_venv: &restore_venv
+    restore_cache:
+      keys:
+        - *venv_cache_key
+
+  gulp_build_cache_key: &gulp_build_cache_key
+    v1-gulp-build-{{ checksum "build_assets/package.json" }}
+
+  restore_gulp_build_cache: &restore_gulp_build_cache
+    restore_cache:
+      keys:
+        - *gulp_build_cache_key
+
+  client_build_cache_key: &client_build_cache_key
+    v1-client-build-{{ checksum "tennisblock_client/package.json" }}
+
+  restore_client_build_cache: &restore_client_build_cache
+    restore_cache:
+      keys:
+        - *client_build_cache_key
+
+  disable_strict_type_checking: &disable_strict_type_checking
+    run:
+      name: Disable strict type checking
+      command: |
+        mkdir ~/.ssh/
+        echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+
+  persist_manifest: &persist_manifest
+    persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./manifest.json
+
+  store_manifest: &store_manifest
+    store_artifacts:
+      path: ./manfest.json
+      destination: manifest.json
+
+jobs:
+  checkout_code:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+
+      - run:
+          name: Avoid hosts unknown for bitbucket
+          command: |
+            mkdir -p ~/.ssh/
+            echo -e "Host bitbucket.org\n  StrictHostKeyChecking no\n" >> ~/.ssh/config
+
+      - checkout
+
+      - save_cache:
+          key: v1-repo-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
+
+  build_venv:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+      - *restore_venv
+
+      - run:
+          name: Install project pip modules
+          command: |
+            python3 -m venv .venv
+            source .venv/bin/activate
+            pip install -r requirements/test.txt
+
+      - save_cache:
+          key: *venv_cache_key
+          paths:
+            - .venv
+
+  compile_assets:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+      - *restore_venv
+      - *restore_gulp_build_cache
+      - *attach_workspace
+
+      - run:
+          name: Install npm packages for gulp_build
+          command: |
+            cd build_assets
+            yarn install
+
+      - save_cache:
+          key: *gulp_build_cache_key
+          paths:
+            - build_assets/node_modules
+
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./tennisblock/webapp/static
+            - ./collectedstatic
+
+  compile_client_code:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+      - *restore_venv
+      - *restore_client_build_cache
+      - *attach_workspace
+
+      - run:
+          name: Install npm packages for client_build
+          command: |
+            cd tennisblock_client
+            yarn install
+
+      - save_cache:
+          key: *client_build_cache_key
+          paths:
+            - tennisblock_client/node_modules
+
+      - run:
+          name: Build CSS Assets using Gulp
+          command: |
+            cd tennisblock_client
+            yarn compile:prod
+
+      - run:
+          name: Copy dist.prod over to frontend
+          command: |
+            tennisblock_client/scripts/copyprod.sh
+
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./tennisblock/static
+            - ./tennisblock/frontend/static
+            - ./tennisblock/frontend/webpack-stats.json
+            - ./collectedstatic
+
+  collectstatic:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+      - *restore_venv
+
+      - *attach_workspace
+
+      - run:
+          name: Show compiled contents of static location
+          command: |
+            ls -al ./tennisblock/static || true
+
+      - run:
+          name: Collect static files
+          command: |
+            source .venv/bin/activate
+            cd tennisblock
+            export DJANGO_SETTINGS_MODULE=tennisblock.settings.circleci
+            python manage.py collectstatic --noinput --ignore=*.scss
+
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./collectedstatic
+
+  pytest:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - *restore_venv
+      - *attach_workspace
+
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          command: |
+            source .venv/bin/activate
+            cd tennisblock
+            DJANGO_SETTINGS_MODULE=tennisblock.settings.circleci python manage.py test
+
+  build_zip_file:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+      - *restore_venv
+      - *attach_workspace
+
+      - run:
+          name: Build zip deploy file and persist to workspace
+          command: |
+            mkdir -p zipout
+            zipfile=$(./scripts/zipfilename.sh)
+            zip -r zipout/${zipfile} \
+              collectedstatic/ *.wsgi tennisblock/ scripts/ \
+              requirements/ requirements.txt \
+              -x \*.pyc -x tennisblock/local_config.py \
+              -x tennisblock/.env.local -x tennisblock/.env.test
+
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./zipout
+
+  deploy_to_s3_bucket:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+      - *restore_venv
+      - *attach_workspace
+
+      - run:
+          name: Deploy the zip file to the remote bucket
+          command: |
+            zipfile=$(./scripts/zipfilename.sh)
+            VERSION=${CIRCLE_TAG:-${CIRCLE_SHA1}}
+            s3path="s3://${DEPLOY_BUCKET}/${DEPLOY_BUCKET_PATH}/${VERSION}/${zipfile}"
+            aws s3 cp zipout/${zipfile} ${s3path}
+
+  deploy_to_test_server:
+    <<: *container_config_min
+    steps:
+      - *restore_repo
+      - *disable_strict_type_checking
+      - *attach_workspace
+
+      - run:
+          name: Add Target Host to config to disable strict type checking
+          command: |
+            ./scripts/host_config.sh
+
+      - run:
+          name: Show current config value.
+          command: |
+            ls -al ~
+            if [[ -d ~/.ssh ]];then
+              cat ~/.ssh/config
+            fi
+
+      - run:
+          name: Copy deploy script to test server
+          command: |
+            scp ./scripts/site_deploy_zip.sh deploy_host:site_deploy_zip.sh
+
+      - run:
+          name: Copy zipfile to test server
+          command: |
+            ssh deploy_host "mkdir -p deploy/"
+            zipfile=$(./scripts/zipfilename.sh)
+            scp zipout/${zipfile} deploy_host:deploy/
+
+      - run:
+          name: Run deploy script on test server
+          command: |
+            zipfile=$(./scripts/zipfilename.sh)
+            export VERSION=${CIRCLE_TAG:-${CIRCLE_SHA1}}
+            echo "Updating the version to ${VERSION}"
+            ssh deploy_host \
+              "./site_deploy_zip.sh ${zipfile} ${VERSION}"
+
+
+workflows:
+  version: 2
+
+  build_test_deploy:
+    jobs:
+      - checkout_code:
+          filters:
+            tags:
+              only: /v.*/
+            branches:
+              ignore:
+                - develop_ci_test
+                - packer_test
+
+      - build_venv:
+          requires:
+            - checkout_code
+          filters:
+            tags:
+              only: /v.*/
+
+      - compile_assets:
+          requires:
+            - build_venv
+          filters:
+            tags:
+              only: /v.*/
+
+      - compile_client_code:
+          requires:
+            - compile_assets
+          filters:
+            tags:
+              only: /v.*/
+
+      - collectstatic:
+          requires:
+            - compile_assets
+            - compile_client_code
+          filters:
+            tags:
+              only: /v.*/
+
+#      - pytest:
+#          requires:
+#            - build_venv
+#            - collectstatic
+#          filters:
+#            tags:
+#              only: /v.*/
+
+      - build_zip_file:
+          requires:
+            - build_venv
+            - collectstatic
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only:
+                - develop
+
+      - deploy_to_s3_bucket:
+          requires:
+            - build_zip_file
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+(-rc.*)?$/
+            branches:
+              only:
+                - develop
+
+      - deploy_to_test_server:
+          requires:
+            - build_zip_file
+          filters:
+            tags:
+              only: /v.*-rc.*/
+            branches:
+              only:
+                - develop
+

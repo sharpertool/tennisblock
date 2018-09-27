@@ -49,3 +49,5 @@ db_learning.txt
 /tennisblock/frontend/static/css/webapp/static/scss/style_base.css.map
 /tennisblock/frontend/static/css/webapp/static/scss/style_base.css
 /tennisblock/frontend/static/css
+/tennisblock/frontend/static/js
+/tennisblock/frontend/webpack-stats.json
