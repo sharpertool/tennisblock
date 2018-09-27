@@ -21,8 +21,6 @@ ADMINS = (
     ('Ed Henderson', 'ed@tennisblock.com'),
 )
 
-DEFAULT_FROM_EMAIL = 'ed@tennisblock.com'
-
 MANAGERS = ADMINS
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
@@ -191,6 +189,7 @@ INSTALLED_APPS = [
     'compressor',
     'raven.contrib.django.raven_compat',
     'crispy_forms',
+    'anymail',
 
     # Local Apps
     'tennisblock',
@@ -244,18 +243,16 @@ LOGGING = {
     }
 }
 
-# Email Server Settings. Change as needed
-EMAIL_BACKEND = env("DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+# Anymail
+# Check environment for all email settings, with reasonable defaults
+EMAIL_BACKEND = env.str('EMAIL_BACKEND', default='anymail.backends.mailgun.EmailBackend')
 
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'ed@tennisblock.com'
-
-# Left blank here.EMAIL_HOST = 'smtpd'
-EMAIL_PORT = 25
-
-# Add this to local_config.py on the server
-EMAIL_HOST_PASSWORD = ''
+ANYMAIL = {
+    "MAILGUN_API_KEY": env.str("MAILGUN_API_KEY", default=""),
+    "MAILGUN_SENDER_DOMAIN": env.str("MAILGUN_SENDER_DOMAIN", default="")
+}
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL",
+                             default="ed@tennisblock.com")
 
 # Contact Form
 CONTACT_FORM_SUBJECT = 'Tennisblock.com Contact'
