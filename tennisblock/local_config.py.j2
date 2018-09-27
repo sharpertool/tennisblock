@@ -1,0 +1,13 @@
+import os
+import sys
+import environ
+from tennisblock.settings.read_env import read_env
+
+print(f"Using local config file {__file__}")
+
+env = environ.Env()
+read_env()
+
+from tennisblock.settings.{{ settings_file }} import *
+
+
