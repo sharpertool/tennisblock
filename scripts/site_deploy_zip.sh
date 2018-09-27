@@ -2,7 +2,7 @@
 
 zipfile=$1
 VERSION=$2
-APPPATH=${APPPATH:-/home/django/gardenbuzz}
+APPPATH=${APPPATH:-/var/www/tennisblock}
 zipdir=~/zipdir
 
 # Put site into maintenance mode
@@ -44,7 +44,7 @@ template_version=$(grep APP_VERSION sharpertool/production.env.j2  | sed 's/APP_
 sed -i -e "s/APP_VERSION=.*/APP_VERSION=${VERSION}/" .env
 
 # Update app directory user and group values
-sudo chown -R django:www-data ${APPPATH}
+sudo chown -R ubuntu:www-data ${APPPATH}
 
 echo -e "\n Reloading uWSGI web service.."
 

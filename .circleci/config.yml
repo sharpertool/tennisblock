@@ -134,6 +134,12 @@ jobs:
             cd build_assets
             yarn install
 
+      - run:
+          name: Build CSS Assets using Gulp
+          command: |
+            cd build_assets
+            environment=circleci yarn build
+
       - save_cache:
           key: *gulp_build_cache_key
           paths:
