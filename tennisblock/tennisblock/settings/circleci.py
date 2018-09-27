@@ -30,16 +30,6 @@ STATICFILES_DIRS = [
     PROJECT_DIR('static')
 ]
 
-POSTGRES_HOST = env('POSTGRES_HOST', default='localhost')
-POSTGRES_PORT = env('POSTGRES_PORT', default='5432')
-POSTGRES_USER = env('POSTGRES_USER', default='circleci')
-POSTGRES_DB = env('POSTGRES_DB', default='tennisblock')
-POSTGRES_PASSWORD = env('POSTGRES_PASSWORD', default='testing-password')
-DATABASES = {
-    'default': env.db("DATABASE_URL",
-                      default=f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}'),
-}
-
 INSTALLED_APPS += (
     'coverage',
     'django_nose',

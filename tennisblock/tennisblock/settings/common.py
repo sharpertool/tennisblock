@@ -32,7 +32,13 @@ SECRET_KEY = env("SECRET_KEY")
 
 # DATABASE
 DATABASES = {
-    'default': env.db("DATABASE_URL"),
+    'default': {
+        **{
+            'ATOMIC_REQUESTS': True,
+            'CONN_MAX_AGE': 10,
+        },
+        **env.db("DATABASE_URL", default='postgresql://django_user:@localhost/gardenbuzz'),
+    }
 }
 
 print("Databases: {}".format(DATABASES['default']))
