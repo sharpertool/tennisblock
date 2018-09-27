@@ -1,5 +1,5 @@
 {
-  "name": "Developent",
+  "name": "CircleCI",
   "strict": false,
   "breakOnError": false,
   "server": {
@@ -12,6 +12,6 @@
   },
   "src": "../tennisblock",
   "dest": "../tennisblock/frontend/static",
-  "srcmap": true,
+  "srcmap": false,
   "minify": false
 }

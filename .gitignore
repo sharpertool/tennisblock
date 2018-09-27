@@ -46,3 +46,6 @@ db_learning.txt
 /build_assets/node_modules
 /tennisblock/tennisblock.crt
 /tennisblock/tennisblock.key
+/tennisblock/frontend/static/css/webapp/static/scss/style_base.css.map
+/tennisblock/frontend/static/css/webapp/static/scss/style_base.css
+/tennisblock/frontend/static/css
