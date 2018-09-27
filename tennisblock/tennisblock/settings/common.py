@@ -322,7 +322,7 @@ else:
     CLIENT_VERSION = 'v0.1.0'
 
     WEBPACK_STATS_FILE = env.str('WEBPACK_STATS_FILE',
-                                 default=PROJECT_DIR('frontend/webpack-stats.json'))
+                                 default=DJANGO_ROOT('frontend/webpack-stats.json'))
 
     if exists(WEBPACK_STATS_FILE):
         ''' Turn off render bundles if no config file is found. '''
