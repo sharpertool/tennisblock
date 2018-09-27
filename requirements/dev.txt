@@ -12,3 +12,4 @@ ipython[notebook]
 
 sh==1.12.14
 path.py==11.1.0
+pyOpenSSL

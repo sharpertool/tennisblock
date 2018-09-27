@@ -7,7 +7,7 @@ echo "Base dir for run is ${base}"
 cd ${base}/tennisblock
 while true
 do
-    ${base}/.venv3/bin/python manage.py runserver_plus ${port}
+    ${base}/.venv3/bin/python manage.py runserver_plus --cert-file tennisblock.crt ${port}
     sleep 2
 done
 
