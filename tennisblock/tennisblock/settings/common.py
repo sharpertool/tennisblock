@@ -8,10 +8,9 @@ env = environ.Env()
 
 CONF_DIR = environ.Path(__file__)
 DJANGO_ROOT = CONF_DIR - 3
-PROJECT_DIR = DJANGO_ROOT
 PROJECT_ROOT = DJANGO_ROOT - 1
-print("DJANGO_ROOT:{}".format(DJANGO_ROOT))
-print("PROJECT_ROOT:{}".format(PROJECT_ROOT))
+print(f"DJANGO_ROOT:{DJANGO_ROOT}")
+print(f"PROJECT_ROOT:{PROJECT_ROOT}")
 
 sys.path.append(PROJECT_ROOT("scripts"))
 

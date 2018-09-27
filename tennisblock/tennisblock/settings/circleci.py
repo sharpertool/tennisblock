@@ -27,7 +27,7 @@ STATIC_ROOT = join(HOME_DIR, "collectedstatic")
 MEDIA_ROOT = join(HOME_DIR, 'media')
 
 STATICFILES_DIRS = [
-    PROJECT_DIR('static')
+    DJANGO_ROOT('webapp/static')
 ]
 
 INSTALLED_APPS += (

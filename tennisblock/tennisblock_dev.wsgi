@@ -3,7 +3,7 @@ import sys
 from path import path
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_DIR = os.path.abspath(os.path.join(BASE_DIR, '.'))
+DJANGO_ROOT = os.path.abspath(os.path.join(BASE_DIR, '.'))
 
 sys.path.append(BASE_DIR)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tennisblock_dj.settings.dev")
