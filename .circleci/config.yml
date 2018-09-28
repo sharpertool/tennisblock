@@ -380,6 +380,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
 
       - deploy_to_s3_bucket:
           requires:
@@ -387,6 +389,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
 
       - deploy_to_test_server:
           requires:
@@ -394,4 +398,6 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
 
