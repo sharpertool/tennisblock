@@ -2,16 +2,13 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load gbtags %}
-{% load compress %}
 
 {% block head_script %}
     {{ block.super }}
     <!-- site_base.html: head_script -->
 
-    {% compress js %}
-        <script type="text/javascript"
-                src="{% static 'js/HeadFinal.js' %}"></script>
-    {% endcompress %}
+    <script type="text/javascript"
+            src="{% static 'js/HeadFinal.js' %}"></script>
 
 {% endblock %}
 
@@ -150,14 +147,12 @@
     <script type="text/javascript"
             src="{% static 'js/library/amplify.core.min.js' %}"></script>
 
-    {% compress js %}
-        <script type="text/javascript" src="{% static 'js/Client.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisEnvironment.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/tennisconstants.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisGui.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisUtils.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisMain.js' %}"></script>
-    {% endcompress %}
+    <script type="text/javascript" src="{% static 'js/Client.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisEnvironment.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/tennisconstants.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisGui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisUtils.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisMain.js' %}"></script>
 {% endblock %}
 
 {% block extra_script %}

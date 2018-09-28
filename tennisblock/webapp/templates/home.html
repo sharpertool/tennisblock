@@ -1,13 +1,9 @@
 {% extends "site_base.html" %}
 {% load staticfiles %}
-{% load compress %}
 {% load render_bundle from webpack_loader %}
 
 {% block angular_script %}
     {{ block.super }}
-
-    {% compress js %}
-    {% endcompress %}
 
 {% endblock %}
 

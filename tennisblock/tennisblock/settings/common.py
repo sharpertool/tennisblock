@@ -186,7 +186,6 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'bootstrapform',
-    'compressor',
     'raven.contrib.django.raven_compat',
     'crispy_forms',
     'anymail',
@@ -267,12 +266,6 @@ BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
 # Set this for development, but clear for PROD
 BLOCK_NOTIFY_RECIPIENTS = ['ed@tennisblock.com', 'viquee@me.com']
-
-LESS_CMDLINE = env("LESS_CMDLINE", default="lessc --clean-css --clean-option=--keep-line-breaks {infile} {outfile}")
-print("Using less compiler from {}".format(LESS_CMDLINE))
-COMPRESS_PRECOMPILERS = (
-    ('text/less', LESS_CMDLINE),
-)
 
 STATIC_PRECOMPILER_COMPILERS = (
     'static_precompiler.compilers.LESS',
