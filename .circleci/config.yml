@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 
 references:
 
@@ -347,6 +347,9 @@ workflows:
           filters:
             tags:
               only: /v.*/
+            branches:
+              only:
+                - develop
 
       - collectstatic:
           requires:
@@ -355,6 +358,9 @@ workflows:
           filters:
             tags:
               only: /v.*/
+            branches:
+              only:
+                - develop
 
 #      - pytest:
 #          requires:
@@ -363,6 +369,9 @@ workflows:
 #          filters:
 #            tags:
 #              only: /v.*/
+#            branches:
+#              only:
+#                - develop
 
       - build_zip_file:
           requires:
@@ -371,27 +380,18 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-            branches:
-              only:
-                - develop
 
       - deploy_to_s3_bucket:
           requires:
             - build_zip_file
           filters:
             tags:
-              only: /^v\d+\.\d+\.\d+(-rc.*)?$/
-            branches:
-              only:
-                - develop
+              only: /^v.*/
 
       - deploy_to_test_server:
           requires:
             - build_zip_file
           filters:
             tags:
-              only: /v.*-rc.*/
-            branches:
-              only:
-                - develop
+              only: /^v.*/
 
