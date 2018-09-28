@@ -2,14 +2,6 @@
   "name": "CircleCI",
   "strict": false,
   "breakOnError": false,
-  "server": {
-    "use": [
-      "dist/html",
-      "dist"
-    ],
-    "url" : "localhost",
-    "port": 3000
-  },
   "src": "../tennisblock",
   "dest": "../tennisblock/frontend/static",
   "srcmap": false,

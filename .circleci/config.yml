@@ -149,6 +149,7 @@ jobs:
           root: *workspace_root
           paths:
             - ./tennisblock/webapp/static
+            - ./tennisblock/frontend/
             - ./collectedstatic
 
   compile_client_code:

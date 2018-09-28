@@ -336,6 +336,6 @@ else:
 
 # Set your DSN value
 RAVEN_CONFIG = {
-    'dsn': env("RAVEN_CONFIG",
-               default='https://bb218b1fa4274266aea0a33a4a10c0a5:9772e132d1904c99909fc13e2fc16da7@sentry.io/24185')
+    'dsn': env("DJANGO_SENTRY_DSN",
+               default='')
 }
