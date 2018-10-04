@@ -3,7 +3,8 @@
 zipfile=$1
 VERSION=$2
 APPPATH=${APPPATH:-/var/www/tennisblock}
-zipdir=~/zipdir
+zipdir=/home/ubuntu/zipdir
+excludefile=/home/ubuntu/tennisblock_exlude.lst
 
 # Put site into maintenance mode
 touch ${APPPATH}/maintenance.on
@@ -19,19 +20,17 @@ popd
 cd ${APPPATH}
 
 echo "use rsync to synchronize the two paths"
-rsync -av ${zipdir}/ .
-
-echo "Use rsync to remove old files in selected paths"
-rsync -av --delete ${zipdir}/tennisblock/ tennisblock
-rsync -av --delete ${zipdir}/collectedstatic/ collectedstatic
-rsync -av --delete ${zipdir}/requirements/ requirements
-rsync -av --delete ${zipdir}/scripts/ scripts
+sudo -u django rsync -av --delete --exclude-from ${excludefile} ${zipdir}/ .
+if [ $? -ne 0 ];then
+    echo "Rsync failed.. abandoning update"
+    exit 2
+fi
 
 echo "Update requirements"
 .venv3/bin/pip install -r requirements/prod.txt
 
-echo -e "\n Collecting updated statics.."
-./manage collectstatic --noinput
+#echo -e "\n Collecting updated statics.."
+#./manage collectstatic --noinput
 
 # Show any pending migrations
 ./manage showmigrations | grep "\[ \]\|^[a-z]" | grep "[ ]" -B 1
