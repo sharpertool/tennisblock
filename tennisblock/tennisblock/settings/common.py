@@ -252,6 +252,11 @@ ANYMAIL = {
 DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL",
                              default="ed@tennisblock.com")
 
+# If  not using anymail, use these for development.
+# Assumes our docker smtpd is setup
+EMAIL_HOST = env.str('EMAIL_HOST', default='localhost')
+EMAIL_PORT = env.int('EMAIL_PORT', default=8026)
+
 # Contact Form
 CONTACT_FORM_SUBJECT = 'Tennisblock.com Contact'
 CONTACT_FORM_RECIPIENTS = (
