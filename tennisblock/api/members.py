@@ -66,7 +66,7 @@ class SeasonPlayerView(View):
             players = SeasonPlayer.objects.filter(season=currseason, player__id=kwargs.get('id'))
             if len(players):
                 sp = players[0]
-                for key, val in data.iteritems():
+                for key, val in data.items():
                     if key == 'blockmember':
                         print("Updating blockmember value to %s" % val)
                         sp.blockmember = val
