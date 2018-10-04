@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 server=localhost
-dt=$(date '+%Y-%M-%d-%H_%M')
+dt=$(date '+%Y-%m-%d-%H_%M')
 filename="tennisblock_demo_db_${dt}.sql"
-echo "Dumping to filename ${filename}"
+backup_path=$(cat docker-compose.yml \
+    | yq -r '.services.postgres.volumes[] | select(test("/backups$")) | split(":")[0]')
+#backup_path=~/Dropbox/GardenbuzzDev/Development/database/backups
+eval full_filename=${backup_path}/${filename}
+echo "Dumping to filename ${full_filename}"
 
-ssh gb "pg_dump -h ${server} -U django_user tennisblock > ${filename}"
-scp gb:${filename} database/backups
-ssh gb "rm ${filename}"
+ssh tb "pg_dump -h ${server} -U tennisblock tennisblock"  > ${full_filename}
 
