@@ -4,7 +4,7 @@ zipfile=$1
 VERSION=$2
 APPPATH=${APPPATH:-/var/www/tennisblock}
 zipdir=/home/ubuntu/zipdir
-excludefile=/home/ubuntu/tennisblock_exlude.lst
+excludefile=/home/ubuntu/tennisblock_exclude.lst
 
 # Put site into maintenance mode
 touch ${APPPATH}/maintenance.on

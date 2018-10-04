@@ -108,7 +108,7 @@ jobs:
             git fetch --tags | true
 
       - checkout
-      
+
       - save_cache:
           key: v1-repo-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -307,6 +307,7 @@ jobs:
           name: Copy deploy script to test server
           command: |
             scp ./scripts/site_deploy_zip.sh deploy_host:site_deploy_zip.sh
+            scp ./server_setup/tennisblock_exclude.lst deploy_host:
 
       - run:
           name: Copy zipfile to test server
