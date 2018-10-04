@@ -1,10 +1,14 @@
 # rsync exclude list for server.
 # Keeps rsync from removing configuration files
 health
-local_config.py
 manage
 reload.me
 requirements.txt
 uwsgi.ini
 wsgi.py
+.env
+.env.local
+.venv3
+local_config.py
+
 
