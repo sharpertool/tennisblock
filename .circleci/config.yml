@@ -87,7 +87,7 @@ jobs:
   checkout_code:
     <<: *container_config_min
     steps:
-      - *restore_repo
+#      - *restore_repo
 
       - run:
           name: Avoid hosts unknown for bitbucket
@@ -95,17 +95,17 @@ jobs:
             mkdir -p ~/.ssh/
             echo -e "Host bitbucket.org\n  StrictHostKeyChecking no\n" >> ~/.ssh/config
 
-      - run:
-          name: fetch tags
-          command: |
-            git fetch --tags | true
-
-      - checkout
-
-      - run:
-          name: fetch tags
-          command: |
-            git fetch --tags | true
+#      - run:
+#          name: fetch tags
+#          command: |
+#            git fetch --tags | true
+#
+#      - checkout
+#
+#      - run:
+#          name: fetch tags
+#          command: |
+#            git fetch --tags | true
 
       - checkout
 
