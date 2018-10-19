@@ -12,12 +12,12 @@ class TeamGen(object):
 
     def generate_set_sequences(self, b_allow_duplicates):
         self.meeting.restart()
-        diff_max = 0.1
 
         self.meeting.set_see_partner_once(b_allow_duplicates)
 
         while self.meeting.set_count() < self.n_sequences:
             set = None
+            diff_max = 0.1
 
             while diff_max <= 1.0 and set is None:
                 set = self.meeting.get_new_set(diff_max)

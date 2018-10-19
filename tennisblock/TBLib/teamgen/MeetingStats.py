@@ -163,8 +163,7 @@ class MeetingStats:
     def get_new_set(self, diff_max):
         """
         This one needs to use the existing sets and list and pick a new
-        randomization
-        of the available sets.
+        randomization of the available sets.
         """
 
         """
@@ -177,47 +176,17 @@ class MeetingStats:
         set
         """
         tries = 0
-        max_tries = 1
+        max_tries = 20
+        new_set: Set = None
 
-        while tries < max_tries:
-            print("Trying to build a set DiffMax:%5.3f Try # %d."
-                  % (diff_max, tries))
-            s = self.build_set(diff_max)
-            if s:
-                return s
+        while new_set is None and tries < max_tries:
+            print(f"Trying to build a set DiffMax:{diff_max:5.3} Try # {tries}.")
+            new_set = self.build_set(diff_max)
+            tries += 1
 
-            tries = tries + 1
-
-        return None
-
-    def get_temp_list(self):
-
-        t_men = [x.Name() for x in self.men]
-        t_women = [x.Name() for x in self.women]
-        return t_men, t_women
-
-    def init_set(self, t_men):
-        """
-        Build a new set with a list of men that are valid opponents of each other.
-
-        Each time this function is called, a new random set of men should be chosen.
-        The only history used is the history of men that have played against each other
-        this night. The valid_opponent function is used for this determination.
-        """
-        new_set = Set()
-        s_men = set(t_men)
-
-        for n in range(0, self.n_courts):
-            m1 = random.choice(list(s_men))
-            s_men.remove(m1)
-            m2 = self.valid_opponent(m1, s_men)
-            s_men.remove(m2)
-            m = Match(Team(self.pbyname[m1], None),
-                      Team(self.pbyname[m2], None))
-            new_set.add_match(m)
         return new_set
 
-    def build_set(self, diff_max):
+    def build_set(self, diff_max) -> Set:
         """
         First, build a set of matches with men only.
         Next, add in the women. The men are assigned
@@ -245,9 +214,7 @@ class MeetingStats:
                 except NoValidOpponent:
                     print("Regenerate the set of men")
                     pass
-
-            print("Assigned men. Try to assign women. Seqs:%d Try:%d Diff=%5.3f"
-                  % (self.n_curr_set_count, n_tries, diff_max))
+            self.display_update(n_tries, diff_max)
             self.clear_check_stats()
             # Initialize High, then set to lowest value found
             self.minDiff = 10
@@ -359,3 +326,31 @@ class MeetingStats:
 
         opponent = random.choice(list(tmp))
         return opponent
+
+    def get_temp_list(self):
+
+        t_men = [x.Name() for x in self.men]
+        t_women = [x.Name() for x in self.women]
+        return t_men, t_women
+
+    def init_set(self, t_men):
+        """
+        Build a new set with a list of men that are valid opponents of each other.
+
+        Each time this function is called, a new random set of men should be chosen.
+        The only history used is the history of men that have played against each other
+        this night. The valid_opponent function is used for this determination.
+        """
+        new_set = Set()
+        s_men = set(t_men)
+
+        for n in range(0, self.n_courts):
+            m1 = random.choice(list(s_men))
+            s_men.remove(m1)
+            m2 = self.valid_opponent(m1, s_men)
+            s_men.remove(m2)
+            m = Match(Team(self.pbyname[m1], None),
+                      Team(self.pbyname[m2], None))
+            new_set.add_match(m)
+        return new_set
+

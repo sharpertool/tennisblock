@@ -21,14 +21,15 @@ class Match:
         s2 = self.t2.spread()
         d1 = self.t1.combined_microntrp()
         d2 = self.t2.combined_microntrp()
-        quality = abs(d1-d2)+s1+s2
+        quality = abs(d1 - d2) + s1 + s2
         return quality
 
     def display(self):
         self.t1.display()
         print("Versus")
         self.t2.display()
-        print("diff: %4.2f\n" % self.match_diff())
+        print(f"diff:{self.match_diff():4.2} "
+              f"Quality:{self.match_quality():4.2}\n")
 
     def __str__(self):
         return f"{self.match_diff():3.2}"
