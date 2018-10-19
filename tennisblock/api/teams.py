@@ -1,46 +1,46 @@
 from rest_framework.request import Request
 from .apiutils import get_current_season
 
-from TBLib.teams import TeamManager
+from TBLib.manager import TeamManager
 from TBLib.teamgen.DBTeams import DBTeams
 
 from .apiutils import JSONResponse
 
 
-def pickTeams(request, date=None):
+def pick_teams(request, date=None):
     """
     """
     r = Request(request)
 
     if r.method == 'POST':
-        print("pickTeams POST for date %s" % date)
+        print("pick_teams POST for date %s" % date)
         matchData = {}
         season = get_current_season()
         if date and season:
 
             dbTeams = DBTeams()
 
-            men, women = dbTeams.getPlayers(date)
+            men, women = dbTeams.get_players(date)
             mgr = TeamManager()
-            mgr.pickTeams(men=men, women=women, testing=False,
+            mgr.pick_teams(men=men, women=women, testing=False,
                           n_sequences=3)
 
-            matchData = mgr.queryMatch(date)
+            matchData = mgr.query_match(date)
 
         return JSONResponse({'status': 'POST Done', 'date': date, 'teams': matchData})
 
 
-def queryTeams(request, date=None):
+def query_teams(request, date=None):
     """
     """
     r = Request(request)
 
     if r.method == 'GET':
-        print("pickTeams GET for date %s" % date)
+        print("pick_teams GET for date %s" % date)
         matchData = {}
         if date:
             mgr = TeamManager()
 
-            matchData = mgr.queryMatch(date)
+            matchData = mgr.query_match(date)
 
         return JSONResponse({'status': 'GET Done', 'date': date, 'teams': matchData})

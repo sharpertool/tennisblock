@@ -8,7 +8,7 @@ from .blockschedule import (BlockNotifyer, getBlockDates,
                             getMatchData)
 
 from .views import getSeasons, getCurrentSeason, getCurrentSeasonDates, getLatestBuzz
-from .teams import pickTeams
+from .teams import pick_teams
 
 app_name = 'api'
 urlpatterns = (
@@ -16,8 +16,8 @@ urlpatterns = (
     re_path(r'currentseason/?$', getCurrentSeason),
     re_path(r'currentseasondates/?$', getCurrentSeasonDates),
     re_path(r'buzz/?$', getLatestBuzz),
-    re_path(r'pickteams/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', pickTeams),
-    re_path(r'pickteams/?$', pickTeams),
+    re_path(r'pickteams/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', pick_teams),
+    re_path(r'pickteams/?$', pick_teams),
     re_path(r'blocksheet/(?P<date>\d{4}-\d{1,2}-\d{1,2})/?$', blockSheet),
     re_path(r'blocksheet/?$', blockSheet),
     re_path(r'blockdates/?$', getBlockDates),

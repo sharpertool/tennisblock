@@ -10,7 +10,7 @@ from rest_framework.parsers import JSONParser
 from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, time_to_js
-from TBLib.teams import TeamManager
+from TBLib.manager import TeamManager
 from TBLib.schedule import Scheduler
 
 
@@ -162,7 +162,7 @@ def blockPlayers(request, date=None):
             tb = Scheduler()
             result['status'] = tb.updateSchedule(date, couples)
             mgr = TeamManager()
-            mgr.dbTeams.deleteMatchup(date)
+            mgr.dbTeams.delete_matchup(date)
         else:
             result['status'] = "Did not decode the guys and gals"
         return JSONResponse(result)
@@ -222,7 +222,7 @@ def blockSchedule(request, date=None):
         tb.addCouplesToSchedule(date, group)
 
         mgr = TeamManager()
-        mgr.dbTeams.deleteMatchup(date)
+        mgr.dbTeams.delete_matchup(date)
 
         sched = tb.querySchedule(date)
 
@@ -231,7 +231,7 @@ def blockSchedule(request, date=None):
     if r.method == 'DELETE':
         print("blockSchedule DELETE for date:%s" % date)
         mgr = TeamManager()
-        mgr.dbTeams.deleteMatchup(date)
+        mgr.dbTeams.delete_matchup(date)
         tb.removeAllCouplesFromSchedule(date)
 
         return JSONResponse({})
@@ -243,7 +243,7 @@ def getMatchData(request, date=None):
     if r.method == 'GET':
         mgr = TeamManager()
 
-        matchData = mgr.queryMatch(date)
+        matchData = mgr.query_match(date)
         if matchData:
             return JSONResponse({"match": matchData})
         return JSONResponse({})

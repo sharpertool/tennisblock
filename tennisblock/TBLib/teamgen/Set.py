@@ -2,12 +2,12 @@ class Set(object):
     def __init__(self):
         self.matches = []
 
-    def Clone(self):
+    def clone(self):
         s = Set()
         s.matches = [m for m in self.matches]
         return s
 
-    def AddMatch(self, match):
+    def add_match(self, match):
         self.matches.append(match)
 
     def set_diff(self):
@@ -39,7 +39,7 @@ class Set(object):
 
         return diffs
 
-    def DiffStats(self):
+    def diff_stats(self):
         diffMax = 0
         diffAvg = 0
         diffCnt = 0
@@ -58,12 +58,12 @@ class Set(object):
         diffs.sort()
         return diffMax, diffAvg, diffs
 
-    def Display(self):
+    def display(self):
         for match in self.matches:
-            match.Display()
+            match.display()
             print("")
 
-    def showDiffs(self):
+    def show_diffs(self):
         diffs = ["%4.2f" % match.match_diff() for match in self.matches]
         print("Diffs: " + "\t".join(diffs))
 

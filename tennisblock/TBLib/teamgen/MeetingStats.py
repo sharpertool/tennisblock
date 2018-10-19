@@ -6,20 +6,20 @@ from .Team import Team
 from .Set import Set
 
 
-def MakeKey(m, f):
+def make_key(m, f):
     return "%s %s:%s %s" % (m.first, m.last, f.first, f.last)
 
 
-def MakeSortedKey(a, b):
+def make_sorted_key(a, b):
     if a.pid < b.pid:
-        return MakeKey(a, b)
+        return make_key(a, b)
     else:
-        return MakeKey(b, a)
+        return make_key(b, a)
 
 
 class MeetingStats(object):
-    def __init__(self, nCourts, nSets, men, women):
-        self.nCourts = nCourts
+    def __init__(self, n_courts, nSets, men, women):
+        self.n_courts = n_courts
         self.nSets = nSets
         self.men = men
         self.women = women
@@ -28,7 +28,7 @@ class MeetingStats(object):
         self.maxIterations = 100
 
         self.seeGirlsOnlyOnce = False
-        if self.nCourts == 3:
+        if self.n_courts == 3:
             self.seeGirlsOnlyOnce = False
 
         self.chkMatchups = 0
@@ -42,7 +42,7 @@ class MeetingStats(object):
         self.InvalidFemOpponents = {}
         self.InvalidFemPartners = {}
 
-        self.specialCase = self.isSpecialCase()
+        self.specialCase = self.is_special_case()
 
         self.minDiffHistory = []
 
@@ -59,14 +59,14 @@ class MeetingStats(object):
             print("Setting the see Girls setting to False")
         self.seeGirlsOnlyOnce = bTrue
 
-    def setMaxIteration(self, n):
+    def set_max_iteration(self, n):
 
         self.maxIterations = n
 
-    def setCurrSetCount(self, n):
+    def set_curr_set_count(self, n):
         self.nCurrSetCount = n
 
-    def Restart(self):
+    def restart(self):
         """
         Clear all statistics and restart the checking
         """
@@ -84,9 +84,9 @@ class MeetingStats(object):
 
             self.InvalidFemPartners[p.Name()] = set()
 
-        print("Restart Done")
+        print("restart Done")
 
-    def isSpecialCase(self):
+    def is_special_case(self):
         """
         Grrr - this is special for Sheryl, who asks to play with Kirby!
         Hah!!! Mike isn't on our block, and neither is Sheryl/
@@ -98,10 +98,10 @@ class MeetingStats(object):
         #                 return True
         return False
 
-    def DiffHistoryMin(self):
+    def diff_history_min(self):
         return min(self.minDiffHistory)
 
-    def AddSet(self, set):
+    def add_set(self, set):
         """
         Once we have a valid set, then add it to the list and update
         all of the variables we use to track the statisics for this run.
@@ -151,19 +151,19 @@ class MeetingStats(object):
 
         print("Added a set")
 
-    def GetSets(self):
+    def get_sets(self):
         return self.sets
 
-    def ClearCheckStats(self):
+    def clear_check_stats(self):
         self.nFailuresByInvalidPartner = 0
         self.nFailuresByDiff = 0
         self.minDiff = 10
 
-    def PrintCheckStats(self):
+    def print_check_stats(self):
         print("Failed Stats:Partner:%d Diff:%d Mindiff:%4.2f" \
               % (self.nFailuresByInvalidPartner, self.nFailuresByDiff, self.minDiff))
 
-    def GetNewSet(self, diffMax):
+    def get_new_set(self, diffMax):
         """
         This one needs to use the existing sets and list and pick a new randomization
         of the available sets.
@@ -180,7 +180,7 @@ class MeetingStats(object):
 
         while tries < maxTries:
             print("Trying to build a set DiffMax:%5.3f Try # %d." % (diffMax, tries))
-            s = self.BuildSet(diffMax)
+            s = self.build_set(diffMax)
             if s:
                 return s
 
@@ -188,33 +188,33 @@ class MeetingStats(object):
 
         return None
 
-    def getTempList(self):
+    def get_temp_list(self):
 
         t_men = [x.Name() for x in self.men]
         t_women = [x.Name() for x in self.women]
         return t_men, t_women
 
-    def initSet(self, t_men):
+    def init_set(self, t_men):
         """
         Build a new set with a list of men that are valid opponents of each other.
 
         Each time this function is called, a new random set of men should be chosen.
         The only history used is the history of men that have played against each other
-        this night. The ValidOpponent function is used for this determination.
+        this night. The valid_opponent function is used for this determination.
         """
         newSet = Set()
         s_men = set(t_men)
 
-        for n in range(0, self.nCourts):
+        for n in range(0, self.n_courts):
             m1 = random.choice(list(s_men))
             s_men.remove(m1)
-            m2 = self.ValidOpponent(m1, s_men)
+            m2 = self.valid_opponent(m1, s_men)
             s_men.remove(m2)
             m = Match(Team(self.pbyname[m1], None), Team(self.pbyname[m2], None))
-            newSet.AddMatch(m)
+            newSet.add_match(m)
         return newSet
 
-    def BuildSet(self, diffMax):
+    def build_set(self, diffMax):
         """
         First, build a set of matches with men only.
         Next, add in the women. The men are assigned
@@ -230,26 +230,26 @@ class MeetingStats(object):
         self.setList = []
 
         while nTries < maxTries / 10:
-            t_men, t_women = self.getTempList()
+            t_men, t_women = self.get_temp_list()
 
             # Build sets of men first.
             # If there is an exception thrown, then just ignore
             # it and try again..
             while True:
                 try:
-                    newSet = self.initSet(t_men)
+                    newSet = self.init_set(t_men)
                     break
                 except NoValidOpponent:
                     print("Regenerate the set of men")
                     pass
 
             print("Assigned men. Try to assign women. Seqs:%d Try:%d Diff=%5.3f" % (self.nCurrSetCount, nTries, diffMax))
-            self.ClearCheckStats()
+            self.clear_check_stats()
             self.minDiff = 10 ## Initialize High, then set to lowest value found
             try:
-                if self.AddWomen(newSet, t_women, diffMax, self.maxIterations):
+                if self.add_women(newSet, t_women, diffMax, self.maxIterations):
                     return newSet
-                self.PrintCheckStats()
+                self.print_check_stats()
                 self.minDiffHistory.append(self.minDiff)
             except NoValidPartner:
                 # we can continue on here.
@@ -258,7 +258,7 @@ class MeetingStats(object):
 
         return None
 
-    def AddWomen(self, aset, t_women, diffMax, maxTries):
+    def add_women(self, aset, t_women, diffMax, maxTries):
         """
         Upon entry, aset will be a set that contains
         the male pairings, but with no women entered. The
@@ -279,10 +279,10 @@ class MeetingStats(object):
                     m1 = m.t1.p1.Name()
                     m2 = m.t2.p1.Name()
 
-                    f1 = self.ValidPartner(m1, m2, s_women, None)
+                    f1 = self.valid_partner(m1, m2, s_women, None)
                     s_women.remove(f1)
 
-                    f2 = self.ValidPartner(m2, m1, s_women, f1)
+                    f2 = self.valid_partner(m2, m1, s_women, f1)
                     s_women.remove(f2)
 
                     m.t1.p2 = self.pbyname[f1]
@@ -297,7 +297,7 @@ class MeetingStats(object):
                 # as the next diffMax!
                 self.minDiff = min(self.minDiff, currDiff)
                 self.nFailuresByDiff = self.nFailuresByDiff + 1
-                self.setList.append(aset.Clone())
+                self.setList.append(aset.clone())
 
             except NoValidPartner as e:
                 raise
@@ -308,7 +308,7 @@ class MeetingStats(object):
         # If we make it here.. we failed
         return False
 
-    def ValidPartner(self, m1, m2, s_women, f1=None):
+    def valid_partner(self, m1, m2, s_women, f1=None):
         """
         Pick a woman that is a valid partner for the two men specified in m1 and m2.
 
@@ -338,7 +338,7 @@ class MeetingStats(object):
         partner = random.choice(list(tmp))
         return partner
 
-    def ValidOpponent(self, player, opponents):
+    def valid_opponent(self, player, opponents):
         """
         The difference line retrieves a list of same-sex players that have
         not been opponents to this player yet.

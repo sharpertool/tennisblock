@@ -8,7 +8,7 @@ class Match(object):
         c2 = self.t2.microntrp()
         return abs(c1 - c2)
 
-    def Display(self):
+    def display(self):
         self.t1.display()
         print("Versus")
         self.t2.display()

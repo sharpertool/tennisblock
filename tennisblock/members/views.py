@@ -157,7 +157,7 @@ class PlayerDeleteView(DeleteView):
 class PlayersView(TennisLoginView):
     template_name = "players.html"
 
-    def getPlayers(self):
+    def get_players(self):
         s = get_current_season()
         sp = Player.objects.all().order_by('last_name', 'first_name')
         return sp
@@ -172,7 +172,7 @@ class PlayersView(TennisLoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['players'] = self.getPlayers()
+        context['players'] = self.get_players()
         return context
 
 
@@ -180,7 +180,7 @@ class MembersView(TennisLoginView):
     template_name = "members/members_view.html"
     members_only = False
 
-    def getPlayers(self):
+    def get_players(self):
         s = get_current_season()
         sp = SeasonPlayer.objects.filter(season=s)
         return [p.player for p in sp if (not self.members_only or p.blockmember)]
@@ -195,7 +195,7 @@ class MembersView(TennisLoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['players'] = self.getPlayers()
+        context['players'] = self.get_players()
         return context
 
 

@@ -6,7 +6,7 @@ import { devServer } from './partials'
 import BundleTracker from 'webpack-bundle-tracker'
 
 const DOMAIN = process.env.DOMAIN || 'localhost'
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8081
 const PROTOCOL = process.env.PROTOCOL || 'http'
 
 const rules =[

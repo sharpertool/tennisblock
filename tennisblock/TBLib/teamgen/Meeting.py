@@ -2,35 +2,35 @@ from .MeetingStats import MeetingStats
 
 
 class Meeting(object):
-    def __init__(self, nCourts, nSets, men, women):
-        self.nCourts = nCourts
+    def __init__(self, n_courts, nSets, men, women):
+        self.n_courts = n_courts
         self.nSets = nSets
         self.men = men
         self.women = women
         self.sets = []
 
-        self.ms = MeetingStats(nCourts, nSets, men, women)
+        self.ms = MeetingStats(n_courts, nSets, men, women)
 
     def restart_meeting(self):
-        self.ms.Restart()
+        self.ms.restart()
         self.sets = []
 
-    def set_see_partner_once(self, dups):
+    def set_see_partner_once(self, b_allow_duplicates):
         """
         Set value on meeting stats object.
-        :param dups:
+        :param b_allow_duplicates:
         :return:
         """
-        self.ms.set_see_partner_once(dups)
+        self.ms.set_see_partner_once(b_allow_duplicates)
 
     def add_set(self, blockset):
         self.sets.append(blockset)
-        self.ms.AddSet(blockset)
+        self.ms.add_set(blockset)
 
-    def Display(self):
-        for index, blockset in enumerate(self.ms.GetSets()):
+    def display(self):
+        for index, blockset in enumerate(self.ms.get_sets()):
             print("Set {index+1}")
-            blockset.Display()
+            blockset.display()
 
     def SetCount(self):
         return len(self.sets)
@@ -38,12 +38,12 @@ class Meeting(object):
     def Check(self, set, diffMax):
         return self.ms.Check(set, diffMax)
 
-    def GetNewSet(self, diffMax):
-        self.ms.setCurrSetCount(len(self.sets))
-        return self.ms.GetNewSet(diffMax)
+    def get_new_set(self, diffMax):
+        self.ms.set_curr_set_count(len(self.sets))
+        return self.ms.get_new_set(diffMax)
 
-    def PrintCheckStats(self):
-        self.ms.PrintCheckStats()
+    def print_check_stats(self):
+        self.ms.print_check_stats()
 
-    def DiffHistoryMin(self):
-        return self.ms.DiffHistoryMin()
+    def diff_history_min(self):
+        return self.ms.diff_history_min()

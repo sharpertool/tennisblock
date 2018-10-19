@@ -17,7 +17,7 @@ from .serializers import MeetingSerializer
 @class_login_required
 class BlockSchedule(TemplateView):
     """
-    Display the block schedule for the current, or specified block.
+    display the block schedule for the current, or specified block.
 
     If the block pk is not specified, use the 'current block'
     """

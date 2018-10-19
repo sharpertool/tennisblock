@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         mgr = TeamManager()
-        mgr.pickTeams(options['date'],
+        mgr.pick_teams(date=options['date'],
                       testing=options['test'],
                       n_sequences=options['sequences'],
                       noDupes=options['nodupes'])
