@@ -1,30 +1,30 @@
 from typing import List
 from .MeetingStats import MeetingStats
-from .Set import Set
+from .round import MatchRound
 
 
 class Meeting(MeetingStats):
     def __init__(self, n_courts, n_sets, men, women):
         super().__init__(n_courts, n_sets, men, women)
-        self.sets: List[Set] = []
+        self.rounds: List[MatchRound] = []
 
     def restart(self):
-        self.sets = []
+        self.rounds = []
         super().restart()
 
-    def add_set(self, new_set):
-        self.sets.append(new_set)
-        super().add_set(new_set)
+    def add_round(self, new_round):
+        self.rounds.append(new_round)
+        super().add_round(new_round)
 
-    def set_count(self):
-        return len(self.sets)
+    def round_count(self):
+        return len(self.rounds)
 
-    def get_sets(self):
-        return self.sets
+    def get_rounds(self):
+        return self.rounds
 
     def display_update(self, n_tries, diff):
         print(f"Assigned men. "
               f"Try to assign women. "
-              f"Seqs:{len(self.sets)} "
+              f"Seqs:{len(self.rounds)} "
               f"Try:{n_tries} Diff={diff:4.2}"
               )

@@ -6,12 +6,12 @@ class Match:
         self.t1 = t1
         self.t2 = t2
 
-    def match_diff(self):
+    def diff(self):
         c1 = self.t1.combined_microntrp()
         c2 = self.t2.combined_microntrp()
         return abs(c1 - c2)
 
-    def match_quality(self):
+    def quality(self):
         """
         Calcualte a quality score
         Lower numbers are better
@@ -28,11 +28,11 @@ class Match:
         self.t1.display()
         print("Versus")
         self.t2.display()
-        print(f"diff:{self.match_diff():4.2} "
-              f"Quality:{self.match_quality():4.2}\n")
+        print(f"diff:{self.diff():4.2} "
+              f"Quality:{self.quality():4.2}\n")
 
     def __str__(self):
-        return f"{self.match_diff():3.2}"
+        return f"{self.diff():3.2}"
 
     def __repr__(self):
         return str(self)

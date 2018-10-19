@@ -1,14 +1,15 @@
 from typing import List
+import math
 
 from .Match import Match
 
 
-class Set:
+class MatchRound:
     def __init__(self):
         self.matches: List[Match] = []
 
     def clone(self):
-        s = Set()
+        s = MatchRound()
         s.matches = [m for m in self.matches]
         return s
 
@@ -38,33 +39,20 @@ class Set:
         """
         diffs = []
         for m in self.matches:
-            diffs.append(m.match_diff())
+            diffs.append(m.diff())
 
         diffs.sort()
 
         return diffs
 
     def quality(self):
-        return 0
+        return [m.quality() for m in self.matches]
 
     def diff_stats(self):
-        diff_max = 0
-        diff_avg = 0
-        diff_cnt = 0
-        diffs = []
-
-        for match in self.matches:
-            diff = match.match_diff()
-
-            diff_cnt = diff_cnt + 1
-            diff_avg = diff_avg + diff
-            if diff > diff_max:
-                diff_max = diff
-            diffs.append(diff)
-
-        diff_avg = diff_avg / diff_cnt
+        diffs = [m.diff() for m in self.matches]
+        #qvals = [m.quality() for m in self.matches]
         diffs.sort()
-        return diff_max, diff_avg, diffs
+        return max(diffs), sum(diffs)/len(diffs), diffs
 
     def display(self):
         for match in self.matches:
@@ -72,7 +60,7 @@ class Set:
             print("")
 
     def show_diffs(self):
-        diffs = ["%4.2f" % match.match_diff() for match in self.matches]
+        diffs = ["%4.2f" % match.diff() for match in self.matches]
         print("Diffs: " + "\t".join(diffs))
 
     def __str__(self):
