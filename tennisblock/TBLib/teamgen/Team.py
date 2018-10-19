@@ -1,14 +1,20 @@
-class Team(object):
+from blockdb.models import Player
+
+
+class Team:
     """
     Represents a Guy and Gal on a team.
     """
 
     def __init__(self, player1=None, player2=None):
-        self.p1 = player1
-        self.p2 = player2
+        self.p1: Player = player1
+        self.p2: Player = player2
 
-    def microntrp(self):
+    def combined_microntrp(self):
         return self.p1.microntrp + self.p2.microntrp
+
+    def spread(self):
+        return abs(self.p1.microntrp - self.p2.microntrp)
 
     def display(self):
         p1 = self.p1

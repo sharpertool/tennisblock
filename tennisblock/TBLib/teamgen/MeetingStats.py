@@ -1,4 +1,5 @@
 import random
+from typing import List
 from TBLib.teamgen.exceptions import NoValidOpponent, NoValidPartner
 
 from .Match import Match
@@ -17,15 +18,18 @@ def make_sorted_key(a, b):
         return make_key(b, a)
 
 
-class MeetingStats(object):
-    def __init__(self, n_courts, nSets, men, women):
+class MeetingStats:
+    def __init__(self, n_courts, n_sets, men, women):
         self.n_courts = n_courts
-        self.nSets = nSets
+        self.n_sets = n_sets
         self.men = men
         self.women = women
-        self.nCurrSetCount = 0
+        self.setList: List[Set] = []
 
         self.maxIterations = 100
+        self.minDiff = 10
+        self.nFailuresByInvalidPartner = 0
+        self.nFailuresByDiff = 0
 
         self.seeGirlsOnlyOnce = False
         if self.n_courts == 3:
@@ -51,20 +55,16 @@ class MeetingStats(object):
         for p in self.men + self.women:
             self.pbyname[p.Name()] = p
 
-    def set_see_partner_once(self, bTrue):
-        if bTrue:
+    def set_see_partner_once(self, b_once):
+        if b_once:
             print("Setting the see Girls setting to True")
             self.maxIterations *= 10
         else:
             print("Setting the see Girls setting to False")
-        self.seeGirlsOnlyOnce = bTrue
+        self.seeGirlsOnlyOnce = b_once
 
     def set_max_iteration(self, n):
-
         self.maxIterations = n
-
-    def set_curr_set_count(self, n):
-        self.nCurrSetCount = n
 
     def restart(self):
         """
@@ -81,7 +81,6 @@ class MeetingStats(object):
             self.Opposites2X[p.Name()] = set()
         for p in self.men:
             self.InvalidFemOpponents[p.Name()] = set()
-
             self.InvalidFemPartners[p.Name()] = set()
 
         print("restart Done")
@@ -101,13 +100,13 @@ class MeetingStats(object):
     def diff_history_min(self):
         return min(self.minDiffHistory)
 
-    def add_set(self, set):
+    def add_set(self, new_set):
         """
         Once we have a valid set, then add it to the list and update
         all of the variables we use to track the statisics for this run.
 
         """
-        for match in set.matches:
+        for match in new_set.matches:
             m1 = match.t1.p1.Name()
             f1 = match.t1.p2.Name()
             m2 = match.t2.p1.Name()
@@ -139,7 +138,8 @@ class MeetingStats(object):
             if self.seeGirlsOnlyOnce:
                 m_invalid = self.Partners[mn].union(self.Opposites[mn])
             else:
-                m_invalid = self.Partners[mn].intersection(self.Opposites[mn])
+                m_invalid = self.Partners[mn].intersection(
+                    self.Opposites[mn])
                 m_invalid = m_invalid.union(self.Opposites2X[mn])
             self.InvalidFemOpponents[mn] = m_invalid
 
@@ -151,36 +151,38 @@ class MeetingStats(object):
 
         print("Added a set")
 
-    def get_sets(self):
-        return self.sets
-
     def clear_check_stats(self):
         self.nFailuresByInvalidPartner = 0
         self.nFailuresByDiff = 0
         self.minDiff = 10
 
     def print_check_stats(self):
-        print("Failed Stats:Partner:%d Diff:%d Mindiff:%4.2f" \
-              % (self.nFailuresByInvalidPartner, self.nFailuresByDiff, self.minDiff))
+        print(f"Failed Stats:Partner:{self.nFailuresByInvalidPartner}"
+              f"Diff:{self.nFailuresByDiff} Mindiff:{self.minDiff}")
 
-    def get_new_set(self, diffMax):
+    def get_new_set(self, diff_max):
         """
-        This one needs to use the existing sets and list and pick a new randomization
+        This one needs to use the existing sets and list and pick a new
+        randomization
         of the available sets.
         """
 
         """
         - Pick a guy
-            - Pick an opponent from list of available opponents - men not played yet
-            - Pick two women from list of available women (checking opposites, pairs)
-        - From remaining guys, repeat the above.. and then for the last set
+            - Pick an opponent from list of available opponents - men 
+            not played yet
+            - Pick two women from list of available women 
+            (checking opposites, pairs)
+        - From remaining guys, repeat the above.. and then for the last 
+        set
         """
         tries = 0
-        maxTries = 1
+        max_tries = 1
 
-        while tries < maxTries:
-            print("Trying to build a set DiffMax:%5.3f Try # %d." % (diffMax, tries))
-            s = self.build_set(diffMax)
+        while tries < max_tries:
+            print("Trying to build a set DiffMax:%5.3f Try # %d."
+                  % (diff_max, tries))
+            s = self.build_set(diff_max)
             if s:
                 return s
 
@@ -202,7 +204,7 @@ class MeetingStats(object):
         The only history used is the history of men that have played against each other
         this night. The valid_opponent function is used for this determination.
         """
-        newSet = Set()
+        new_set = Set()
         s_men = set(t_men)
 
         for n in range(0, self.n_courts):
@@ -210,11 +212,12 @@ class MeetingStats(object):
             s_men.remove(m1)
             m2 = self.valid_opponent(m1, s_men)
             s_men.remove(m2)
-            m = Match(Team(self.pbyname[m1], None), Team(self.pbyname[m2], None))
-            newSet.add_match(m)
-        return newSet
+            m = Match(Team(self.pbyname[m1], None),
+                      Team(self.pbyname[m2], None))
+            new_set.add_match(m)
+        return new_set
 
-    def build_set(self, diffMax):
+    def build_set(self, diff_max):
         """
         First, build a set of matches with men only.
         Next, add in the women. The men are assigned
@@ -222,14 +225,14 @@ class MeetingStats(object):
         are assigned as later.. they will be assigned
         randomly to the men.
         """
-        nTries = 0
-        maxTries = self.maxIterations
+        n_tries = 0
+        max_tries = self.maxIterations
 
-        self.minDiffHistory = [diffMax]
+        self.minDiffHistory = [diff_max]
 
         self.setList = []
 
-        while nTries < maxTries / 10:
+        while n_tries < max_tries / 10:
             t_men, t_women = self.get_temp_list()
 
             # Build sets of men first.
@@ -237,28 +240,30 @@ class MeetingStats(object):
             # it and try again..
             while True:
                 try:
-                    newSet = self.init_set(t_men)
+                    new_set = self.init_set(t_men)
                     break
                 except NoValidOpponent:
                     print("Regenerate the set of men")
                     pass
 
-            print("Assigned men. Try to assign women. Seqs:%d Try:%d Diff=%5.3f" % (self.nCurrSetCount, nTries, diffMax))
+            print("Assigned men. Try to assign women. Seqs:%d Try:%d Diff=%5.3f"
+                  % (self.n_curr_set_count, n_tries, diff_max))
             self.clear_check_stats()
-            self.minDiff = 10 ## Initialize High, then set to lowest value found
+            # Initialize High, then set to lowest value found
+            self.minDiff = 10
             try:
-                if self.add_women(newSet, t_women, diffMax, self.maxIterations):
-                    return newSet
+                if self.add_women(new_set, t_women, diff_max, self.maxIterations):
+                    return new_set
                 self.print_check_stats()
                 self.minDiffHistory.append(self.minDiff)
             except NoValidPartner:
                 # we can continue on here.
                 pass
-            nTries = nTries + 1
+            n_tries = n_tries + 1
 
         return None
 
-    def add_women(self, aset, t_women, diffMax, maxTries):
+    def add_women(self, aset, t_women, diff_max, max_tries):
         """
         Upon entry, aset will be a set that contains
         the male pairings, but with no women entered. The
@@ -266,9 +271,9 @@ class MeetingStats(object):
         they should be okay.
         """
 
-        nTries = 0
-        nContinue = True
-        while nContinue and nTries < maxTries:
+        n_tries = 0
+        n_continue = True
+        while n_continue and n_tries < max_tries:
             s_women = set(t_women)
             random.seed()
             try:
@@ -288,22 +293,22 @@ class MeetingStats(object):
                     m.t1.p2 = self.pbyname[f1]
                     m.t2.p2 = self.pbyname[f2]
 
-                currDiff = max(aset.set_diff())
-                if currDiff <= diffMax:
+                curr_diff = max(aset.diff())
+                if curr_diff <= diff_max:
                     return True
 
                 # Ah.. keep track of minimum diff found for a set
                 # Later, I'll track these minimum diffs, and then use that
-                # as the next diffMax!
-                self.minDiff = min(self.minDiff, currDiff)
+                # as the next diff_max!
+                self.minDiff = min(self.minDiff, curr_diff)
                 self.nFailuresByDiff = self.nFailuresByDiff + 1
                 self.setList.append(aset.clone())
 
             except NoValidPartner as e:
                 raise
 
-            ## We have a bad one..
-            nTries = nTries + 1
+            # We have a bad one..
+            n_tries = n_tries + 1
 
         # If we make it here.. we failed
         return False
@@ -322,7 +327,7 @@ class MeetingStats(object):
 
         # m2_invalid = self.Partners[m2].intersection(self.Opposites[m2])
         # m2_invalid = m2_invalid.union(self.Opposites2X[m2])
-        m2_invalid = self.InvalidFemOpponents[m2];
+        m2_invalid = self.InvalidFemOpponents[m2]
 
         # s_invalid = self.Partners[m1].union(self.Opposites2X[m1])
         m1_invalid = self.InvalidFemPartners[m1]

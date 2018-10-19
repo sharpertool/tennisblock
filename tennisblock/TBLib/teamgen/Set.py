@@ -1,6 +1,11 @@
-class Set(object):
+from typing import List
+
+from .Match import Match
+
+
+class Set:
     def __init__(self):
-        self.matches = []
+        self.matches: List[Match] = []
 
     def clone(self):
         s = Set()
@@ -10,7 +15,7 @@ class Set(object):
     def add_match(self, match):
         self.matches.append(match)
 
-    def set_diff(self):
+    def diff(self):
         """
         Take all diff values, put them in a list.
 
@@ -39,24 +44,27 @@ class Set(object):
 
         return diffs
 
+    def quality(self):
+        return 0
+
     def diff_stats(self):
-        diffMax = 0
-        diffAvg = 0
-        diffCnt = 0
+        diff_max = 0
+        diff_avg = 0
+        diff_cnt = 0
         diffs = []
 
         for match in self.matches:
             diff = match.match_diff()
 
-            diffCnt = diffCnt + 1
-            diffAvg = diffAvg + diff
-            if diff > diffMax:
-                diffMax = diff
+            diff_cnt = diff_cnt + 1
+            diff_avg = diff_avg + diff
+            if diff > diff_max:
+                diff_max = diff
             diffs.append(diff)
 
-        diffAvg = diffAvg / diffCnt
+        diff_avg = diff_avg / diff_cnt
         diffs.sort()
-        return diffMax, diffAvg, diffs
+        return diff_max, diff_avg, diffs
 
     def display(self):
         for match in self.matches:

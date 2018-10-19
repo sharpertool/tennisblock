@@ -17,13 +17,12 @@ def pick_teams(request, date=None):
         matchData = {}
         season = get_current_season()
         if date and season:
-
             dbTeams = DBTeams()
 
             men, women = dbTeams.get_players(date)
             mgr = TeamManager()
             mgr.pick_teams(men=men, women=women, testing=False,
-                          n_sequences=3)
+                           n_sequences=3)
 
             matchData = mgr.query_match(date)
 
