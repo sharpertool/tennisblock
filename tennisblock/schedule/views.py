@@ -34,12 +34,14 @@ class BlockSchedule(TemplateView):
         meetings = sm.get_meeting_list()
         serialized = MeetingSerializer(meetings, many=True)
         context['meetings'] = serialized.data
+        return context
+
 
 class ScheduleNotify(TemplateView):
     template_name = "schedule/notify.html"
     thankyou_template = "schedule/thankyou.html"
 
-    def getCouples(self, sch):
+    def get_couples(self, sch):
 
         import random
 
@@ -54,12 +56,12 @@ class ScheduleNotify(TemplateView):
 
         return couples
 
-    def generateNotifyMessage(self, date, players, extramsg):
+    def generate_notify_message(self, date, players, extramsg):
         """
         Generate plain text version of message.
         """
 
-        couples = self.getCouples(players)
+        couples = self.get_couples(players)
         cstrings = ["%s and %s" % (c[0], c[1]) for c in couples]
         prefix = "      - "
         msg = dedent("""
@@ -74,12 +76,12 @@ class ScheduleNotify(TemplateView):
 
         return msg
 
-    def generateHtmlNotifyMessage(self, date, players, extramsg):
+    def generate_html_notify_message(self, date, players, extramsg):
         """
         Generate an HTML Formatted version of the message.
         """
 
-        couples = self.getCouples(players)
+        couples = self.get_couples(players)
         cstrings = ["<li><span>%s</span> and <span>%s</span></li>"
                     % (c[0], c[1]) for c in couples]
 
@@ -112,7 +114,7 @@ class ScheduleNotify(TemplateView):
             recipient_list = tb.getBlockEmailList()
 
         schedule = tb.querySchedule(date)
-        context['couples'] = self.getCouples(schedule)
+        context['couples'] = self.get_couples(schedule)
         context['date'] = date
 
         context['recipients'] = recipient_list
@@ -144,8 +146,8 @@ class ScheduleNotify(TemplateView):
             from_email = settings.EMAIL_HOST_USER
 
             # Generate Text and HTML versions.
-            message = self.generateNotifyMessage(date, players, extramsg)
-            html = self.generateHtmlNotifyMessage(date, players, extramsg)
+            message = self.generate_notify_message(date, players, extramsg)
+            html = self.generate_html_notify_message(date, players, extramsg)
 
             subject = settings.BLOCK_NOTIFY_SUBJECT % date
 
