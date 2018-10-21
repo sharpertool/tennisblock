@@ -12,6 +12,11 @@
 
 {% endblock %}
 
+{% block page_style %}
+{{ block.super }}
+    <link  rel="stylesheet" href="{% static 'css/schedule.css' %}" />
+{% endblock page_style %}
+
 {% block title %}
     schedule
 {% endblock %}

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import classes from './index.local.scss'
+//import classes from './index.local.scss'
 
 const teamstats = (props) => {
   console.log('TeamStats Props:', props)
@@ -11,9 +11,10 @@ const teamstats = (props) => {
     return Math.abs(fu - fm)
   })
 
-  const mainClass = ['row', classes.TeamStats].join(' ')
+  const mainClass = ['row', 'TeamStats'].join(' ')
 
   const barWidth = Math.min(100, 100*(spread[0]+spread[1])/2)
+  const height = 15
 
 
   return (
@@ -30,11 +31,11 @@ const teamstats = (props) => {
         <div className="col">
           <svg width="100%" height="30">
             <g>
-              <rect className={classes.outer} width="100%" height="30"/>
-              <rect className={classes.gauge}
+              <rect className="outer" width="100%" height={height}/>
+              <rect className="gauge"
                   transform={`translate(1,1)`}
                     width={barWidth+'%'}
-                    height="28"/>
+                    height={height-2}/>
             </g>
           </svg>
         </div>
