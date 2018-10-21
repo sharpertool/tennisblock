@@ -1,5 +1,15 @@
 .TeamStats {
-  rect {
-    background-color: #0c5460;
+  text {
+    fill: #78fbff;
+    font: 12px sans-serif;
   }
+}
+
+.outer {
+  fill: none;
+  stroke: #0b2e13;
+}
+
+.gauge {
+  fill: #0c5460;
 }
