@@ -1,15 +1,38 @@
-#!/bin/bash
+#!/bin/sh
 
-port=${1:-8002}
-
-base=$(abspath $(dirname $0))
-echo "Base dir for run is ${base}"
-cd ${base}/tennisblock
-while true
+port=8002
+SECURE=0
+while getopts ":p:s" option
 do
-    ${base}/.venv3/bin/python manage.py runserver_plus --cert-file tennisblock.crt ${port}
-    sleep 2
+    case ${option} in
+        p) port=${OPTARG};;
+        s) SECURE=1;;
+    esac
 done
 
+
+base=$(cd $(dirname $0);pwd)
+root=$(dirname $(find . -depth -maxdepth 2 -name 'manage.py'))
+cd ${root}
+
+pluscheck=$(${base}/.venv3/bin/python manage.py | grep runserver_plus)
+runcmd=${pluscheck:-runserver}
+
+if [ ${pluscheck} ];then
+    runcmd="runserver_plus"
+    if [ ${SECURE} -eq 1 ];then
+        echo "Running with secure"
+        runcmd="runserver_plus --cert-file ../ssl/private.crt"
+    else
+        echo "Running as http"
+    fi
+fi
+echo "Run command: ${runcmd}"
+
+while true
+do
+    ${base}/.venv3/bin/python manage.py ${runcmd} ${port}
+    sleep 2
+done
 
 
