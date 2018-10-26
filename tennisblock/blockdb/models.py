@@ -192,11 +192,18 @@ class Meeting(models.Model):
     date = models.DateField()
     holdout = models.BooleanField(default=False)
     comments = models.CharField(max_length=128)
+    court_count = models.IntegerField(null=True)
 
     def __str__(self):
         return "{}->{} holdout:{}".format(
                 self.season, self.date, self.holdout
         )
+
+    @property
+    def num_courts(self):
+        if self.court_count is not None:
+            return self.court_count
+        return self.season.courts
 
 
 class Availability(models.Model):
