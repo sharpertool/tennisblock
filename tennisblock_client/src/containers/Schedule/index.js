@@ -5,22 +5,18 @@ import {connect} from 'react-redux'
 import {selectors as gsel} from 'Schedule/modules'
 import {actions as t_actions} from 'Schedule/modules/teams'
 
-import Match from '~/components/Match'
-
-class MatchReview extends Component {
+class Schedule extends Component {
 
   render() {
     console.log('[Schedule]', this.props)
     const {play_schedule} = this.props
     console.log('Play Schedule:', play_schedule)
 
-    const matches = play_schedule.map((m, i) =>
-    {return (<Match key={i} idx={i+1} courts={[...m]}/>)})
-
     return (
       <React.Fragment>
-        <h3>React Play Schedule</h3>
-        {matches}
+        <h3>Block Meetings</h3>
+        <MeetingSelector/>
+        <Meeting/>
       </React.Fragment>
     )
   }
@@ -28,7 +24,7 @@ class MatchReview extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    play_schedule: gsel.playSchedule(state)
+    //play_schedule: gsel.playSchedule(state)
   }
 }
 
@@ -43,4 +39,4 @@ const dispatchActions = {
 }
 
 
-export default connect(mapStateToProps, dispatchActions)(MatchReview)
+export default connect(mapStateToProps, dispatchActions)(Schedule)

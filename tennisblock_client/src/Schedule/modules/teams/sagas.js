@@ -6,7 +6,7 @@ import * as actions from './actions'
 import * as t from './constants'
 
 function* requestMatchData() {
-  const date = '2018-10-19'
+  const date = '2018-10-26'
   const response = yield call(axios.get, `/api/matchdata/${date}`)
   yield put(actions.updatePlaySchedule(response.data))
   console.log(response.data)

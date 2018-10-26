@@ -6,6 +6,21 @@ import {combineReducers} from 'redux'
 import * as types from './constants'
 
 const initialState = {
+  season: {
+    name: '',
+    start: null,
+    end: null,
+    weekday: null,
+    time: null,
+    meetings: []
+  },
+
+  current_meeting: {
+    date: null,
+    players_by_id: {},
+    guys: [],
+    gals: [],
+  }
 }
 
 const mainReducer = (state = initialState, action) => {

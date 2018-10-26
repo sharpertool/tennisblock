@@ -9,7 +9,7 @@ const court = (props) => {
   const {idx, team1, team2} = props
 
   return (
-    <div className="col-lg-3 col-sm-6 col-xs-12">
+    <div className="col-lg col-md-6 col-xs-12">
       <p>Court {idx}</p>
       <div className="row">
         <Team {...team1}/>
