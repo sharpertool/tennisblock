@@ -280,7 +280,7 @@ class Scheduler(object):
         """
         mtg = get_meeting_for_date(date)
         season = get_current_season()
-        num_courts = season.courts
+        num_courts = mtg.num_courts
 
         data = {}
         if mtg:

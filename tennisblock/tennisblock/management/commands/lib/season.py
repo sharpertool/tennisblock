@@ -19,7 +19,7 @@ class BlockSeason(object):
         Pass in the values, and then validate them
         """
         self.season = season
-        if num_courts in [2, 3, 4]:
+        if num_courts in [2, 3, 4, 5, 6]:
             self.num_courts = num_courts
 
         if first_court in [1, 6, 9]:
