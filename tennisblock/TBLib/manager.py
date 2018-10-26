@@ -18,7 +18,7 @@ class TeamManager(object):
         return men, women
 
     def pick_teams(self, men=None, women=None, date=None, testing=False,
-                  noDupes=False, n_courts=None, n_sequences=3):
+                   b_allow_duplicates=False, n_courts=None, n_sequences=3):
 
         if men is None or women is None:
             men, women = self.get_players(date)
@@ -34,7 +34,7 @@ class TeamManager(object):
             return {"status": {"error": errmsg}}
 
         tg = TeamGen(n_courts, n_sequences, men, women)
-        sequences = tg.generate_set_sequences(noDupes)
+        sequences = tg.generate_set_sequences(b_allow_duplicates)
 
         if sequences is None or len(sequences) < n_sequences:
             return {"status": {"error": "Could not generate the required sequences"}}

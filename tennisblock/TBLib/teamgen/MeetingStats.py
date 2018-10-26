@@ -1,5 +1,6 @@
 import random
 from typing import List
+from collections import Counter, defaultdict
 from TBLib.teamgen.exceptions import NoValidOpponent, NoValidPartner
 
 from .Match import Match
@@ -26,7 +27,6 @@ class MeetingStats:
         self.women = women
 
         self.maxIterations = 100
-        self.min_diff = 10
         self.n_fails_by_invalid_partner = 0
         self.n_fails_by_diff = 0
 
@@ -40,24 +40,28 @@ class MeetingStats:
 
         self.Opponents = {}
         self.Partners = {}
+        self.Seen = defaultdict(Counter)
         self.Opposites = {}
-        self.Opposites2X = {}
-        self.InvalidFemOpponents = {}
-        self.InvalidFemPartners = {}
-
-        self.specialCase = self.is_special_case()
+        self.InvalidOpponents = {}
+        self.InvalidPartners = {}
 
         self.diff_history = []
+        self.quality_history = []
 
         # Need a reverse lookup table
         self.pbyname = {}
         for p in self.men + self.women:
             self.pbyname[p.Name()] = p
 
+        self.log_level = 0
+
+        # Should do this only once
+        random.seed()
+
     def set_see_partner_once(self, b_once):
         if b_once:
             print("Setting the see Girls setting to True")
-            self.maxIterations *= 10
+            # self.maxIterations *= 10
         else:
             print("Setting the see Girls setting to False")
         self.seeGirlsOnlyOnce = b_once
@@ -75,26 +79,13 @@ class MeetingStats:
         self.Opposites = {}
         for p in self.men + self.women:
             self.Partners[p.Name()] = set()
-            self.Opposites[p.Name()] = set()
+            self.Opposites[p.Name()] = Counter()
             self.Opponents[p.Name()] = set()
-            self.Opposites2X[p.Name()] = set()
         for p in self.men:
-            self.InvalidFemOpponents[p.Name()] = set()
-            self.InvalidFemPartners[p.Name()] = set()
+            self.InvalidOpponents[p.Name()] = set()
+            self.InvalidPartners[p.Name()] = set()
 
         print("restart Done")
-
-    def is_special_case(self):
-        """
-        Grrr - this is special for Sheryl, who asks to play with Kirby!
-        Hah!!! Mike isn't on our block, and neither is Sheryl/
-        """
-        # for m in self.men:
-        #     if m.Name() == 'Dickhead':
-        #         for w in self.women:
-        #             if w.Name() == 'Vagina':
-        #                 return True
-        return False
 
     def diff_history_min(self):
         return min(self.diff_history)
@@ -105,11 +96,14 @@ class MeetingStats:
         all of the variables we use to track the statisics for this run.
 
         """
+        max_cnt = 1 if self.seeGirlsOnlyOnce else 2
+
         for match in new_round.matches:
             m1 = match.t1.p1.Name()
             f1 = match.t1.p2.Name()
             m2 = match.t2.p1.Name()
             f2 = match.t2.p2.Name()
+            match_players = [m1, f1, m2, f2]
 
             # Do both directions
             self.Opponents[m1].add(m2)
@@ -121,34 +115,58 @@ class MeetingStats:
             self.Partners[m1].add(f1)
             self.Partners[m2].add(f2)
 
-            # Do opposites
-            if f2 in self.Opposites[m1]:
-                self.Opposites2X[m1].add(f2)
-            else:
-                self.Opposites[m1].add(f2)
+            # Increment the count of times played with opposites
+            self.Opposites[m1].update({f2})
+            self.Opposites[m2].update({f1})
 
-            if f1 in self.Opposites[m2]:
-                self.Opposites2X[m2].add(f1)
-            else:
-                self.Opposites[m2].add(f1)
+            # Increment the Seen count for all players
+            for i in match_players:
+                self.Seen[i].update({j for j in match_players if j is not i})
 
+        self.update_invalids()
+
+    def update_invalids(self):
+        """
+        Iterate of the  men and update the invalid partner or opposite sex
+        opponent for each
+        :return:
+        """
         for m in self.men:
-            mn = m.Name()
-            if self.seeGirlsOnlyOnce:
-                m_invalid = self.Partners[mn].union(self.Opposites[mn])
-            else:
-                m_invalid = self.Partners[mn].intersection(
-                    self.Opposites[mn])
-                m_invalid = m_invalid.union(self.Opposites2X[mn])
-            self.InvalidFemOpponents[mn] = m_invalid
+            self.update_invalids_for_player(m, see_once=self.seeGirlsOnlyOnce)
 
-            if self.seeGirlsOnlyOnce:
-                p_invalid = self.Partners[mn].union(self.Opposites[mn])
-            else:
-                p_invalid = self.Partners[mn].union(self.Opposites2X[mn])
-            self.InvalidFemPartners[mn] = p_invalid
+    def update_invalids_for_player(self, player, see_once=True):
+        """
+        Taking a men->women approach, we determine a list of invalid women opponents
+        and invalid women partners. 
+        If we set see_once to True, then we can only play with or against the same woman
+        once. If false, we can play with and against, but not with 2x or against 2x.
+        
+        
+        :param player: 
+        :param see_once: 
+        :return: 
+        """
+        if player.gender == 'guy':
+            gender_set = self.women
+        else:
+            gender_set = self.men
 
-        print("Added a set")
+        name = player.Name()
+        op = self.Opposites[name]
+        opset = set(op)
+        seen = self.Seen[name]
+
+        if see_once:
+            # Invalid partner OR opponent if we have seen them already
+            invalid = set({i for i in gender_set if seen[i] >= 1})
+            self.InvalidOpponents[name] = invalid
+            self.InvalidPartners[name] = invalid
+
+        else:
+            # Allowed to see them 2 times, but once as partner, once as opposite
+            invalid = set({i for i in gender_set if seen[i] >= 2})
+            self.InvalidOpponents[name] = invalid.union(self.Partners[name])
+            self.InvalidPartners[name] = invalid.union(opset)
 
     def get_new_round(self, diff_max, min_quality):
         """
@@ -169,14 +187,26 @@ class MeetingStats:
         max_tries = 20
         new_round: MatchRound = None
 
+        min_diff = 1000.0
+        min_q = 1000.0
+
         while new_round is None and tries < max_tries:
-            print(f"Trying to build a set DiffMax:{diff_max:5.3} Try # {tries}.")
+            self.diff_history = []
+            self.quality_history = []
             new_round = self.build_round(diff_max, min_quality)
             tries += 1
+            md = 0.0
+            mq = 0.0
+            if self.diff_history and self.quality_history:
+                md = min(self.diff_history)
+                mq = min(self.quality_history)
+                min_diff = min(min_diff, md)
+                min_q = min(min_q, mq)
+            print(f"Build a set DiffMax:{diff_max:5.3}({md:5.3}) MinQ:{min_quality:5.3}({mq:5.3}) Try:{tries}.")
 
-        return new_round
+        return new_round, min_diff, min_q
 
-    def build_round(self, diff_max, min_quality) -> MatchRound:
+    def build_round(self, diff_max, max_quality) -> MatchRound:
         """
         First, build a set of matches with men only.
         Next, add in the women. The men are assigned
@@ -187,8 +217,6 @@ class MeetingStats:
         n_tries = 0
         max_tries = self.maxIterations
 
-        self.diff_history = [diff_max]
-
         while n_tries < max_tries / 10:
             t_men, t_women = self.get_temp_list()
 
@@ -197,77 +225,68 @@ class MeetingStats:
             # it and try again..
             while True:
                 try:
-                    new_round = self.init_set(t_men)
+                    new_round = self.pick_men(t_men)
                     break
                 except NoValidOpponent:
                     print("Regenerate the set of men")
                     pass
 
-            self.display_update(n_tries, diff_max)
             self.clear_check_stats()
 
             try:
                 if self.add_women(new_round, t_women,
-                                  diff_max, min_quality,
+                                  diff_max, max_quality,
                                   self.maxIterations):
                     return new_round
                 self.print_check_stats()
-                self.diff_history.append(self.min_diff)
             except NoValidPartner:
-                # we can continue on here.
+                # we can continue on here, regenerate the men matchups
                 pass
             n_tries = n_tries + 1
 
         return None
 
-    def add_women(self, new_round, t_women, diff_max, min_q, max_tries):
+    def add_women(self, new_round: MatchRound, t_women: set,
+                  diff_max: int, max_q: int, num_tries: int) -> bool:
         """
-        Upon entry, aset will be a set that contains
+        Upon entry, new_round will be a set that contains
         the male pairings, but with no women entered. The
         male pairings will have been done randomly, so
         they should be okay.
         """
+        curr_diff = diff_max + 1
+        curr_q = max_q + 1
+        min_diff = 1000
+        min_q = 1000
 
-        n_tries = 0
-        while n_tries < max_tries:
+        while num_tries and (curr_diff > diff_max or curr_q > max_q):
             s_women = set(t_women)
-            random.seed()
-            try:
-                for m in new_round.matches:
-                    m.t1.p2 = None
-                    m.t2.p2 = None
 
-                    m1 = m.t1.p1.Name()
-                    m2 = m.t2.p1.Name()
+            for m in new_round.matches:
+                m1 = m.t1.p1.Name()
+                m2 = m.t2.p1.Name()
 
-                    f1 = self.get_valid_partner(m1, m2, s_women, None)
-                    s_women.remove(f1)
+                f1 = self.get_valid_partner(m1, m2, s_women, None)
+                s_women.remove(f1)
 
-                    f2 = self.get_valid_partner(m2, m1, s_women, f1)
-                    s_women.remove(f2)
+                f2 = self.get_valid_partner(m2, m1, s_women, f1)
+                s_women.remove(f2)
 
-                    m.t1.p2 = self.pbyname[f1]
-                    m.t2.p2 = self.pbyname[f2]
+                m.t1.p2 = self.pbyname[f1]
+                m.t2.p2 = self.pbyname[f2]
 
-                curr_diff = max(new_round.diff())
-                curr_q = max(new_round.quality())
-                if curr_diff <= diff_max and curr_q <= min_q:
-                    return True
+            curr_diff = max(new_round.diff())
+            curr_q = max(new_round.quality())
 
-                # Ah.. keep track of minimum diff found for a set
-                # Later, I'll track these minimum diffs, and then use that
-                # as the next diff_max!
-                self.min_diff = min(self.min_diff, curr_diff)
-                self.n_fails_by_diff = self.n_fails_by_diff + 1
+            min_diff = min(min_diff, curr_diff)
+            min_q = min(min_q, curr_q)
 
-            except NoValidPartner as e:
-                raise
+            num_tries -= 1
 
-            # We have a bad one..
-            n_tries = n_tries + 1
+        self.diff_history.append(min_diff)
+        self.quality_history.append(min_q)
 
-        # If we make it here.. we failed
-        return False
+        return curr_diff <= diff_max and curr_q <= max_q
 
     def get_valid_partner(self, m1, m2, s_women, f1=None):
         """
@@ -281,40 +300,17 @@ class MeetingStats:
         f1 is set to the first female in the current group if this is the second call.
         """
 
-        # m2_invalid = self.Partners[m2].intersection(self.Opposites[m2])
-        # m2_invalid = m2_invalid.union(self.Opposites2X[m2])
-        m2_invalid = self.InvalidFemOpponents[m2]
-
-        # s_invalid = self.Partners[m1].union(self.Opposites2X[m1])
-        m1_invalid = self.InvalidFemPartners[m1]
-        s_invalid = m1_invalid.union(m2_invalid)
+        invalid = self.InvalidOpponents[m2].union(self.InvalidPartners[m1])
 
         if f1:
-            s_invalid = s_invalid.union(self.Opponents[f1])
+            invalid = invalid.union(self.Opponents[f1])
 
-        tmp = s_women.difference(s_invalid)
+        tmp = s_women.difference(invalid)
         if len(tmp) == 0:
             raise NoValidPartner()
 
         partner = random.choice(list(tmp))
         return partner
-
-    def get_valid_opponent(self, player, opponents):
-        """
-        The difference line retrieves a list of same-sex players that have
-        not been opponents to this player yet.
-
-        Implements the rule that men only play against other men
-        once, and women only play against other women once.
-
-        """
-
-        tmp = opponents.difference(self.Opponents[player])
-        if len(tmp) == 0:
-            raise NoValidOpponent(player=player)
-
-        opponent = random.choice(list(tmp))
-        return opponent
 
     def get_temp_list(self):
 
@@ -322,7 +318,7 @@ class MeetingStats:
         t_women = [x.Name() for x in self.women]
         return t_men, t_women
 
-    def init_set(self, t_men):
+    def pick_men(self, t_men):
         """
         Build a new set with a list of men that are valid opponents of each other.
 
@@ -343,13 +339,28 @@ class MeetingStats:
             new_round.add_match(m)
         return new_round
 
+    def get_valid_opponent(self, player, opponents):
+        """
+        The difference line retrieves a list of same-sex players that have
+        not been opponents to this player yet.
+
+        Implements the rule that men only play against other men
+        once, and women only play against other women once.
+
+        """
+
+        tmp = opponents.difference(self.Opponents[player])
+        if len(tmp) == 0:
+            raise NoValidOpponent(player=player)
+
+        opponent = random.choice(list(tmp))
+        return opponent
+
     def clear_check_stats(self):
         self.n_fails_by_invalid_partner = 0
         self.n_fails_by_diff = 0
-        self.min_diff = 10
 
     def print_check_stats(self):
-        print(f"Failed Stats:Partner:{self.n_fails_by_invalid_partner}"
-              f"Diff:{self.n_fails_by_diff} Mindiff:{self.min_diff}")
-
-
+        if self.log_level > 0:
+            print(f"Failed Stats:Partner:{self.n_fails_by_invalid_partner}"
+                  f"Diff:{self.n_fails_by_diff} Mindiff:{min(self.diff_history)}")
