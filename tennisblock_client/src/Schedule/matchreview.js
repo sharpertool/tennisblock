@@ -2,17 +2,17 @@ import React from 'react'
 import Proptypes from 'prop-types'
 import {Provider} from 'react-redux'
 
-import Schedule from '~/containers/Schedule'
+import MatchReview from '~/containers/MatchReview'
 
-const root = ({store}) => {
+const matchreview = ({store}) => {
   return (
     <Provider store={store}>
-      <Schedule/>
+      <MatchReview/>
     </Provider>)
 }
 
-root.propTypes = {
+matchreview.propTypes = {
 }
 
 
-export default root
+export default matchreview

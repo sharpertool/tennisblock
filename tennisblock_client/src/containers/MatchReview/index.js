@@ -7,7 +7,7 @@ import {actions as t_actions} from 'Schedule/modules/teams'
 
 import Match from '~/components/Match'
 
-class Schedule extends Component {
+class MatchReview extends Component {
 
   render() {
     console.log('[Schedule]', this.props)
@@ -43,4 +43,4 @@ const dispatchActions = {
 }
 
 
-export default connect(mapStateToProps, dispatchActions)(Schedule)
+export default connect(mapStateToProps, dispatchActions)(MatchReview)
