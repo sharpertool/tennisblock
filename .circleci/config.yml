@@ -5,23 +5,23 @@ references:
   container_config: &container_config
     working_directory: ~/build
     docker:
-      - image: bigzeta/docker_ci_python3:1.1.1
+      - image: sharpertool/docker_ci_python3:1.1.1
         environment:
           ZIP_PREFIX: tennisblock
 
 
-      - image: bigzeta/ci_postgres:1.0.0
+      - image: sharpertool/ci_postgres:1.0.1
         environment:
           POSTGRES_PASSWORD: testing-password
           POSTGRES_USER: circleci
           POSTGRES_DB: tennisblock
 
-      - image: bigzeta/smtpd:1.0.0
+      - image: sharpertool/smtpd:1.0.1
 
   container_config_min: &container_config_min
     working_directory: ~/build
     docker:
-      - image: bigzeta/docker_ci_python3:1.1.1
+      - image: sharpertool/docker_ci_python3:1.1.1
         environment:
           ZIP_PREFIX: tennisblock
           DEPLOY_BUCKET: tennisblock.deploy
