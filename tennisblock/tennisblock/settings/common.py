@@ -129,7 +129,6 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
 )
 
 MIDDLEWARE = (
@@ -186,7 +185,6 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'bootstrapform',
-    'compressor',
     'raven.contrib.django.raven_compat',
     'crispy_forms',
     'anymail',
@@ -254,6 +252,11 @@ ANYMAIL = {
 DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL",
                              default="ed@tennisblock.com")
 
+# If  not using anymail, use these for development.
+# Assumes our docker smtpd is setup
+EMAIL_HOST = env.str('EMAIL_HOST', default='localhost')
+EMAIL_PORT = env.int('EMAIL_PORT', default=8026)
+
 # Contact Form
 CONTACT_FORM_SUBJECT = 'Tennisblock.com Contact'
 CONTACT_FORM_RECIPIENTS = (
@@ -267,12 +270,6 @@ BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
 # Set this for development, but clear for PROD
 BLOCK_NOTIFY_RECIPIENTS = ['ed@tennisblock.com', 'viquee@me.com']
-
-LESS_CMDLINE = env("LESS_CMDLINE", default="lessc --clean-css --clean-option=--keep-line-breaks {infile} {outfile}")
-print("Using less compiler from {}".format(LESS_CMDLINE))
-COMPRESS_PRECOMPILERS = (
-    ('text/less', LESS_CMDLINE),
-)
 
 STATIC_PRECOMPILER_COMPILERS = (
     'static_precompiler.compilers.LESS',

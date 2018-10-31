@@ -1,0 +1,17 @@
+.TeamStats {
+
+  text {
+    fill: #78fbff;
+    font: 12px sans-serif;
+  }
+}
+
+.OuterRect {
+  fill: none;
+  stroke: #0b2e13;
+}
+
+.GaugeRect {
+  fill: #78fbff;
+  shape-rendering: crispEdges;
+}

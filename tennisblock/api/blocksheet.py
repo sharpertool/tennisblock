@@ -4,9 +4,10 @@ import datetime
 
 from django.http import HttpResponse
 
-from TBLib.teams import TeamManager
+from TBLib.manager import TeamManager
 from TBLib.playsheetrl import PlaySheet as PlaySheet
 from .apiutils import get_current_season, get_next_meeting
+
 
 def blockSheet(request, date=None):
     """
@@ -16,11 +17,11 @@ def blockSheet(request, date=None):
 
         mgr = TeamManager()
 
-        matchData = mgr.queryMatch(date)
+        matchData = mgr.query_match(date)
         season = get_current_season()
 
         if date:
-            date_string = datetime.datetime.strptime(date,"%Y-%m-%d").strftime("%A,%B %d")
+            date_string = datetime.datetime.strptime(date, "%Y-%m-%d").strftime("%A,%B %d")
             header = "Friday Night Block:{}".format(date_string)
         else:
             mtg = get_next_meeting()
@@ -29,18 +30,16 @@ def blockSheet(request, date=None):
 
         num_courts = len(matchData[0])
 
-        gen = PlaySheet(num_courts=num_courts,num_matches=len(matchData))
+        gen = PlaySheet(num_courts=num_courts, num_matches=len(matchData))
 
         pdffile = gen.generate_sheet(header=header,
                                      firstcourt=season.firstcourt,
                                      sched=matchData)
 
+        response = HttpResponse(pdffile, content_type='application/pdf')
 
-
-        response = HttpResponse(pdffile,content_type='application/pdf')
-
-        #response.write(pdffile)
-        #response['Content-Disposition'] = 'attachement; filename="BlockSheet.pdf"'
+        # response.write(pdffile)
+        # response['Content-Disposition'] = 'attachement; filename="BlockSheet.pdf"'
 
         return response
 
@@ -48,7 +47,7 @@ def blockSheet(request, date=None):
 def main():
     mgr = TeamManager()
 
-    matchData = mgr.queryMatch()
+    matchData = mgr.query_match()
 
     header = "Friday Night Block"
 

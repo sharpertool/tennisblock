@@ -1,34 +1,24 @@
-#!/usr/bin/env python
-
 import sys
-# import getpass, imaplib
-import os
-import sys
-# import email
-import errno
-import mimetypes
-import re
-import smtplib
-
-from TBLib.teamgen.TeamGen2 import TeamGen
-
 from optparse import OptionParser
+
+from TBLib.teamgen.TeamGen import TeamGen
 
 from TBLib.teamgen.DBTeams import DBTeams
 
 
-def pick_teams(fp, dbTeam, nCourts, nSequences, dups, testing=False):
-    men, women = dbTeam.getPlayers()
+def pick_teams(fp, db_manager, n_courts, n_sequences,
+               b_allow_duplicates, testing=False):
+    men, women = db_manager.get_players()
 
-    if len(men) < nCourts * 2 or len(women) < nCourts * 2:
+    if len(men) < n_courts * 2 or len(women) < n_courts * 2:
         print("Cannot pick teams, there are not enough men or women.")
-        print("Need %d of both. Have %d men and %d women." % (nCourts * 2, len(men), len(women)))
+        print("Need %d of both. Have %d men and %d women." % (n_courts * 2, len(men), len(women)))
         return
 
-    tg = TeamGen(nCourts, nSequences, men, women)
-    sequences = tg.generate_set_sequences(dups)
+    tg = TeamGen(n_courts, n_sequences, men, women)
+    sequences = tg.generate_set_sequences(b_allow_duplicates)
 
-    if sequences == None or len(sequences) < nSequences:
+    if sequences is None or len(sequences) < n_sequences:
         fp.write("Could not generate the required sequences.")
 
     else:
@@ -38,7 +28,7 @@ def pick_teams(fp, dbTeam, nCourts, nSequences, dups, testing=False):
         tg.show_all_diffs(sequences)
 
         if not testing:
-            dbTeam.InsertRecords(sequences)
+            db_manager.insert_records(sequences)
 
     fp.write("Done")
 
@@ -78,21 +68,21 @@ def main():
 
     try:
         if options.matchid:
-            dbTeams = DBTeams(options.matchid)
+            teams = DBTeams(options.matchid)
         else:
-            dbTeams = DBTeams()
+            teams = DBTeams()
     except:
         print("Could not open a DB Connection.")
         sys.exit(2)
 
-    fp.write("Scheduling for Matchid:%s\n" % dbTeams.matchid)
+    fp.write("Scheduling for Matchid:%s\n" % teams.matchid)
 
     pick_teams(fp,
-              dbTeams,
-              options.courts,
-              options.sequences,
-              options.nodups,
-              options.test)
+               teams,
+               options.courts,
+               options.sequences,
+               options.nodups,
+               options.test)
 
     fp.close()
 

@@ -33,7 +33,7 @@ def _modified(path):
         if not os.path.isfile(path):
             return path in _times
 
-        # Check for when file last modified.
+        # check for when file last modified.
 
         mtime = os.stat(path).st_mtime
         if path not in _times:
@@ -55,7 +55,7 @@ def _modified(path):
 
 def _monitor():
     while 1:
-        # Check modification times on all files in sys.modules.
+        # check modification times on all files in sys.modules.
 
         for module in sys.modules.values():
             if not hasattr(module, '__file__'):

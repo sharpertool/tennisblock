@@ -111,9 +111,7 @@ class ContactView(TemplateView):
 
             send_mail(subject, message, from_email, recipient_list)
 
-            return render(request,
-                          self.thankyou_template,
-                          {'form': form})
+            return render(request, self.thankyou_template)
 
         return render(request,
                       self.template_name,

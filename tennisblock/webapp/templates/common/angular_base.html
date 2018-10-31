@@ -2,7 +2,6 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load gbtags %}
-{% load compress %}
 
 {% block angular_script %}
     <!-- site_base.html: angular_script -->
@@ -11,11 +10,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular-resource.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular-cookies.min.js"></script>
 
-    {% compress js %}
-        <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/angular/services/factories.js' %}"> </script>
-        <script type="text/javascript" src="{% static 'js/angular/services/services.js' %}"></script>
-    {% endcompress %}
+    <script type="text/javascript" src="{% static 'js/angular/apps/tennisblock.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/angular/services/factories.js' %}"> </script>
+    <script type="text/javascript" src="{% static 'js/angular/services/services.js' %}"></script>
 
 {% endblock %}
 

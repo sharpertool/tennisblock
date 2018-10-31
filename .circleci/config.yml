@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 
 references:
 
@@ -87,13 +87,25 @@ jobs:
   checkout_code:
     <<: *container_config_min
     steps:
-      - *restore_repo
+#      - *restore_repo
 
       - run:
           name: Avoid hosts unknown for bitbucket
           command: |
             mkdir -p ~/.ssh/
             echo -e "Host bitbucket.org\n  StrictHostKeyChecking no\n" >> ~/.ssh/config
+
+#      - run:
+#          name: fetch tags
+#          command: |
+#            git fetch --tags | true
+#
+#      - checkout
+#
+#      - run:
+#          name: fetch tags
+#          command: |
+#            git fetch --tags | true
 
       - checkout
 
@@ -295,6 +307,7 @@ jobs:
           name: Copy deploy script to test server
           command: |
             scp ./scripts/site_deploy_zip.sh deploy_host:site_deploy_zip.sh
+            scp ./server_setup/tennisblock_exclude.lst deploy_host:
 
       - run:
           name: Copy zipfile to test server
@@ -347,6 +360,9 @@ workflows:
           filters:
             tags:
               only: /v.*/
+            branches:
+              only:
+                - develop
 
       - collectstatic:
           requires:
@@ -355,6 +371,9 @@ workflows:
           filters:
             tags:
               only: /v.*/
+            branches:
+              only:
+                - develop
 
 #      - pytest:
 #          requires:
@@ -363,6 +382,9 @@ workflows:
 #          filters:
 #            tags:
 #              only: /v.*/
+#            branches:
+#              only:
+#                - develop
 
       - build_zip_file:
           requires:
@@ -372,26 +394,23 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-              only:
-                - develop
+              ignore: /.*/
 
       - deploy_to_s3_bucket:
           requires:
             - build_zip_file
           filters:
             tags:
-              only: /^v\d+\.\d+\.\d+(-rc.*)?$/
+              only: /^v.*/
             branches:
-              only:
-                - develop
+              ignore: /.*/
 
       - deploy_to_test_server:
           requires:
             - build_zip_file
           filters:
             tags:
-              only: /v.*-rc.*/
+              only: /^v.*/
             branches:
-              only:
-                - develop
+              ignore: /.*/
 

@@ -3,10 +3,11 @@
 zipfile=$1
 VERSION=$2
 APPPATH=${APPPATH:-/var/www/tennisblock}
-zipdir=~/zipdir
+zipdir=/home/ubuntu/zipdir
+excludefile=/home/ubuntu/tennisblock_exclude.lst
 
 # Put site into maintenance mode
-touch ${APPPATH}/maintenance.on
+sudo -u django touch ${APPPATH}/maintenance.on
 
 echo "unzip ${zipfile} to ${zipdir}"
 rm -rf ${zipdir}
@@ -19,16 +20,14 @@ popd
 cd ${APPPATH}
 
 echo "use rsync to synchronize the two paths"
-rsync -av ${zipdir}/ .
-
-echo "Use rsync to remove old files in selected paths"
-rsync -av --delete ${zipdir}/tennisblock/ tennisblock
-rsync -av --delete ${zipdir}/collectedstatic/ collectedstatic
-rsync -av --delete ${zipdir}/requirements/ requirements
-rsync -av --delete ${zipdir}/scripts/ scripts
+sudo -u django rsync -av --delete --exclude-from ${excludefile} ${zipdir}/ .
+if [ $? -ne 0 ];then
+    echo "Rsync failed.. abandoning update"
+    exit 2
+fi
 
 echo "Update requirements"
-.venv3/bin/pip install -r requirements/prod.txt
+sudo -u django ${APPPATH}/.venv3/bin/pip install -r requirements/prod.txt
 
 #echo -e "\n Collecting updated statics.."
 #./manage collectstatic --noinput
@@ -40,17 +39,17 @@ echo "Update requirements"
 ./manage migrate --noinput
 
 echo "Updating APP_VERSION to match production version"
-template_version=$(grep APP_VERSION sharpertool/production.env.j2  | sed 's/APP_VERSION=//')
-sed -i -e "s/APP_VERSION=.*/APP_VERSION=${VERSION}/" .env
+template_version=$(grep APP_VERSION tennisblock/production.env.j2  | sed 's/APP_VERSION=//')
+sudo -u django sed -i -e "s/APP_VERSION=.*/APP_VERSION=${VERSION}/" .env
 
 # Update app directory user and group values
-sudo chown -R ubuntu:www-data ${APPPATH}
+sudo chown -R django:www-data ${APPPATH}
 
 echo -e "\n Reloading uWSGI web service.."
 sudo systemctl restart uwsgi
 
 # Reload with reload.me
-touch reload.me
+sudo -u django touch ${APPPATH}/reload.me
 
-rm ${APPPATH}/maintenance.on
+sudo -u django rm -f ${APPPATH}/maintenance.on
 

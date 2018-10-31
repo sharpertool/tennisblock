@@ -6,7 +6,7 @@ class DBTeams:
     def __init__(self):
         self.meeting = None
 
-    def getMeeting(self, date=None):
+    def get_meeting(self, date=None):
         """
         Return the cached matchid, or get a new one.
         """
@@ -17,9 +17,9 @@ class DBTeams:
         self.meeting = m
         return m
 
-    def getPlayers(self, date=None):
+    def get_players(self, date=None):
 
-        m = self.getMeeting(date)
+        m = self.get_meeting(date)
 
         men = []
         women = []
@@ -36,27 +36,27 @@ class DBTeams:
 
         return men, women
 
-    def initTeamGen(self):
+    def init_teamgen(self):
         """
         Remove all of the slots for the given date.
         """
-        Matchup.objects.filter(meeting=self.getMeeting()).delete()
+        Matchup.objects.filter(meeting=self.get_meeting()).delete()
 
-    def deleteMatchup(self, date):
+    def delete_matchup(self, date):
         """
         Delete the matchup for the given date.
         """
-        meeting = self.getMeeting(date)
+        meeting = self.get_meeting(date)
         if meeting:
             Matchup.objects.filter(meeting=meeting).delete()
 
-    def InsertRecords(self, date, seq):
+    def insert_records(self, date, seq):
         """
         Insert the sequence
         """
 
-        meeting = self.getMeeting(date)
-        self.deleteMatchup(meeting)
+        meeting = self.get_meeting(date)
+        self.delete_matchup(meeting)
 
         # Insert the slots
         set = 1
@@ -78,7 +78,7 @@ class DBTeams:
 
             set += 1
 
-    def queryMatch(self, date):
+    def query_match(self, date):
         """
         Query all of the records for the given date.
         """
@@ -97,7 +97,7 @@ class DBTeams:
                 }
             }
 
-        meeting = self.getMeeting(date)
+        meeting = self.get_meeting(date)
 
         matchups = Matchup.objects.order_by('set', 'court').filter(meeting=meeting)
 

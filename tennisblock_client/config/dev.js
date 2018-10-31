@@ -3,7 +3,7 @@ import merge from 'webpack-merge'
 
 import baseConfigFunc from './base'
 
-export default ({env, options}) => {
+module.exports = ({env, options}) => {
     const strategy = {
         'output.path': 'replace',
         'output.filename': 'replace',

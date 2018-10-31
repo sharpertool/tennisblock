@@ -51,3 +51,4 @@ db_learning.txt
 /tennisblock/frontend/static/css
 /tennisblock/frontend/static/js
 /tennisblock/frontend/webpack-stats.json
+*.map

@@ -1,8 +1,10 @@
 import cors from 'cors'
+import merge from 'webpack-merge'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import autoprefixer from 'autoprefixer'
 
-export const devServer = ({hot, host, port, base} = {}) => ({
+export const devServer = ({hot, host, port, base, https=false, cert=null} = {}) => {
+  const config = {
     devServer: {
         hot,
         contentBase: base,
@@ -13,10 +15,20 @@ export const devServer = ({hot, host, port, base} = {}) => ({
         },
         port,
         before(app) {
-            app.use(cors())
+        app.use(cors());
         }
     }
-})
+  }
+
+  if (https) {
+    config.devServer.https = https
+    console.log('Configured as https')
+  }
+
+  console.log('devServer:', config)
+
+  return config
+};
 
 export const loadFonts = ({include, exclude} = {}) => ({
     module: {
@@ -49,8 +61,8 @@ export const loadFonts = ({include, exclude} = {}) => ({
             }
         ]
     }
-
-})
+  
+});
 
 export const loadSCSS = ({include, exclude, isDev} = {isDev: true}) => ({
   module: {

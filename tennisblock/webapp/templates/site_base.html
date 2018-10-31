@@ -2,16 +2,13 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load gbtags %}
-{% load compress %}
 
 {% block head_script %}
     {{ block.super }}
     <!-- site_base.html: head_script -->
 
-    {% compress js %}
-        <script type="text/javascript"
-                src="{% static 'js/HeadFinal.js' %}"></script>
-    {% endcompress %}
+    <script type="text/javascript"
+            src="{% static 'js/HeadFinal.js' %}"></script>
 
 {% endblock %}
 
@@ -19,9 +16,10 @@
     {{ block.super }}
     <!-- site_base.html: page_style -->
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 
 {% endblock %}
 
@@ -149,15 +147,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
     <script type="text/javascript"
             src="{% static 'js/library/amplify.core.min.js' %}"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 
-    {% compress js %}
-        <script type="text/javascript" src="{% static 'js/Client.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisEnvironment.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/tennisconstants.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisGui.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisUtils.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/tennislib/TennisMain.js' %}"></script>
-    {% endcompress %}
+    <script type="text/javascript" src="{% static 'js/Client.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisEnvironment.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/tennisconstants.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisGui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisUtils.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisMain.js' %}"></script>
 {% endblock %}
 
 {% block extra_script %}

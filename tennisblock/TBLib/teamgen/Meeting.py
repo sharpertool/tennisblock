@@ -1,49 +1,30 @@
+from typing import List
 from .MeetingStats import MeetingStats
+from .round import MatchRound
 
 
-class Meeting(object):
-    def __init__(self, nCourts, nSets, men, women):
-        self.nCourts = nCourts
-        self.nSets = nSets
-        self.men = men
-        self.women = women
-        self.sets = []
+class Meeting(MeetingStats):
+    def __init__(self, n_courts, n_sets, men, women):
+        super().__init__(n_courts, n_sets, men, women)
+        self.rounds: List[MatchRound] = []
 
-        self.ms = MeetingStats(nCourts, nSets, men, women)
+    def restart(self):
+        self.rounds = []
+        super().restart()
 
-    def restart_meeting(self):
-        self.ms.Restart()
-        self.sets = []
+    def add_round(self, new_round):
+        self.rounds.append(new_round)
+        super().add_round(new_round)
 
-    def set_see_partner_once(self, dups):
-        """
-        Set value on meeting stats object.
-        :param dups:
-        :return:
-        """
-        self.ms.set_see_partner_once(dups)
+    def round_count(self):
+        return len(self.rounds)
 
-    def add_set(self, blockset):
-        self.sets.append(blockset)
-        self.ms.AddSet(blockset)
+    def get_rounds(self):
+        return self.rounds
 
-    def Display(self):
-        for index, blockset in enumerate(self.ms.GetSets()):
-            print("Set {index+1}")
-            blockset.Display()
-
-    def SetCount(self):
-        return len(self.sets)
-
-    def Check(self, set, diffMax):
-        return self.ms.Check(set, diffMax)
-
-    def GetNewSet(self, diffMax):
-        self.ms.setCurrSetCount(len(self.sets))
-        return self.ms.GetNewSet(diffMax)
-
-    def PrintCheckStats(self):
-        self.ms.PrintCheckStats()
-
-    def DiffHistoryMin(self):
-        return self.ms.DiffHistoryMin()
+    def display_update(self, n_tries, diff):
+        print(f"Assigned men. "
+              f"Try to assign women. "
+              f"Seqs:{len(self.rounds)} "
+              f"Try:{n_tries} Diff={diff:4.2}"
+              )

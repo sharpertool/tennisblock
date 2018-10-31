@@ -1,6 +1,5 @@
 {% extends "common/angular_base.html" %}
 {% load staticfiles %}
-{% load compress %}
 {% load render_bundle from webpack_loader %}
 
 {% block page_style %}
@@ -11,9 +10,7 @@
 {% block angular_script %}
     {{ block.super }}
 
-    {% compress js %}
     <script src="{% static 'js/angular/controllers/availability.js' %}" type="text/javascript"></script>
-    {% endcompress %}
 
     <script>
         {% if perms.blockdb.change_availability %}
