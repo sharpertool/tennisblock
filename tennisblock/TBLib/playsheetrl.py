@@ -74,7 +74,7 @@ class PlaySheet(object):
     def generate_sheet(self, header="Friday Night Block", firstcourt=1, sched=None):
 
         c = self.canvas
-        c.setFont('Helvetica', 14)
+        c.setFont('Helvetica', 13)
 
         c.setTitle(header)
 

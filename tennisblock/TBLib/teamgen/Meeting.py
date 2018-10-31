@@ -21,10 +21,3 @@ class Meeting(MeetingStats):
 
     def get_rounds(self):
         return self.rounds
-
-    def display_update(self, n_tries, diff):
-        print(f"Assigned men. "
-              f"Try to assign women. "
-              f"Seqs:{len(self.rounds)} "
-              f"Try:{n_tries} Diff={diff:4.2}"
-              )

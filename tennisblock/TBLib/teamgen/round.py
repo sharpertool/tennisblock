@@ -13,7 +13,7 @@ class MatchRound:
         s.matches = [m for m in self.matches]
         return s
 
-    def add_match(self, match):
+    def add_match(self, match: Match):
         self.matches.append(match)
 
     def diff(self):

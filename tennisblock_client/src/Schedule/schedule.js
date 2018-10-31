@@ -4,15 +4,15 @@ import {Provider} from 'react-redux'
 
 import Schedule from '~/containers/Schedule'
 
-const root = ({store}) => {
+const matchreview = ({store}) => {
   return (
     <Provider store={store}>
       <Schedule/>
     </Provider>)
 }
 
-root.propTypes = {
+matchreview.propTypes = {
 }
 
 
-export default root
+export default Schedule

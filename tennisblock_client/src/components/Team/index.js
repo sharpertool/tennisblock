@@ -9,20 +9,20 @@ const team = (props) => {
     } = props
 
   return (
-    <React.Fragment>
-    <div className="col-5">
-      {gal} ({galu})
+    <div className="col-6">
+      <div className="col-12">
+        {gal} ({galu})
+      </div>
+      <div className="col-12 text-center">
+        and
+      </div>
+      <div className="col-12">
+        {guy} ({guyu})
+      </div>
+      <div className="col-12">
+        {(galu+guyu).toFixed(1)}
+      </div>
     </div>
-    <div className="col-1">
-      and
-    </div>
-    <div className="col-5">
-      {guy} ({guyu})
-    </div>
-    <div className="col-1">
-      {galu+guyu}
-    </div>
-    </React.Fragment>
   )
 }
 

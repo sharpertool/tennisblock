@@ -1,5 +1,5 @@
-from django.urls import re_path
-import django.contrib.auth.views
+from django.urls import path
+from django.contrib.auth import views as auth_views
 
 from .views import (
     AcccountsLoginSuccess,
@@ -9,19 +9,19 @@ from .views import (
 )
 
 urlpatterns = [
-    re_path(r'^login/$', django.contrib.auth.views.login,
-            {'template_name': 'accounts/login.html'}, name='login'),
-    re_path(r'^login/success/$',
-            AcccountsLoginSuccess.as_view(), name='login-success'),
+    path('login/', auth_views.LoginView.as_view(),
+         {'template_name': 'accounts/__login.html'}, name='login'),
+    path('login/success/',
+         AcccountsLoginSuccess.as_view(), name='login-success'),
 
-    re_path(r'^logout/$', django.contrib.auth.views.logout,
-            {'template_name': 'accounts/logged_out.html'},
-            name='logout'),
-    re_path(r'^logout/success/$',
-            AcccountsLogoutSuccess.as_view(), name='logout-success'),
+    path('logout/', auth_views.LogoutView.as_view(),
+         {'template_name': 'accounts/logged_out.html'},
+         name='logout'),
+    path('logout/success/',
+         AcccountsLogoutSuccess.as_view(), name='logout-success'),
 
-    re_path(r'^profile/$',
-            AccountsProfile.as_view(), name='profile'),
-    re_path(r'^disabled/$',
-            AcccountsDisabled.as_view(), name='account-disabled'),
+    path('profile/',
+         AccountsProfile.as_view(), name='profile'),
+    path('disabled/',
+         AcccountsDisabled.as_view(), name='account-disabled'),
 ]

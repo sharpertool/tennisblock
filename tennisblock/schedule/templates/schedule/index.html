@@ -22,9 +22,6 @@
 {% endblock %}
 
 {% block body_inner_container %}
-    <div class="row">
-        <div class="col" id="root"></div>
-    </div>
 
     <div class="row">
         <div class="col" ng-controller="BlockSchedule">
@@ -60,6 +57,15 @@
     </div>
 
     <div class="row">
+        <div class="col" id="schedule"></div>
+    </div>
+
+    <div class="row">
+        <div class="col" id="match_review"></div>
+    </div>
+
+
+    <div class="row">
         <div id="dialog_confirm"></div>
     </div>
 
@@ -81,7 +87,9 @@
         <!-- Initialize bundles -->
         <script type="text/javascript">
           console.log('Initialize HomePage component')
-          Schedule('root');
+          Schedule({
+            match_review: 'match_review'
+          });
 
         </script>
     {% endif %}
