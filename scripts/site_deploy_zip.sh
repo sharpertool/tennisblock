@@ -30,8 +30,8 @@ rsync -av --delete ${zipdir}/scripts/ scripts
 echo "Update requirements"
 .venv3/bin/pip install -r requirements/prod.txt
 
-echo -e "\n Collecting updated statics.."
-./manage collectstatic --noinput
+#echo -e "\n Collecting updated statics.."
+#./manage collectstatic --noinput
 
 # Show any pending migrations
 ./manage showmigrations | grep "\[ \]\|^[a-z]" | grep "[ ]" -B 1
@@ -47,6 +47,7 @@ sed -i -e "s/APP_VERSION=.*/APP_VERSION=${VERSION}/" .env
 sudo chown -R ubuntu:www-data ${APPPATH}
 
 echo -e "\n Reloading uWSGI web service.."
+sudo systemctl restart uwsgi
 
 # Reload with reload.me
 touch reload.me
