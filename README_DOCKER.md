@@ -7,18 +7,14 @@ I just use docker for a development postrgres, and development smtpd server.
 Install Docker for Mac, and make sure you have docker and docker-compose commands
 
 # Docker Compose
-The docker compose file dev.yml is used as the configuration.
+The docker compose file docker-compose.yml is used as the configuration.
+This is the default compose file.
+If you want to make your own copy,
+then you can export the COMPOSE_FILE name to the custom name you used.
+
 To make this file the default, you need to set an environment variable in your shell.
 
-    export COMPOSE_FILE=dev.yml
-
-To make that easier, I have the godev script.. you have to source this, not run it.
-
-    source godev
-
-Or, you can use a dot
-
-    . godev
+    export COMPOSE_FILE=my-docker-compose.yml
 
 # Start your containers!
 
@@ -34,12 +30,16 @@ still works.
 
 You can list backups, backup and restore backups for your files.
 
-Note, the default dev.yml will put backups to:
+Note, the default docker-compose.yml will put backups to:
 
-	~/Dropbox/Development/tennisblock/backups
+	./DropboxTeam/database_backups
 
-`docker-compose up` will create this directory for you. You can change dev.yml to have whatever path you want. Don't commit
-this.. it's okay if it's different... you can also make a copy of that and change godev to use your copy.
+Please create a soft-link in your root project direct to point to the Docker location for the
+Dropbox team.
+
+    ln -s ~/Dropbox\ \(Sharpertool\)/ DropboxTeam
+
+The link above will allow the docker-compose.yml to access this team folder, regadless of where it actually is, and also to avoid issues with the embedded spaces!
 
 For all of the operations, we use docker-compose, and we exec an operation on the service. The services are named:
 	
@@ -62,7 +62,7 @@ List backups, and then use just the filename part for the filename in the follow
 	docker-compose exec postgres restore <filename>
 
 NOTE: If you have some tool using the DB, restore won't work. This is a postgres thing.. make sure Django isn't running,
-and if you have some postgres tool, make sure it's not running either.
+and if you have some other postgres tool, make sure it's not running either.
 
 
 
