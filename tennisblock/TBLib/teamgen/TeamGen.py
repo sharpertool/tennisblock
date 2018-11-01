@@ -10,10 +10,12 @@ class TeamGen(object):
         self.n_sequences = num_seq
         self.iterLimit = 1000
 
-    def generate_set_sequences(self, b_allow_duplicates=False):
+    def generate_set_sequences(self, b_allow_duplicates: bool = False, iterations: int = None):
         self.meeting.restart()
 
         self.meeting.set_see_partner_once(not b_allow_duplicates)
+        if iterations is not None:
+            self.meeting.set_max_iteration(iterations)
 
         while self.meeting.round_count() < self.n_sequences:
             group_round = None

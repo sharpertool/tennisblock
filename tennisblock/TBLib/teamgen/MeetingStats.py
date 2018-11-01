@@ -334,6 +334,7 @@ class MeetingStats:
         The only history used is the history of men that have played against each other
         this night. The get_valid_opponent function is used for this determination.
         """
+        random.seed()
         new_round = MatchRound()
         s_men = set(t_men)
 

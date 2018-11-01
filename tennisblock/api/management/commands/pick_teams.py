@@ -10,6 +10,7 @@ class Command(BaseCommand):
         parser.add_argument('--nodupes', action='store_true')
         parser.add_argument('--sequences', type=int, default=3)
         parser.add_argument('--test', '-t', action='store_true')
+        parser.add_argument('--iterations', '-i', type=int, default=20)
 
     def handle(self, *args, **options):
 
@@ -17,4 +18,5 @@ class Command(BaseCommand):
         mgr.pick_teams(date=options['date'],
                       testing=options['test'],
                       n_sequences=options['sequences'],
-                       b_allow_duplicates=options['nodupes'])
+                       b_allow_duplicates=options['nodupes'],
+                       iterations=options['iterations'])
