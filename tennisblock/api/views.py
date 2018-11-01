@@ -1,10 +1,9 @@
-# Create your views here.
-
 from blockdb.models import Season
 
-from .apiutils import JSONResponse, get_current_season, SeasonSerializer
+from .apiutils import JSONResponse, get_current_season as gcs, SeasonSerializer
 
-def getSeasons(request):
+
+def get_seasons(request):
     """
     List all code snippets, or create a new snippet.
     """
@@ -13,37 +12,22 @@ def getSeasons(request):
         serializer = SeasonSerializer(seasons, many=True)
         return JSONResponse(serializer.data)
 
-def getCurrentSeason(request):
+
+def get_current_season(request):
     """
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        cs = get_current_season()
+        cs = gcs()
         if cs:
             serializer = SeasonSerializer(cs, many=False)
             return JSONResponse(serializer.data)
         else:
             return "Failed"
 
-def getCurrentSeasonDates(request):
-    """
-    List all code snippets, or create a new snippet.
-    """
-    if request.method == 'GET':
-        cs = get_current_season()
-        if cs:
-            startDate = cs.startdate
-            endDate = cs.enddate
 
-            return 'Nice'
-
-    return 'Failure'
-
-def getLatestBuzz(request):
-
+def get_latest_buzz(request):
     return JSONResponse([
         {'text': "Block starts September 20th"},
         {'text': "I don't know the holdout dates yet."}
     ])
-
-

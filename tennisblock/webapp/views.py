@@ -174,7 +174,6 @@ class CouplesView(TemplateView):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
-
     def insert_couple(self, couple=None):
         """ Check for duplicates before inserting """
         if not Couple.objects.filter(

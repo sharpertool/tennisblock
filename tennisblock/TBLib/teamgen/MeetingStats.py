@@ -114,10 +114,14 @@ class MeetingStats:
             # Do partners m->f
             self.Partners[m1].add(f1)
             self.Partners[m2].add(f2)
+            self.Partners[f1].add(m1)
+            self.Partners[f2].add(m2)
 
             # Increment the count of times played with opposites
             self.Opposites[m1].update({f2})
             self.Opposites[m2].update({f1})
+            self.Opposites[f2].update({m1})
+            self.Opposites[f1].update({m2})
 
             # Increment the Seen count for all players
             for i in match_players:
@@ -146,10 +150,12 @@ class MeetingStats:
         :param see_once: 
         :return: 
         """
-        if player.gender == 'guy':
+        if player.gender == 'M':
             gender_set = self.women
         else:
             gender_set = self.men
+
+        gender_names = [i.Name() for i in gender_set]
 
         name = player.Name()
         op = self.Opposites[name]
@@ -158,17 +164,17 @@ class MeetingStats:
 
         if see_once:
             # Invalid partner OR opponent if we have seen them already
-            invalid = set({i for i in gender_set if seen[i] >= 1})
+            invalid = set({i for i in gender_names if seen[i] >= 1})
             self.InvalidOpponents[name] = invalid
             self.InvalidPartners[name] = invalid
 
         else:
             # Allowed to see them 2 times, but once as partner, once as opposite
-            invalid = set({i for i in gender_set if seen[i] >= 2})
+            invalid = set({i for i in gender_names if seen[i] >= 2})
             self.InvalidOpponents[name] = invalid.union(self.Partners[name])
             self.InvalidPartners[name] = invalid.union(opset)
 
-    def get_new_round(self, diff_max, min_quality):
+    def get_new_round(self, diff_max, quality_max):
         """
         This one needs to use the existing sets and list and pick a new
         randomization of the available sets.
@@ -189,11 +195,12 @@ class MeetingStats:
 
         min_diff = 1000.0
         min_q = 1000.0
+        max_build_tries = self.maxIterations
 
         while new_round is None and tries < max_tries:
             self.diff_history = []
             self.quality_history = []
-            new_round = self.build_round(diff_max, min_quality)
+            new_round = self.build_round(max_build_tries, diff_max, quality_max)
             tries += 1
             md = 0.0
             mq = 0.0
@@ -202,11 +209,11 @@ class MeetingStats:
                 mq = min(self.quality_history)
                 min_diff = min(min_diff, md)
                 min_q = min(min_q, mq)
-            print(f"Build a set DiffMax:{diff_max:5.3}({md:5.3}) MinQ:{min_quality:5.3}({mq:5.3}) Try:{tries}.")
+            print(f"Build a set DiffMax:{diff_max:5.3}({md:5.3}) MinQ:{quality_max:5.3}({mq:5.3}) Try:{tries}.")
 
         return new_round, min_diff, min_q
 
-    def build_round(self, diff_max, max_quality) -> MatchRound:
+    def build_round(self, max_tries, diff_max, quality_max) -> MatchRound:
         """
         First, build a set of matches with men only.
         Next, add in the women. The men are assigned
@@ -215,9 +222,8 @@ class MeetingStats:
         randomly to the men.
         """
         n_tries = 0
-        max_tries = self.maxIterations
 
-        while n_tries < max_tries / 10:
+        while n_tries < max_tries:
             t_men, t_women = self.get_temp_list()
 
             # Build sets of men first.
@@ -235,8 +241,8 @@ class MeetingStats:
 
             try:
                 if self.add_women(new_round, t_women,
-                                  diff_max, max_quality,
-                                  self.maxIterations):
+                                  diff_max, quality_max,
+                                  max_tries):
                     return new_round
                 self.print_check_stats()
             except NoValidPartner:
@@ -247,7 +253,7 @@ class MeetingStats:
         return None
 
     def add_women(self, new_round: MatchRound, t_women: set,
-                  diff_max: int, max_q: int, num_tries: int) -> bool:
+                  diff_max: int, quality_max: int, num_tries: int) -> bool:
         """
         Upon entry, new_round will be a set that contains
         the male pairings, but with no women entered. The
@@ -255,11 +261,11 @@ class MeetingStats:
         they should be okay.
         """
         curr_diff = diff_max + 1
-        curr_q = max_q + 1
+        curr_q = quality_max + 1
         min_diff = 1000
         min_q = 1000
 
-        while num_tries and (curr_diff > diff_max or curr_q > max_q):
+        while num_tries and (curr_diff > diff_max or curr_q > quality_max):
             s_women = set(t_women)
 
             for m in new_round.matches:
@@ -282,11 +288,13 @@ class MeetingStats:
             min_q = min(min_q, curr_q)
 
             num_tries -= 1
+            #if curr_diff > diff_max or curr_q > quality_max:
+            #    print(f"[add_women] {num_tries} {round(curr_diff-diff_max, 1)} {round(curr_q-quality_max, 1)}")
 
         self.diff_history.append(min_diff)
         self.quality_history.append(min_q)
 
-        return curr_diff <= diff_max and curr_q <= max_q
+        return curr_diff <= diff_max and curr_q <= quality_max
 
     def get_valid_partner(self, m1, m2, s_women, f1=None):
         """

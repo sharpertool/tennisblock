@@ -18,7 +18,7 @@ tennisblockapp.factory('BlockDates',function ($resource) {
         save:  {method: 'POST', params: {date: '@date'}, isArray: false}
     })
 }).factory('PlaySheet',function ($resource) {
-    return $resource('/api/blocksheet2/:date/', {}, {
+    return $resource('/api/blocksheet2/:date', {}, {
         get: {method: 'GET', params: {date: '@date'}, isArray: true}
     })
 }).factory('TeamSchedule',function ($resource) {

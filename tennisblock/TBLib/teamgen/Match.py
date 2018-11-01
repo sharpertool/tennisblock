@@ -9,7 +9,7 @@ class Match:
     def diff(self):
         c1 = self.t1.combined_microntrp()
         c2 = self.t2.combined_microntrp()
-        return abs(c1 - c2)
+        return round(abs(c1 - c2), 1)
 
     def quality(self):
         """
@@ -21,7 +21,7 @@ class Match:
         s2 = self.t2.spread()
         d1 = self.t1.combined_microntrp()
         d2 = self.t2.combined_microntrp()
-        quality = abs(d1 - d2) + s1 + s2
+        quality = round(abs(d1 - d2) + s1 + s2, 1)
         return quality
 
     def display(self):
