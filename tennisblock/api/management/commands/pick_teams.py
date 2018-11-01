@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand
-from TBLib.teams import TeamManager
+from TBLib.manager import TeamManager
 
 class Command(BaseCommand):
     help = 'Pick Teams for the given date'
@@ -17,4 +17,4 @@ class Command(BaseCommand):
         mgr.pick_teams(date=options['date'],
                       testing=options['test'],
                       n_sequences=options['sequences'],
-                      noDupes=options['nodupes'])
+                       b_allow_duplicates=options['nodupes'])
