@@ -21,8 +21,7 @@ def pick_teams(request, date=None):
 
             men, women = dbTeams.get_players(date)
             mgr = TeamManager()
-            mgr.pick_teams(men=men, women=women, testing=False,
-                           n_sequences=3, b_allow_duplicates=False)
+            mgr.pick_teams(men=men, women=women)
 
             matchData = mgr.query_match(date)
 

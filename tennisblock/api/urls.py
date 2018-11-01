@@ -1,4 +1,4 @@
-from django.urls import path, register_converter
+from django.urls import path, re_path, register_converter
 
 from .availability import AvailabilityView
 from .members import SeasonPlayerView
@@ -16,25 +16,25 @@ register_converter(converters.BlockDateConverter, 'date')
 
 app_name = 'api'
 urlpatterns = (
-    path('seasons', getSeasons),
-    path('currentseason', getCurrentSeason),
-    path('currentseasondates', getCurrentSeasonDates),
-    path('buzz', getLatestBuzz),
-    path('pickteams/<date:date>', pick_teams),
-    path('pickteams', pick_teams),
-    path('blocksheet/<date:date>', blockSheet),
-    path('blocksheet', blockSheet),
-    path('blockdates', getBlockDates),
-    path('subs/<date:date>', getSubList),
-    path('subs', getSubList),
-    path('blockplayers/<date:date>', blockPlayers),
-    path('blockplayers', blockPlayers),
-    path('blockschedule/<date:date>', blockSchedule),
-    path('blockschedule', blockSchedule),
-    path('matchdata/<date:date>', getMatchData),
-    path('matchdata', getMatchData),
-    path('availability', AvailabilityView.as_view()),
-    path('members/<int:id>', SeasonPlayerView.as_view()),
-    path('members', SeasonPlayerView.as_view()),
-    path('schedule/notify/<date:date>', BlockNotifyer.as_view(), name="schedule_notify"),
+    re_path('seasons/?', getSeasons),
+    re_path('currentseason/?', getCurrentSeason),
+    re_path('currentseasondates/?', getCurrentSeasonDates),
+    re_path('buzz/?', getLatestBuzz),
+    re_path('pickteams/<date:date>/?', pick_teams),
+    re_path('pickteams/?', pick_teams),
+    re_path('blocksheet/<date:date>/?', blockSheet),
+    re_path('blocksheet/?', blockSheet),
+    re_path('blockdates/?', getBlockDates),
+    re_path('subs/<date:date>/?', getSubList),
+    re_path('subs/?', getSubList),
+    re_path('blockplayers/<date:date>/?', blockPlayers),
+    re_path('blockplayers/?', blockPlayers),
+    re_path('blockschedule/<date:date>/?', blockSchedule),
+    re_path('blockschedule/?', blockSchedule),
+    re_path('matchdata/<date:date>/?', getMatchData),
+    re_path('matchdata/?', getMatchData),
+    re_path('availability/?', AvailabilityView.as_view()),
+    re_path('members/<int:id>/?', SeasonPlayerView.as_view()),
+    re_path('members/?', SeasonPlayerView.as_view()),
+    re_path('schedule/notify/<date:date>/?', BlockNotifyer.as_view(), name="schedule_notify"),
 )
