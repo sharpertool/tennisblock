@@ -1,0 +1,55 @@
+.Home {
+  .Head {
+    margin: 0 0 25px 0;
+    padding: 15px;
+    list-style-type: none;
+    text-align: right;
+
+    li {
+      display: inline-block;
+      padding-left: 5px;
+      color: #fff;
+      cursor: pointer;
+      
+      &:not(:last-child) {
+        padding-right: 5px;
+      }
+
+      &.SocialDivider {
+        border: 2px solid #fff;
+        padding: 0px;
+        height: 35px;
+        margin-bottom: -8px;
+        margin-left: 7px;
+        margin-right: 7px;
+      }
+    }
+  }
+
+  .LoginContainer {
+    padding-left: 250px;
+    padding-right: 250px;
+    p {
+      color: #fff;
+    }
+    .FormBox {
+      background: rgba(21, 61, 56, .9);
+      padding: 45px 130px;
+      border-radius: 5px;
+      -webkit-box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.75);
+      -moz-box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.75);
+      box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.75);
+
+      .ForgotPasswordLink {
+        display: block;
+        color: #fff;
+        margin-bottom: 20px;
+        text-decoration: underline;
+        font-size: 12px;
+      }
+      .InputFields {
+        padding: 35px 20px;
+      }
+    }
+  }
+}

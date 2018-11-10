@@ -30,6 +30,7 @@ export default ({env, options}) => {
       entry: {
         Availability: [resolve(__dirname, `${document_root}/src/Availability/index.js`)],
         Schedule: [resolve(__dirname, `${document_root}/src/Schedule/index.js`)],
+        Home: [resolve(__dirname, `${document_root}/src/containers/Home/index.js`)]
       },
       mode: options.mode,
       output: {

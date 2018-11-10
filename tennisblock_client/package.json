@@ -9,7 +9,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "NODE_PATH=src jest",
-    "hot": "cross-env NODE_ENV=development webpack-dev-server --hot --env.stage=hot --mode=development",
+    "hot": "cross-env NODE_ENV=development PROTOCOL=http webpack-dev-server --hot --env.stage=hot --mode=development",
     "hots": "cross-env NODE_ENV=development PROTOCOL=https webpack-dev-server --hot --env.https=true --env.stage=hot --mode=development",
     "production": "webpack -p --config=webpack.config.babel.js --env=production --mode=production",
     "development": "webpack --config=webpack.config.babel.js --env=production",

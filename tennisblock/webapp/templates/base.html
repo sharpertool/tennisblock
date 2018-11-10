@@ -73,9 +73,7 @@
                         <div class="row">
                             <div class="col mt-2 mb-2">
                                 {% block body_base %}
-                                    {% include "_messages.html" %}
-                                    {% block body %}
-                                    {% endblock body %}
+                                    {% block body %}{% endblock body %}
                                 {% endblock body_base %}
                             </div>
                         </div>

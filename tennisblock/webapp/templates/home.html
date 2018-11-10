@@ -2,38 +2,31 @@
 {% load staticfiles %}
 {% load render_bundle from webpack_loader %}
 
-{% block angular_script %}
-    {{ block.super }}
+{% block body_class %}guest{% endblock %}
 
+{% block body_container %}
+    <section class="body_base">
+        {% include "_messages.html" %}
+        {% block body %}
+            <div id="home"></div>
+        {% endblock body %}
+    </section>
 {% endblock %}
 
-{% block body_base %}
-<section class="body_base">
-    {% include "_messages.html" %}
-    {% block body %}
-        <h1>Welcome to the Tennis Roster.com site.</h1>
-{#        <h3>Mount Point Follows</h3>#}
-{#        <div id="root"></div>#}
-    {% endblock body %}
-</section>
-{% endblock body_base %}
+{% block render_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        <!-- Render bundles for home page -->
+        {% render_bundle 'Home' 'js' %}
+    {% endif %}
+{% endblock %}
 
-{#{% block render_bundles %}#}
-{#    {{ block.super }}#}
-{#    {% if render_bundles %}#}
-{#        <!-- Render bundles for home page -->#}
-{#        {% render_bundle 'Availability' 'js' %}#}
-{#    {% endif %}#}
-{#{% endblock %}#}
-{##}
-{#{% block initialize_bundles %}#}
-{#    {{ block.super }}#}
-{#    {% if render_bundles %}#}
-{#        <!-- Initialize bundles -->#}
-{#        <script type="text/javascript">#}
-{#            console.log('Bootstrap Availability')#}
-{#            var element = document.getElementById('root')#}
-{#            Availability(element)#}
-{#        </script>#}
-{#    {% endif %}#}
-{#{% endblock %}#}
+{% block initialize_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        <!-- Initialize bundles -->
+        <script type="text/javascript">
+            Home('home')
+        </script>
+    {% endif %}
+{% endblock %}
