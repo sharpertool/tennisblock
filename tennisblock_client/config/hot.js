@@ -6,7 +6,7 @@ import {join, resolve} from 'path'
 import {devServer} from './partials'
 import BundleTracker from 'webpack-bundle-tracker'
 
-const DOMAIN = process.env.DOMAIN || 'localhost'
+const DOMAIN = process.env.DOMAIN || 'tennisblock.local'
 const PORT = process.env.PORT || 8081
 const PROTOCOL = process.env.PROTOCOL || 'https'
 
@@ -98,6 +98,11 @@ export default ({env, options}) => {
     },
     port: PORT,
     protocol: `${PROTOCOL}`,
-    base: paths.hot
+    base: paths.hot,
+    allowedHosts: [
+      '.tennisblock.local',
+      `${DOMAIN}`,
+    ]
+    
   }))
 }
