@@ -13,11 +13,9 @@ services:
       #- postgres_data_dev:/var/lib/postgresql/data
       #- ./database/backups:/backups
       # You can also modify this to point to your local Dropbox location where the shared
-      # backups are stored. For me this is:
-      - ./DropboxTeam/database_backups:/backups
-      - ./database/backups:/local_backups
-      # Enter a custom location called /mybackups that are for your localwork
-      #- "~/Dropbox (Big Zeta)/EdLocal/datapages_db:/mybackups"
+      # Update .env file to set a location on your system.
+      - ${SHARED_BACKUPS}:/backups
+      - ${LOCAL_BACKUPS}:/local_backups
     environment:
       - POSTGRES_USER=tennisblock
       - POSTGRES_DB=tennisblock
