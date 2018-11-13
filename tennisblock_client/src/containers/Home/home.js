@@ -11,7 +11,7 @@ class Home extends Component {
 
                 <div className={['container', classes.LoginContainer].join(' ')}>
                     <div className="text-center">
-                        <img src="/static/img/dummy-logo.png" className="mb-5"/>
+                        <img src="/static/img/dummy-logo.png" className={['mb-5', classes.Logo].join(' ')}/>
                         <p className="mt-3 mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aperiam autem dolorem doloremque dolorum earum expedita fugiat impedit in ipsum iste iure, laborum libero minus nobis tempora totam, ullam velit?</p>
                     </div>
 
