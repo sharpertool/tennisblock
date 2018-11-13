@@ -16,6 +16,23 @@ To make this file the default, you need to set an environment variable in your s
 
     export COMPOSE_FILE=my-docker-compose.yml
 
+# Environment Setup
+
+The compose file uses two environment variables
+
+    SHARED_BACKUPS
+    LOCAL_BACKUPS
+
+Copy `example.env` to `.env` and update the values in that file to match your local system.
+
+When you make changes to that file, you have to 're load' the container like this:
+
+    docker-compose up -d
+
+Then you can check the list-backups to see if your values work
+
+    docker-compose exec postgres list-backups
+    
 # Start your containers!
 
 Once you have source the godev script, or manually set DOCKER_COMPOSe environment variable, you can 
