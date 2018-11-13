@@ -1,0 +1,19 @@
+.LoginForm {
+  background: rgba(21, 61, 56, .9);
+  padding: 45px 130px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.75);
+
+  .ForgotPasswordLink {
+    display: block;
+    color: #fff;
+    margin-bottom: 20px;
+    text-decoration: underline;
+    font-size: 12px;
+  }
+  .InputFields {
+    padding: 35px 20px;
+  }
+}
