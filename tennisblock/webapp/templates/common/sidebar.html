@@ -1,23 +1,34 @@
 <div class="side-navbar h-100">
     <ul class="top">
-        <li>
-            <a href="#"><i class="fa fa-home"></i> Home</a>
+        {% url 'home' as home_url %}
+        <li class="{% if request.path == home_url %}active{% endif %}">
+            <a href="{{ home_url }}"><i class="fa fa-home"></i> Home</a>
         </li>
-        <li>
-            <a href="#"><i class="fa fa-calendar"></i> Schedule</a>
+
+        {% url 'schedule:schedule' as schedule_url %}
+        <li class="{% if request.path == schedule_url %}active{% endif %}">
+            <a href="{{ schedule_url }}"><i class="fa fa-calendar"></i> Schedule</a>
         </li>
-        <li>
-            <a href="#"><i class="fa fa-calendar-o"></i> Availability</a>
+
+        {% url 'availability' as availability_url %}
+        <li class="{% if request.path == availability_url %}active{% endif %}">
+            <a href="{{ availability_url }}"><i class="fa fa-calendar-o"></i> Availability</a>
         </li>
-        <li>
-            <a href="#"><i class="fa fa-users"></i> Players</a>
+
+        {% url 'members:seasonplayers' as players_url %}
+        <li class="{% if request.path == players_url %}active{% endif %}">
+            <a href="{{ players_url }}"><i class="fa fa-users"></i> Players</a>
         </li>
+
         <li>
             <a href="#"><i class="fa fa-sitemap"></i> Block Members</a>
         </li>
-        <li>
-            <a href="#"><i class="fa fa-cog"></i> Seasons</a>
+
+        {% url 'season:seasons' as seasons_url %}
+        <li class="{% if request.path == seasons_url %}active{% endif %}">
+            <a href="{{ seasons_url }}"><i class="fa fa-cog"></i> Seasons</a>
         </li>
+
         <li>
             <a href="#"><i class="fa fa-cog"></i> Administrator</a>
         </li>

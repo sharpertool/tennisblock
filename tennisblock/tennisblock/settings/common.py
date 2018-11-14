@@ -152,6 +152,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
                 # 'sekizai.context_processors.sekizai',
                 # 'sekizai.context.SekizaiContext',
                 'TBLib.context.tennisblock',
