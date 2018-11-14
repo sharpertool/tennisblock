@@ -1,53 +1,77 @@
-@import "tbdefs";
+.top-navbar {
+    background: rgba(21, 61, 56, 1);
+    .navbar-brand {
+        padding-top: 1.3125rem;
+        padding-bottom: 1.3125rem;
+        margin-right: 3rem;
+        img {
+            width: 170px;
+        }
+    }
 
+    .navbar-nav {
+        > .nav-item > a {
+            line-height: 60px;
+            i.fa {
+                vertical-align: middle;
+            }
+        }
+    }
 
+    .avatar-dropdown {
+        .dropdown-menu {
+            left: auto !important;
+            right: 0;
+        }
+    }
+}
 
-#navwrapper {
+.side-navbar {
+    background: #171717;
+    padding-top: 15px;
+    padding-bottom: 15px;
     position: relative;
-    //top:$bannerHeight;
-    //left:0px;
-    //right:0px;
-    float:left;
-    height:$navHeight;
-    margin: 2px 2.5%;
-    width:95%;
-    text-align: center;
-    //background-color: $navbar_color;
 
-    #navigation{
-        position: relative;
-        display:inline-block;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
 
-        background-color: $navbar_color;
-        color: #377E27;
-        text-align:middle;
-        height: $navHeight;
-        font-size: 20px;
+        &.bottom {
+            position: absolute;
+            bottom: 15px;
+            width: 100%
+        }
 
-        ul{
-            list-style:none;
-            margin-top:5px;
-            margin-left:6px;
+        li {
+            padding: 0 15px;
+            border-left-width: 5px;
+            border-left-color: transparent;
+            border-left-style: solid;
 
-            li{
-                float:left;
-                color: #377E27;
-                margin-right:5px;
-                display: block;
-
+            &:hover,
+            &.active {
+                border-left-color: #F03E41;
+                background: #25282B;
                 a {
-                    color:#377E27;
-                    font-weight:bold;
-                    //text-decoration:underline;
+                    text-decoration: none;
+                    color: #fff;
+                }
+            }
 
-                    &:hover{
-                        color:#377E27;
-                        //background-color:White;
-                        text-decoration:none;
-                    }
+            a {
+                display: block;
+                line-height: 55px;
+                color: #777;
+
+                i {
+                    vertical-align: middle;
+                    font-size: 25px;
+                    width: 30px;
+                    text-align: center;
+                    margin-right: 15px;
                 }
             }
         }
     }
 }
-

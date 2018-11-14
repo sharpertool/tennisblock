@@ -70,8 +70,8 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[WAGTAIL_SITE_NAME])
 
 print(f"Allowed hosts: {ALLOWED_HOSTS}")
 
-LOGIN_URL = ''
-LOGIN_REDIRECT_URL = '/accounts/login/success/'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Local time zone for this installation. Choices can be found here:
@@ -140,7 +140,7 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 )
 
 TEMPLATES = [

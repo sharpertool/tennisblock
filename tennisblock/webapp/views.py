@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.forms.formsets import (
     formset_factory, BaseFormSet)
@@ -20,7 +21,7 @@ from .forms import CoupleForm, AvailabilityForm
 from TBLib.view import class_login_required
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "home.html"
 
 
@@ -40,7 +41,6 @@ class AvailabilityFormSet(BaseFormSet):
             form.field_list.append(field_nm)
 
 
-@class_login_required
 class AvailabilityFormView(TemplateView):
     template_name = "availability_form.html"
     thankyou_template = "thankyou.html"
@@ -75,7 +75,6 @@ class AvailabilityFormView(TemplateView):
             return render(request, self.template_name, context)
 
 
-@class_login_required
 class PlaysheetView(TennisLoginView):
     template_name = "playsheet.html"
 
