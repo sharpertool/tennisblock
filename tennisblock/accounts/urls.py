@@ -9,8 +9,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path('login/', auth_views.LoginView.as_view(),
-         {'template_name': 'accounts/__login.html'}, name='login'),
     path('login/success/',
          AcccountsLoginSuccess.as_view(), name='login-success'),
 
