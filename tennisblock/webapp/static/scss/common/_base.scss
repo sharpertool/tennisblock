@@ -32,6 +32,10 @@ body {
     }
     section {
     }
+    &.guest {
+        background-image: url("/static/img/login-bg.png");
+        background-size: cover;
+    }
 }
 
 body,

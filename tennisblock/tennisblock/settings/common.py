@@ -70,7 +70,7 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[WAGTAIL_SITE_NAME])
 
 print(f"Allowed hosts: {ALLOWED_HOSTS}")
 
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = ''
 LOGIN_REDIRECT_URL = '/accounts/login/success/'
 LOGOUT_REDIRECT_URL = '/'
 

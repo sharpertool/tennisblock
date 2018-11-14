@@ -40,7 +40,13 @@ gulp.task('sass-build', function() {
         .pipe(gulp.dest(path.join(config.dest, 'css')))
 })
 
-gulp.task('build', ['sass-build'], function() {
+gulp.task('fa-build', function () {
+    return gulp
+        .src('../tennisblock_client/node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest(path.join(config.dest, 'fonts')))
+})
+
+gulp.task('build', ['sass-build', 'fa-build'], function() {
 
 })
 

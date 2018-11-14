@@ -1,5 +1,6 @@
 from django.urls import include, path
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 from .views import (
     HomeView,
@@ -12,8 +13,7 @@ from .views import (
 )
 
 urlpatterns = (
-    # Examples:
-    path('', HomeView.as_view(), name='home'),
+    path('', auth_views.LoginView.as_view(template_name='home.html'), name='login'),
     path('availability/', AvailabilityView.as_view(), name='availability'),
     path('availability_form/', AvailabilityFormView.as_view(), name='availability_form'),
     path('availability_form/<int:pk>/', AvailabilityFormView.as_view(), name='availability_form_post'),

@@ -46,6 +46,8 @@
     <link rel="stylesheet"
           href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
     <link rel="stylesheet"
+          href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet"
           href="{% static 'css/style_base.css' %}">
 
     {% block extra_style %}
@@ -86,7 +88,7 @@
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Home</a></li>
                 {% if user.is_authenticated %}
                     <!-- User Authenticated -->
                     <li class="nav-item"><a class="nav-link" href="{% url 'schedule:schedule' %}">Schedule</a></li>
