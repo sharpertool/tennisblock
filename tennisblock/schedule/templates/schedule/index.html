@@ -21,11 +21,9 @@
     schedule
 {% endblock %}
 
-{% block body_inner_container %}
-    <div id="react-schedule">
-      <!--React goes here-->
-    </div>
+{% block page_content %}
 
+    <div id="react-schedule"></div>
     <div class="row">
         <div class="col" ng-controller="BlockSchedule">
 
@@ -73,7 +71,7 @@
     </div>
 
 
-{% endblock body_inner_container %}
+{% endblock page_content %}
 
 
 {% block render_bundles %}
