@@ -1,15 +1,19 @@
-import {all, put, take, race, fork, cancel, cancelled, call} from 'redux-saga/effects'
+import { all, put, take, race, fork, cancel, cancelled, call } from 'redux-saga/effects'
 
 import axios from '~/axios-tennisblock'
 
 import * as actions from './actions'
-import * as t from './constants'
 
 function* requestMatchData() {
-  const date = '2018-11-02'
-  const response = yield call(axios.get, `/api/matchdata/${date}`)
+  const date = '2018-09-21'
+  const response = yield call(axios.get, '/api/matchdata')
+  console.log(response)
   yield put(actions.updatePlaySchedule(response.data))
   console.log(response.data)
+}
+
+function* getBlockupdates() {
+
 }
 
 

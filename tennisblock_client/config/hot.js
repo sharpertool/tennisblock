@@ -8,9 +8,18 @@ import BundleTracker from 'webpack-bundle-tracker'
 
 const DOMAIN = process.env.DOMAIN || 'tennisblock.local'
 const PORT = process.env.PORT || 8081
-const PROTOCOL = process.env.PROTOCOL || 'https'
+const PROTOCOL = 'http'
 
 const rules = [
+  {
+    test: /\.js$/,
+    enforce: 'pre',
+    exclude: /node_modules/,
+    loader: 'eslint-loader',
+    options: {
+      fix: true
+    },
+  },
   {
     test: /\.js$/,
     exclude: /node_modules/,
@@ -103,6 +112,6 @@ export default ({env, options}) => {
       '.tennisblock.local',
       `${DOMAIN}`,
     ]
-    
+
   }))
 }

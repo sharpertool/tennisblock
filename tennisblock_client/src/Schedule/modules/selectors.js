@@ -47,9 +47,9 @@ const globalizeSelectors = (selectors,path) => {
 
 // Spread out globalized selectors into a single globalized selector structure
 // Note that any name conflicts will use the last named selector in the list.
-const gsel = {
+const selectors = {
   ...globalizeSelectors(ssel, schedule_name),
   ...globalizeSelectors(tsel, team_name),
 }
 
-export {gsel as selectors}
+export { selectors }

@@ -1,3 +1,1 @@
-
-
-
+export const blockUpdates = state => ({ ...state.blockUpdates })

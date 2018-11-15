@@ -1,8 +1,3 @@
-// If a feature has more facets, you should definitely use multiple
-// reducers to handle different parts of the state shape.
-// Additionally, don’t be afraid to use combineReducers as much as needed.
-// This gives you a lot of flexibility when working with a complex state shape.
-import {combineReducers} from 'redux'
 import * as types from './constants'
 
 const initialState = {
@@ -20,13 +15,23 @@ const initialState = {
     players_by_id: {},
     guys: [],
     gals: [],
-  }
+  },
+  blockdates: [],
 }
 
+
 const mainReducer = (state = initialState, action) => {
+  const { blockdates } = action
+  console.log(blockdates)
   switch(action.type) {
+    case types.SET_BLOCKDATES: 
+      return {
+        ...state,
+        blockdates
+      }
     default: return state;
   }
+
 }
 
 export default mainReducer

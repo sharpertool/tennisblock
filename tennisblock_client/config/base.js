@@ -43,9 +43,13 @@ export default ({env, options}) => {
       module: {
         rules: [
           {
-            test: /\.js$/,
+            test: /\.js?$/,
             exclude: /node_modules/,
-            loader: 'babel-loader',
+            enforce: 'pre',
+            use: ['babel-load', 'eslint-loader'],
+            options: {
+              failOnWarning: true,
+            }
           },
         ]
       },
