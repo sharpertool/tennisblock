@@ -6,7 +6,7 @@ import styles from './styles.local.scss'
 
 const tiles = ({ dates }) => {
   return dates && dates.map(({ date }, index) =>
-    <div key={index} className={`${styles.tile} col-2 pt-2`}>
+    <div key={index} className={`${styles.tile} col-xs-12 col-sm-6 col-md-3 col-lg-2 col-xl-2 pt-2`}>
       <Link to={`/${date}`} className={styles.tileEdit}>
         <i className="fa fa-pencil" aria-hidden="true"></i>
       </Link>
