@@ -9,7 +9,7 @@ import * as partials from './partials'
 
 const DOMAIN = process.env.DOMAIN || 'localhost'
 const PORT = process.env.PORT || 8080
-const PROTOCOL = process.env.PROTOCOL || 'https'
+const PROTOCOL = process.env.PROTOCOL || 'http'
 
 export const paths = {
   hot: resolve(__dirname, '../hot'),
@@ -43,9 +43,13 @@ export default ({env, options}) => {
       module: {
         rules: [
           {
-            test: /\.js$/,
+            test: /\.js?$/,
             exclude: /node_modules/,
-            loader: 'babel-loader',
+            enforce: 'pre',
+            use: ['babel-load', 'eslint-loader'],
+            options: {
+              failOnWarning: true,
+            }
           },
         ]
       },

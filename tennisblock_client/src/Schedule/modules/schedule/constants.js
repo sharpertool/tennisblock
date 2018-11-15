@@ -1,11 +1,4 @@
-export const NAME = 'schedule'
-import {APP_NAME as PARENT_NAME} from '../constants'
+import { actionType } from '~/utils'
+export const MODULE_NAME = 'schedule'
 
-const mkname = (nm) => `${PARENT_NAME}/${NAME}/${nm}`
-
-export const APP_NAME = `${PARENT_NAME}/${NAME}`
-
-
-
-
-
+export const SET_BLOCKDATES = actionType('SET_BLOCKDATES', MODULE_NAME)

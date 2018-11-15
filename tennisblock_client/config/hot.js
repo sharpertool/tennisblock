@@ -5,12 +5,21 @@ import fs from 'fs'
 import {join, resolve} from 'path'
 import {devServer} from './partials'
 import BundleTracker from 'webpack-bundle-tracker'
-
+import autoprefixer from 'autoprefixer'
 const DOMAIN = process.env.DOMAIN || 'tennisblock.local'
 const PORT = process.env.PORT || 8081
-const PROTOCOL = process.env.PROTOCOL || 'https'
+const PROTOCOL = process.env.PROTOCOL || 'http'
 
 const rules = [
+  {
+    test: /\.js$/,
+    enforce: 'pre',
+    exclude: /node_modules/,
+    loader: 'eslint-loader',
+    options: {
+      fix: true
+    },
+  },
   {
     test: /\.js$/,
     exclude: /node_modules/,
@@ -26,30 +35,84 @@ const rules = [
       }
     ]
   },
+  // "postcss" loader applies autoprefixer to our CSS.
+  // "css" loader resolves paths in CSS and adds assets as dependencies.
+  // "style" loader turns CSS into JS modules that inject <style> tags.
+  // In production, we use a plugin to extract that CSS to a file, but
+  // in development "style" loader enables hot editing of CSS.
   {
-    test: /\.(sa|sc|c)ss$/,
-    exclude: /node_modules/,
+    test: /\.(scss|css)$/,
+    exclude: /\.local\.(scss|css)/,
     use: [
+      require.resolve('style-loader'),
       {
-        loader: 'style-loader', options: {
-          sourceMap: true
-        }
+        loader: require.resolve('css-loader'),
+        options: {
+        },
       },
       {
-        loader: 'css-loader', options: {
-          sourceMap: true,
-          modules: true,
+        loader: require.resolve('postcss-loader'),
+        options: {
+          // Necessary for external CSS imports to work
+          // https://github.com/facebookincubator/create-react-app/issues/2677
+          ident: 'postcss',
+          plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            autoprefixer({
+              browsers: [
+                '>1%',
+                'last 4 versions',
+                'Firefox ESR',
+                'not ie < 9', // React doesn't support IE8 anyway
+              ],
+              flexbox: 'no-2009',
+            }),
+          ],
+        },
+      },
+      'sass-loader',
+    ],
+  },
+  // This loader supports modules, with the .local.* suffix
+  // "css" loader resolves paths in CSS and adds assets as dependencies.
+  // "style" loader turns CSS into JS modules that inject <style> tags.
+  // In production, we use a plugin to extract that CSS to a file, but
+  // in development "style" loader enables hot editing of CSS.
+  {
+    test: /\.local\.(scss|css)$/,
+    use: [
+      require.resolve('style-loader'),
+      {
+        loader: require.resolve('css-loader'),
+        options: {
           importLoaders: 1,
+          modules: true,
           localIdentName: '[name]__[local]__[hash:base64:5]',
-        }
+        },
       },
       {
-        loader: 'sass-loader', options: {
-          sourceMap: true
-        }
-      }
-    ]
-  }
+        loader: require.resolve('postcss-loader'),
+        options: {
+          // Necessary for external CSS imports to work
+          // https://github.com/facebookincubator/create-react-app/issues/2677
+          ident: 'postcss',
+          plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            autoprefixer({
+              browsers: [
+                '>1%',
+                'last 4 versions',
+                'Firefox ESR',
+                'not ie < 9', // React doesn't support IE8 anyway
+              ],
+              flexbox: 'no-2009',
+            }),
+          ],
+        },
+      },
+      'sass-loader',
+    ],
+  },
 ]
 
 export default ({env, options}) => {
@@ -103,6 +166,6 @@ export default ({env, options}) => {
       '.tennisblock.local',
       `${DOMAIN}`,
     ]
-    
+
   }))
 }

@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-//import classes from './index.local.scss'
+// import classes from './index.local.scss'
 
 const teamstats = (props) => {
   console.log('TeamStats Props:', props)
   const {teams} = props
-  const spread = teams.map(t => {
+  const spread = teams.map((t) => {
     const {f: {untrp: fu}, m: {untrp: fm}} = t
     return Math.abs(fu - fm)
   })
@@ -33,9 +33,9 @@ const teamstats = (props) => {
             <g>
               <rect className="outer" width="100%" height={height}/>
               <rect className="gauge"
-                  transform={`translate(1,1)`}
-                    width={barWidth+'%'}
-                    height={height-2}/>
+                transform={`translate(1,1)`}
+                width={barWidth+'%'}
+                height={height-2}/>
             </g>
           </svg>
         </div>
