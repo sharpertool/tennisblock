@@ -22,6 +22,9 @@
 {% endblock %}
 
 {% block body_inner_container %}
+    <div id="react-schedule">
+      <!--React goes here-->
+    </div>
 
     <div class="row">
         <div class="col" ng-controller="BlockSchedule">
@@ -86,10 +89,8 @@
     {% if render_bundles %}
         <!-- Initialize bundles -->
         <script type="text/javascript">
-          console.log('Initialize HomePage component')
-          Schedule({
-            match_review: 'match_review'
-          });
+          console.log('Initialize component')
+          Schedule({ target: 'react-schedule'});
 
         </script>
     {% endif %}
