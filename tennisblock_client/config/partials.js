@@ -3,7 +3,11 @@ import merge from 'webpack-merge'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import autoprefixer from 'autoprefixer'
 
-export const devServer = ({hot, host, port, base, https=false, cert=null} = {}) => {
+export const devServer = ({hot, host, port,
+                            base,
+                            https=false,
+                            cert=null,
+                          allowedHosts=null} = {}) => {
   const config = {
     devServer: {
         hot,
@@ -18,6 +22,10 @@ export const devServer = ({hot, host, port, base, https=false, cert=null} = {}) 
         app.use(cors());
         }
     }
+  }
+
+  if (allowedHosts) {
+    config.devServer.allowedHosts = allowedHosts
   }
 
   if (https) {

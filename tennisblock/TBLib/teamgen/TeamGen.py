@@ -32,7 +32,7 @@ class TeamGen(object):
                         max_quality = min_found_q
                         print("min_quality increased to {min_quality:3.1}")
 
-                    diff_max = min_found_diff
+                    diff_max = max(diff_max+0.1, min_found_diff)
 
                 if group_round is None:
                     diff_max += 0.1
