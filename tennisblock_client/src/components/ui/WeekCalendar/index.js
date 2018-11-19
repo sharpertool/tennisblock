@@ -9,7 +9,10 @@ import styles from './styles.local.scss'
 const weekcalendar = (props) => (
   <Fragment>
     <h2 className={styles.header}>
-      <i className="fa fa-calendar" aria-hidden="true"></i> {new Date().getFullYear()} <Link to="/schedule"><i className="fa fa-pencil"></i></Link>
+      <i className="fa fa-calendar" aria-hidden="true"></i>
+        &nbsp;
+        {new Date().getFullYear()} <Link to="/schedule">
+      <i className="fa fa-pencil"></i></Link>
     </h2>
     <Row className="px-3">
       <Tiles dates={props.dates} classes={props.classes} />

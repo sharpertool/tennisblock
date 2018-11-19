@@ -22,7 +22,6 @@ const initialState = {
 
 const mainReducer = (state = initialState, action) => {
   const { blockdates } = action
-  console.log(blockdates)
   switch(action.type) {
     case types.SET_BLOCKDATES: 
       return {
