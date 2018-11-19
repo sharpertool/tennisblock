@@ -7,6 +7,10 @@
 //    height: 100%;
 //}
 
+#page_content {
+    overflow: auto;
+}
+
 ul.availability {
     color: green;
     li {
