@@ -7,9 +7,14 @@ import * as types from './constants'
 const initialState = {}
 
 const mainReducer = (state = initialState, action) => {
+  const { blockplayers } = action
   switch(action.type) {
     case types.UPDATE_PLAY_SCHEDULE:
-      return {...state, schedule: action.payload.match}
+      return {...state}
+      break
+    case types.BLOCK_PLAYERS_FETCHED:
+      return { ...state, blockplayers }
+      break
     default: return state;
   }
 }
