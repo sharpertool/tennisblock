@@ -33,6 +33,7 @@ urlpatterns = (
     path('matchdata/<date:date>', getMatchData),
     path('matchdata', getMatchData),
     path('availability', AvailabilityView.as_view()),
+    path('availability/', AvailabilityView.as_view()),
     path('members/<int:id>', SeasonPlayerView.as_view()),
     path('members', SeasonPlayerView.as_view()),
     path('schedule/notify/<date:date>', BlockNotifyer.as_view(), name="schedule_notify"),
