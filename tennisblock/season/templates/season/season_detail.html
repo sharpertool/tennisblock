@@ -5,7 +5,7 @@
 {% block angular_script %}
 {% endblock %}
 
-{% block body %}
+{% block page_content %}
     <div>
         <form action="{% url 'season:season_detail' pk=season.pk %}" %}method="post">
             {% csrf_token %}

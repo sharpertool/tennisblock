@@ -142,6 +142,7 @@ class SeasonDetailView(TemplateView):
 
 @class_login_required
 class SeasonCreate(CreateView):
+    template_name = "season/season_create.html"
     model = Season
     fields = [
         'name',
