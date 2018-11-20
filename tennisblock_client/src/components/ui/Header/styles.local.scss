@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  align-items: center;
+  > i {
+    font-size: 18px;
+    margin-right: .5rem;
+  }
+  & a {
+    top: 0;
+    right: 0;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 1);
+    &:hover {
+      color: rgba(0, 0, 0, .5);
+    }
+  }
+}

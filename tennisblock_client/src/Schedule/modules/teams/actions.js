@@ -11,7 +11,14 @@ export const updatePlaySchedule = (schedule) => ({
 export const getBlockPlayers = (id) => {
   return {
     type: types.GET_BLOCK_PLAYERS,
-    id
+    id,
+  }
+}
+
+export const getSubs = (subs) => {
+  return {
+    type: types.GET_SUBS,
+    subs,
   }
 }
 
