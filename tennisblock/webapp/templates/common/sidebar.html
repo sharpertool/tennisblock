@@ -29,9 +29,11 @@
             <a href="{{ seasons_url }}"><i class="fa fa-cog"></i> Seasons</a>
         </li>
 
-        <li>
-            <a href="#"><i class="fa fa-cog"></i> Administrator</a>
-        </li>
+        {% if request.user.is_staff and request.user.is_superuser %}
+            <li>
+                <a href="#"><i class="fa fa-cog"></i> Administrator</a>
+            </li>
+        {% endif %}
     </ul>
 
     <ul class="bottom">
