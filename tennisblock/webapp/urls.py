@@ -2,6 +2,9 @@ from django.urls import include, path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
+from wagtail.core import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
+
 from .views import (
     HomeView,
     AvailabilityView,
@@ -28,4 +31,7 @@ urlpatterns = (
     path('schedule/', include('schedule.urls')),
     path('api/', include('api.urls')),
     path('django-admin/', admin.site.urls),
+
+    path('admin/', include(wagtailadmin_urls)),
+    path('', include(wagtail_urls)),
 )
