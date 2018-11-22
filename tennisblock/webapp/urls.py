@@ -1,4 +1,4 @@
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
@@ -32,6 +32,6 @@ urlpatterns = (
     path('api/', include('api.urls')),
     path('django-admin/', admin.site.urls),
 
-    path('wagtail-admin/', include(wagtailadmin_urls)),
-    re_path(r'.*', include(wagtail_urls)),
+    path('admin/', include(wagtailadmin_urls)),
+    path('', include(wagtail_urls)),
 )
