@@ -1,45 +1,45 @@
 
-$odd_row: #bccdd3;
-$even_row: #b6b6b6;
-
-.member_list {
-
-}
+$odd_row: #fff;
+$even_row: #E7F2FF;
 
 #textContent {
     padding-left: 20px;
 }
 
-table {
-
+table.member_list {
     width: 100%;
-    border: 1px solid black;
 
     tr,th,td {
-        border: 1px solid black;
+        border: 1px solid #4A90E2;
     }
 
-    tr {
-        &.odd {
-            background-color: $odd_row;
+    thead {
+        background: #6EB1FF;
+    }
+
+    tbody {
+        tr {
+            &.odd {
+                background-color: $odd_row;
+
+                &.single {
+                    background-color: adjust-hue(saturate($odd_row, 30%), 50);
+                }
+            }
+            &.even {
+                background-color: $even_row;
+                &.single {
+                    background-color: adjust-hue(saturate($even_row, 30%), 50);
+                }
+            }
 
             &.single {
-                background-color: adjust-hue(saturate($odd_row, 30%), 50);
+                backgrond-color: darkgrey;
             }
-        }
-        &.even {
-            background-color: $even_row;
-            &.single {
-                background-color: adjust-hue(saturate($even_row, 30%), 50);
+
+            &.member_list_header {
+                background-color: #449aff;
             }
-        }
-
-        &.single {
-            backgrond-color: darkgrey;
-        }
-
-        &.member_list_header {
-            background-color: #449aff;
         }
     }
 
