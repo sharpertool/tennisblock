@@ -211,6 +211,7 @@ INSTALLED_APPS = [
     'anymail',
 
     # Local Apps
+    'about',
     'tennisblock',
     'frontend',
     'blockdb',
