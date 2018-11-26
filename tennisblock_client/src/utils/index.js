@@ -24,4 +24,4 @@ export const createConstants = (parent = null, name) => (...actionTypes) => {
 }
 
 
-export const actionType = (type, moduleName) => [APP_NAME, moduleName, name].join('/').toLowerCase()
+export const actionType = (type, moduleName) => [APP_NAME, moduleName, type].join('/').toLowerCase()

@@ -4,13 +4,27 @@
 // This gives you a lot of flexibility when working with a complex state shape.
 import * as types from './constants'
 
-const initialState = {}
+const initialState = {
+  blockplayers: {},
+  subs: {},
+  ui: {
+    selected: null
+  }
+}
 
 const mainReducer = (state = initialState, action) => {
+  const { blockplayers, subs } = action
   switch(action.type) {
     case types.UPDATE_PLAY_SCHEDULE:
-      return {...state, schedule: action.payload.match}
-    default: return state;
+      return {...state}
+      break
+    case types.BLOCK_PLAYERS_FETCHED:
+      return { ...state, blockplayers }
+      break
+    case types.GET_SUBS:
+      return { ...state, subs }
+      break
+    default: return state
   }
 }
 

@@ -18,6 +18,9 @@
   top: 0;
   right: 0;
   margin: 10px 15px;
+  &:hover {
+    color: rgba(74, 74, 74, 1);
+  }
 }
 
 .tileMonth {

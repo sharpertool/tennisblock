@@ -26,8 +26,10 @@ function* fetchBlockDates() {
   try {
 
     const { data } = yield call(axios.get, 'api/blockdates')
-    console.log(data)
-    yield put({ type: types.SET_BLOCKDATES, blockdates: data })
+    yield put({
+      type: types.SET_BLOCKDATES,
+      blockdates: data.filter(date => !date.holdout)
+    })
   } catch ({ response }) {
     console.log(response)
   }
