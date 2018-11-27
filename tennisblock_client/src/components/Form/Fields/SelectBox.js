@@ -1,30 +1,24 @@
-import React, { Fragment } from 'react'
-import Toggle from '~/hoc/Toggle'
+import React from 'react'
+import { FormGroup, Label, Input } from 'reactstrap'
 import PropTypes from 'prop-types'
 
-const selectBox = (props) => {
-  return (
-    <Fragment>
-      <div className="select-label" onClick={() => props.onToggle}>{props.label}</div>
-      {props.isActive &&
-        <div className="select-options">
-          {props.options && props.options.map((option, key) => {
-                return (
-                  <div key={key} className="select-option"
-                    onClick={() => props.onChange(option.id)}>
-                    { option.name }
-                  </div>
-                )
-              }
-            )}
-          </div>
-      }
-    </Fragment>
-  )
-}
+const selectBox = (props) => (
+  <FormGroup>
+    <Input type="select" name="select"
+      onChange={(e) => { 
+        props.onChange(props.defaultValue, e.target.value)
+      }} defaultValue={props.defaultValue}>
+      <option value={props.id}>{props.label}</option>
+      {props.options && props.options.map((option, index) => (
+        <option key={index} value={option.id}>{option.name}</option>
+      ))}
+    </Input>
+  </FormGroup>
+)
 
 selectBox.propTypes = {
-  onToggle: PropTypes.func.isRequired,
+  defaultValue: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.object),
   label: PropTypes.string.isRequired,
   isActive: PropTypes.bool,

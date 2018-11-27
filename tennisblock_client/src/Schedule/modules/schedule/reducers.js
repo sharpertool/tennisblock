@@ -17,17 +17,28 @@ const initialState = {
     gals: [],
   },
   blockdates: [],
+  blockplayers: {},
+  subs: {},
 }
 
 
 const mainReducer = (state = initialState, action) => {
-  const { blockdates } = action
+  const { blockdates, blockplayers, subs } = action
   switch(action.type) {
     case types.SET_BLOCKDATES: 
       return {
         ...state,
         blockdates
       }
+    case types.UPDATE_PLAY_SCHEDULE:
+      return {...state}
+      break
+    case types.BLOCK_PLAYERS_FETCHED:
+      return { ...state, blockplayers }
+      break
+    case types.GET_SUBS:
+      return { ...state, subs }
+      break
     default: return state;
   }
 
