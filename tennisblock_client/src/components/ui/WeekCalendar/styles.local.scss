@@ -1,8 +1,10 @@
 .header {
   display: flex;
   align-items: center;
+  font-size: 2.7rem;
+  font-weight: bold;
   > i {
-    font-size: 18px;
+    font-size: 2.2rem;
     margin-right: .5rem;
   }
   & a {
