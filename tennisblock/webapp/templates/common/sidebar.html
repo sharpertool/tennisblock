@@ -1,8 +1,9 @@
+{% load wagtailcore_tags %}
+
 <div class="side-navbar h-100">
     <ul class="top">
-        {% url 'home' as home_url %}
-        <li class="{% if request.path == home_url %}active{% endif %}">
-            <a href="{{ home_url }}"><i class="fa fa-home"></i> Home</a>
+        <li class="{% if page and page.slug == 'home' %}active{% endif %}">
+            <a href="/home/"><i class="fa fa-home"></i> Home</a>
         </li>
 
         {% url 'schedule:schedule' as schedule_url %}
@@ -37,7 +38,7 @@
     </ul>
 
     <ul class="bottom">
-        <li>
+        <li class="{% if page and page.slug == 'about-us' %}active{% endif %}">
             <a href="/about-us/"><i class="fa fa-info-circle"></i> About Us</a>
         </li>
         <li>

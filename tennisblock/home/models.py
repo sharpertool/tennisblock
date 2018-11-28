@@ -5,7 +5,7 @@ from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel
 
 
-class About(Page):
+class Home(Page):
     intro = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -13,4 +13,4 @@ class About(Page):
     ]
 
     class Meta:
-        verbose_name = "About Page"
+        verbose_name = "Home Page"
