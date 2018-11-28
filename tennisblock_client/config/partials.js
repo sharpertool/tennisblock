@@ -4,12 +4,12 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import autoprefixer from 'autoprefixer'
 
 export const devServer = ({
-                            hot, host, port,
-                            base,
-                            https = false,
-                            cert = null,
-                            allowedHosts = null,
-                          } = {},) => {
+  hot, host, port,
+  base,
+  https = false,
+  cert = null,
+  allowedHosts = null,
+} = {},) => {
   const config = {
     devServer: {
       hot,
