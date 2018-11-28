@@ -182,6 +182,7 @@ INSTALLED_APPS = [
     # Wagtail
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.routable_page',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -212,6 +213,7 @@ INSTALLED_APPS = [
 
     # Local Apps
     'about',
+    'home',
     'tennisblock',
     'frontend',
     'blockdb',

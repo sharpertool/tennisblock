@@ -17,7 +17,6 @@ from .views import (
 
 urlpatterns = (
     path('', auth_views.LoginView.as_view(template_name='login.html', redirect_authenticated_user=True), name='login'),
-    path('home/', HomeView.as_view(), name='home'),
     path('availability/', AvailabilityView.as_view(), name='availability'),
     path('availability_form/', AvailabilityFormView.as_view(), name='availability_form'),
     path('availability_form/<int:pk>/', AvailabilityFormView.as_view(), name='availability_form_post'),
