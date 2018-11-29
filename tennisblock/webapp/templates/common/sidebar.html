@@ -32,7 +32,10 @@
 
         {% if request.user.is_staff and request.user.is_superuser %}
             <li>
-                <a href="{% url 'wagtailadmin_login' %}" target="_blank"><i class="fa fa-cog"></i> Administrator</a>
+                <a href="{% url 'wagtailadmin_login' %}" target="_blank"><i class="fa fa-cog"></i> CMS Admin</a>
+            </li>
+            <li>
+                <a href="{% url 'admin:index' %}" target="_blank"><i class="fa fa-cog"></i> Django Admin</a>
             </li>
         {% endif %}
     </ul>
