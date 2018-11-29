@@ -24,7 +24,6 @@ urlpatterns = (
     path('accounts/', include('accounts.urls')),
     path('couples/<int:pk>>', CouplesView.as_view(), name="couple_editor"),
     path('contact/', ContactView.as_view(), name="contact"),
-    path('about/', AboutView.as_view(), name="about"),
     path('season/', include('season.urls')),
     path('members/', include('members.urls')),
     path('schedule/', include('schedule.urls')),
