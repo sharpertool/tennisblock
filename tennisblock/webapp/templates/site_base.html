@@ -12,17 +12,6 @@
 
 {% endblock %}
 
-{% block page_style %}
-    {{ block.super }}
-    <!-- site_base.html: page_style -->
-
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
-
-{% endblock %}
-
 {% block style_base %}
     {{ block.super }}
     <!-- site_base.html: style_base -->
@@ -50,6 +39,17 @@
 
     {% block extra_style %}
     {% endblock %}
+
+{% endblock %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- site_base.html: page_style -->
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 
 {% endblock %}
 

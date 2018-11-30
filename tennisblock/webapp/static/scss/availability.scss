@@ -5,15 +5,7 @@
 /* LESS Styles */
 
 
-@import 'tbdefs'; // Define locations of resources
-@import 'common/classes';
-@import 'common/helpers';
-@import 'common/mixins';
-@import 'common/fonts';
-@import 'common/typography';
-
-@import 'common/base';
-@import 'common/layout';
+@import '_availability';
 //@import 'common/layout_header';
 //@import 'common/layout_page_header';
 //@import 'nav';
