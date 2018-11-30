@@ -8,6 +8,16 @@ import HeaderDate from '~/components/ui/Header/Date'
 
 import styles from './styles.local.scss'
 
+
+const shapeOptions = (values, defaultValue) => {
+  const options = values.reduce((acc, value, index) => {
+    acc[index] = { label: value.name, value: value.id }
+    return acc
+  }, [])
+
+  return [defaultValue, ...options]
+}
+
 class Matches extends Component {
   componentDidMount() {
     const { match, getBlockPlayers } = this.props
@@ -43,12 +53,22 @@ class Matches extends Component {
             <Row>
               <Col xs={12} md={6}>
                 {blockplayers.guys && blockplayers.guys.map((guy, index) => (
-                  <SelectBox key={index} defaultValue={guy.id} onChange={this.props.updateCouple} options={guysubs} id={guy.id} label={guy.name} />                
+                  <SelectBox
+                    key={index}
+                    defaultValue={{ label: guy.name, value: guy.id }}
+                    onChange={this.props.updateCouple}
+                    options={guysubs && shapeOptions(guysubs, {  label: guy.name, value: guy.id }) }
+                  />                
                 ))}
               </Col>
               <Col xs={12} md={6}>
                 {blockplayers.gals && blockplayers.gals.map((gal, index) => (
-                  <SelectBox key={index} defaultValue={gal.id} onChange={this.props.updateCouple} options={galsubs} id={gal.id} label={gal.name} />
+                  <SelectBox
+                    key={index}
+                    defaultValue={{ label: gal.name, value: gal.id }}
+                    onChange={this.props.updateCouple}
+                    options={galsubs && shapeOptions(galsubs, {  label: gal.name, value: gal.id }) }
+                  />
                 ))}
               </Col>
             </Row>

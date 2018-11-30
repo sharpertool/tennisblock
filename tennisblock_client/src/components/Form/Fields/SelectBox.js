@@ -1,20 +1,15 @@
 import React from 'react'
-import { FormGroup, Label, Input } from 'reactstrap'
+import { FormGroup } from 'reactstrap'
 import PropTypes from 'prop-types'
+import Select from 'react-select'
 
-const selectBox = (props) => (
-  <FormGroup>
-    <Input type="select" name="select"
-      onChange={(e) => { 
-        props.onChange(props.defaultValue, e.target.value)
-      }} defaultValue={props.defaultValue}>
-      <option value={props.id}>{props.label}</option>
-      {props.options && props.options.map((option, index) => (
-        <option key={index} value={option.id}>{option.name}</option>
-      ))}
-    </Input>
-  </FormGroup>
-)
+const selectBox = (props) => {
+  return (
+    <FormGroup>
+      <Select defaultValue={props.defaultValue} options={props.options} />
+    </FormGroup>
+  )
+}
 
 selectBox.propTypes = {
   defaultValue: PropTypes.number.isRequired,
