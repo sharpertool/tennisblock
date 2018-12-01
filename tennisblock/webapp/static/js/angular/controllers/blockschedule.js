@@ -21,6 +21,7 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
             queryDate : null,
             initialized : false
         };
+        
 
         $scope.subs = {
             'guys' : [],
@@ -42,6 +43,8 @@ tennisblockapp.controller('BlockSchedule', ['$scope',
 
             $scope.block.isLastDate = isLastBlockDate();
             $scope.block.isFirstDate = isFirstBlockDate();
+            // Call to React function setup to get current date
+            window.onDateChanged($scope.block.queryDate);
         };
 
         BlockDates.query(function bdates(data) {
