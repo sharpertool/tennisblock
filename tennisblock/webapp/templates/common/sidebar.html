@@ -21,8 +21,9 @@
             <a href="{{ players_url }}"><i class="fa fa-users"></i> Players</a>
         </li>
 
-        <li>
-            <a href="#"><i class="fa fa-sitemap"></i> Block Members</a>
+        {% url 'members:seasonplayers' as members_url %}
+        <li class="{% if request.path == members_url %}active{% endif %}">
+            <a href="{{ members_url }}"><i class="fa fa-sitemap"></i> Block Members</a>
         </li>
 
         {% url 'season:seasons' as seasons_url %}
