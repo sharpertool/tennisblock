@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from '~/containers/App'
-import Routes from '~/schedule/routes'
+import Routes from '~/Schedule/routes'
 
 const scheduleProvider = ({ store }) => (
   <Provider store={store}>
