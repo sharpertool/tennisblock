@@ -63,7 +63,6 @@ class Matches extends Component {
             <Row>
               {blockplayers.couples && blockplayers.couples.map((couple, index) => {
                 const { guy, gal } = couple
-                console.log(originalCouples)
                 return (
                   <React.Fragment key={index}>
                     <Col xs={12} md={6}>
