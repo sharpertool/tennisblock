@@ -9,13 +9,22 @@ import HeaderDate from '~/components/ui/Header/Date'
 import styles from './styles.local.scss'
 
 
-const shapeOptions = (values, defaultValue) => {
-  const options = values.reduce((acc, value, index) => {
-    acc[index] = { label: value.name, value: value.id }
+const shapeOptions = (values, { gender, index, defaultOpt }) => {
+  const options = values.reduce((acc, value, i) => {
+    acc[i] = { label: value.name, value: value.id, gender, index, player: value }
     return acc
   }, [])
 
-  return [defaultValue, ...options]
+  return [
+    {
+      label: defaultOpt.name,
+      value: defaultOpt.id,
+      gender,
+      index,
+      player: defaultOpt
+    },
+    ...options
+  ]
 }
 
 class Matches extends Component {
@@ -27,9 +36,9 @@ class Matches extends Component {
     }
   }
   render() {
-    const { blockplayers, subs, match } = this.props
+    const { blockplayers, subs, match, originalCouples } = this.props
     const { galsubs, guysubs } = subs
-    
+
     return(
       <div className="matches">
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id} />
@@ -38,6 +47,7 @@ class Matches extends Component {
             <Button color="danger">Schedule</Button>
             <Button color="danger">Clear Schedule</Button>
             <Button color="danger">Update Schedule</Button>
+            <Button color="danger" disabled={!this.props.coupleChanged}>Save Changes</Button>
           </Col>
         </Row>
         <Row>
@@ -51,26 +61,32 @@ class Matches extends Component {
               </Col>
             </Row>
             <Row>
-              <Col xs={12} md={6}>
-                {blockplayers.guys && blockplayers.guys.map((guy, index) => (
-                  <SelectBox
-                    key={index}
-                    defaultValue={{ label: guy.name, value: guy.id }}
-                    onChange={this.props.updateCouple}
-                    options={guysubs && shapeOptions(guysubs, {  label: guy.name, value: guy.id }) }
-                  />                
-                ))}
-              </Col>
-              <Col xs={12} md={6}>
-                {blockplayers.gals && blockplayers.gals.map((gal, index) => (
-                  <SelectBox
-                    key={index}
-                    defaultValue={{ label: gal.name, value: gal.id }}
-                    onChange={this.props.updateCouple}
-                    options={galsubs && shapeOptions(galsubs, {  label: gal.name, value: gal.id }) }
-                  />
-                ))}
-              </Col>
+              {blockplayers.couples && blockplayers.couples.map((couple, index) => {
+                const { guy, gal } = couple
+                console.log(originalCouples)
+                return (
+                  <React.Fragment key={index}>
+                    <Col xs={12} md={6}>
+                      <SelectBox
+                        key={index}
+                        defaultValue={{ label: guy.name, value: guy.id, gender: 'guy', index, player: guy }}
+                        onChange={this.props.updateCouple}
+                        options={guysubs && shapeOptions(guysubs, { defaultOpt: originalCouples[index].guy, gender: 'guy', index })}
+                        isChanged={originalCouples[index] && originalCouples[index].guy.id !== guy.id }
+                        />
+                    </Col>
+                    <Col xs={12} md={6}>
+                      <SelectBox
+                        key={index}
+                        defaultValue={{ label: gal.name, value: gal.id, gender: 'gal', index, player: gal }}
+                        onChange={this.props.updateCouple}
+                        options={galsubs && shapeOptions(galsubs, { defaultOpt: originalCouples[index].gal, gender: 'gal', index })}
+                        isChanged={originalCouples[index] && originalCouples[index].gal.id !== gal.id }
+                        />
+                    </Col>
+                  </React.Fragment>
+                )
+              })}
             </Row>
           </Col>
         </Row>
@@ -79,11 +95,19 @@ class Matches extends Component {
   }
 }
 
+const isObjectEqual = (x, y) => {
+  x = Object.assign({}, x)
+  y = Object.assign({}, y)
+  return JSON.stringify(x) === JSON.stringify(y)
+}
+
 const mapStateToProps = ({ schedule }) => {
-  const { blockplayers, subs } = schedule
+  const { blockplayers, subs, originalCouples } = schedule
   return {
     blockplayers,
-    subs
+    subs,
+    originalCouples,
+    coupleChanged: !isObjectEqual(blockplayers.couples, originalCouples)
   }
 }
 
@@ -91,8 +115,6 @@ const mapDispatchToProps = {
   getBlockPlayers,
   updateCouple
 }
-
-
 
 export default connect(
   mapStateToProps,

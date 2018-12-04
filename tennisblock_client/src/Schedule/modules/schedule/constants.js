@@ -12,3 +12,5 @@ export const BLOCK_PLAYERS_FETCHED = actionType('BLOCK_PLAYERS_FETCHED', MODULE_
 export const GET_SUBS = actionType('GET_SUBS', MODULE_NAME)
 
 export const UPDATE_COUPLE = actionType('UPDATE_COUPLE', MODULE_NAME)
+
+export const COPY_ORIGINAL_COUPLES = actionType('COPY_ORIGINAL_COUPLES', MODULE_NAME)

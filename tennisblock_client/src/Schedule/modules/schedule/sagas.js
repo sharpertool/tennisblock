@@ -14,7 +14,7 @@ function* requestUserProfile() {
        yield put(actions.updateProfile(profile))
      }
   } catch (error) {
-  
+
   }
 }
 
@@ -47,9 +47,9 @@ function* requestMatchData() {
 
 function* requestBlockPlayers(action) {
   try {
-    console.log(action)
     const { data } = yield call(axios.get, `/api/blockplayers/${action.id}`)
-    yield put(actions.setBlockPlayers(data)) 
+    yield put(actions.setBlockPlayers(data))
+    yield put(actions.copyOriginalCouples(data.couples))
     const subs = yield call(axios.get, `/api/subs/${action.id}`)
     yield put(actions.getSubs(subs.data))
   } catch (error) {
@@ -62,23 +62,10 @@ function* setPlayers() {
 }
 
 
-
-function* updateCouplePlayers(action) {
-  const couples = yield select(getCouples)
-  const subs = yield select(getSubs)
-  console.log(couples, subs)
-}
-
-function* updateMatches() {
-  yield takeLatest(types.UPDATE_COUPLE, updateCouplePlayers)
-}
-
-
 export default function* rootSaga() {
   yield all([
     fetchBlockDates(),
     requestInitialData(),
-    setPlayers(),
-    updateMatches()
+    setPlayers()
   ])
 }

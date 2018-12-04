@@ -9,11 +9,17 @@ export const updatePlaySchedule = (schedule) => ({
 
 
 export const getBlockPlayers = (id) => {
-  console.log(id)
   return {
     type: types.GET_BLOCK_PLAYERS,
     id,
   }
+}
+
+export const copyOriginalCouples = (couples) => {
+    return {
+        type: types.COPY_ORIGINAL_COUPLES,
+        couples
+    }
 }
 
 export const getSubs = (subs) => {
@@ -23,11 +29,10 @@ export const getSubs = (subs) => {
   }
 }
 
-export const updateCouple = (prevPlayer, sub) => {
+export const updateCouple = (selectedValue) => {
   return {
     type: types.UPDATE_COUPLE,
-    prevPlayer,
-    sub
+    selectedValue
   }
 }
 
