@@ -26,10 +26,7 @@ function* fetchBlockDates() {
   try {
 
     const { data } = yield call(axios.get, 'api/blockdates')
-    yield put({
-      type: types.SET_BLOCKDATES,
-      blockdates: data.filter(date => !date.holdout)
-    })
+    yield put(actions.setBlockDates(data.filter(date => !date.holdout)))
   } catch ({ response }) {
     console.log(response)
   }
@@ -45,20 +42,20 @@ function* requestMatchData() {
 }
 
 
-function* requestBlockPlayers(action) {
+function* requestBlockPlayers({ payload }) {
   try {
-    const { data } = yield call(axios.get, `/api/blockplayers/${action.id}`)
+    const { data } = yield call(axios.get, `/api/blockplayers/${payload.blockDate}`)
     yield put(actions.setBlockPlayers(data))
-    yield put(actions.copyOriginalCouples(data.couples))
-    const subs = yield call(axios.get, `/api/subs/${action.id}`)
+
+    const subs = yield call(axios.get, `/api/subs/${payload.blockDate}`)
     yield put(actions.getSubs(subs.data))
   } catch (error) {
-    console.log(error.response)
+    yield put(actions.getBlockPlayersFail(error))
   }
 }
 
-function* setPlayers() {
-  yield takeLatest(types.GET_BLOCK_PLAYERS, requestBlockPlayers)
+function* getBlockPlayers() {
+  yield takeLatest(types.FETCH_BLOCK_PLAYERS, requestBlockPlayers)
 }
 
 
@@ -66,6 +63,6 @@ export default function* rootSaga() {
   yield all([
     fetchBlockDates(),
     requestInitialData(),
-    setPlayers()
+    getBlockPlayers()
   ])
 }

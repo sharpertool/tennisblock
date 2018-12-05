@@ -24,36 +24,50 @@ const initialState = {
 
 
 const mainReducer = (state = initialState, action) => {
-  const { blockdates, blockplayers, subs, couples, selectedValue } = action
+  const { payload } = action
+
   switch(action.type) {
     case types.SET_BLOCKDATES:
+      const { blockdates } = payload
       return {
         ...state,
         blockdates
       }
+      break
+
     case types.UPDATE_PLAY_SCHEDULE:
       return {...state}
       break
-    case types.BLOCK_PLAYERS_FETCHED:
-      return { ...state, blockplayers }
-      break
-    case types.GET_SUBS:
-      return { ...state, subs }
-      break
-    case types.COPY_ORIGINAL_COUPLES:
+
+    case types.FETCH_BLOCK_PLAYERS_SUCCEED:
+      const { blockplayers } = payload
+      const { couples } = blockplayers
+
       return {
         ...state,
+        blockplayers,
         originalCouples: Object.assign({}, couples)
       }
       break
-    case types.UPDATE_COUPLE:
-      const { index, gender, player } = action.selectedValue
-      state.blockplayers.couples.splice(index, 1, {
-        ...state.blockplayers.couples[index],
+
+    case types.GET_SUBS:
+      const { subs } = payload
+      return {
+        ...state,
+        subs
+      }
+      break
+
+    case types.BLOCK_PLAYER_CHANGED:
+      const { selectedPlayer } = payload
+      const { key, gender, player } = selectedPlayer
+      state.blockplayers.couples.splice(key, 1, {
+        ...state.blockplayers.couples[key],
         [gender]: player
       })
       return { ...state }
       break
+
     default: return state;
   }
 

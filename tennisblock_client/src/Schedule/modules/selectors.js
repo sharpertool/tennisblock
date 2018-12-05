@@ -23,14 +23,8 @@
  */
 import _ from 'lodash'
 
-import {selectors as ssel, NAME as schedule_name} from './schedule'
-import {selectors as tsel, NAME as team_name} from './teams'
-
-// This version requires lodash.. not sure if there is an advantage??
-const fromRoot = (path) =>
-  (selector) =>
-    (state, ...args) =>
-      selector(_.get(state, path), ...args);
+import {selectors as ssel, MODULE_NAME as schedule_name} from './schedule'
+import {selectors as tsel, MODULE_NAME as team_name} from './teams'
 
 // Version that does not require lodash
 const fromRoot2 = (path) =>

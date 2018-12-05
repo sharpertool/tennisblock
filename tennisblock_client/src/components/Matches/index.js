@@ -2,30 +2,12 @@ import chunk from 'lodash/chunk'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Row, Col, Button } from 'reactstrap'
-import { getBlockPlayers, updateCouple } from '~/Schedule/modules/schedule/actions'
+import { getBlockPlayers, changeBlockPlayer } from '~/Schedule/modules/schedule/actions'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import HeaderDate from '~/components/ui/Header/Date'
+import { selectors } from '~/Schedule/modules'
 
 import styles from './styles.local.scss'
-
-
-const shapeOptions = (values, { gender, index, defaultOpt }) => {
-  const options = values.reduce((acc, value, i) => {
-    acc[i] = { label: value.name, value: value.id, gender, index, player: value }
-    return acc
-  }, [])
-
-  return [
-    {
-      label: defaultOpt.name,
-      value: defaultOpt.id,
-      gender,
-      index,
-      player: defaultOpt
-    },
-    ...options
-  ]
-}
 
 class Matches extends Component {
   componentDidMount() {
@@ -36,9 +18,7 @@ class Matches extends Component {
     }
   }
   render() {
-    const { blockplayers, subs, match, originalCouples } = this.props
-    const { galsubs, guysubs } = subs
-
+    const { blockplayers, match, guyOptions, galOptions, changes } = this.props
     return(
       <div className="matches">
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id} />
@@ -47,7 +27,7 @@ class Matches extends Component {
             <Button color="danger">Schedule</Button>
             <Button color="danger">Clear Schedule</Button>
             <Button color="danger">Update Schedule</Button>
-            <Button color="danger" disabled={!this.props.coupleChanged}>Save Changes</Button>
+            <Button color="danger" disabled={!this.props.isEdited}>Save Changes</Button>
           </Col>
         </Row>
         <Row>
@@ -67,20 +47,18 @@ class Matches extends Component {
                   <React.Fragment key={index}>
                     <Col xs={12} md={6}>
                       <SelectBox
-                        key={index}
-                        defaultValue={{ label: guy.name, value: guy.id, gender: 'guy', index, player: guy }}
-                        onChange={this.props.updateCouple}
-                        options={guysubs && shapeOptions(guysubs, { defaultOpt: originalCouples[index].guy, gender: 'guy', index })}
-                        isChanged={originalCouples[index] && originalCouples[index].guy.id !== guy.id }
+                        defaultValue={{ label: guy.name, value: guy.id, gender: 'guy', key: index, player: guy }}
+                        onChange={this.props.changeBlockPlayer}
+                        options={guyOptions && guyOptions[index]}
+                        isChanged={changes[index].guy}
                         />
                     </Col>
                     <Col xs={12} md={6}>
                       <SelectBox
-                        key={index}
-                        defaultValue={{ label: gal.name, value: gal.id, gender: 'gal', index, player: gal }}
-                        onChange={this.props.updateCouple}
-                        options={galsubs && shapeOptions(galsubs, { defaultOpt: originalCouples[index].gal, gender: 'gal', index })}
-                        isChanged={originalCouples[index] && originalCouples[index].gal.id !== gal.id }
+                        defaultValue={{ label: gal.name, value: gal.id, gender: 'gal', key: index, player: gal }}
+                        onChange={this.props.changeBlockPlayer}
+                        options={galOptions && galOptions[index]}
+                        isChanged={changes[index].gal}
                         />
                     </Col>
                   </React.Fragment>
@@ -94,25 +72,19 @@ class Matches extends Component {
   }
 }
 
-const isObjectEqual = (x, y) => {
-  x = Object.assign({}, x)
-  y = Object.assign({}, y)
-  return JSON.stringify(x) === JSON.stringify(y)
-}
-
-const mapStateToProps = ({ schedule }) => {
-  const { blockplayers, subs, originalCouples } = schedule
+const mapStateToProps = (state) => {
   return {
-    blockplayers,
-    subs,
-    originalCouples,
-    coupleChanged: !isObjectEqual(blockplayers.couples, originalCouples)
+    blockplayers: selectors.getBlockPlayers(state),
+    isEdited: selectors.isBlockPlayerEdited(state),
+    guyOptions: selectors.getGuySubOptions(state),
+    galOptions: selectors.getGalSubOptions(state),
+    changes: selectors.changes(state)
   }
 }
 
 const mapDispatchToProps = {
   getBlockPlayers,
-  updateCouple
+  changeBlockPlayer
 }
 
 export default connect(
