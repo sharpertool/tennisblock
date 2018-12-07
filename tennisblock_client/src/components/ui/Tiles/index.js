@@ -11,7 +11,7 @@ const tiles = ({ dates }) => {
             {new Date(date).toLocaleString('en-us', { month: "long" })}
           </div>
           <div className={styles.tileDay}>
-            {new Date(date).getDate()}
+            {new Date(date).toLocaleString('en-us', { day: "numeric" })}
           </div>
       </Link>)
 }
