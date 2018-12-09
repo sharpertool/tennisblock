@@ -31,7 +31,7 @@ class Matches extends Component {
           </Col>
         </Row>
         <Row>
-          <Col xs={3}>
+          <Col md={12}>
             <Row>
               <Col xs={6}>
                 <h3 className={styles.tableHeader}>Guys</h3>
