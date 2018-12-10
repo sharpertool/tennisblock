@@ -1,5 +1,6 @@
 from dateutil.parser import parse
 from django.views.generic import TemplateView, CreateView
+from django.urls import reverse_lazy
 
 from TBLib.view import class_login_required
 
@@ -143,13 +144,6 @@ class SeasonDetailView(TemplateView):
 @class_login_required
 class SeasonCreate(CreateView):
     template_name = "season/season_create.html"
+    success_url = reverse_lazy('season:seasons')
+    form_class = SeasonForm
     model = Season
-    fields = [
-        'name',
-        'courts',
-        'firstcourt',
-        'startdate',
-        'enddate',
-        'blockstart',
-        'blocktime'
-    ]
