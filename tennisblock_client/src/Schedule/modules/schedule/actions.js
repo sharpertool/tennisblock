@@ -1,47 +1,36 @@
+import { createAction } from 'redux-actions'
 import * as types from './constants'
 
-export const setBlockDates = (blockdates) => ({
-  type: types.SET_BLOCKDATES,
-  payload: {
-    blockdates
-  }
-})
+export const setBlockDates = createAction(
+    types.SET_BLOCKDATES,
+    blockdates => ({ blockdates })
+)
 
-export const updatePlaySchedule = (schedule) => ({
-  type: types.UPDATE_PLAY_SCHEDULE,
-  payload: schedule
-})
+export const updatePlaySchedule = createAction(
+    types.UPDATE_PLAY_SCHEDULE,
+    schedule => ({ schedule })
+)
 
-export const getSubs = (subs) => ({
-  type: types.GET_SUBS,
-  payload: {
-    subs
-  }
-})
+export const getSubs = createAction(
+    types.GET_SUBS,
+    subs => ({ subs })
+)
 
-export const changeBlockPlayer = (selectedPlayer) => ({
-  type: types.BLOCK_PLAYER_CHANGED,
-  payload: {
-    selectedPlayer
-  }
-})
+export const changeBlockPlayer = createAction(
+    types.BLOCK_PLAYER_CHANGED,
+    selectedPlayer => ({ selectedPlayer })
+)
 
-export const setBlockPlayers = (blockplayers) => ({
-  type: types.FETCH_BLOCK_PLAYERS_SUCCEED,
-  payload: {
-    blockplayers
-  }
-})
+export const setBlockPlayers = createAction(
+    types.FETCH_BLOCK_PLAYERS_SUCCEED,
+    blockplayers => ({ blockplayers })
+)
 
-export const getBlockPlayers = (blockDate) => ({
-  type: types.FETCH_BLOCK_PLAYERS,
-  payload: {
-    blockDate
-  }
-})
+export const getBlockPlayers = createAction(
+    types.FETCH_BLOCK_PLAYERS,
+    blockDate => ({ blockDate })
+)
 
-export const getBlockPlayersFail = (error) => ({
-  type: types.FETCH_BLOCK_PLAYERS_FAILED,
-  payload: new Error(),
-  error: true
-})
+export const getBlockPlayersFail = createAction(
+    types.FETCH_BLOCK_PLAYERS_FAILED
+)
