@@ -38,6 +38,7 @@
     "react-select": "^2.1.2",
     "reactstrap": "^6.5.0",
     "redux": "4.0.0",
+    "redux-actions": "^2.6.4",
     "redux-form": "^7.4.2",
     "redux-saga": "0.16.1",
     "yup": "^0.26.6"
