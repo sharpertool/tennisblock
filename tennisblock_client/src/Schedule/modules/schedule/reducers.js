@@ -1,3 +1,4 @@
+import { handleActions } from 'redux-actions'
 import * as types from './constants'
 
 const initialState = {
@@ -22,55 +23,54 @@ const initialState = {
   subs: {},
 }
 
+const reducer = handleActions(
+    {
+        [types.SET_BLOCKDATES](state, { payload }) {
+          const blockdates = payload
+          return {
+            ...state,
+            blockdates
+          }
+        },
 
-const mainReducer = (state = initialState, action) => {
-  const { payload } = action
+        [types.UPDATE_PLAY_SCHEDULE](state, { payload }) {
+          return {...state}
+        },
 
-  switch(action.type) {
-    case types.SET_BLOCKDATES:
-      const { blockdates } = payload
-      return {
-        ...state,
-        blockdates
-      }
-      break
+        [types.FETCH_BLOCK_PLAYERS_SUCCEED](state, { payload }) {
+          const blockplayers = payload
+          const { couples } = blockplayers
 
-    case types.UPDATE_PLAY_SCHEDULE:
-      return {...state}
-      break
+          return {
+            ...state,
+            blockplayers,
+            originalCouples: Object.assign({}, couples)
+          }
+        },
 
-    case types.FETCH_BLOCK_PLAYERS_SUCCEED:
-      const { blockplayers } = payload
-      const { couples } = blockplayers
+        [types.GET_SUBS](state, { payload }) {
+          const subs = payload
+          return {
+            ...state,
+            subs
+          }
+        },
 
-      return {
-        ...state,
-        blockplayers,
-        originalCouples: Object.assign({}, couples)
-      }
-      break
+        [types.BLOCK_PLAYER_CHANGED](state, { payload }) {
+          const selectedPlayer = payload
+          const { key, gender, player } = selectedPlayer
 
-    case types.GET_SUBS:
-      const { subs } = payload
-      return {
-        ...state,
-        subs
-      }
-      break
+          state.blockplayers.couples.splice(key, 1, {
+            ...state.blockplayers.couples[key],
+            [gender]: player
+          })
 
-    case types.BLOCK_PLAYER_CHANGED:
-      const { selectedPlayer } = payload
-      const { key, gender, player } = selectedPlayer
-      state.blockplayers.couples.splice(key, 1, {
-        ...state.blockplayers.couples[key],
-        [gender]: player
-      })
-      return { ...state }
-      break
+          return { ...state }
+        },
 
-    default: return state;
-  }
 
-}
+    },
+    initialState
+)
 
-export default mainReducer
+export default reducer

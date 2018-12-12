@@ -43,12 +43,12 @@ function* requestMatchData(date) {
 
 function* requestBlockPlayers({ payload }) {
   try {
-    yield fork(requestMatchData, payload.blockDate)
+    yield fork(requestMatchData, payload)
     
-    const { data } = yield call(axios.get, `/api/blockplayers/${payload.blockDate}`)
+    const { data } = yield call(axios.get, `/api/blockplayers/${payload}`)
     yield put(actions.setBlockPlayers(data))
 
-    const subs = yield call(axios.get, `/api/subs/${payload.blockDate}`)
+    const subs = yield call(axios.get, `/api/subs/${payload}`)
     yield put(actions.getSubs(subs.data))
   } catch (error) {
     yield put(actions.getBlockPlayersFail(error))
