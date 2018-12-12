@@ -26,7 +26,7 @@ const initialState = {
 const reducer = handleActions(
     {
         [types.SET_BLOCKDATES](state, { payload }) {
-          const { blockdates } = payload
+          const blockdates = payload
           return {
             ...state,
             blockdates
@@ -38,7 +38,7 @@ const reducer = handleActions(
         },
 
         [types.FETCH_BLOCK_PLAYERS_SUCCEED](state, { payload }) {
-          const { blockplayers } = payload
+          const blockplayers = payload
           const { couples } = blockplayers
 
           return {
@@ -49,7 +49,7 @@ const reducer = handleActions(
         },
 
         [types.GET_SUBS](state, { payload }) {
-          const { subs } = payload
+          const subs = payload
           return {
             ...state,
             subs
@@ -57,7 +57,7 @@ const reducer = handleActions(
         },
 
         [types.BLOCK_PLAYER_CHANGED](state, { payload }) {
-          const { selectedPlayer } = payload
+          const selectedPlayer = payload
           const { key, gender, player } = selectedPlayer
 
           state.blockplayers.couples.splice(key, 1, {
