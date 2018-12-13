@@ -12,7 +12,6 @@ from .views import (
     PlaysheetView,
     ContactView,
     AboutView,
-    CouplesView
 )
 
 urlpatterns = (
@@ -22,7 +21,6 @@ urlpatterns = (
     path('availability_form/<int:pk>/', AvailabilityFormView.as_view(), name='availability_form_post'),
     path('playsheet/', PlaysheetView.as_view()),
     path('accounts/', include('accounts.urls')),
-    path('couples/<int:pk>>', CouplesView.as_view(), name="couple_editor"),
     path('contact/', ContactView.as_view(), name="contact"),
     path('season/', include('season.urls')),
     path('members/', include('members.urls')),

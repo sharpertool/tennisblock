@@ -1,7 +1,7 @@
 {% extends "common/angular_base.html" %}
 {% load staticfiles %}
 
-{% block body %}
+{% block page_content %}
     <div class="container">
         <div class="row">
             <div class="col">
@@ -27,7 +27,6 @@
                         <li>Name: {{ couple.name }} </li>
                     {% endfor %}
                 </ul>
-
             </div>
         </div>
     {% endif %}
@@ -35,15 +34,11 @@
     <div class="row">
         <div class="col">
             <h3>New Couple</h3>
-            <form action="{% url 'couple_editor' season.pk %}" method="post">
+            <form action="{% url 'season:couple_editor' season.pk %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" value="Submit"/>
             </form>
-
         </div>
     </div>
-
-    </div>
-
 {% endblock %}
