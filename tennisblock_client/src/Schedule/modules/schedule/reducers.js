@@ -44,7 +44,7 @@ const reducer = handleActions(
           return {
             ...state,
             blockplayers,
-            originalCouples: Object.assign({}, couples)
+            originalCouples: [...couples]
           }
         },
 
@@ -59,11 +59,15 @@ const reducer = handleActions(
         [types.BLOCK_PLAYER_CHANGED](state, { payload }) {
           const selectedPlayer = payload
           const { key, gender, player } = selectedPlayer
+          const currentPlayer = state.blockplayers.couples[key][gender]
 
           state.blockplayers.couples.splice(key, 1, {
             ...state.blockplayers.couples[key],
             [gender]: player
           })
+
+          const subIndex = state.subs[`${gender}subs`].findIndex(sub => sub.id === selectedPlayer.player.id)
+          state.subs[`${gender}subs`].splice(subIndex, 1, currentPlayer)
 
           return { ...state }
         },

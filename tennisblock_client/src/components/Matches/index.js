@@ -19,6 +19,7 @@ class Matches extends Component {
   }
   render() {
     const { blockplayers, match, guyOptions, galOptions, changes } = this.props
+
     return(
       <div className="matches">
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id} />
@@ -26,8 +27,7 @@ class Matches extends Component {
           <Col className="d-flex justify-content-between" xs={3}>
             <Button color="danger">Schedule</Button>
             <Button color="danger">Clear Schedule</Button>
-            <Button color="danger">Update Schedule</Button>
-            <Button color="danger" disabled={!this.props.isEdited}>Save Changes</Button>
+            <Button color="danger" disabled={!this.props.isEdited}>Update Schedule</Button>
           </Col>
         </Row>
         <Row>
@@ -47,7 +47,7 @@ class Matches extends Component {
                   <React.Fragment key={index}>
                     <Col xs={12} md={6}>
                       <SelectBox
-                        defaultValue={{ label: guy.name, value: guy.id, gender: 'guy', key: index, player: guy }}
+                        defaultValue={{ label: guy.name, value: guy.id, gender: 'guy', index, player: guy }}
                         onChange={this.props.changeBlockPlayer}
                         options={guyOptions && guyOptions[index]}
                         isChanged={changes[index].guy}
@@ -55,7 +55,7 @@ class Matches extends Component {
                     </Col>
                     <Col xs={12} md={6}>
                       <SelectBox
-                        defaultValue={{ label: gal.name, value: gal.id, gender: 'gal', key: index, player: gal }}
+                        defaultValue={{ label: gal.name, value: gal.id, gender: 'gal', index, player: gal }}
                         onChange={this.props.changeBlockPlayer}
                         options={galOptions && galOptions[index]}
                         isChanged={changes[index].gal}

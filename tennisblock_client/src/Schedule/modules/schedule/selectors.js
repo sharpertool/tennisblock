@@ -12,38 +12,42 @@ export const isBlockPlayerEdited = ({ blockplayers, originalCouples }) => {
   return JSON.stringify(base) !== JSON.stringify(couples)
 }
 
-export const getGuySubOptions = ({ subs, originalCouples }) => {
+export const getGuySubOptions = ({ subs, blockplayers }) => {
+  const { couples } = blockplayers
   const { guysubs } = subs
-  return Object.keys(originalCouples).reduce((result, key) => {
-    const guyPlayers = guysubs && guysubs.concat([originalCouples[key].guy])
-    result[key] = guyPlayers && guyPlayers.map((player) => {
+
+  return (couples || []).reduce((result, value, index) => {
+    const guyPlayers = guysubs && [couples[index].guy].concat(guysubs)
+    result[index] = guyPlayers && guyPlayers.map((player) => {
       return {
         label: player.name,
         value: player.id,
-        key: Number(key),
+        key: Number(index),
         gender: 'guy',
         player
       }
     })
     return result
-  }, {})
+  }, [])
 }
 
-export const getGalSubOptions = ({ subs, originalCouples }) => {
+export const getGalSubOptions = ({ subs, blockplayers }) => {
+  const { couples } = blockplayers
   const { galsubs } = subs
-  return Object.keys(originalCouples).reduce((result, key) => {
-    const galPlayers = galsubs && galsubs.concat([originalCouples[key].gal])
-    result[key] = galPlayers && galPlayers.map((player) => {
+
+  return (couples || []).reduce((result, value, index) => {
+    const galPlayers = galsubs && [couples[index].gal].concat(galsubs)
+    result[index] = galPlayers && galPlayers.map((player) => {
       return {
         label: player.name,
         value: player.id,
-        key: Number(key),
+        key: Number(index),
         gender: 'gal',
         player
       }
     })
     return result
-  }, {})
+  }, [])
 }
 
 export const changes = ({ originalCouples, blockplayers }) => {
