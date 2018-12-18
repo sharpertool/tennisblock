@@ -382,8 +382,8 @@ class Scheduler(object):
 
             for cpl in couples:
                 try:
-                    md = cpl['currguy']
-                    fd = cpl['currgal']
+                    md = cpl['guy']
+                    fd = cpl['gal']
                     self._addToSchedule(mtg, md, fd)
                     self._addToSchedule(mtg, fd, md)
 

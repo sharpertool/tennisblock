@@ -24,13 +24,11 @@ function* requestInitialData() {
 
 function* fetchBlockDates() {
   try {
-
     const { data } = yield call(axios.get, 'api/blockdates')
     yield put(actions.setBlockDates(data))
   } catch ({ response }) {
     console.log(response)
   }
-
 }
 
 function* requestMatchData(date) {
@@ -44,7 +42,7 @@ function* requestMatchData(date) {
 function* requestBlockPlayers({ payload }) {
   try {
     yield fork(requestMatchData, payload)
-    
+
     const { data } = yield call(axios.get, `/api/blockplayers/${payload}`)
     yield put(actions.setBlockPlayers(data))
 
@@ -55,8 +53,28 @@ function* requestBlockPlayers({ payload }) {
   }
 }
 
+function* updateBlockPlayersRequest({ payload }) {
+  const { date, couples } = payload
+  try {
+    const { data } = yield call((params) => {
+      return axios.post(`/api/blockplayers/${date}`, params, {
+        xsrfCookieName: 'csrftoken',
+        xsrfHeaderName: 'X-CSRFToken'
+      })
+    }, { couples })
+
+    yield put(actions.getBlockPlayers(date))
+  } catch (error) {
+    yield put(actions.updateBlockPlayersFail(error))
+  }
+}
+
 function* getBlockPlayers() {
   yield takeLatest(types.FETCH_BLOCK_PLAYERS, requestBlockPlayers)
+}
+
+function* updateBlockPlayers() {
+  yield takeLatest(types.UPDATE_BLOCK_PLAYERS, updateBlockPlayersRequest)
 }
 
 
@@ -64,6 +82,7 @@ export default function* rootSaga() {
   yield all([
     fetchBlockDates(),
     requestInitialData(),
-    getBlockPlayers()
+    getBlockPlayers(),
+    updateBlockPlayers()
   ])
 }
