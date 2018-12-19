@@ -25,4 +25,4 @@ weekcalendar.propTypes = {
   dates: PropTypes.array.isRequired
 }
 
-export default weekcalendar 
+export default weekcalendar

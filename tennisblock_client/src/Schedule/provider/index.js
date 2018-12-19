@@ -1,18 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
 
 import App from '~/containers/App'
 import Routes from '~/Schedule/routes'
 
+import ScheduleLayout from '~/containers/Schedule'
+
 const scheduleProvider = ({ store }) => (
   <Provider store={store}>
-    <App>
-      <Router>
+    <Router history={browserHistory}>
+      <App>
         <Routes />
-      </Router>
-    </App>
+      </App>
+    </Router>
   </Provider>
 )
 
