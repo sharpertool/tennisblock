@@ -1,8 +1,8 @@
 version: '2'
 
 volumes:
-  postgres_data_dev: {}
-  tennis_data_dev: {}
+  postgres_data_dev:
+  tennis_data_dev:
 
 services:
 
@@ -14,8 +14,8 @@ services:
       #- ./database/backups:/backups
       # You can also modify this to point to your local Dropbox location where the shared
       # Update .env file to set a location on your system.
-      - ${SHARED_BACKUPS}:/backups
-      - ${LOCAL_BACKUPS}:/local_backups
+      - "${SHARED_BACKUPS}:/backups"
+      - "${LOCAL_BACKUPS}:/local_backups"
     environment:
       - POSTGRES_USER=tennisblock
       - POSTGRES_DB=tennisblock
