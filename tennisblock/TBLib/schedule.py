@@ -279,6 +279,14 @@ class Scheduler(object):
         Query the schedule of players for the given date.
         """
         mtg = get_meeting_for_date(date)
+
+        if mtg is None:
+            return {
+                'guys': [],
+                'gals': [],
+                'couples': []
+            }
+        
         season = get_current_season()
         num_courts = mtg.num_courts
 
