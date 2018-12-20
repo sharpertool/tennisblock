@@ -33,9 +33,7 @@ function* fetchBlockDates() {
 
 function* requestMatchData(date) {
   const response = yield call(axios.get, `/api/matchdata/${date}`)
-  console.log(response)
   yield put(actions.updatePlaySchedule(response.data))
-  console.log(response.data)
 }
 
 

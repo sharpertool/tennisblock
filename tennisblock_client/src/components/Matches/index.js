@@ -2,6 +2,7 @@ import chunk from 'lodash/chunk'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Row, Col, Button } from 'reactstrap'
+import { withRouter } from 'react-router-dom'
 import { getBlockPlayers, changeBlockPlayer, updateBlockPlayers } from '~/Schedule/modules/schedule/actions'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import HeaderDate from '~/components/ui/Header/Date'
@@ -25,7 +26,6 @@ class Matches extends Component {
 
   render() {
     const { blockplayers, match, guyOptions, galOptions, changes } = this.props
-
     return(
       <div className="matches">
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id} />
@@ -94,7 +94,7 @@ const mapDispatchToProps = {
   updateBlockPlayers
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Matches)
+)(Matches))
