@@ -31,25 +31,7 @@
                 <h1>Granted change schedule permissions.</h1>
             {% endif %}
 
-            {% comment %}
-            <div class="pure-menu pure-menu-open pure-menu-horizontal">
-                <h2>Meeting Selectors</h2>
-                <ul class="meeting_selectors">
-                    {% for meeting in meetings %}
-                        <li>
-                            <button class="pure-button">{{ meeting.date }}</button>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endcomment %}
-
             {% verbatim %}
-            <h2>Latest Block Schedule for {{ block.currdate }}</h2>
-            <div schedule-nav block="block"></div>
-            <div id="players" block-players-table
-                 query-date="block.queryDate">
-            </div>
             <div schedule-matches query-date="block.queryDate"></div>
             {% endverbatim %}
 

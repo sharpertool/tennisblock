@@ -7,6 +7,11 @@ export const updatePlaySchedule = (schedule) => ({
   payload: schedule
 })
 
+export const updateMatchData = (data) => ({
+  type: types.UPDATE_MATCH_DATA,
+  payload: data
+})
+
 
 export const getBlockPlayers = (id) => {
   return {

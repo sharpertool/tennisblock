@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import classes from './styles.local.scss'
 import {connect} from 'react-redux'
 
-import {selectors as gsel} from 'Schedule/modules'
-import {actions as t_actions} from 'Schedule/modules/teams'
+import {selectors as gsel} from '~/Schedule/modules'
+import {actions as t_actions} from '~/Schedule/modules/teams'
 
 import Match from '~/components/Match'
 
@@ -14,8 +14,12 @@ class MatchReview extends Component {
     const {play_schedule} = this.props
     console.log('Play Schedule:', play_schedule)
 
-    const matches = play_schedule.map((m, i) =>
-    {return (<Match key={i} idx={i+1} courts={[...m]}/>)})
+    let matches = null
+    if (play_schedule) {
+      matches = play_schedule.map((m, i) =>
+      {return (<Match key={i} idx={i+1} courts={[...m]}/>)})
+      
+    }
 
     return (
       <React.Fragment>

@@ -6,6 +6,7 @@ import * as types from './constants'
 
 const initialState = {
   blockplayers: {},
+  schedule: [],
   subs: {},
   ui: {
     selected: null
@@ -21,6 +22,8 @@ const mainReducer = (state = initialState, action) => {
     case types.BLOCK_PLAYERS_FETCHED:
       return { ...state, blockplayers }
       break
+    case types.UPDATE_MATCH_DATA:
+      return {...state, schedule: action.payload}
     case types.GET_SUBS:
       return { ...state, subs }
       break

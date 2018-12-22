@@ -7,6 +7,7 @@ import { getBlockPlayers, changeBlockPlayer, updateBlockPlayers } from '~/Schedu
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import HeaderDate from '~/components/ui/Header/Date'
 import { selectors } from '~/Schedule/modules'
+import MatchReview from '~/containers/MatchReview'
 
 import styles from './styles.local.scss'
 
@@ -72,6 +73,9 @@ class Matches extends Component {
               })}
             </Row>
           </Col>
+        </Row>
+        <Row>
+          <MatchReview/>
         </Row>
       </div>
     )
