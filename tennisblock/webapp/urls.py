@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
@@ -24,7 +24,7 @@ urlpatterns = (
     path('contact/', ContactView.as_view(), name="contact"),
     path('season/', include('season.urls')),
     path('members/', include('members.urls')),
-    path('schedule/', include('schedule.urls')),
+    re_path('schedule/?', include('schedule.urls')),
     path('api/', include('api.urls')),
     path('django-admin/', admin.site.urls),
 
