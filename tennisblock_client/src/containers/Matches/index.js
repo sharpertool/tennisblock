@@ -6,8 +6,8 @@ import { withRouter } from 'react-router-dom'
 import { getBlockPlayers, changeBlockPlayer, updateBlockPlayers } from '~/Schedule/modules/schedule/actions'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import HeaderDate from '~/components/ui/Header/Date'
+import HLink from '~/components/ui/Header/Link'
 import { selectors } from '~/Schedule/modules'
-import MatchReview from '~/containers/MatchReview'
 
 import styles from './styles.local.scss'
 
@@ -75,7 +75,7 @@ class Matches extends Component {
           </Col>
         </Row>
         <Row>
-          <MatchReview/>
+          <HLink title="Play Sheet" link={`/schedule/${match.params.id}/mixer`}/>
         </Row>
       </div>
     )

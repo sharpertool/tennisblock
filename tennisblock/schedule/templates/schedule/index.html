@@ -24,20 +24,6 @@
 {% block page_content %}
 
     <div id="react-schedule"></div>
-    <div class="row">
-        <div class="col" ng-controller="BlockSchedule">
-
-            {% if perms.blockdb.schedule.change_sched %}
-                <h1>Granted change schedule permissions.</h1>
-            {% endif %}
-
-            {% verbatim %}
-            <div schedule-matches query-date="block.queryDate"></div>
-            {% endverbatim %}
-
-
-        </div>
-    </div>
 
     <div class="row">
         <div class="col" id="schedule"></div>

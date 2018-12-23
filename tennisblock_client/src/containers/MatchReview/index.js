@@ -37,7 +37,7 @@ const mapStateToProps = (state) => {
 }
 
 /**
- * Object with key/values for displatch actions
+ * Object with key/values for dispatch actions
  *
  * connect will bind these to disptch, but I don't know if that
  * will support actions with values.
