@@ -1,35 +1,40 @@
-from rest_framework.request import Request
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from TBLib.manager import TeamManager
 
 from .apiutils import JSONResponse
 
 
-def pick_teams(request, date=None):
-    """
-    """
-    r = Request(request)
+class Teams(APIView):
 
-    if r.method == 'POST':
-        print("pick_teams POST for date %s" % date)
-        mgr = TeamManager()
-        match_data = mgr.pick_teams_for_date(date)
-
-        return JSONResponse({'status': 'POST Done',
-                             'date': date, 'teams': match_data})
-
-
-def query_teams(request, date=None):
-    """
-    """
-    r = Request(request)
-
-    if r.method == 'GET':
+    def get(self, request, date=None):
         print("pick_teams GET for date %s" % date)
-        match_data = {}
-        if date:
-            mgr = TeamManager()
-            match_data = mgr.query_match(date)
 
-        return JSONResponse({'status': 'GET Done',
-                             'date': date, 'teams': match_data})
+        match_data = {}
+
+        mgr = TeamManager()
+        match_data = mgr.query_match(date)
+
+        return Response({
+            'status': 'GET Done',
+            'date': date,
+            'teams': match_data
+        })
+
+    def post(self, request, date=None):
+        print("pick_teams POST for date %s" % date)
+
+        iterations = request.POST.get('iterations', 10)
+        max_tries = request.POST.get('max_tries', 5)
+
+        mgr = TeamManager()
+        match_data = mgr.pick_teams_for_date(date,
+                                             iterations=iterations,
+                                             max_tries=max_tries)
+
+        return Response({
+            'status': 'POST Done',
+            'date': date,
+            'teams': match_data
+        })

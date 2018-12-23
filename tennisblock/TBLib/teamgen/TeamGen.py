@@ -10,7 +10,10 @@ class TeamGen(object):
         self.n_sequences = num_seq
         self.iterLimit = 1000
 
-    def generate_set_sequences(self, b_allow_duplicates: bool = False, iterations: int = None):
+    def generate_set_sequences(self,
+                               b_allow_duplicates: bool = False,
+                               iterations: int = None,
+                               max_tries: int = 20):
         self.meeting.restart()
 
         self.meeting.set_see_partner_once(not b_allow_duplicates)
@@ -20,23 +23,20 @@ class TeamGen(object):
         while self.meeting.round_count() < self.n_sequences:
             group_round = None
             diff_max = 0.1
+            max_quality = 1.0
 
-            while diff_max <= 1.0 and group_round is None:
-                max_quality = 1.0
-                while max_quality < 2.5 and group_round is None:
-                    results = self.meeting.get_new_round(diff_max, max_quality)
-                    group_round, min_found_diff, min_found_q = results
-
-                    if group_round is None:
-                        print(f"Lowest Diff was {min_found_diff:5.3}")
-                        max_quality = min_found_q
-                        print("min_quality increased to {min_quality:3.1}")
-
-                    diff_max = min_found_diff
+            while diff_max <= 1.0 and max_quality < 2.5 and group_round is None:
+                results = self.meeting.get_new_round(
+                    diff_max, max_quality, max_tries)
+                group_round, min_found_diff, min_found_q = results
 
                 if group_round is None:
-                    diff_max += 0.1
-                    print("DiffMax Increased to {diff_max:5.3")
+                    # Increase the quality then the diff
+                    max_quality = max(max_quality+0.1, min_found_q)
+                    if max_quality >= 2.5:
+                        max_quality = 1.0
+                        diff_max += 0.1
+                    print(f"Criteria updated. Diff:{diff_max} Q:{max_quality}")
 
             if group_round is None:
                 self.meeting.print_check_stats()

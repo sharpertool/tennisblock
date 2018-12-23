@@ -8,7 +8,7 @@ from .blockschedule import (BlockNotifyer, getBlockDates,
                             getMatchData)
 
 from .views import get_seasons, get_current_season, get_latest_buzz
-from .teams import pick_teams
+from .teams import Teams
 
 from . import converters
 
@@ -19,8 +19,8 @@ urlpatterns = (
     path('seasons', get_seasons),
     path('currentseason', get_current_season),
     path('buzz', get_latest_buzz),
-    path('pickteams/<date:date>', pick_teams),
-    path('pickteams', pick_teams),
+    path('pickteams/<date:date>', Teams.as_view()),
+    path('pickteams', Teams.as_view()),
     path('blocksheet/<date:date>', blockSheet),
     path('blocksheet', blockSheet),
     path('blockdates', getBlockDates),

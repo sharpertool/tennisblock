@@ -18,20 +18,26 @@ class TeamManager(object):
         assert (len(men) == len(women))
         return men, women
 
-    def pick_teams_for_date(self, date):
+    def pick_teams_for_date(self,
+                            date,
+                            iterations: int = 100,
+                            max_tries: int = 20):
 
         dbt = DBTeams()
         men, women = dbt.get_players(date)
 
         mgr = TeamManager()
-        result = mgr.pick_teams(men=men, women=women)
+        result = mgr.pick_teams(men=men, women=women,
+                                iterations=iterations,
+                                max_tries=max_tries)
 
         match_data = mgr.query_match(date)
         return match_data
 
     def pick_teams(self, men=None, women=None, date=None, testing=False,
                    b_allow_duplicates=False, n_courts=None, n_sequences=3,
-                   iterations=None):
+                   iterations: int = 100,
+                   max_tries: int = 20):
 
         if men is None or women is None:
             men, women = self.get_players(date)
