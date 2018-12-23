@@ -11,8 +11,6 @@ class Teams(APIView):
     def get(self, request, date=None):
         print("pick_teams GET for date %s" % date)
 
-        match_data = {}
-
         mgr = TeamManager()
         match_data = mgr.query_match(date)
 
@@ -23,18 +21,14 @@ class Teams(APIView):
         })
 
     def post(self, request, date=None):
-        print("pick_teams POST for date %s" % date)
-
-        iterations = request.POST.get('iterations', 10)
-        max_tries = request.POST.get('max_tries', 5)
+        # Date can be part of the URL, or the post data.
+        date = request.data.get('date', date)
+        iterations = request.data.get('iterations', 10)
+        tries = request.data.get('tries', 5)
 
         mgr = TeamManager()
-        match_data = mgr.pick_teams_for_date(date,
-                                             iterations=iterations,
-                                             max_tries=max_tries)
+        result = mgr.pick_teams_for_date(date,
+                                         iterations=iterations,
+                                         max_tries=tries)
 
-        return Response({
-            'status': 'POST Done',
-            'date': date,
-            'teams': match_data
-        })
+        return Response(result)

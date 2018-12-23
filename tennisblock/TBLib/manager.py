@@ -24,6 +24,7 @@ class TeamManager(object):
                             max_tries: int = 20):
 
         dbt = DBTeams()
+        dbt.delete_matchup(date)
         men, women = dbt.get_players(date)
 
         mgr = TeamManager()
@@ -31,8 +32,10 @@ class TeamManager(object):
                                 iterations=iterations,
                                 max_tries=max_tries)
 
-        match_data = mgr.query_match(date)
-        return match_data
+        if result['status'] == 'success':
+            result['match'] = mgr.query_match(date)
+
+        return result
 
     def pick_teams(self, men=None, women=None, date=None, testing=False,
                    b_allow_duplicates=False, n_courts=None, n_sequences=3,
@@ -55,7 +58,11 @@ class TeamManager(object):
             return {"status": "fail", "error": errmsg}
 
         tg = TeamGen(n_courts, n_sequences, men, women)
-        sequences = tg.generate_set_sequences(b_allow_duplicates, iterations=iterations)
+        sequences = tg.generate_set_sequences(
+            b_allow_duplicates,
+            iterations=iterations,
+            max_tries=max_tries
+        )
 
         if sequences is None or len(sequences) < n_sequences:
             return {"status": "fail",

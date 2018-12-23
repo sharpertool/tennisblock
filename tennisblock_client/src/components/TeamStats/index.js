@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 // import classes from './index.local.scss'
 
 const teamstats = (props) => {
-  console.log('TeamStats Props:', props)
   const {teams} = props
   const spread = teams.map((t) => {
     const {f: {untrp: fu}, m: {untrp: fm}} = t

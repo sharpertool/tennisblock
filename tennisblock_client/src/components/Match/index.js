@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
 import Court from '~/components/Court'
 
 const match = (props) => {
-  console.log('Match Props:', props)
-  const {idx, courts} = props
+  const {courts} = props
 
   const courtRender = courts.map((court, idx) => {
     return (

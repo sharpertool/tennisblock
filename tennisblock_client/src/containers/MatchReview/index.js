@@ -10,9 +10,7 @@ import Match from '~/components/Match'
 class MatchReview extends Component {
 
   render() {
-    console.log('[Schedule]', this.props)
     const {play_schedule} = this.props
-    console.log('Play Schedule:', play_schedule)
 
     let matches = null
     if (play_schedule) {

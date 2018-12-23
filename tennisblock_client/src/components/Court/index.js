@@ -5,7 +5,6 @@ import Team from '~/components/Team'
 import TeamStats from '~/components/TeamStats'
 
 const court = (props) => {
-  console.log('Court Props:', props)
   const {idx, team1, team2} = props
 
   return (

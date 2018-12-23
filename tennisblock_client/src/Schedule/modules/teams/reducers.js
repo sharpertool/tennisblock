@@ -24,6 +24,8 @@ const mainReducer = (state = initialState, action) => {
       break
     case types.UPDATE_MATCH_DATA:
       return {...state, schedule: action.payload}
+    case types.CALCULATE_MATCHUPS:
+      return {...state, schedule: []}
     case types.GET_SUBS:
       return { ...state, subs }
       break
