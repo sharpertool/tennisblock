@@ -360,3 +360,6 @@ RAVEN_CONFIG = {
     'dsn': env("DJANGO_SENTRY_DSN",
                default='')
 }
+
+# Wagtail settings
+WAGTAIL_FRONTEND_LOGIN_URL='/'
