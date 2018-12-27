@@ -10,18 +10,30 @@ import Match from '~/components/Match'
 class MatchReview extends Component {
 
   render() {
-    const {play_schedule} = this.props
+    const { play_schedule, match } = this.props
 
     let matches = null
     if (play_schedule) {
       matches = play_schedule.map((m, i) =>
       {return (<Match key={i} idx={i+1} courts={[...m]}/>)})
-      
+
     }
 
     return (
       <React.Fragment>
-        <h3>React Play Schedule</h3>
+        <div className="col">
+          <h3>
+            React Play Schedule
+            {play_schedule && play_schedule.length ?
+              <a href={`/api/blocksheet/${match.params.id}`}
+                target="_blank"
+                className="btn btn-danger pull-right"
+              >
+                Download Blocksheet
+              </a> : null}
+          </h3>
+        </div>
+
         {matches}
       </React.Fragment>
     )

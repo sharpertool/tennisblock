@@ -12,7 +12,7 @@ import styles from './styles.local.scss'
 class Matchups extends Component {
   constructor(props) {
     super(props)
-    
+
     this.state = {
       iterations: 1,
       tries: 1
@@ -20,16 +20,16 @@ class Matchups extends Component {
     this.ref1 = React.createRef()
     this.ref2 = React.createRef()
   }
-  
+
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   }
-  
+
   handleFocus = (e) => {
     e.preventDefault()
     e.target.select()
   }
-  
+
   calculateMatchups = () => {
     const {match, calculateMatchups} = this.props
     const {iterations, tries} = this.state
@@ -39,7 +39,7 @@ class Matchups extends Component {
       tries: Number.parseInt(tries)
     })
   }
-  
+
   render() {
     const {match, calcResults} = this.props
     let errors = <div className={styles.error_div}><p></p></div>
@@ -81,7 +81,7 @@ class Matchups extends Component {
           </Col>
         </Row>
         <Row>
-          <MatchReview/>
+          <MatchReview {...this.props}/>
         </Row>
       </div>
     )
