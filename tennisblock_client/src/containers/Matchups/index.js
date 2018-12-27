@@ -14,21 +14,20 @@ class Matchups extends Component {
     super(props)
     
     this.state = {
-      iterations: 100,
-      tries: 20
+      iterations: 1,
+      tries: 1
     }
+    this.ref1 = React.createRef()
+    this.ref2 = React.createRef()
   }
   
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   }
   
-  componentDidMount() {
-    const {match, getBlockPlayers} = this.props
-    const {params} = match
-    if (match) {
-      getBlockPlayers(params.id)
-    }
+  handleFocus = (e) => {
+    e.preventDefault()
+    e.target.select()
   }
   
   calculateMatchups = () => {
@@ -42,29 +41,44 @@ class Matchups extends Component {
   }
   
   render() {
-    const {blockplayers, match, guyOptions, galOptions, changes} = this.props
+    const {match, calcResults} = this.props
+    let errors = <div className={styles.error_div}><p></p></div>
+    if (calcResults.status == 'fail') {
+      errors = <div><p className="text-warning">Error: {calcResults.error}</p></div>
+    }
     return (
-      <div className="matches">
+      <div className={["matches", styles.matches].join(' ')}>
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id}/>
         <Row className="mb-4">
           <Col className="d-flex justify-content-between" xs={3}>
+            Iterations:
             <input name="iterations"
+                   ref={this.ref1}
+                   //onFocus={this.handleFocus}
                    onChange={this.onChange}
                    type="number"
                    min="1" max="1000"
                    value={this.state.iterations}/>
+            Tries:
             <input name="tries"
+                   ref={this.ref2}
+                   //onFocus={this.handleFocus}
                    onChange={this.onChange}
                    type="number"
                    min="1" max="100"
                    value={this.state.tries}/>
+          </Col>
+        </Row>
+        <Row>
+          {errors}
+        </Row>
+        <Row>
+          <Col className="d-flex justify-content-left">
             <Button color="danger"
                     onClick={this.calculateMatchups}>
               Calculate Matchups
             </Button>
           </Col>
-        </Row>
-        <Row>
         </Row>
         <Row>
           <MatchReview/>
@@ -76,17 +90,11 @@ class Matchups extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    blockplayers: selectors.getBlockPlayers(state),
-    isEdited: selectors.isBlockPlayerEdited(state),
-    guyOptions: selectors.getGuySubOptions(state),
-    galOptions: selectors.getGalSubOptions(state),
-    changes: selectors.changes(state)
+    calcResults: selectors.calcResult(state)
   }
 }
 
 const mapDispatchToProps = ({
-  //getBlockPlayers: (val) => ({type: 'FU', payload: val}),
-  //calculateMatchups: (val) => ({type: 'FU', payload: val}),
   getBlockPlayers: actions.getBlockPlayers,
   calculateMatchups: actions.calculateMatchups,
 })

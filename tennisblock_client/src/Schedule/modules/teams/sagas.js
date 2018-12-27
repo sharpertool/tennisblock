@@ -30,6 +30,7 @@ function* calculateMatchups(action) {
     if (data.status == 'success') {
       yield put(actions.updateMatchData(data.match))
     }
+    yield put(actions.updateCalcResults({status: data.status, error: data.error}))
   } catch (e) {
     console.log(`Error picking teams. Will try again if you click! ${e}`)
   }

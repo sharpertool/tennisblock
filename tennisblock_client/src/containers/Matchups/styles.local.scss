@@ -1,3 +1,17 @@
 .tableHeader {
   font-size: 16px;
 }
+
+.matches {
+    input {
+       color: blue;
+    }
+
+    input:focus {
+        background-color: yellow;
+    }
+}
+
+.error_div {
+    min-height: 40px;
+}
