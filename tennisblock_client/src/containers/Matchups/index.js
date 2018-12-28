@@ -41,11 +41,21 @@ class Matchups extends Component {
   }
 
   render() {
-    const {match, calcResults} = this.props
+    const {match, calcResults, validPlaySchedule} = this.props
     let errors = <div className={styles.error_div}><p></p></div>
     if (calcResults.status == 'fail') {
       errors = <div><p className="text-warning">Error: {calcResults.error}</p></div>
     }
+    
+    const download = validPlaySchedule ?
+              <a href={`/api/blocksheet/${match.params.id}`}
+                target="_blank"
+                 role="button"
+                className="btn btn-danger pull-right"
+              >
+                Download Blocksheet
+              </a> : null
+    
     return (
       <div className={["matches", styles.matches].join(' ')}>
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id}/>
@@ -78,6 +88,7 @@ class Matchups extends Component {
                     onClick={this.calculateMatchups}>
               Calculate Matchups
             </Button>
+            {download}
           </Col>
         </Row>
         <Row>
@@ -90,7 +101,8 @@ class Matchups extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    calcResults: selectors.calcResult(state)
+    calcResults: selectors.calcResult(state),
+    validPlaySchedule: selectors.validPlaySchedule(state)
   }
 }
 

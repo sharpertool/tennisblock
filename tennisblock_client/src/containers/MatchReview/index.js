@@ -24,13 +24,6 @@ class MatchReview extends Component {
         <div className="col">
           <h3>
             React Play Schedule
-            {play_schedule && play_schedule.length ?
-              <a href={`/api/blocksheet/${match.params.id}`}
-                target="_blank"
-                className="btn btn-danger pull-right"
-              >
-                Download Blocksheet
-              </a> : null}
           </h3>
         </div>
 
