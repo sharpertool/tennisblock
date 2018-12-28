@@ -5,7 +5,7 @@ import ScheduleContainer from '~/containers/ScheduleContainer'
 
 import MeetingSchedule from '~/containers/MeetingSchedule'
 import BlockSchedule from '~/containers/BlockSchedule'
-import MeetingMatchups from '~/containers/Matchups'
+import MeetingMatchups from '~/containers/MeetingMatchups'
 
 const routes = () => (
     <ScheduleContainer>
