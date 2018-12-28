@@ -198,11 +198,6 @@ def getBlockDates(request):
     return JSONResponse({'status': "Failed"})
 
 
-def clear_schedule(request, date=None):
-    if request.method == 'GET':
-        print('got here')
-        return JSONResponse({'status': 'success'})
-
 def blockSchedule(request, date=None):
     """
     Update the schedule for the given date.
