@@ -67,6 +67,16 @@ function* updateBlockPlayersRequest({ payload }) {
   }
 }
 
+function* clearScheduleRequest({ payload }) {
+  const { date } = payload
+  try {
+    const { data } = yield call(axios.get, `/api/schedule/${date}/clear`)
+    console.log(data)
+  } catch (error) {
+    yield put(actions.clearScheduleFail(error))
+  }
+}
+
 function* getBlockPlayers() {
   yield takeLatest(types.FETCH_BLOCK_PLAYERS, requestBlockPlayers)
 }
@@ -75,12 +85,17 @@ function* updateBlockPlayers() {
   yield takeLatest(types.UPDATE_BLOCK_PLAYERS, updateBlockPlayersRequest)
 }
 
+function* clearSchedule() {
+  yield takeLatest(types.CLEAR_SCHEDULE, clearScheduleRequest)
+}
+
 
 export default function* rootSaga() {
   yield all([
     fetchBlockDates(),
     requestInitialData(),
     getBlockPlayers(),
-    updateBlockPlayers()
+    updateBlockPlayers(),
+    clearSchedule()
   ])
 }
