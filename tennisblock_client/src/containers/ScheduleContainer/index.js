@@ -4,7 +4,7 @@ import Breadcrumb from '~/components/ui/Breadcrumb'
 import { selectors } from '~/Schedule/modules'
 
 
-class Schedule extends Component {
+class ScheduleContainer extends Component {
   render() {
     return (
       <div className="schedule-layout">
@@ -25,4 +25,4 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps
-)(Schedule)
+)(ScheduleContainer)
