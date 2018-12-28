@@ -6,8 +6,6 @@ import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
 import App from '~/containers/App'
 import Routes from '~/Schedule/routes'
 
-import ScheduleLayout from '~/containers/Schedule'
-
 const scheduleProvider = ({ store }) => (
   <Provider store={store}>
     <Router history={browserHistory}>
