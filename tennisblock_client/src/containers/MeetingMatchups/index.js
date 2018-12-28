@@ -9,7 +9,7 @@ import MatchReview from '~/containers/MatchReview'
 
 import styles from './styles.local.scss'
 
-class Matchups extends Component {
+class MeetingMatchups extends Component {
   constructor(props) {
     super(props)
 
@@ -114,4 +114,4 @@ const mapDispatchToProps = ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Matchups))
+)(MeetingMatchups))
