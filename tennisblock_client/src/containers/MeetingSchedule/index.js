@@ -11,7 +11,7 @@ import { selectors } from '~/Schedule/modules'
 
 import styles from './styles.local.scss'
 
-class Matches extends Component {
+class MeetingSchedule extends Component {
   componentDidMount() {
     const { match, getBlockPlayers } = this.props
     const { params } = match
@@ -101,4 +101,4 @@ const mapDispatchToProps = {
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Matches))
+)(MeetingSchedule))
