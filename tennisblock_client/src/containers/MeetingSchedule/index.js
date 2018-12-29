@@ -57,7 +57,10 @@ class MeetingSchedule extends Component {
     
     const couples = blockplayers.couples ? blockplayers.couples : []
     
-    const can_clear_schedule = blockplayers.couples
+    const is_schedule_empty = blockplayers.couples.every(c => {
+      return c.guy.name == '----' && c.gal.name == '----'
+    })
+    const can_clear_schedule = !is_schedule_empty
     const can_schedule = !can_clear_schedule
     
     return (

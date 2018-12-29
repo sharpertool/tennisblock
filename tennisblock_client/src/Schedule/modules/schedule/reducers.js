@@ -19,7 +19,7 @@ const initialState = {
   },
   originalCouples: [],
   blockdates: [],
-  blockplayers: {},
+  blockplayers: {guys:[], gals:[], couples: []},
   subs: {},
 }
 
