@@ -3,12 +3,12 @@ import {connect} from 'react-redux'
 import React, {Component} from 'react'
 import {Row, Col, Button} from 'reactstrap'
 import {withRouter} from 'react-router-dom'
-import {actions} from '~/Schedule'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import HeaderDate from '~/components/ui/Header/Date'
 import HLink from '~/components/ui/Header/Link'
 import ConfirmDialog from '~/components/ui/ConfirmDialog'
-import {selectors} from '~/Schedule/modules'
+
+import {actions, selectors} from '~/Schedule'
 
 import styles from './styles.local.scss'
 
