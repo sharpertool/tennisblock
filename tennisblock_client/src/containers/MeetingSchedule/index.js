@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import React, {Component} from 'react'
 import {Row, Col, Button} from 'reactstrap'
 import {withRouter} from 'react-router-dom'
-import {getBlockPlayers, changeBlockPlayer, updateBlockPlayers, clearSchedule} from '~/Schedule/modules/schedule/actions'
+import {actions} from '~/Schedule'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import HeaderDate from '~/components/ui/Header/Date'
 import HLink from '~/components/ui/Header/Link'
@@ -20,7 +20,7 @@ class MeetingSchedule extends Component {
       confirm: false
     }
   }
-
+  
   componentDidMount() {
     const {match, getBlockPlayers} = this.props
     const {params} = match
@@ -34,7 +34,7 @@ class MeetingSchedule extends Component {
       confirm: !this.state.confirm
     })
   }
-
+  
   handleUpdate = () => {
     const {blockplayers, match, updateBlockPlayers} = this.props
     updateBlockPlayers({
@@ -44,8 +44,8 @@ class MeetingSchedule extends Component {
   }
   
   handleClear = () => {
-    const { clearSchedule, match } = this.props
-    clearSchedule({ date: match.params.id })
+    const {clearSchedule, match} = this.props
+    clearSchedule({date: match.params.id})
   }
   
   render() {
@@ -71,7 +71,7 @@ class MeetingSchedule extends Component {
             >
               You are about to clear the schedule. Do you wish to continue?
             </ConfirmDialog>
-
+            
             <Button
               disabled={!can_schedule}
               color="danger">
@@ -162,10 +162,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  getBlockPlayers,
-  changeBlockPlayer,
-  updateBlockPlayers,
-  clearSchedule
+  getBlockPlayers: actions.getBlockPlayers,
+  changeBlockPlayer: actions.changeBlockPlayer,
+  updateBlockPlayers: actions.updateBlockPlayers,
+  clearSchedule: actions.clearSchedule
 }
 
 export default withRouter(connect(
