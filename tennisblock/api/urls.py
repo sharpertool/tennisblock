@@ -4,8 +4,8 @@ from .availability import AvailabilityView
 from .members import SeasonPlayerView
 from .blocksheet import blockSheet
 from .blockschedule import (BlockNotifyer, getBlockDates,
-                            getSubList, blockPlayers, blockSchedule,
-                            getMatchData)
+                            getSubList, blockPlayers,
+                            getMatchData, BlockSchedule)
 
 from .views import get_seasons, get_current_season, get_latest_buzz
 from .teams import Teams
@@ -28,8 +28,8 @@ urlpatterns = (
     path('subs', getSubList),
     path('blockplayers/<date:date>', blockPlayers),
     path('blockplayers', blockPlayers),
-    path('blockschedule/<date:date>', blockSchedule),
-    path('blockschedule', blockSchedule),
+    path('blockschedule/', BlockSchedule.as_view()),
+    path('blockschedule/<date:date>', BlockSchedule.as_view()),
     path('matchdata/<date:date>', getMatchData),
     path('matchdata', getMatchData),
     path('availability', AvailabilityView.as_view()),

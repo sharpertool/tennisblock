@@ -3,15 +3,24 @@ import {connect} from 'react-redux'
 import React, {Component} from 'react'
 import {Row, Col, Button} from 'reactstrap'
 import {withRouter} from 'react-router-dom'
-import {getBlockPlayers, changeBlockPlayer, updateBlockPlayers} from '~/Schedule/modules/schedule/actions'
+import {getBlockPlayers, changeBlockPlayer, updateBlockPlayers, clearSchedule} from '~/Schedule/modules/schedule/actions'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import HeaderDate from '~/components/ui/Header/Date'
 import HLink from '~/components/ui/Header/Link'
+import ConfirmDialog from '~/components/ui/ConfirmDialog'
 import {selectors} from '~/Schedule/modules'
 
 import styles from './styles.local.scss'
 
 class MeetingSchedule extends Component {
+  constructor(props) {
+    super(props)
+    
+    this.state = {
+      confirm: false
+    }
+  }
+
   componentDidMount() {
     const {match, getBlockPlayers} = this.props
     const {params} = match
@@ -20,12 +29,23 @@ class MeetingSchedule extends Component {
     }
   }
   
+  toggleConfirm = () => {
+    this.setState({
+      confirm: !this.state.confirm
+    })
+  }
+
   handleUpdate = () => {
     const {blockplayers, match, updateBlockPlayers} = this.props
     updateBlockPlayers({
       couples: blockplayers.couples,
       date: match.params.id
     })
+  }
+  
+  handleClear = () => {
+    const { clearSchedule, match } = this.props
+    clearSchedule({ date: match.params.id })
   }
   
   render() {
@@ -44,6 +64,14 @@ class MeetingSchedule extends Component {
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id}/>
         <Row className="mb-4">
           <Col className="d-flex justify-content-between" xs={3}>
+            <ConfirmDialog
+              isOpen={this.state.confirm}
+              toggle={this.toggleConfirm}
+              onConfirm={this.handleClear}
+            >
+              You are about to clear the schedule. Do you wish to continue?
+            </ConfirmDialog>
+
             <Button
               disabled={!can_schedule}
               color="danger">
@@ -51,6 +79,7 @@ class MeetingSchedule extends Component {
             </Button>
             <Button
               disabled={!can_clear_schedule}
+              onClick={this.toggleConfirm}
               color="danger">
               Clear Schedule
             </Button>
@@ -135,7 +164,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getBlockPlayers,
   changeBlockPlayer,
-  updateBlockPlayers
+  updateBlockPlayers,
+  clearSchedule
 }
 
 export default withRouter(connect(

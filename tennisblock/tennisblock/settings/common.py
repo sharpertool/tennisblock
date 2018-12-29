@@ -160,7 +160,6 @@ TEMPLATES = [
                 'TBLib.context.tennisblock',
                 'frontend.context.frontend_context',
             ]
-
         }
     }
 ]

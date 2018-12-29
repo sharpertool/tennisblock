@@ -15,7 +15,10 @@ from .views import (
 )
 
 urlpatterns = (
-    path('', auth_views.LoginView.as_view(template_name='login.html', redirect_authenticated_user=True), name='login'),
+    path('', auth_views.LoginView.as_view(
+        template_name='login.html',
+        redirect_authenticated_user=True),
+         name='login'),
     path('availability/', AvailabilityView.as_view(), name='availability'),
     path('availability_form/', AvailabilityFormView.as_view(), name='availability_form'),
     path('availability_form/<int:pk>/', AvailabilityFormView.as_view(), name='availability_form_post'),
@@ -24,7 +27,7 @@ urlpatterns = (
     path('contact/', ContactView.as_view(), name="contact"),
     path('season/', include('season.urls')),
     path('members/', include('members.urls')),
-    re_path('schedule/?', include('schedule.urls')),
+    path('schedule/', include('schedule.urls')),
     path('api/', include('api.urls')),
     path('django-admin/', admin.site.urls),
 
