@@ -232,8 +232,8 @@ class BlockSchedule(APIView):
         tb = Scheduler()
         print("blockSchedule DELETE for date:%s" % date)
         mgr = TeamManager()
-        #mgr.dbTeams.delete_matchup(date)
-        #tb.removeAllCouplesFromSchedule(date)
+        mgr.dbTeams.delete_matchup(date)
+        tb.removeAllCouplesFromSchedule(date)
         return Response({'status': 'success'})
 
 

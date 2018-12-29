@@ -46,6 +46,7 @@ class MeetingSchedule extends Component {
   handleClear = () => {
     const {clearSchedule, match} = this.props
     clearSchedule({date: match.params.id})
+    this.setState({confirm: false})
   }
   
   render() {

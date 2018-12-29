@@ -20,7 +20,7 @@ function* requestUserProfile() {
 }
 
 function* requestInitialData() {
-  yield fork(requestUserProfile)
+  //yield fork(requestUserProfile)
 }
 
 function* fetchBlockDates() {
@@ -41,7 +41,7 @@ function* requestMatchData(date) {
 function* requestBlockPlayers({payload}) {
   try {
     yield fork(requestMatchData, payload)
-    
+
     const {data} = yield call(axios.get, `/api/blockplayers/${payload}`)
     yield put(actions.setBlockPlayers(data))
     
@@ -78,8 +78,8 @@ function* clearScheduleRequest({payload}) {
       xsrfHeaderName: 'X-CSRFToken'
     })
     
-    const {data} = yield call(instance.delete, `/api/blockschedule/${date}`)
-    console.log(data)
+    yield call(instance.delete, `/api/blockschedule/${date}`)
+    yield call(requestBlockPlayers, {payload: date})
   } catch (error) {
     yield put(actions.clearScheduleFail(error))
   }

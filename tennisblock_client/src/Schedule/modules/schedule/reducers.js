@@ -23,6 +23,15 @@ const initialState = {
   subs: {},
 }
 
+const filter_sub = (sub) => {
+  const {name, id} = sub
+  return {name, id}
+}
+const filter_player = (p) => {
+  const {name, id} = p
+  return {name, id}
+}
+
 const reducer = handleActions(
     {
         [types.SET_BLOCKDATES](state, { payload }) {
@@ -39,20 +48,25 @@ const reducer = handleActions(
 
         [types.FETCH_BLOCK_PLAYERS_SUCCEED](state, { payload }) {
           const blockplayers = payload
-          const { couples } = blockplayers
+          const { couples, guys, gals } = blockplayers
 
           return {
             ...state,
             blockplayers,
-            originalCouples: [...couples]
+            originalCouples: [...couples],
+            guys: guys.map(filter_player),
+            gals: gals.map(filter_player),
           }
         },
 
         [types.GET_SUBS](state, { payload }) {
           const subs = payload
+          const {guysubs: guys, galsubs: gals} = payload
           return {
             ...state,
-            subs
+            subs,
+            subs_guys: guys.map(filter_sub),
+            subs_gals: gals.map(filter_sub),
           }
         },
 
