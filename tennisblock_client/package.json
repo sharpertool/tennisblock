@@ -114,5 +114,16 @@
     "transform": {
       "\\.(scss|css)$": "<rootDir>/fileTransformer.js"
     }
+  },
+  "quokka": {
+    "babel": true,
+    "plugins": [
+      "babel-alias-quokka-plugin"
+    ],
+    "alias": {
+      "~": "./src"
+    },
+    "pro": true
   }
+
 }
