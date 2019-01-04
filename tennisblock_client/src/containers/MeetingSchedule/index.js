@@ -22,22 +22,32 @@ class MeetingSchedule extends Component {
   }
 
   render() {
-    const {
-      blockplayers, match,
-      guyOptions, galOptions, changes
-    } = this.props
+    const props = this.props
+    const {match} = this.props
 
     return (
       <div className="matches">
         <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id}/>
         <Row className="mb-4">
           <Col className="d-flex justify-content-between" xs={3}>
-            <ActionButtons {...this.props} />
+            <ActionButtons
+              canClear={props.canClearSchedule}
+              canReSchedule={props.canReSchedule}
+              canUpdate={props.canUpdateSchedule}
+              onReSchedule={props.onReSchedule}
+              onClear={props.clearSchedule}
+              onUpdate={props.updateBlockPlayers}
+            />
           </Col>
         </Row>
         <Row>
           <Col md={12}>
-            <Couples {...this.props} />
+            <Couples
+              onPlayerChanged={props.onPlayerChanged}
+              couples={props.couples}
+              guySubs={props.guySubs}
+              galSubs={props.galSubs}
+              />
           </Col>
         </Row>
         <Row>
@@ -52,19 +62,22 @@ class MeetingSchedule extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    blockplayers: selectors.getBlockPlayers(state),
-    isEdited: selectors.isBlockPlayerEdited(state),
     guySubs: selectors.getGuySubs(state),
     galSubs: selectors.getGalSubs(state),
-    changes: selectors.changes(state),
+    couples: selectors.getCouples(state),
+    canClearSchedule: selectors.canClearSchedule(state),
+    canReSchedule: selectors.canReSchedule(state),
+    canUpdateSchedule: selectors.isScheduleChanged(state),
+    isScheduleChanged: selectors.isScheduleChanged(state),
   }
 }
 
 const mapDispatchToProps = {
   getBlockPlayers: actions.getBlockPlayers,
-  changeBlockPlayer: actions.changeBlockPlayer,
+  onPlayerChanged: actions.onPlayerChanged,
   updateBlockPlayers: actions.updateBlockPlayers,
-  clearSchedule: actions.clearSchedule
+  clearSchedule: actions.clearSchedule,
+  onReSchedule: actions.reSchedule,
 }
 
 export default withRouter(connect(

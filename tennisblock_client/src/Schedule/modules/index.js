@@ -1,9 +1,8 @@
-import mkStore from '~/Schedule/modules/make_store'
+import mkStore from './make_store'
 
 import { selectors } from './selectors'
-export { selectors }
-
 import { actions } from './actions'
-export { actions }
+
+export { selectors, actions }
 
 export default mkStore

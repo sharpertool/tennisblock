@@ -10,4 +10,12 @@ import {APP_NAME} from './constants'
 export {APP_NAME}
 export {types, actions, selectors, MODULE_NAME, rootSaga};
 
+let global_selectors = {}
+export const set_global_selectors = (gsel) => {
+  global_selectors = gsel
+}
+export const get_global_selectors = () => {
+  return global_selectors
+}
+
 export default reducer

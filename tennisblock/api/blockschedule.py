@@ -71,21 +71,6 @@ def _AvailabilityInit(player, meetings):
             av.save()
 
 
-def getBlockPlayers(request):
-    if request.method == 'GET':
-        couples = Couple.objects.all()
-        data = []
-        for c in couples:
-            d = {
-                'name': c.name,
-                'him': c.male.first + ' ' + c.male.last,
-                'her': c.female.first + ' ' + c.female.last
-            }
-            data.append(d)
-
-        return JSONResponse(data)
-
-
 def getSubList(request, date=None):
     r = Request(request)
 
@@ -114,7 +99,8 @@ def getSubList(request, date=None):
                         'name': a.player.Name(),
                         'id': a.player.id,
                         'ntrp': a.player.ntrp,
-                        'untrp': a.player.microntrp
+                        'untrp': a.player.microntrp,
+                        'gender': a.player.gender.lower()
                     }
 
                     if a.player.gender == 'F':
@@ -129,7 +115,8 @@ def getSubList(request, date=None):
                         'name': sp.player.Name(),
                         'id': sp.player.id,
                         'ntrp': sp.player.ntrp,
-                        'untrp': sp.player.microntrp
+                        'untrp': sp.player.microntrp,
+                        'gender': sp.player.gender.lower()
                     }
 
                     if sp.player.gender == 'F':
@@ -147,19 +134,20 @@ def getSubList(request, date=None):
     return JSONResponse({})
 
 
-def blockPlayers(request, date=None):
-    r = Request(request)
+class BlockPlayers(APIView):
+    http_method_names = ['get', 'post', 'head', 'options']
+    permission_classes = (permissions.IsAuthenticated,)
 
-    if r.method == 'GET':
-        print("Getting players for block. Requested date:%s" % date)
+    def get(self, request, date=None):
+        print(f"Getting players for block for date {date}")
         tb = Scheduler()
         data = tb.querySchedule(date)
-        return JSONResponse(data)
+        return Response(data)
 
-    elif r.method == 'POST':
-        data = JSONParser().parse(r)
-        couples = data.get('couples')
+    def post(self, request, date=None):
+        couples = request.data.get('couples')
         result = {'status': "Did not execute"}
+
         if couples:
             tb = Scheduler()
             result['status'] = tb.updateSchedule(date, couples)
@@ -167,9 +155,7 @@ def blockPlayers(request, date=None):
             mgr.dbTeams.delete_matchup(date)
         else:
             result['status'] = "Did not decode the guys and gals"
-        return JSONResponse(result)
-
-    return JSONResponse({})
+        return Response(result)
 
 
 class BlockDates(APIView):

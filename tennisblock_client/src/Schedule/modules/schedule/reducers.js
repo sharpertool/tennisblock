@@ -2,45 +2,53 @@ import { handleActions } from 'redux-actions'
 import * as types from './constants'
 
 const initialState = {
-  season: {
-    name: '',
-    start: null,
-    end: null,
-    weekday: null,
-    time: null,
-    meetings: []
-  },
-
   current_meeting: {
     date: null,
     players_by_id: {},
     guys: [],
     gals: [],
   },
+  current_date: null,
+  players_by_id: {},
+  curr_guys: [],
+  curr_gals: [],
+  original_guys: [],
+  original_gals: [],
+  
   originalCouples: [],
-  blockdates: [],
-  blockplayers: {guys:[], gals:[], couples: []},
-  subs: {},
+  meeting_dates: [],
   subs_guys: [],
   subs_gals: []
 }
 
 const filter_sub = (sub) => {
-  const {name, id} = sub
-  return {name, id}
+  return sub.id
 }
 const filter_player = (p) => {
   const {name, id} = p
   return {name, id}
 }
 
+const player_by_id_update = (pbid, players) => {
+  const more = players.reduce((acc, p) => {
+    acc[p.id] = {
+      name: p.name,
+      id: p.id,
+      ntrp: p.ntrp,
+      untrp: p.untrp,
+      gender: p.gender,
+    }
+    return acc
+  }, {})
+  return {...pbid, ...more}
+}
+
 const reducer = handleActions(
     {
         [types.SET_BLOCKDATES](state, { payload }) {
-          const blockdates = payload
           return {
             ...state,
-            blockdates
+            meeting_dates: payload
           }
         },
 
@@ -48,44 +56,75 @@ const reducer = handleActions(
           return {...state}
         },
 
-        [types.FETCH_BLOCK_PLAYERS_SUCCEED](state, { payload }) {
-          const blockplayers = payload
-          const { couples, guys, gals } = blockplayers
+        [types.SET_BLOCK_PLAYERS](state, { payload }) {
+          const {date, guys, gals} = payload
+          const processed = [...guys, ...gals].reduce((acc, p) => {
+            acc.players_by_id[p.id] = {
+              name: p.name,
+              id: p.id,
+              ntrp: p.ntrp,
+              untrp: p.untrp,
+              gender: p.gender,
+            }
+            if (p.gender === 'm') {
+              acc.curr_guys.push(p.id)
+              acc.original_guys.push(p.id)
+            } else {
+              acc.curr_gals.push(p.id)
+              acc.original_gals.push(p.id)
+            }
+            return acc
+          }, {
+            players_by_id:{},
+            curr_guys: [],
+            curr_gals:[],
+            original_guys: [],
+            original_gals: [],
+          })
 
           return {
             ...state,
-            blockplayers,
-            originalCouples: [...couples],
+            ...processed,
+            current_date: date,
+            //originalCouples: [...couples],
             guys: guys.map(filter_player),
             gals: gals.map(filter_player),
           }
         },
 
-        [types.GET_SUBS](state, { payload }) {
+        [types.SET_SUBS](state, { payload }) {
           const subs = payload
           const {guysubs: guys, galsubs: gals} = payload
           return {
             ...state,
-            subs,
-            subs_guys: guys.map(filter_sub),
-            subs_gals: gals.map(filter_sub),
+            subs_guys: guys.map(s => s.id),
+            subs_gals: gals.map(s => s.id),
+            players_by_id: player_by_id_update(state.players_by_id, [...guys, ...gals])
           }
         },
 
         [types.BLOCK_PLAYER_CHANGED](state, { payload }) {
-          const { value, gender, key } = payload
-          const currentPlayer = state.blockplayers.couples[key][gender]
-          const subIndex = state[`subs_${gender}s`].findIndex(sub => sub.id === value)
+          const { group, value, previous } = payload
+          const [key,skey] = [`curr_${group}`, `subs_${group}`]
+          
+          // Making a copy of arrays so result is immutable.
+          let curr = state[key].slice()
+          let subs = state[skey].slice()
 
-          state.blockplayers.couples.splice(key, 1, {
-            ...state.blockplayers.couples[key],
-            [gender]: state[`subs_${gender}s`][subIndex]
-          })
-
-          state[`subs_${gender}s`].splice(subIndex, 1, currentPlayer)
+          const idx = curr.indexOf(previous)
+          if (idx > -1) {
+            curr.splice(idx, 1, value)
+          }
+          
+          const sidx = subs.indexOf(value)
+          if (idx > -1) {
+            subs.splice(sidx, 1, previous)
+          }
 
           return {
-            ...state
+            ...state,
+            [key]: curr,
+            [skey]: subs
           }
         },
     },

@@ -87,6 +87,7 @@
     "postcss-loader": "^3.0.0",
     "precss": "^4.0.0",
     "promise": "8.0.2",
+    "prop-types": "^15.6.2",
     "raf": "3.4.1",
     "react-dev-utils": "^7.0.0",
     "react-hot-loader": "^4.6.3",
@@ -125,5 +126,4 @@
     },
     "pro": true
   }
-
 }

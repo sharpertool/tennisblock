@@ -6,11 +6,8 @@ import mkStore from './modules'
 import ScheduleProvider from './provider'
 import './index.scss'
 
-import { selectors } from './modules'
-export { selectors }
-
-import { actions } from './modules'
-export { actions }
+import { selectors, actions } from './modules'
+export { selectors, actions }
 
 const store = mkStore()
 

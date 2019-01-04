@@ -312,6 +312,7 @@ class Scheduler(object):
                         'id': guy.get('id'),
                         'ntrp': guy.get('ntrp'),
                         'untrp': guy.get('untrp'),
+                        'gender': 'm',
                         'partner': cdata.get('gal'),
                         'partnername': cdata.get('gal') or '----'
                     }
@@ -324,6 +325,7 @@ class Scheduler(object):
                         'id': gal.get('id'),
                         'ntrp': gal.get('ntrp'),
                         'untrp': gal.get('untrp'),
+                        'gender': 'f',
                         'partner': cdata.get('guy'),
                         'partnername': cdata.get('guy') or '----'
                     }

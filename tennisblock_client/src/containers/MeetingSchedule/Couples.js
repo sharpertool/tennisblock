@@ -1,16 +1,14 @@
-import React, { Component } from 'react'
-import { Row, Col, Input } from 'reactstrap'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import {Row, Col, Input} from 'reactstrap'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import styles from './styles.local.scss'
 
 class Couples extends Component {
   render() {
-    const { blockplayers, match,
-            guySubs, galSubs, changes, changeBlockPlayer
-    } = this.props
-
-    const couples = blockplayers.couples ? blockplayers.couples : []
-
+    const {couples, guySubs, galSubs, onPlayerChanged} = this.props
+    const changes = []
+    
     return (
       <React.Fragment>
         <Row>
@@ -30,11 +28,11 @@ class Couples extends Component {
                     <Input
                       type="select"
                       value={guy.id}
-                      className={changes[index].guy ? styles.changed : ''}
-                      onChange={(e) => changeBlockPlayer({
+                      //className={changes[index].guy ? styles.changed : ''}
+                      onChange={(e) => onPlayerChanged({
+                        group: 'guys',
                         value: parseInt(e.target.value),
-                        gender: 'guy',
-                        key: index
+                        previous: guy.id
                       })}
                     >
                       <option value={guy.id}>{guy.name}</option>
@@ -46,12 +44,12 @@ class Couples extends Component {
                   <Col xs={12} md={6}>
                     <Input
                       type="select"
-                      value={guy.id}
-                      className={changes[index].gal ? styles.changed : ''}
-                      onChange={(e) => changeBlockPlayer({
+                      value={gal.id}
+                      //className={changes[index].gal ? styles.changed : ''}
+                      onChange={(e) => onPlayerChanged({
+                        group: 'gals',
                         value: parseInt(e.target.value),
-                        gender: 'gal',
-                        key: index
+                        previous: gal.id
                       })}
                     >
                       <option value={gal.id}>{gal.name}</option>
@@ -69,6 +67,20 @@ class Couples extends Component {
       </React.Fragment>
     )
   }
+}
+
+Couples.propTypes = {
+  couples: PropTypes.arrayOf(PropTypes.shape({
+      guy: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }).isRequired,
+      gal: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }).isRequired
+    })
+  ).isRequired,
+  guySubs: PropTypes.array,
+  galSubs: PropTypes.array,
 }
 
 export default Couples

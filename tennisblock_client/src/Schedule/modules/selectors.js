@@ -21,23 +21,19 @@
  * first argument, but then spreads any additional arguments onto the
  * composed globalized selector.
  */
-import _ from 'lodash'
 
-import {selectors as ssel, MODULE_NAME as schedule_name} from './schedule'
-import {selectors as tsel, MODULE_NAME as team_name} from './teams'
+import {globalizeSelectors} from '~/utils'
 
-// Version that does not require lodash
-const fromRoot2 = (path) =>
-  (selector) =>
-    (state, ...args) =>
-      selector(state[path], ...args);
-
-const globalizeSelectors = (selectors,path) => {
-  return Object.keys(selectors).reduce((final, key) => {
-    final[key] = fromRoot2(path)(selectors[key]);
-    return final;
-  }, {});
-};
+import {
+  selectors as ssel,
+  MODULE_NAME as schedule_name,
+  set_global_selectors as sset
+} from './schedule'
+import {
+  selectors as tsel,
+  MODULE_NAME as team_name,
+  set_global_selectors as test
+} from './teams'
 
 // Spread out globalized selectors into a single globalized selector structure
 // Note that any name conflicts will use the last named selector in the list.
@@ -45,5 +41,8 @@ const selectors = {
   ...globalizeSelectors(ssel, schedule_name),
   ...globalizeSelectors(tsel, team_name),
 }
+
+sset(selectors)
+test(selectors)
 
 export { selectors }

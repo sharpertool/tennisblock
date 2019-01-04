@@ -1,5 +1,6 @@
 import {all, put, takeLatest, select, fork, call} from 'redux-saga/effects'
 import {getCouples, getSubs} from './selectors'
+import {get_global_selectors} from './index'
 import axios_core from 'axios'
 import axios from '~/axios-tennisblock'
 
@@ -43,17 +44,21 @@ function* requestBlockPlayers({payload}) {
     yield fork(requestMatchData, payload)
 
     const {data} = yield call(axios.get, `/api/blockplayers/${payload}`)
+    yield put(actions.fetchBlockPlayersSuccess())
     yield put(actions.setBlockPlayers(data))
-    
-    const subs = yield call(axios.get, `/api/subs/${payload}`)
-    yield put(actions.getSubs(subs.data))
+    {
+      const {data} = yield call(axios.get, `/api/subs/${payload}`)
+      yield put(actions.setSubs(data))
+    }
   } catch (error) {
     yield put(actions.getBlockPlayersFail(error))
   }
 }
 
 function* updateBlockPlayersRequest({payload}) {
-  const {date, couples} = payload
+  const gsel = get_global_selectors()
+  const couples = yield select(gsel.getCouples)
+  const date = yield select(gsel.currentDate)
   try {
     const {data} = yield call((params) => {
       return axios.post(`/api/blockplayers/${date}`, params, {

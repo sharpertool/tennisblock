@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Button } from 'reactstrap'
 import ConfirmDialog from '~/components/ui/ConfirmDialog'
 import styles from './styles.local.scss'
@@ -8,71 +9,78 @@ class ActionButtons extends Component {
     super(props)
 
     this.state = {
-      confirm: false
+      confirm: false,
+      type: null
     }
   }
 
-  toggleConfirm = () => {
+  toggleConfirm = (type) => {
     this.setState({
-      confirm: !this.state.confirm
+      confirm: !this.state.confirm,
+      type: type
     })
+  }
+  
+  onConfirm = () => {
+    const {type} = this.state
+    if (type == 'reschedule') {
+      this.props.onReSchedule()
+    } else if (type == 'clearschedule') {
+      this.props.onClear()
+    }
+    this.setState({confirm: false, type:null})
   }
 
   handleUpdate = () => {
-    const {blockplayers, match, updateBlockPlayers} = this.props
-    updateBlockPlayers({
-      couples: blockplayers.couples,
-      date: match.params.id
-    })
-  }
-
-  handleClear = () => {
-    const {clearSchedule, match} = this.props
-    clearSchedule({date: match.params.id})
-    this.setState({confirm: false})
+    this.props.onUpdate()
   }
 
   render() {
-    const { blockplayers } = this.props
-
-    const is_schedule_empty = blockplayers.couples.every(c => {
-      return c.guy.name == '----' && c.gal.name == '----'
-    })
-    const can_clear_schedule = !is_schedule_empty
-    const can_schedule = !can_clear_schedule
+    const { canClear, canSchedule, canUpdate } = this.props
 
     return (
       <React.Fragment>
         <ConfirmDialog
           isOpen={this.state.confirm}
           toggle={this.toggleConfirm}
-          onConfirm={this.handleClear}
+          onConfirm={this.onConfirm}
         >
           You are about to clear the schedule. Do you wish to continue?
         </ConfirmDialog>
 
         <Button
-          disabled={!can_schedule}
+          disabled={!canSchedule}
+          onClick={() => this.toggleConfirm('reschedule')}
           color="danger">
           Schedule
         </Button>
 
         <Button
-          disabled={!can_clear_schedule}
-          onClick={this.toggleConfirm}
+          disabled={!canClear}
+          onClick={() => this.toggleConfirm('clearschedule')}
           color="danger">
           Clear Schedule
         </Button>
 
         <Button
           color="danger"
-          disabled={!this.props.isEdited}
+          disabled={!canUpdate}
           onClick={this.handleUpdate}>
           Update Schedule
         </Button>
       </React.Fragment>
     )
   }
+}
+
+ActionButtons.propTypes = {
+  canClear: PropTypes.bool.isRequired,
+  canReSchedule: PropTypes.bool.isRequired,
+  canUpdate: PropTypes.bool.isRequired,
+  
+  onReSchedule: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onClear: PropTypes.func.isRequired,
 }
 
 export default ActionButtons

@@ -23,5 +23,18 @@ export const createConstants = (parent = null, name) => (...actionTypes) => {
   }, {})
 }
 
+// Version that does not require lodash
+const fromRoot2 = (path) =>
+  (selector) =>
+    (state, ...args) =>
+      selector(state[path], ...args);
+
+export const globalizeSelectors = (selectors,path) => {
+  return Object.keys(selectors).reduce((final, key) => {
+    final[key] = fromRoot2(path)(selectors[key]);
+    return final;
+  }, {});
+};
+
 
 export const actionType = (type, moduleName) => [APP_NAME, moduleName, type].join('/').toLowerCase()
