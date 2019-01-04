@@ -21,6 +21,8 @@ const initialState = {
   blockdates: [],
   blockplayers: {guys:[], gals:[], couples: []},
   subs: {},
+  subs_guys: [],
+  subs_gals: []
 }
 
 const filter_sub = (sub) => {
@@ -71,22 +73,21 @@ const reducer = handleActions(
         },
 
         [types.BLOCK_PLAYER_CHANGED](state, { payload }) {
-          const selectedPlayer = payload
-          const { key, gender, player } = selectedPlayer
+          const { value, gender, key } = payload
           const currentPlayer = state.blockplayers.couples[key][gender]
+          const subIndex = state[`subs_${gender}s`].findIndex(sub => sub.id === value)
 
           state.blockplayers.couples.splice(key, 1, {
             ...state.blockplayers.couples[key],
-            [gender]: player
+            [gender]: state[`subs_${gender}s`][subIndex]
           })
 
-          const subIndex = state.subs[`${gender}subs`].findIndex(sub => sub.id === selectedPlayer.player.id)
-          state.subs[`${gender}subs`].splice(subIndex, 1, currentPlayer)
+          state[`subs_${gender}s`].splice(subIndex, 1, currentPlayer)
 
-          return { ...state }
+          return {
+            ...state
+          }
         },
-
-
     },
     initialState
 )
