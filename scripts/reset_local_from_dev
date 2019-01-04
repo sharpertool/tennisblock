@@ -21,4 +21,3 @@ BACKUPFILE=$1
 docker-compose exec postgres restore ${BACKUPFILE}
 ./manage migrate
 ./manage localize_sites
-./manage add_initial_home
