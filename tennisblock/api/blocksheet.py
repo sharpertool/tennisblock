@@ -54,7 +54,7 @@ def main():
     tmpFile = '/tmp/blocksheet.pdf'
 
     pdf = PlaySheet(orientation='L', unit='in', format='Letter')
-    pdf.set_font('Arial', '', 14);
+    pdf.set_font('Arial', '', 12);
     pdf.add_page()
     pdf.GenerateSheet(header, matchData)
     if os.path.exists(tmpFile):
