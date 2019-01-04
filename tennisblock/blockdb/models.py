@@ -21,8 +21,6 @@ class Season(models.Model):
     lastdate = models.DateField(null=True)
     blocktime = models.TimeField()
 
-    #players = models.ManyToManyField('Player', )
-
     def __str__(self):
         return self.name
 
@@ -61,7 +59,6 @@ class Player(models.Model):
     ntrp = models.FloatField()
     microntrp = models.FloatField(null=True, blank=True)
     phone = models.CharField(max_length=14, blank=True)
-
 
     objects = models.Manager()
     girls = GirlsManager()
@@ -107,13 +104,6 @@ class Player(models.Model):
         return season in seasons
 
 
-class BlockManager(models.Manager):
-    use_for_related_fields = True
-
-    def seasonPlayers(self):
-        return self.filter()
-
-
 class SeasonPlayer(models.Model):
     """
     Entry for each player for each season. Indicates that a given
@@ -126,8 +116,6 @@ class SeasonPlayer(models.Model):
     season = models.ForeignKey(Season, related_name='players', on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     blockmember = models.BooleanField(default=False)
-
-    objects = BlockManager()
 
     def __str__(self):
         return self.player.__str__()
@@ -176,7 +164,7 @@ class Couple(models.Model):
         )
 
     class Meta:
-        unique_together = (('season', 'male', 'female',))
+        unique_together = ('season', 'male', 'female',)
 
 
 class Meeting(models.Model):
@@ -256,17 +244,29 @@ class Schedule(models.Model):
 
 class Matchup(models.Model):
     """
-    The matchup for a given meeting, set and court.
+    The Matchup for a given meeting, set and court.
     Organizes players into two teams, t1 and t2, and a set of players
     each.
     """
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     set = models.IntegerField()
     court = models.IntegerField()
-    team1_p1 = models.ForeignKey(Player, related_name="t1_p1", null=True, on_delete=models.CASCADE)
-    team1_p2 = models.ForeignKey(Player, related_name="t1_p2", null=True, on_delete=models.CASCADE)
-    team2_p1 = models.ForeignKey(Player, related_name="t2_p1", null=True, on_delete=models.CASCADE)
-    team2_p2 = models.ForeignKey(Player, related_name="t2_p2", null=True, on_delete=models.CASCADE)
+    team1_p1 = models.ForeignKey(Player,
+                                 related_name="t1_p1",
+                                 null=True,
+                                 on_delete=models.CASCADE)
+    team1_p2 = models.ForeignKey(Player,
+                                 related_name="t1_p2",
+                                 null=True,
+                                 on_delete=models.CASCADE)
+    team2_p1 = models.ForeignKey(Player,
+                                 related_name="t2_p1",
+                                 null=True,
+                                 on_delete=models.CASCADE)
+    team2_p2 = models.ForeignKey(Player,
+                                 related_name="t2_p2",
+                                 null=True,
+                                 on_delete=models.CASCADE)
 
     def __str__(self):
         return "{}:{} set:{} court:{} {}+{} vs {}+{}".format(

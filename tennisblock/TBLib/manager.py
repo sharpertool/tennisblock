@@ -15,7 +15,7 @@ class TeamManager(object):
         """ Retrive players for given date """
         men, women = self.dbTeams.get_players(date)
 
-        #assert (len(men) == len(women))
+        assert ((len(men)+len(women)) % 4 == 0)
         return men, women
 
     def pick_teams_for_date(self,
@@ -23,7 +23,7 @@ class TeamManager(object):
                             iterations: int = 100,
                             max_tries: int = 20):
 
-        dbt = DBTeams()
+        dbt = self.dbTeams
         dbt.delete_matchup(date)
         men, women = dbt.get_players(date)
 
@@ -45,8 +45,7 @@ class TeamManager(object):
         if men is None or women is None:
             men, women = self.get_players(date)
 
-        # Calculate number fo courts based on # of men.
-        # Assume # of women is the same.
+        # Calculate number fo courts from sum
         if n_courts is None:
             n_courts = (len(men)+len(women)) // 4
 

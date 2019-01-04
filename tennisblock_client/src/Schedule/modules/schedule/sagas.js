@@ -9,7 +9,7 @@ import * as types from './constants'
 function* requestUserProfile() {
   try {
     const response = yield call(axios.get, 'api/profile/')
-    console.log(`Profile request returned:`, response.data)
+    console.log('Profile request returned:', response.data)
     const {status, profile} = response.data
     if (status === 'success') {
       yield put(actions.updateProfile(profile))
