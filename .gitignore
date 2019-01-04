@@ -53,3 +53,4 @@ db_learning.txt
 /tennisblock/frontend/webpack-stats.json
 *.map
 /DropboxTeam
+.venv

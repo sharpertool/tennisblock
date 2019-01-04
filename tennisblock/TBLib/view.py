@@ -15,5 +15,4 @@ class TennisLoginView(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(TennisLoginView,self).dispatch(request,*args,**kwargs)
-
+        return super(TennisLoginView, self).dispatch(request, *args, **kwargs)

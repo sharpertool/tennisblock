@@ -3,27 +3,29 @@ import merge from 'webpack-merge'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import autoprefixer from 'autoprefixer'
 
-export const devServer = ({hot, host, port,
-                            base,
-                            https=false,
-                            cert=null,
-                          allowedHosts=null} = {}) => {
+export const devServer = ({
+  hot, host, port,
+  base,
+  https = false,
+  cert = null,
+  allowedHosts = null,
+} = {},) => {
   const config = {
     devServer: {
-        hot,
-        contentBase: base,
-        historyApiFallback: true,
-        overlay: {
-            errors: true,
-            warnings: true,
-        },
-        port,
-        before(app) {
-        app.use(cors());
-        }
+      hot,
+      contentBase: base,
+      historyApiFallback: true,
+      overlay: {
+        errors: true,
+        warnings: true,
+      },
+      port,
+      before(app) {
+        app.use(cors())
+      }
     }
   }
-
+  
   if (allowedHosts) {
     config.devServer.allowedHosts = allowedHosts
   }
@@ -32,45 +34,45 @@ export const devServer = ({hot, host, port,
     config.devServer.https = https
     console.log('Configured as https')
   }
-
+  
   console.log('devServer:', config)
-
+  
   return config
-};
+}
 
 export const loadFonts = ({include, exclude} = {}) => ({
-    module: {
-        rules: [
-            {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                            mimetype: 'application/font-woff',
-                            name: 'assets/[name].[ext]',
-                            publicPath: '/static/'
-                        }
-                    }
-                ]
-            },
-            {
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'assets/[name].[ext]',
-                            publicPath: '/static/'
-                        }
-                    }
-                ]
+  module: {
+    rules: [
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              mimetype: 'application/font-woff',
+              name: 'assets/[name].[ext]',
+              publicPath: '/static/'
             }
+          }
         ]
-    }
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/[name].[ext]',
+              publicPath: '/static/'
+            }
+          }
+        ]
+      }
+    ]
+  }
   
-});
+})
 
 export const loadSCSS = ({include, exclude, isDev} = {isDev: true}) => ({
   module: {
@@ -113,4 +115,4 @@ export const loadSCSS = ({include, exclude, isDev} = {isDev: true}) => ({
       }
     ],
   }
-});
+})

@@ -70,8 +70,8 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[WAGTAIL_SITE_NAME])
 
 print(f"Allowed hosts: {ALLOWED_HOSTS}")
 
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/accounts/login/success/'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Local time zone for this installation. Choices can be found here:
@@ -141,6 +141,8 @@ MIDDLEWARE = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 )
 
 TEMPLATES = [
@@ -152,12 +154,12 @@ TEMPLATES = [
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
                 # 'sekizai.context_processors.sekizai',
                 # 'sekizai.context.SekizaiContext',
                 'TBLib.context.tennisblock',
                 'frontend.context.frontend_context',
             ]
-
         }
     }
 ]
@@ -176,6 +178,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Wagtail
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.contrib.routable_page',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'wagtail.contrib.table_block',
+    'wagtail.contrib.settings',
+    'modelcluster',
+    'taggit',
+
     # CORS
     'corsheaders',
 
@@ -191,6 +211,8 @@ INSTALLED_APPS = [
     'anymail',
 
     # Local Apps
+    'about',
+    'home',
     'tennisblock',
     'frontend',
     'blockdb',
@@ -337,3 +359,6 @@ RAVEN_CONFIG = {
     'dsn': env("DJANGO_SENTRY_DSN",
                default='')
 }
+
+# Wagtail settings
+WAGTAIL_FRONTEND_LOGIN_URL='/'

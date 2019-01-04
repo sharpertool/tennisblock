@@ -35,11 +35,11 @@
     <link rel="stylesheet"
           href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
     <link rel="stylesheet"
+          href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet"
           href="{% static 'css/style_base.css' %}">
 
-    {% block extra_style %}
-    {% endblock %}
-
+    {% block extra_style %}{% endblock %}
 {% endblock %}
 
 {% block page_style %}
@@ -57,79 +57,35 @@
     {% trans "TennisBlock" %} - {% block title %}{% endblock %}
 {% endblock %}
 
-{% block wrapper_class %}wrapper{% endblock %}
-
-{% block header_bar %}
-    <div class="navbar_brand">
-        <img id="header_logo"
-             src="{% static 'images/assets/Racquet_and_balls2.png' %}"/>
-        TennisBlock
-    </div>
+{% block body_class %}
+    {% if user.is_authenticated %}
+        authenticated
+    {% else %}
+        guest
+    {% endif %}
 {% endblock %}
 
-{% block header_bar_images %}
-    <a class="brand navbar_brand" href="">
-        <img id="header_logo"
-             src="{% static 'images/assets/BestRacquet.png' %}"/>
-        TennisRoster.com
-    </a>
-{% endblock header_bar_images %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% include "common/navbar.html" %}
 
-{% block header_bar_nav %}
-    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="#">TennisBlock</a>
+        <main class="page-container h-100">
+            <div class="row h-100 mr-0">
+                <div class="col-2 pr-0">
+                    {% include "common/sidebar.html" %}
+                </div>
+                <div class="col pr-0" id="page_content">
+                    <div class="container-fluid mt-3">
+                        {% block page_content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </main>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                {% if user.is_authenticated %}
-                    <!-- User Authenticated -->
-                    <li class="nav-item"><a class="nav-link" href="{% url 'schedule:schedule' %}">Schedule</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'availability' %}">Availability</a></li>
-                    <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link"
-                                            href="{% url 'members:player_list' %}">Players</a></li>
-                    <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link"
-                                            href="{% url 'members:seasonplayers' %}">Block Members</a></li>
-                    <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link"
-                                            href="{% url 'season:seasons' %}">Seasons</a></li>
-                    <li class="nav-item"><a class="nav-link" class="nav-link" class="nav-link" href="{% url 'about' %}">About</a>
-                    </li>
-                    {% comment %}
-        <li><a href="{{ request.user.profile.get_absolute_url }}">
-            <i class="icon-briefcase"></i> {% trans "Profile" %}
-        </a></li>
-        {% endcomment %}
-                    {% if user.is_staff %}
-                        <li><a class="nav-link" class="nav-link" href="{% url THEME_ADMIN_URL|default:'admin:index' %}">
-                            <i class="icon-cog">
-                            </i>
-                            {% trans "Admin" %}
-                        </a></li>
-                    {% endif %}
-                    <li class="nav-item"><a class="nav-link" id="account_logout" href="{% url 'logout' %}">
-                        <i class="icon-off"></i> {% trans "Log Out" %}
-                    </a></li>
-                {% else %}
-                    <!-- User Not Authenticated -->
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">{% trans "Sign In" %}</a></li>
-                {% endif %}
-            </ul>
-            <!-- Don't need this form here..
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-            -->
-        </div>
-
-    </nav>
-{% endblock header_bar_nav %}
+    {% else %}
+        {% block home_content %}{% endblock %}
+    {% endif %}
+{% endblock %}
 
 {% block body_script %}
     {{ block.super }}

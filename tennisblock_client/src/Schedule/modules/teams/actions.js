@@ -1,8 +1,8 @@
 // This file contains all the action creator functions
+import { createAction } from 'redux-actions'
 
 import * as types from './constants'
 
-export const updatePlaySchedule = (schedule) => ({
-  type: types.UPDATE_PLAY_SCHEDULE,
-  payload: schedule
-})
+export const updateMatchData = createAction(types.UPDATE_MATCH_DATA)
+export const calculateMatchups = createAction(types.CALCULATE_MATCHUPS)
+export const updateCalcResults = createAction(types.UPDATE_CALCULATE_STATUS)

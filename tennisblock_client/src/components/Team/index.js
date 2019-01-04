@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const team = (props) => {
-  console.log('Team Props:', props)
   const {
     f: {name: gal, ntrp: galn, untrp: galu},
     m: {name: guy, ntrp: guyn, untrp: guyu}

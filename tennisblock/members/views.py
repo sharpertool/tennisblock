@@ -11,22 +11,23 @@ from .forms import UserForm, PlayerForm
 from blockdb.models import Player, SeasonPlayer
 from api.apiutils import get_current_season
 from TBLib.view import TennisLoginView
+from TBLib.view import class_login_required
 
 from members import signals
 
-
+@class_login_required
 class PlayerListView(ListView):
     template_name = "members/players.html"
     context_object_name = 'players'
     queryset = Player.objects.all().order_by('user__last_name', 'user__first_name')
 
-
+@class_login_required
 class PlayerDetailView(DetailView):
     queryset = Player.objects.all()
     template_name = "members/player_detail.html"
     context_object_name = 'player'
 
-
+@class_login_required
 class PlayerUpdateView(TemplateView):
     template_name = "members/player_form.html"
     success_url = 'members:player_list'
@@ -89,7 +90,7 @@ class PlayerUpdateView(TemplateView):
         context['player_form'] = PlayerForm(instance=player_obj)
         return context
 
-
+@class_login_required
 class PlayerCreateView(TemplateView):
     template_name = "members/player_form.html"
     success_url = 'members:player_list'
@@ -127,6 +128,7 @@ class PlayerCreateView(TemplateView):
         return reverse(self.success_url)
 
 
+@class_login_required
 class PlayerDeleteView(DeleteView):
     model = Player
     template_name = "members/player_confirm_delete.html"
@@ -154,6 +156,7 @@ class PlayerDeleteView(DeleteView):
         return reverse("members:player_list")
 
 
+@class_login_required
 class PlayersView(TennisLoginView):
     template_name = "players.html"
 
@@ -176,6 +179,7 @@ class PlayersView(TennisLoginView):
         return context
 
 
+@class_login_required
 class MembersView(TennisLoginView):
     template_name = "members/members_view.html"
     members_only = False
@@ -199,6 +203,7 @@ class MembersView(TennisLoginView):
         return context
 
 
+@class_login_required
 class SeasonPlayerView(MembersView):
     members_only = True
 
@@ -211,6 +216,7 @@ class SeasonPlayerFormSet(BaseModelFormSet):
         self.queryset = Player.objects.all()
 
 
+@class_login_required
 class SeasonPlayerFormView(MembersView):
     template_name = "members_form.html"
     members_only = True
@@ -260,5 +266,6 @@ class SeasonPlayerFormView(MembersView):
                           )
 
 
+@class_login_required
 class SeasonPlayerUpdate(MembersView):
     members_only = True

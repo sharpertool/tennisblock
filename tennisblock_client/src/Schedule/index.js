@@ -1,18 +1,20 @@
 import React from 'react'
 import {render} from 'react-dom'
-import {Provider} from 'react-redux'
-
-import './index.scss'
 
 // Build the Store stuff
-import makeStore from 'Schedule/modules'
+import mkStore from './modules'
+import ScheduleProvider from './provider'
+import './index.scss'
 
-import MatchReview from './matchreview'
-import * as types from "./modules/teams/constants"
+import { selectors } from './modules'
+export { selectors }
 
-export default ({match_review}) => {
-  const store = makeStore(null, null)
-  
+import { actions } from './modules'
+export { actions }
+
+const store = mkStore()
+
+export default ({ target }) => {
   const onDateChanged = (currdate) => {
     console.log(`onDateChanged called with ${currdate}`)
     store.dispatch({
@@ -21,9 +23,13 @@ export default ({match_review}) => {
     })
     console.log('onDateChanged dispatched action')
   }
+
+  const element = document.getElementById(target)
+
+  render(
+    <ScheduleProvider store={store}/>,
+    element,
+  )
   
-  console.log(`Mounting at ${match_review}`)
-  render(<MatchReview store={store}/>, document.getElementById(match_review))
-  console.log('Schedule React component mounted')
   return onDateChanged
 }

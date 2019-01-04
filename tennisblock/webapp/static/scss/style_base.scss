@@ -18,6 +18,10 @@
 //@import 'common/layout_page_header';
 //@import 'nav';
 //@import 'footer';
+@import 'home';
+@import 'nav';
+@import 'availability';
 
-
-
+.page-container {
+  padding-top: 104px;
+}

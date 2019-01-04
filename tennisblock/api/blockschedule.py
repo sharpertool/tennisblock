@@ -1,12 +1,14 @@
 # Create your views here.
 
 import datetime
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
+from rest_framework.views import APIView
 from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+from rest_framework import authentication, permissions
 from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, time_to_js
@@ -198,21 +200,18 @@ def getBlockDates(request):
     return JSONResponse({'status': "Failed"})
 
 
-def blockSchedule(request, date=None):
-    """
-    Update the schedule for the given date.
+class BlockSchedule(APIView):
+    http_method_names = ['get', 'post', 'delete', 'head', 'options']
+    permission_classes = (permissions.IsAuthenticated,)
 
-    """
-    from TBLib.schedule import Scheduler
-    tb = Scheduler()
-
-    r = Request(request)
-
-    if r.method == 'GET':
+    def get(self, request, date=None):
+        tb = Scheduler()
         sched = tb.querySchedule(date)
-        return JSONResponse(sched)
+        return Response(sched)
 
-    if r.method == 'POST':
+    def post(self, request, date=None):
+        # ToDo: Insure is Admin user, not just authenticated
+        tb = Scheduler()
         print("blockSchedule POST for date:%s" % date)
         group = tb.getNextGroup(date)
         print("Groups:")
@@ -226,15 +225,16 @@ def blockSchedule(request, date=None):
 
         sched = tb.querySchedule(date)
 
-        return JSONResponse(sched)
+        return Response(sched)
 
-    if r.method == 'DELETE':
+    def delete(self, request, date=None):
+        # ToDo: Insure is Admin user, not just authenticated
+        tb = Scheduler()
         print("blockSchedule DELETE for date:%s" % date)
         mgr = TeamManager()
         mgr.dbTeams.delete_matchup(date)
         tb.removeAllCouplesFromSchedule(date)
-
-        return JSONResponse({})
+        return Response({'status': 'success'})
 
 
 def getMatchData(request, date=None):

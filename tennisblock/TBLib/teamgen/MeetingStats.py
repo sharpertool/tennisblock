@@ -162,7 +162,7 @@ class MeetingStats:
             self.InvalidOpponents[name] = invalid.union(self.Partners[name])
             self.InvalidPartners[name] = invalid.union(set(self.Opposites[name]))
 
-    def get_new_round(self, diff_max, quality_max):
+    def get_new_round(self, diff_max, quality_max, max_tries=20):
         """
         This one needs to use the existing sets and list and pick a new
         randomization of the available sets.
@@ -178,7 +178,6 @@ class MeetingStats:
         set
         """
         tries = 0
-        max_tries = 50
         new_round: MatchRound = None
 
         min_diff = 1000.0
@@ -217,13 +216,7 @@ class MeetingStats:
             # Build sets of men first.
             # If there is an exception thrown, then just ignore
             # it and try again..
-            while True:
-                try:
-                    new_round = self.pick_men(t_men)
-                    break
-                except NoValidOpponent:
-                    print("Regenerate the set of men")
-                    pass
+            new_round = self.pick_men(t_men)
 
             self.clear_check_stats()
 
@@ -340,22 +333,23 @@ class MeetingStats:
         this night. The get_valid_opponent function is used for this determination.
         """
         random.seed()
-        new_round = MatchRound()
-        s_men = set(t_men)
 
-        for n in range(0, self.n_courts):
-            m1 = random.choice(list(s_men))
-            s_men.remove(m1)
-            m2 = self.get_valid_opponent(m1, s_men)
-            if m2 is None:
-                raise NoValidOpponent(player=m1)
+        while True:
+            new_round = MatchRound()
+            s_men = set(t_men)
+            try:
+                for n in range(0, self.n_courts):
+                    m1 = random.choice(list(s_men))
+                    s_men.remove(m1)
+                    m2 = self.get_valid_opponent(m1, s_men)
+                    s_men.remove(m2)
+                    m = Match(Team(self.pbyname[m1]),
+                              Team(self.pbyname[m2]))
+                    new_round.add_match(m)
+                return new_round
+            except NoValidOpponent:
+                pass
 
-            s_men.remove(m2)
-            m = Match(Team(self.pbyname[m1], None),
-                      Team(self.pbyname[m2], None))
-            new_round.add_match(m)
-
-        return new_round
 
     def get_valid_opponent(self, player, opponents):
         """
@@ -369,7 +363,7 @@ class MeetingStats:
 
         tmp = opponents.difference(self.Opponents[player])
         if len(tmp) == 0:
-            return None
+            raise NoValidOpponent(player=player)
 
         opponent = random.choice(list(tmp))
         return opponent

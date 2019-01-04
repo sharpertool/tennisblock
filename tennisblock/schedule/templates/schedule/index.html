@@ -5,11 +5,6 @@
 {% block angular_script %}
     {{ block.super }}
 
-    <script src="{% static 'js/angular/controllers/blockschedule.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/angular/directives/schedule-nav.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/angular/directives/schedule-matches.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/angular/directives/block-players-table.js' %}" type="text/javascript"></script>
-
 {% endblock %}
 
 {% block page_style %}
@@ -21,40 +16,9 @@
     schedule
 {% endblock %}
 
-{% block body_inner_container %}
+{% block page_content %}
 
-    <div class="row">
-        <div class="col" ng-controller="BlockSchedule">
-
-            {% if perms.blockdb.schedule.change_sched %}
-                <h1>Granted change schedule permissions.</h1>
-            {% endif %}
-
-            {% comment %}
-            <div class="pure-menu pure-menu-open pure-menu-horizontal">
-                <h2>Meeting Selectors</h2>
-                <ul class="meeting_selectors">
-                    {% for meeting in meetings %}
-                        <li>
-                            <button class="pure-button">{{ meeting.date }}</button>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endcomment %}
-
-            {% verbatim %}
-            <h2>Latest Block Schedule for {{ block.currdate }}</h2>
-            <div schedule-nav block="block"></div>
-            <div id="players" block-players-table
-                 query-date="block.queryDate">
-            </div>
-            <div schedule-matches query-date="block.queryDate"></div>
-            {% endverbatim %}
-
-
-        </div>
-    </div>
+    <div id="react-schedule"></div>
 
     <div class="row">
         <div class="col" id="schedule"></div>
@@ -70,7 +34,7 @@
     </div>
 
 
-{% endblock body_inner_container %}
+{% endblock page_content %}
 
 
 {% block render_bundles %}
@@ -86,10 +50,8 @@
     {% if render_bundles %}
         <!-- Initialize bundles -->
         <script type="text/javascript">
-          console.log('Initialize HomePage component')
-          window.onDateChanged = Schedule({
-            match_review: 'match_review'
-          });
+          console.log('Initialize component')
+          window.onDateChanged = Schedule({ target: 'react-schedule'});
 
         </script>
     {% endif %}

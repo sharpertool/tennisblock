@@ -1,5 +1,9 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+
+from wagtail.core import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
 
 from .views import (
     HomeView,
@@ -8,23 +12,25 @@ from .views import (
     PlaysheetView,
     ContactView,
     AboutView,
-    CouplesView
 )
 
 urlpatterns = (
-    # Examples:
-    path('', HomeView.as_view(), name='home'),
+    path('', auth_views.LoginView.as_view(
+        template_name='login.html',
+        redirect_authenticated_user=True),
+         name='login'),
     path('availability/', AvailabilityView.as_view(), name='availability'),
     path('availability_form/', AvailabilityFormView.as_view(), name='availability_form'),
     path('availability_form/<int:pk>/', AvailabilityFormView.as_view(), name='availability_form_post'),
     path('playsheet/', PlaysheetView.as_view()),
     path('accounts/', include('accounts.urls')),
-    path('couples/<int:pk>>', CouplesView.as_view(), name="couple_editor"),
     path('contact/', ContactView.as_view(), name="contact"),
-    path('about/', AboutView.as_view(), name="about"),
     path('season/', include('season.urls')),
     path('members/', include('members.urls')),
     path('schedule/', include('schedule.urls')),
     path('api/', include('api.urls')),
     path('django-admin/', admin.site.urls),
+
+    path('admin/', include(wagtailadmin_urls)),
+    path('', include(wagtail_urls)),
 )

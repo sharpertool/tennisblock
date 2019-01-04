@@ -1,8 +1,53 @@
 {% extends "site_base.html" %}
 {% load staticfiles %}
 
-{% block body %}
+{% block page_content %}
     <div id="blockheading" class="dynamic">
-        <h2>Block Seasons</h2>
+        <h2>Create Season</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" class="form-control" id="name" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="courts">Courts</label>
+                <input type="number" name="courts" class="form-control" id="courts" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="firstcourt">First Court</label>
+                <input type="number" name="firstcourt" class="form-control" id="firstcourt" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="startdate">Start Date</label>
+                <input type="date" name="startdate" class="form-control" id="startdate" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="enddate">End Date</label>
+                <input type="date" name="enddate" class="form-control" id="enddate" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="blockstart">Block Start</label>
+                <input type="date" name="blockstart" class="form-control" id="blockstart" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="lastdate">Last Date</label>
+                <input type="date" name="lastdate" class="form-control" id="lastdate"/>
+            </div>
+
+            <div class="form-group">
+                <label for="blocktime">Blocktime</label>
+                <input type="time" name="blocktime" class="form-control" id="blocktime"/>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Create</button>
+        </form>
     </div>
 {% endblock %}

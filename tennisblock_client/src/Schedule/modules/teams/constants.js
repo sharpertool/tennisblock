@@ -1,17 +1,8 @@
-export const NAME = 'teams'
-import {APP_NAME as PARENT_NAME} from '../constants'
+import { actionType } from '~/utils'
 
-const mkname = (nm) => `${PARENT_NAME}/${NAME}/${nm}`
+export const MODULE_NAME = 'teams'
 
-export const APP_NAME = `${PARENT_NAME}/${NAME}`
-
-export const UPDATE_PLAY_SCHEDULE = mkname('UPDATE_PLAY_SCHEDULE')
-
-
-
-
-
-
-
-
+export const UPDATE_MATCH_DATA = actionType('UPDATE_MATCH_DATA', MODULE_NAME)
+export const CALCULATE_MATCHUPS = actionType('CALCULATE_MATCHUPS', MODULE_NAME)
+export const UPDATE_CALCULATE_STATUS = actionType('UPDATE_CALCULATE_STATUS')
 

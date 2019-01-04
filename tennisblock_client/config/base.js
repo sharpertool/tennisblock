@@ -2,14 +2,14 @@ import {resolve} from 'path'
 import merge from 'webpack-merge'
 import BundleTracker from 'webpack-bundle-tracker'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-
+import autoprefixer from 'autoprefixer'
 const document_root = '..'
 
 import * as partials from './partials'
 
 const DOMAIN = process.env.DOMAIN || 'localhost'
 const PORT = process.env.PORT || 8080
-const PROTOCOL = process.env.PROTOCOL || 'https'
+const PROTOCOL = process.env.PROTOCOL || 'http'
 
 export const paths = {
   hot: resolve(__dirname, '../hot'),
@@ -29,7 +29,7 @@ export default ({env, options}) => {
   return merge.strategy(strategy)({
       entry: {
         Availability: [resolve(__dirname, `${document_root}/src/Availability/index.js`)],
-        Schedule: [resolve(__dirname, `${document_root}/src/Schedule/index.js`)],
+        Schedule: [resolve(__dirname, `${document_root}/src/Schedule/index.js`)]
       },
       mode: options.mode,
       output: {
@@ -44,8 +44,105 @@ export default ({env, options}) => {
         rules: [
           {
             test: /\.js$/,
+            enforce: 'pre',
             exclude: /node_modules/,
-            loader: 'babel-loader',
+            loader: 'eslint-loader',
+            options: {
+              fix: true
+            },
+          },
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+          },
+          {
+            test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+            use: [
+              {
+                loader: 'file-loader', options: {
+                  limit: 8192
+                }
+              }
+            ]
+          },
+          // "postcss" loader applies autoprefixer to our CSS.
+          // "css" loader resolves paths in CSS and adds assets as dependencies.
+          // "style" loader turns CSS into JS modules that inject <style> tags.
+          // In production, we use a plugin to extract that CSS to a file, but
+          // in development "style" loader enables hot editing of CSS.
+          {
+            test: /\.(scss|css)$/,
+            exclude: /\.local\.(scss|css)/,
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
+                options: {
+                },
+              },
+              {
+                loader: require.resolve('postcss-loader'),
+                options: {
+                  // Necessary for external CSS imports to work
+                  // https://github.com/facebookincubator/create-react-app/issues/2677
+                  ident: 'postcss',
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    autoprefixer({
+                      browsers: [
+                        '>1%',
+                        'last 4 versions',
+                        'Firefox ESR',
+                        'not ie < 9', // React doesn't support IE8 anyway
+                      ],
+                      flexbox: 'no-2009',
+                    }),
+                  ],
+                },
+              },
+              'sass-loader',
+            ],
+          },
+          // This loader supports modules, with the .local.* suffix
+          // "css" loader resolves paths in CSS and adds assets as dependencies.
+          // "style" loader turns CSS into JS modules that inject <style> tags.
+          // In production, we use a plugin to extract that CSS to a file, but
+          // in development "style" loader enables hot editing of CSS.
+          {
+            test: /\.local\.(scss|css)$/,
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
+                options: {
+                  importLoaders: 1,
+                  modules: true,
+                  localIdentName: '[name]__[local]__[hash:base64:5]',
+                },
+              },
+              {
+                loader: require.resolve('postcss-loader'),
+                options: {
+                  // Necessary for external CSS imports to work
+                  // https://github.com/facebookincubator/create-react-app/issues/2677
+                  ident: 'postcss',
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    autoprefixer({
+                      browsers: [
+                        '>1%',
+                        'last 4 versions',
+                        'Firefox ESR',
+                        'not ie < 9', // React doesn't support IE8 anyway
+                      ],
+                      flexbox: 'no-2009',
+                    }),
+                  ],
+                },
+              },
+              'sass-loader',
+            ],
           },
         ]
       },
@@ -67,8 +164,6 @@ export default ({env, options}) => {
           chunkFilename: '[id].css',
         }),
       ]
-    },
-    partials.loadSCSS({isDev: isDev}),
-    partials.loadFonts(),
+    }
   )
 }

@@ -1,0 +1,14 @@
+{
+  "babel": true,
+  "env": {
+    "params": {
+      "env": "BABEL_ENV=test"
+    }
+  },
+  "pro": true,
+  "plugins": [
+  ],
+  "alias":{
+    "~": "./src"
+  }
+}

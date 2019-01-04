@@ -1,10 +1,10 @@
-import {rootSaga as scheduleRoot} from './schedule'
-import {rootSaga as teamRoot} from './teams'
+import scheduleSagas from './schedule/sagas'
+import teamSagas from './teams/sagas'
 
-import {fork} from 'redux-saga/effects'
+import { fork } from 'redux-saga/effects'
 
 
 export default function* rootSaga() {
-  yield fork(scheduleRoot)
-  yield fork(teamRoot)
+  yield fork(scheduleSagas)
+  yield fork(teamSagas)
 }

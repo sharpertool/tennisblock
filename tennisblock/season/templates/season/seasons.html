@@ -1,7 +1,7 @@
 {% extends "site_base.html" %}
 {% load staticfiles %}
 
-{% block body %}
+{% block page_content %}
     <div id="blockheading" class="dynamic">
         <h2>Block Seasons</h2>
     </div>
@@ -28,7 +28,7 @@
                         <td>{{ season.enddate }}</td>
                         <td>{{ season.blockstart }}</td>
                         <td>{{ season.blocktime }}</td>
-                        <td><a href="{% url 'couple_editor' season.pk %}">Couple Editor</a></td>
+                        <td><a href="{% url 'season:couple_editor' season.pk %}">Couple Editor</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

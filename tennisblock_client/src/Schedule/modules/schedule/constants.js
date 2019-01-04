@@ -1,11 +1,20 @@
-export const NAME = 'schedule'
-import {APP_NAME as PARENT_NAME} from '../constants'
+import { actionType } from '~/utils'
+export const MODULE_NAME = 'schedule'
 
-const mkname = (nm) => `${PARENT_NAME}/${NAME}/${nm}`
+export const SET_BLOCKDATES = actionType('SET_BLOCKDATES', MODULE_NAME)
 
-export const APP_NAME = `${PARENT_NAME}/${NAME}`
+export const UPDATE_PLAY_SCHEDULE = actionType('UPDATE_PLAY_SCHEDULE', MODULE_NAME)
 
+export const FETCH_BLOCK_PLAYERS = actionType('FETCH_BLOCK_PLAYERS', MODULE_NAME)
+export const FETCH_BLOCK_PLAYERS_SUCCEED = actionType('FETCH_BLOCK_PLAYERS_SUCCEED', MODULE_NAME)
+export const FETCH_BLOCK_PLAYERS_FAILED = actionType('FETCH_BLOCK_PLAYERS_FAILED', MODULE_NAME)
 
+export const UPDATE_BLOCK_PLAYERS = actionType('UPDATE_BLOCK_PLAYERS', MODULE_NAME)
+export const UPDATE_BLOCK_PLAYERS_FAILED = actionType('UPDATE_BLOCK_PLAYERS_FAILED', MODULE_NAME)
 
+export const GET_SUBS = actionType('GET_SUBS', MODULE_NAME)
 
+export const BLOCK_PLAYER_CHANGED = actionType('BLOCK_PLAYER_CHANGED', MODULE_NAME)
 
+export const CLEAR_SCHEDULE = actionType('CLEAR_SCHEDULE', MODULE_NAME)
+export const CLEAR_SCHEDULE_FAIL = actionType('CLEAR_SCHEDULE_FAIL', MODULE_NAME)

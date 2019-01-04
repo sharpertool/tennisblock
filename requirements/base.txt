@@ -1,17 +1,43 @@
+wagtail==2.3
 Django==2.1.2
-django-allauth==0.38.0
+
+django-contrib-comments==1.9.0
+djangorestframework==3.9.0
+markdown==3.0.1
+django-filter==2.0.0
+
+# Wagtail plugins and addons
+wagtail-autocomplete==0.1.1
+
+django-model-utils==3.1.2
 django-cors-headers==2.4.0
 django-environ==0.4.5
 django-sekizai==0.10.0
-django-user-accounts==2.0.3
-djangorestframework==3.9.0
-django-webpack-loader
+django-webpack-loader==0.6.0
 fpdf==1.7.2
 pinax-theme-bootstrap==8.0.1
 psycopg2==2.7.5
 python-dateutil==2.7.4
 pytz==2018.6
+
+Pillow==5.3.0
+
+# Social login
+django-user-accounts==2.0.3
+django-allauth==0.38.0
+social-auth-app-django==2.1.0
+
+# Logging, errors
 raven==6.9.0
+
+# Static and Media files
+django-storages==1.7.1
+boto3==1.9.31
+
+# SCSS files
+django-compressor==2.2
+django-pipeline==1.6.14
+
 reportlab==3.5.9
 django-crispy-forms==1.7.2
 

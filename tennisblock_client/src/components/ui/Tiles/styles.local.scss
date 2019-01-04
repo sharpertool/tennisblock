@@ -1,0 +1,42 @@
+.tile {
+  max-height: 250px;
+  min-height: 160px;
+  background: rgba(184, 233, 133, 1);
+  box-shadow: 0 0 0 1px rgba(130, 200, 50, 1);
+  position: relative;
+  &:hover {
+      background: rgba(130, 200, 50, 1);
+      text-decoration: none;
+      .tileDay, .tileMonth {
+        color: rgba(255, 255, 255, 1);
+      }
+  }
+
+    &.holdout {
+        background: #8a3f27;
+    }
+}
+
+.tileEdit {
+  color: rgba(74, 74, 74, 1);
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px 15px;
+  &:hover {
+    color: rgba(74, 74, 74, 1);
+  }
+}
+
+.tileMonth {
+  font-size: 20px;
+  line-height: 1;
+  color:  rgba(130, 200, 50, 1);
+}
+
+.tileDay {
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 1);
+}

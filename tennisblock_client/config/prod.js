@@ -1,32 +1,28 @@
-import merge from 'webpack-merge';
+import baseConfig, {paths} from './base'
+import merge from 'webpack-merge'
 
-import baseConfigFunc from './base';
-import {resolve} from "path";
+const rules = []
 
 export default ({env, options}) => {
 
-  //console.log('Prod Options are ', options);
-  console.log('Prod environment is ', env);
-
-    const strategy = {
-        'output.path': 'replace',
-        'output.filename': 'replace',
+  const strategy = {
+    entry: 'prepend',
+    output: 'append',
     'output.publicPath': 'replace',
-        'module.rules': 'append',
-        'plugins': 'append',
-    };
+    'module.rules': 'append'
+  }
 
-  const baseConfig = baseConfigFunc({env, options});
+  const mainConfig = baseConfig({env, options})
 
-    var output = {
-        filename: 'js/[name]_[hash].js',
-    publicPath: `/static/`
-  };
 
-    return merge.strategy(strategy)(
-        baseConfig,
-        {
-            output: output,
-        }
-  )
+  return merge.strategy(strategy)(mainConfig, {
+    devtool: 'source-map',
+    mode: 'production',
+    module: {
+      rules
+    },
+    output: {
+      publicPath: '/static/'
+    }
+  })
 }

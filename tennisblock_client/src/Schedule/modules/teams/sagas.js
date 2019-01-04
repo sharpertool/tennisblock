@@ -1,26 +1,44 @@
-import {takeEvery, put, call} from 'redux-saga/effects'
+import {put, call, all, takeLatest, select, fork} from 'redux-saga/effects'
+import axios from 'axios'
 
-import axios from '~/axios-tennisblock'
+const instance = axios.create({
+  // ToDo: need a solution that works for deployed app.
+  //baseURL: `${window.location.protocol}//${window.location.host}`,
+  xsrfCookieName: 'csrftoken',
+  xsrfHeaderName: 'X-CSRFToken'
+})
 
-import * as actions from './actions'
-import * as t from './constants'
+import * as actions from "./actions"
+import * as types from './constants'
 
-function* requestMatchData(date) {
-  const d = new Date(date)
-  const matchDate = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()+1}`
-  //console.log(`axios get for match data on ${date} using MatchDate:${matchDate}`)
-  const response = yield call(axios.get, `/api/matchdata/${matchDate}`)
-  //console.log('match response', response)
-  yield put(actions.updatePlaySchedule(response.data))
-  //console.log(response.data)
+
+function* fetchCurrentSchedule() {
+  try {
+    const {data} = yield call(instance.get, '/api/matchdata')
+    yield put(actions.updateMatchData(data.match))
+  } catch ({response}) {
+    console.log(response)
+  }
 }
 
-function* updateMatchData(action) {
-  const date = action.payload
-  //console.log(`Update Match data with date ${date}`)
-  yield call(requestMatchData, date)
+function* calculateMatchups(action) {
+  const {date, iterations, tries} = action.payload
+  try {
+    const {data} = yield call(instance.post,
+      `/api/pickteams/${date}`,
+      action.payload)
+    if (data.status == 'success') {
+      yield put(actions.updateMatchData(data.match))
+    }
+    yield put(actions.updateCalcResults({status: data.status, error: data.error}))
+  } catch (e) {
+    console.log(`Error picking teams. Will try again if you click! ${e}`)
+  }
 }
 
 export default function* rootSaga() {
-  yield takeEvery('UPDATE_CURRENT_DATE', updateMatchData)
+  yield all([
+    fetchCurrentSchedule(),
+    takeLatest(types.CALCULATE_MATCHUPS, calculateMatchups),
+  ])
 }

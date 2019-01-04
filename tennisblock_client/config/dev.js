@@ -1,27 +1,28 @@
-import {resolve} from 'path';
+import baseConfig, {paths} from './base'
 import merge from 'webpack-merge'
 
-import baseConfigFunc from './base'
+const rules = []
 
-module.exports = ({env, options}) => {
-    const strategy = {
-        'output.path': 'replace',
-        'output.filename': 'replace',
-        'module.rules': 'append',
-    };
+export default ({env, options}) => {
 
-    console.log(`Set  path to include ${process.env.FRONTEND_PATH}`)
+  const strategy = {
+    entry: 'prepend',
+    output: 'append',
+    'output.publicPath': 'replace',
+    'module.rules': 'append'
+  }
 
-    console.log(`Merging base build and dev for ${env.stage}`)
-    const baseConfig = baseConfigFunc({env, options})
-    console.log(`base: ${JSON.stringify(baseConfig)}`)
+  const mainConfig = baseConfig({env, options})
 
-    var output = {}
 
-    return merge.strategy(strategy)(
-        baseConfig,
-        {
-            output: output,
-        }
-    )
+  return merge.strategy(strategy)(mainConfig, {
+    devtool: 'source-map',
+    mode: 'development',
+    module: {
+      rules
+    },
+    output: {
+      publicPath: '/static/'
+    }
+  })
 }

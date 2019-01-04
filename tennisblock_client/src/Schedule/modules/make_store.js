@@ -5,12 +5,12 @@ import {combineReducers} from 'redux'
 import rootSaga from './sagas'
 
 // Default from each 'Duck' module is the reducer
-import schedule_reducer, {NAME as schedule_name} from './schedule'
-import teams_reducer, {NAME as teams_name} from './teams'
+import schedule_reducer, {MODULE_NAME as schedule_name}  from './schedule'
+import team_reducer, {MODULE_NAME as teams_name} from './teams'
 
 const rootReducer = combineReducers({
   [schedule_name]: schedule_reducer,
-  [teams_name]: teams_reducer,
+  [teams_name]: team_reducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()
@@ -24,13 +24,12 @@ let middlewares = [
  *
  * @param  {object} historyType browserhistory, hashhistory, memory history
  * @param  {func} composer redux devtools composer or default composer
- * @param  {profile} profile
  * @return {[object]} created history, store, actions
  */
-export default (historyType, composer) => {
-  const _compose = (composer) => composer || compose
+export default (historyType) => {
+  const _compose = (historyType) => historyType || compose
 
-  let composeStore = _compose(composer)(
+  let composeStore = _compose(historyType)(
     applyMiddleware(...middlewares),
   )(createStore)
 
@@ -45,4 +44,3 @@ export default (historyType, composer) => {
 }
 
 export {rootReducer}
-
