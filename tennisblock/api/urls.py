@@ -3,9 +3,10 @@ from django.urls import path, re_path, register_converter
 from .availability import AvailabilityView
 from .members import SeasonPlayerView
 from .blocksheet import blockSheet
-from .blockschedule import (BlockNotifyer, getBlockDates,
+from .blockschedule import (BlockNotifyer,
                             getSubList, blockPlayers,
-                            getMatchData, BlockSchedule)
+                            MatchData, BlockSchedule,
+                            BlockDates)
 
 from .views import get_seasons, get_current_season, get_latest_buzz
 from .teams import Teams
@@ -23,15 +24,15 @@ urlpatterns = (
     path('pickteams', Teams.as_view()),
     path('blocksheet/<date:date>', blockSheet),
     path('blocksheet', blockSheet),
-    path('blockdates', getBlockDates),
+    path('blockdates', BlockDates.as_view()),
     path('subs/<date:date>', getSubList),
     path('subs', getSubList),
     path('blockplayers/<date:date>', blockPlayers),
     path('blockplayers', blockPlayers),
     path('blockschedule/', BlockSchedule.as_view()),
     path('blockschedule/<date:date>', BlockSchedule.as_view()),
-    path('matchdata/<date:date>', getMatchData),
-    path('matchdata', getMatchData),
+    path('matchdata/<date:date>', MatchData.as_view()),
+    path('matchdata', MatchData.as_view()),
     path('availability', AvailabilityView.as_view()),
     path('availability/', AvailabilityView.as_view()),
     path('members/<int:id>', SeasonPlayerView.as_view()),

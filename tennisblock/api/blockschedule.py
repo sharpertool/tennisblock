@@ -172,32 +172,26 @@ def blockPlayers(request, date=None):
     return JSONResponse({})
 
 
-def getBlockDates(request):
-    """
-    View function to return a list of the block dates.
-    Return the holdout status, and a flag that indicates if the
-    meeting is the currently scheduled meeting.
-    """
+class BlockDates(APIView):
+    http_method_names = ['get', 'head', 'options']
+    permission_classes = (permissions.IsAuthenticated,)
 
-    if request.method == 'GET':
-        currSeason = get_current_season()
-        currmtg = get_meeting_for_date()
+    def get(self, request):
+        curr_season = get_current_season()
+        current_meeting = get_meeting_for_date()
 
-        meetings = Meeting.objects.filter(season=currSeason).order_by('date')
-        mtgData = []
+        meetings = Meeting.objects.filter(
+            season=curr_season).order_by('date')
+        result = []
         for mtg in meetings:
-            jstime = time_to_js(mtg.date)
             d = {
                 'date': mtg.date,
                 'holdout': mtg.holdout,
-                'current': mtg == currmtg
+                'current': mtg == current_meeting
             }
-            mtgData.append(d)
+            result.append(d)
 
-        response = JSONResponse(mtgData)
-        return response
-
-    return JSONResponse({'status': "Failed"})
+        return Response(result)
 
 
 class BlockSchedule(APIView):
@@ -237,16 +231,15 @@ class BlockSchedule(APIView):
         return Response({'status': 'success'})
 
 
-def getMatchData(request, date=None):
-    r = Request(request)
+class MatchData(APIView):
 
-    if r.method == 'GET':
+    def get(self, request, date=None):
         mgr = TeamManager()
 
         matchData = mgr.query_match(date)
         if matchData:
-            return JSONResponse({"match": matchData})
-        return JSONResponse({})
+            return Response({"match": matchData})
+        return Response({})
 
 
 class BlockNotifyer(View):
