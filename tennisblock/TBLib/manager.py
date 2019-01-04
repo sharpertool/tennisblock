@@ -14,7 +14,7 @@ class TeamManager(object):
         """ Retrive players for given date """
         men, women = self.dbTeams.get_players(date)
 
-        assert (len(men) == len(women))
+        #assert (len(men) == len(women))
         return men, women
 
     def pick_teams(self, men=None, women=None, date=None, testing=False,
@@ -27,12 +27,13 @@ class TeamManager(object):
         # Calculate number fo courts based on # of men.
         # Assume # of women is the same.
         if n_courts is None:
-            n_courts = len(men) // 2
+            n_courts = (len(men)+len(women)) // 4
+            print(f"Determined default number of courts as {n_courts}")
 
-        if len(men) < n_courts * 2 or len(women) < n_courts * 2:
-            errmsg = "Cannot pick teams, there are not enough men or women."
-            errmsg += "Need %d of both. Have %d men and %d women." % (n_courts * 2, len(men), len(women))
-            return {"status": {"error": errmsg}}
+        # if len(men) < n_courts * 2 or len(women) < n_courts * 2:
+        #     errmsg = "Cannot pick teams, there are not enough men or women."
+        #     errmsg += "Need %d of both. Have %d men and %d women." % (n_courts * 2, len(men), len(women))
+        #     return {"status": {"error": errmsg}}
 
         tg = TeamGen(n_courts, n_sequences, men, women)
         sequences = tg.generate_set_sequences(b_allow_duplicates, iterations=iterations)

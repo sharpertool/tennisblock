@@ -13,29 +13,30 @@ class TeamGen(object):
     def generate_set_sequences(self, b_allow_duplicates: bool = False, iterations: int = None):
         self.meeting.restart()
 
-        self.meeting.set_see_partner_once(not b_allow_duplicates)
+        self.meeting.set_see_player_once(not b_allow_duplicates)
         if iterations is not None:
             self.meeting.set_max_iteration(iterations)
 
         while self.meeting.round_count() < self.n_sequences:
             group_round = None
             diff_max = 0.1
+            max_quality = 1.0
 
-            while diff_max <= 1.0 and group_round is None:
-                max_quality = 1.0
-                while max_quality < 2.5 and group_round is None:
+            while group_round is None and diff_max <= 1:
+                while group_round is None and max_quality <= 2.5:
                     results = self.meeting.get_new_round(diff_max, max_quality)
                     group_round, min_found_diff, min_found_q = results
 
                     if group_round is None:
                         print(f"Lowest Diff was {min_found_diff:5.3}")
-                        max_quality = min_found_q
+                        max_quality += 0.5
                         print("min_quality increased to {min_quality:3.1}")
 
-                    diff_max = max(diff_max+0.1, min_found_diff)
+                    #diff_max = max(diff_max+0.1, min_found_diff)
 
                 if group_round is None:
                     diff_max += 0.1
+                    max_quality = 1.0
                     print("DiffMax Increased to {diff_max:5.3")
 
             if group_round is None:

@@ -32,7 +32,7 @@ class DBTeams:
             elif p.gender == 'M':
                 men.append(p)
             else:
-                raise ("No proper Gender!")
+                raise Exception("No proper Gender!")
 
         return men, women
 

@@ -25,14 +25,15 @@ class MeetingStats:
         self.n_sets = n_sets
         self.men = men
         self.women = women
+        self.all = men + women
 
         self.maxIterations = 100
         self.n_fails_by_invalid_partner = 0
         self.n_fails_by_diff = 0
 
-        self.seeGirlsOnlyOnce = False
+        self.seePlayerOnlyOnce = False
         if self.n_courts == 3:
-            self.seeGirlsOnlyOnce = False
+            self.seePlayerOnlyOnce = False
 
         self.chkMatchups = 0
         self.chkH2H = 0
@@ -58,13 +59,13 @@ class MeetingStats:
         # Should do this only once
         random.seed()
 
-    def set_see_partner_once(self, b_once):
+    def set_see_player_once(self, b_once):
         if b_once:
-            print("Setting the see Girls setting to True")
+            print("Setting the see_player_once setting to True")
             # self.maxIterations *= 10
         else:
-            print("Setting the see Girls setting to False")
-        self.seeGirlsOnlyOnce = b_once
+            print("Setting the see_player_once setting to False")
+        self.seePlayerOnlyOnce = b_once
 
     def set_max_iteration(self, n):
         self.maxIterations = n
@@ -81,7 +82,6 @@ class MeetingStats:
             self.Partners[p.Name()] = set()
             self.Opposites[p.Name()] = Counter()
             self.Opponents[p.Name()] = set()
-        for p in self.men:
             self.InvalidOpponents[p.Name()] = set()
             self.InvalidPartners[p.Name()] = set()
 
@@ -96,36 +96,29 @@ class MeetingStats:
         all of the variables we use to track the statisics for this run.
 
         """
-        max_cnt = 1 if self.seeGirlsOnlyOnce else 2
-
         for match in new_round.matches:
-            m1 = match.t1.p1.Name()
-            f1 = match.t1.p2.Name()
-            m2 = match.t2.p1.Name()
-            f2 = match.t2.p2.Name()
-            match_players = [m1, f1, m2, f2]
+            t1p1 = match.t1.p1.Name()
+            t1p2 = match.t1.p2.Name()
+            t2p1 = match.t2.p1.Name()
+            t2p2 = match.t2.p2.Name()
+            t1 = [t1p1, t1p2]
+            t2 = [t2p1, t2p2]
+            match_players = [t1p1, t1p2, t2p1, t2p2]
 
-            # Do both directions
-            self.Opponents[m1].add(m2)
-            self.Opponents[m2].add(m1)
-            self.Opponents[f1].add(f2)
-            self.Opponents[f2].add(f1)
+            # Add all opponents to set
+            [self.Opponents[x].update(t2) for x in t1]
+            [self.Opponents[x].update(t1) for x in t2]
 
-            # Do partners m->f
-            self.Partners[m1].add(f1)
-            self.Partners[m2].add(f2)
-            self.Partners[f1].add(m1)
-            self.Partners[f2].add(m2)
+            # Add all partners to set
+            for t in [t1, t2]:
+                self.Partners[t[0]].add(t[1])
+                self.Partners[t[1]].add(t[0])
 
-            # Increment the count of times played with opposites
-            self.Opposites[m1].update({f2})
-            self.Opposites[m2].update({f1})
-            self.Opposites[f2].update({m1})
-            self.Opposites[f1].update({m2})
-
-            # Increment the Seen count for all players
-            for i in match_players:
-                self.Seen[i].update({j for j in match_players if j is not i})
+            # Increment the count of times played with any player
+            for p in match_players:
+                tmp = list(filter(lambda x: x is not p, match_players))
+                self.Opposites[p].update(tmp)
+                self.Seen[p].update(tmp)
 
         self.update_invalids()
 
@@ -136,43 +129,38 @@ class MeetingStats:
         :return:
         """
         for m in self.men:
-            self.update_invalids_for_player(m, see_once=self.seeGirlsOnlyOnce)
+            self.update_invalids_for_player(
+                m,
+                see_once=self.seePlayerOnlyOnce)
 
     def update_invalids_for_player(self, player, see_once=True):
         """
-        Taking a men->women approach, we determine a list of invalid women opponents
-        and invalid women partners. 
-        If we set see_once to True, then we can only play with or against the same woman
-        once. If false, we can play with and against, but not with 2x or against 2x.
-        
-        
+        If see_once is True, then we can only play with or against
+        a particular player 1 time.
+        If false, we could play with a player, and also against that
+        same player, but not against the same player 2 times and
+        not with the same player 2 times.
+
         :param player: 
         :param see_once: 
         :return: 
         """
-        if player.gender == 'M':
-            gender_set = self.women
-        else:
-            gender_set = self.men
-
-        gender_names = [i.Name() for i in gender_set]
-
         name = player.Name()
-        op = self.Opposites[name]
-        opset = set(op)
         seen = self.Seen[name]
+
+        names = [i.Name() for i in self.all]
 
         if see_once:
             # Invalid partner OR opponent if we have seen them already
-            invalid = set({i for i in gender_names if seen[i] >= 1})
+            invalid = set([i for i in names if seen[i] >= 1])
             self.InvalidOpponents[name] = invalid
             self.InvalidPartners[name] = invalid
 
         else:
             # Allowed to see them 2 times, but once as partner, once as opposite
-            invalid = set({i for i in gender_names if seen[i] >= 2})
+            invalid = set([i for i in names if seen[i] >= 2])
             self.InvalidOpponents[name] = invalid.union(self.Partners[name])
-            self.InvalidPartners[name] = invalid.union(opset)
+            self.InvalidPartners[name] = invalid.union(set(self.Opposites[name]))
 
     def get_new_round(self, diff_max, quality_max):
         """
@@ -190,7 +178,7 @@ class MeetingStats:
         set
         """
         tries = 0
-        max_tries = 20
+        max_tries = 50
         new_round: MatchRound = None
 
         min_diff = 1000.0
@@ -324,6 +312,23 @@ class MeetingStats:
 
         t_men = [x.Name() for x in self.men]
         t_women = [x.Name() for x in self.women]
+
+        d = len(t_men) - len(t_women)
+        if d != 0:
+            if d % 2:
+                raise Exception("We have an odd number of players!")
+
+            if d > 0:
+                big, sm = t_men, t_women
+            else:
+                big, sm = t_women, t_men
+
+            while d:
+                p = random.choice(list(big))
+                sm.append(p)
+                big.remove(p)
+                d = len(t_men) - len(t_women)
+
         return t_men, t_women
 
     def pick_men(self, t_men):
@@ -342,10 +347,14 @@ class MeetingStats:
             m1 = random.choice(list(s_men))
             s_men.remove(m1)
             m2 = self.get_valid_opponent(m1, s_men)
+            if m2 is None:
+                raise NoValidOpponent(player=m1)
+
             s_men.remove(m2)
             m = Match(Team(self.pbyname[m1], None),
                       Team(self.pbyname[m2], None))
             new_round.add_match(m)
+
         return new_round
 
     def get_valid_opponent(self, player, opponents):
@@ -360,7 +369,7 @@ class MeetingStats:
 
         tmp = opponents.difference(self.Opponents[player])
         if len(tmp) == 0:
-            raise NoValidOpponent(player=player)
+            return None
 
         opponent = random.choice(list(tmp))
         return opponent

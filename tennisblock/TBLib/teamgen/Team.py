@@ -3,7 +3,7 @@ from blockdb.models import Player
 
 class Team:
     """
-    Represents a Guy and Gal on a team.
+    Represents a pair of players on a team.
     """
 
     def __init__(self, player1=None, player2=None):
