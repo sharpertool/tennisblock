@@ -10,8 +10,13 @@ from .common import *
 
 DEBUG = True
 
+MIDDLEWARE += (
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+)
+
 INSTALLED_APPS += [
     'django_extensions',
+    'debug_toolbar',
 ]
 
 CACHES = {
@@ -24,3 +29,8 @@ CACHES = {
 FIXTURE_DIRS = (
     PROJECT_ROOT('fixtures'),
 )
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+    'tennisblock.local'
+]

@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
+
 class BlockDBConfig(AppConfig):
 
     name = "blockdb"

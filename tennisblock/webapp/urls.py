@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import include, path, re_path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -14,7 +15,7 @@ from .views import (
     AboutView,
 )
 
-urlpatterns = (
+urlpatterns = [
     path('', auth_views.LoginView.as_view(
         template_name='login.html',
         redirect_authenticated_user=True),
@@ -33,4 +34,10 @@ urlpatterns = (
 
     path('admin/', include(wagtailadmin_urls)),
     path('', include(wagtail_urls)),
-)
+]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
