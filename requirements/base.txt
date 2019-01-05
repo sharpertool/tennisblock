@@ -5,6 +5,7 @@ django-contrib-comments==1.9.0
 djangorestframework==3.9.0
 markdown==3.0.1
 django-filter==2.0.0
+django-bootstrap-datepicker-plus
 
 # Wagtail plugins and addons
 wagtail-autocomplete==0.1.1

@@ -18,7 +18,7 @@ class Season(models.Model):
     startdate = models.DateField()
     enddate = models.DateField()
     blockstart = models.DateField()
-    lastdate = models.DateField(null=True)
+    lastdate = models.DateField(blank=True, null=True)
     blocktime = models.TimeField()
 
     def __str__(self):

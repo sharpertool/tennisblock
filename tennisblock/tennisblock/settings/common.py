@@ -224,6 +224,7 @@ INSTALLED_APPS = [
     'season',
     'webpack_loader',
     'pinax_theme_bootstrap',
+    'bootstrap_datepicker_plus',
 ]
 
 REST_FRAMEWORK = {

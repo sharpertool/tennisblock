@@ -7,12 +7,11 @@
 
 {% block page_content %}
     <div>
-        <form action="{% url 'season:season_detail' pk=season.pk %}" %}method="post">
+        <form
+                action="{% url 'season:season_detail' pk=season.pk %}" %}
+                method="post">
             {% csrf_token %}
             {% crispy season_form season_form.helper %}
-            <input class="btn btn-primary"
-                   type="submit"
-                   name="update_season" value="Update Season"/>
         </form>
 
         <form action="{% url 'season:season_detail' pk=season.pk %}" method="post">
@@ -56,3 +55,8 @@
         </form>
     </div>
 {% endblock %}
+
+{% block body_script %}
+    {{ block.super }}
+    {{ form.media }}
+{% endblock body_script %}

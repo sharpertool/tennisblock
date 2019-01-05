@@ -2,7 +2,8 @@ from django.forms import ModelForm
 from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
-
+from crispy_forms.layout import Submit
+from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
 from blockdb.models import Season, Couple, SeasonPlayer
 
 
@@ -12,11 +13,19 @@ class SeasonForm(ModelForm):
         fields = ('name', 'courts', 'firstcourt',
                   'startdate', 'enddate',
                   'blockstart', 'lastdate', 'blocktime')
+        widgets = {
+            'startdate': DatePickerInput(format='%m/%d/%Y'),
+            'enddate': DatePickerInput(format='%m/%d/%Y'),
+            'blockstart': DatePickerInput(format='%m/%d/%Y'),
+            'lastdate': DatePickerInput(format='%m/%d/%Y'),
+            'blocktime': TimePickerInput()
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'form-inline'
+        self.helper.form_method = 'post'
 
 
 class CoupleForm(ModelForm):

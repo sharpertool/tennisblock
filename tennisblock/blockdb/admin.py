@@ -29,10 +29,10 @@ class PlayerAdmin(admin.ModelAdmin):
 
     def emails_match(self):
         return self.user.email == self.email
+
     emails_match.boolean = True
 
     list_display = ('full_name', 'email', emails_match, 'gender', 'ntrp', 'microntrp')
-
 
 
 class SeasonPlayerAdmin(admin.ModelAdmin):

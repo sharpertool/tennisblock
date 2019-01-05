@@ -1,3 +1,4 @@
+from crispy_forms.layout import Submit
 from dateutil.parser import parse
 from django.views.generic import TemplateView, CreateView
 from django.urls import reverse_lazy
@@ -40,8 +41,6 @@ class SeasonsView(TemplateView):
 class SeasonDetailView(TemplateView):
     template_name = "season/season_detail.html"
 
-    # queryset = Season.objects.all()
-
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
 
@@ -51,20 +50,18 @@ class SeasonDetailView(TemplateView):
         pk = kwargs.get('pk', None)
         if pk is not None:
             s = Season.objects.get(pk=pk)
-            meetings = Meeting.objects.filter(season=s)
 
             if request.POST.get('update_season', False):
-                print("Update Season data..")
-                p = request.POST
-                # s.blocktime = p.get('blocktime')
-                s.courts = p.get('courts')
-                s.firstcourt = p.get('firstcourt')
-                s.name = p.get('name')
-                s.enddate = parse(p.get('seasonend'))
-                s.startdate = parse(p.get('seasonstart'))
-                s.blockstart = parse(p.get('blockstart'))
-                s.save()
+                season_form = SeasonForm(request.POST,
+                                         instance=s)
+                if season_form.is_valid():
+                    season_form.save()
+                else:
+                    context = self.get_context_data(
+                        season_form=season_form)
+                    return self.render_to_response(context)
             elif request.POST.get('update_holdouts', False):
+                meetings = Meeting.objects.filter(season=s)
                 holdouts = request.POST.getlist('meetings')
                 for m in meetings:
                     m.holdout = False
@@ -83,11 +80,16 @@ class SeasonDetailView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = kwargs.get('pk', None)
+        pk = kwargs.get('pk')
         if pk is not None:
             s = Season.objects.get(pk=pk)
             context['season'] = s
-            context['season_form'] = SeasonForm(instance=s)
+            if kwargs.get('season_form') is None:
+                context['season_form'] = SeasonForm(instance=s)
+                context['season_form'].helper.add_input(
+                    Submit('update_season', 'Update Season')
+                )
+
             meetings = Meeting.objects.filter(season=s)
             if len(meetings) == 0:
                 build_meetings_for_season(s)
@@ -96,7 +98,6 @@ class SeasonDetailView(TemplateView):
             context['players'] = self.get_player_list(s)
 
         return context
-
 
     def get_player_list(self, season):
         """
@@ -149,6 +150,16 @@ class SeasonCreate(CreateView):
     success_url = reverse_lazy('season:seasons')
     form_class = SeasonForm
     model = Season
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'].helper.add_input(
+            Submit('submit', 'Create Season')
+        )
+        return context
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 @class_login_required

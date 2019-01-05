@@ -8,13 +8,12 @@ from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
-
 from .models import User, Season, Meeting, Player
 from api.apiutils import build_meetings_for_season, update_last_meeting_date
 
+
 @receiver(post_save, sender=User)
 def user_post_save(sender, instance=None, created=False, **kwargs):
-
     if getattr(instance, '_player_create', False):
         return
 
@@ -67,11 +66,11 @@ def player_post_save(sender, instance=None, created=False, **kwargs):
 
             now = timezone.now()
             user = get_user_model()(username=username, email=email,
-                        is_staff=False, is_active=False,
-                        is_superuser=False, last_login=now,
-                        first_name=player.first,
-                        last_name=player.last,
-                        date_joined=now)
+                                    is_staff=False, is_active=False,
+                                    is_superuser=False, last_login=now,
+                                    first_name=player.first,
+                                    last_name=player.last,
+                                    date_joined=now)
 
             user._player_create = True
             user.save()

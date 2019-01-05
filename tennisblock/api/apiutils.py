@@ -10,6 +10,7 @@ from rest_framework import serializers
 
 from blockdb.models import Season, Meeting
 
+
 class SeasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Season
@@ -22,10 +23,12 @@ class SeasonSerializer(serializers.ModelSerializer):
             'enddate'
         )
 
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders it's content into JSON.
     """
+
     def __init__(self, data, **kwargs):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
@@ -41,9 +44,9 @@ def get_current_season():
     if len(seasons) > 0:
         season = seasons[0]
         meetings = Meeting.objects.filter(
-                season=season,
-                holdout=False,
-                date__gte=datetime.date.today())
+            season=season,
+            holdout=False,
+            date__gte=datetime.date.today())
         if meetings.count() > 0:
             return season
 
