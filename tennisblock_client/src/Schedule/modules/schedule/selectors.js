@@ -41,24 +41,24 @@ export const currentDate = state => state.current_date
 
 export const getGuySubs = state => {
   const {players_by_id: pbid, subs_guys: s} = state
-  return s.map(id => {
+  return s.reduce((subs, id) => {
     const p = pbid[id]
-    if (p !== 'undefined') {
-      return {id: id, name: p.name}
+    if (p) {
+      subs.push({id: id, name: p.name})
     }
-    return null
-  })
+    return subs
+  }, [])
 }
 
 export const getGalSubs = state => {
   const {players_by_id: pbid, subs_gals: s} = state
-  return s.map(id => {
+  return s.reduce((subs, id) => {
     const p = pbid[id]
-    if (p !== 'undefined') {
-      return {id: id, name: p.name}
+    if (p) {
+      subs.push({id: id, name: p.name})
     }
-    return null
-  })
+    return subs
+  }, [])
 }
 
 export const getSubs = state => {

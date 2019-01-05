@@ -20,7 +20,7 @@ class ActionButtons extends Component {
       type: type
     })
   }
-  
+
   onConfirm = () => {
     const {type} = this.state
     if (type == 'reschedule') {
@@ -36,7 +36,7 @@ class ActionButtons extends Component {
   }
 
   render() {
-    const { canClear, canSchedule, canUpdate } = this.props
+    const { canClear, canReSchedule, canUpdate } = this.props
 
     return (
       <React.Fragment>
@@ -49,7 +49,7 @@ class ActionButtons extends Component {
         </ConfirmDialog>
 
         <Button
-          disabled={!canSchedule}
+          disabled={!canReSchedule}
           onClick={() => this.toggleConfirm('reschedule')}
           color="danger">
           Schedule
@@ -77,7 +77,7 @@ ActionButtons.propTypes = {
   canClear: PropTypes.bool.isRequired,
   canReSchedule: PropTypes.bool.isRequired,
   canUpdate: PropTypes.bool.isRequired,
-  
+
   onReSchedule: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,

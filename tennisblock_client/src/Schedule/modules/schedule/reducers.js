@@ -14,7 +14,7 @@ const initialState = {
   curr_gals: [],
   original_guys: [],
   original_gals: [],
-  
+
   originalCouples: [],
   meeting_dates: [],
   subs_guys: [],
@@ -106,20 +106,16 @@ const reducer = handleActions(
         [types.BLOCK_PLAYER_CHANGED](state, { payload }) {
           const { group, value, previous } = payload
           const [key,skey] = [`curr_${group}`, `subs_${group}`]
-          
+
           // Making a copy of arrays so result is immutable.
           let curr = state[key].slice()
           let subs = state[skey].slice()
 
           const idx = curr.indexOf(previous)
-          if (idx > -1) {
-            curr.splice(idx, 1, value)
-          }
-          
           const sidx = subs.indexOf(value)
-          if (idx > -1) {
-            subs.splice(sidx, 1, previous)
-          }
+
+          curr.splice(idx > -1 ? idx : curr.length, 1, value)
+          subs.splice(sidx, 1, idx > -1 ? previous : null)
 
           return {
             ...state,
