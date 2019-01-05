@@ -166,6 +166,8 @@ class BlockDates(APIView):
         curr_season = get_current_season()
         current_meeting = get_meeting_for_date()
 
+        court_count = curr_season.courts
+
         meetings = Meeting.objects.filter(
             season=curr_season).order_by('date')
         result = []
@@ -173,8 +175,12 @@ class BlockDates(APIView):
             d = {
                 'date': mtg.date,
                 'holdout': mtg.holdout,
-                'current': mtg == current_meeting
+                'current': mtg == current_meeting,
+                'num_courts': court_count
             }
+            if mtg.court_count:
+                d['num_courts'] = mtg.court_count
+
             result.append(d)
 
         return Response(result)

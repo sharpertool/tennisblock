@@ -11,7 +11,17 @@ class Team:
         self.p2: Player = player2
 
     def combined_microntrp(self):
-        return self.p1.microntrp + self.p2.microntrp
+        """
+        P1 will be a guy, or if this is 2 ladies, a gal and then p2
+        will be a gal.  In this case, p1 gets downgraded as they are
+        playing "as a guy", theoretically.
+
+        """
+        if self.p1.gender == 'F':
+            combined = 0.92*self.p1.microntrp + self.p2.microntrp
+        else:
+            combined = self.p1.microntrp + self.p2.microntrp
+        return combined
 
     def spread(self):
         return abs(self.p1.microntrp - self.p2.microntrp)

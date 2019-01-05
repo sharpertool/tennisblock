@@ -19,7 +19,7 @@ const teamstats = (props) => {
   const barWidth = Math.min(100, 100*(spread[0]+spread[1])/2)
   const gauge1 = Math.min(100, 66.6*spread[0]) + '%'
   const gauge2 = Math.min(100, 66.6*spread[1]) + '%'
-  const gauge3 = Math.min(100, 100*(totals[0]-totals[1])) + '%'
+  const gauge3 = Math.min(100, 100*(Math.abs(totals[0]-totals[1]))) + '%'
   const height = 45
 
 
