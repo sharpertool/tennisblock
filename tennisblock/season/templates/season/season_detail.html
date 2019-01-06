@@ -32,27 +32,74 @@
                    name="update_holdouts" value="Update Holdouts"/>
         </form>
 
-        <form action="{% url 'season:season_detail' pk=season.pk %}" method="post">
-            {% csrf_token %}
-            <ul>
-                {% for player in players %}
-                    <li>
-                        <span>{{ player.name }}</span>
-                        <span>{{ player.ntrp }}</span>
-                        <label for="mtg_{{ forloop.counter0 }}">{{ mtg.date }}</label>
-                        <input id="mtg_{{ forloop.counter0 }}" name="members" type="checkbox"
-                               value="{{ forloop.counter0 }}"
-                                {% if player.season_player %}
-                               checked="checked"
-                                {% endif %}
-                        >
-                    </li>
-                {% endfor %}
-            </ul>
-            <input class="btn btn-primary"
-                   type="submit"
-                   name="season_players" value="Update Players"/>
-        </form>
+        <div class="row">
+            <div class="col">
+
+                <form
+                        action="{% url 'season:season_detail' pk=season.pk %}"
+                        method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            Total of {{ active.count }} Players
+                            <ul>
+                                {% for player in active %}
+                                    <li>
+                                        <span>{{ player.name }}</span>
+                                        <span>{{ player.ntrp }}</span>
+                                        <label for="mtg_{{ forloop.counter0 }}">
+                                            {{ mtg.date }}
+                                        </label>
+                                        <input id="mtg_{{ forloop.counter0 }}"
+                                               name="members"
+                                               type="checkbox"
+                                               value="{{ player.pk }}"
+                                                {% if player.active %}
+                                               checked="checked"
+                                                {% endif %}
+                                        >
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul>
+                                {% for player in inactive %}
+                                    <li>
+                                        <span>{{ player.name }}</span>
+                                        <span>{{ player.ntrp }}</span>
+                                        <label for="mtg_{{ forloop.counter0 }}">
+                                            {{ mtg.date }}
+                                        </label>
+                                        <input id="mtg_{{ forloop.counter0 }}"
+                                               name="members"
+                                               type="checkbox"
+                                               value="{{ player.pk }}"
+                                                {% if player.active %}
+                                               checked="checked"
+                                                {% endif %}
+                                        >
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input class="btn btn-primary"
+                               type="submit"
+                               name="season_players" value="Update Players"/>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+
     </div>
 {% endblock %}
 

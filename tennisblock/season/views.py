@@ -99,25 +99,14 @@ class SeasonDetailView(TemplateView):
                 build_meetings_for_season(s)
                 meetings = Meeting.objects.filter(season=s)
             context['meetings'] = meetings
-            context['players'] = self.get_player_list(s)
+            context['active'] = self.active_season_players(s)
+            context['inactive'] = self.non_season_players(s)
 
         return context
 
-    def get_player_list(self, season):
-        """
-        Return a list of players and boolean if they are in the given season.
-
-        Set the 'update' flag to false. This is used when updating the values to
-        know which players were update to be in the season, and which we can remove.
-        """
-
+    def active_season_players(self, season):
         sqs = Season.objects.filter(pk=season.pk)
-        inactive = Player.objects \
-            .filter(~Q(seasons__in=sqs)) \
-            .annotate(active=Value(False, models.BooleanField())) \
-            .annotate(uname=Concat('user__last_name',
-                                   Value(', '),
-                                   'user__first_name'))
+
         active = Player.objects \
             .filter(Q(seasons__in=sqs)) \
             .annotate(active=Value(True, models.BooleanField())) \
@@ -125,43 +114,45 @@ class SeasonDetailView(TemplateView):
                                    Value(', '),
                                    'user__first_name'))
 
-        players = inactive.union(active).order_by('uname')
+        return active.order_by('uname')
 
-        player_data = []
-        for p in players:
-            player_data.append({
-                'pk': p.pk,
-                'name': p.uname,
-                'ntrp': p.ntrp,
-                'season_player': p.active,
-                'block_member': False,
-                'update': False
-            })
+    def non_season_players(self, season):
+        sqs = Season.objects.filter(pk=season.pk)
 
-        return player_data
+        inactive = Player.objects \
+            .filter(~Q(seasons__in=sqs)) \
+            .annotate(active=Value(False, models.BooleanField())) \
+            .annotate(uname=Concat('user__last_name',
+                                   Value(', '),
+                                   'user__first_name'))
+
+        return inactive.order_by('uname')
 
     def update_season_players(self, season, request):
-        player_keys = request.POST.getlist('members')
+        player_keys = [int(k) for k in request.POST.getlist('members')]
 
-        all_players = self.get_player_list(season)
-        for idx in player_keys:
-            idx = int(idx)
-            player = all_players[idx]
-            player['update'] = True
+        print(f"Keys: {sorted(player_keys)}")
 
-        for p in all_players:
-            player = Player.objects.get(pk=p['pk'])
-            if p['update']:
-                if not p['season_player']:
-                    sp = SeasonPlayer(
-                        season=season,
-                        player=player,
-                        blockmember=True)
-                    sp.save()
-            elif p['season_player']:
-                SeasonPlayer.objects.filter(
-                    season=season,
-                    player=player).delete()
+        sel_players = Player.objects.filter(pk__in=player_keys).order_by('pk')
+        curr_players = Player.objects.filter(Q(seasons__in=[season])).order_by('pk')
+
+        print(f"Selected: {sel_players.all().values_list('pk')}")
+        print(f"Current: {curr_players.all().values_list('pk')}")
+
+        to_del = curr_players.difference(sel_players).order_by('pk')
+        to_add = sel_players.difference(curr_players).order_by('pk')
+
+        for p in to_del.all():
+            print(f"Deleting {p}")
+            SeasonPlayer.objects.get(season=season, player=p).delete()
+
+        for p in to_add.all():
+            print(f"Adding {p}")
+            SeasonPlayer.objects.create(
+                season=season,
+                player=p,
+                blockmember=True
+            ).save()
 
 
 @class_login_required
