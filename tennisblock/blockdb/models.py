@@ -1,31 +1,10 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 
 from django.conf import settings
 
 User = settings.AUTH_USER_MODEL
-
-
-class Season(models.Model):
-    """
-    Define a block season.
-    Gives a name, court information, and information about
-    the start/end dates and block start date and time.
-    """
-    name = models.CharField(max_length=20)
-    courts = models.IntegerField()
-    firstcourt = models.IntegerField()
-    startdate = models.DateField()
-    enddate = models.DateField()
-    blockstart = models.DateField()
-    lastdate = models.DateField(blank=True, null=True)
-    blocktime = models.TimeField()
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('season:season_detail', kwargs={'pk': self.pk})
 
 
 class GirlsManager(models.Manager):
@@ -100,8 +79,39 @@ class Player(models.Model):
         """
         Return true if this player is a player in the given season.
         """
-        seasons = [s.season for s in self.seasonplayer_set.all()]
-        return season in seasons
+        try:
+            if self.seasons.get(season):
+                return True
+        except ObjectDoesNotExist:
+            return False
+
+
+class Season(models.Model):
+    """
+    Define a block season.
+    Gives a name, court information, and information about
+    the start/end dates and block start date and time.
+    """
+    name = models.CharField(max_length=20)
+    courts = models.IntegerField()
+    firstcourt = models.IntegerField()
+    startdate = models.DateField()
+    enddate = models.DateField()
+    blockstart = models.DateField()
+    lastdate = models.DateField(blank=True, null=True)
+    blocktime = models.TimeField()
+
+    players = models.ManyToManyField(
+        Player,
+        related_name='seasons',
+        through='SeasonPlayer'
+    )
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('season:season_detail', kwargs={'pk': self.pk})
 
 
 class SeasonPlayer(models.Model):
@@ -113,8 +123,10 @@ class SeasonPlayer(models.Model):
 
 
     """
-    season = models.ForeignKey(Season, related_name='players', on_delete=models.CASCADE)
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    season = models.ForeignKey(Season,
+                               on_delete=models.CASCADE)
+    player = models.ForeignKey(Player,
+                               on_delete=models.CASCADE)
     blockmember = models.BooleanField(default=False)
 
     def __str__(self):

@@ -4,6 +4,9 @@ from django.views.generic import TemplateView, CreateView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
+from django.db import models
+from django.db.models.expressions import Value, F, Q
+from django.db.models.functions import Concat
 
 from TBLib.view import class_login_required
 
@@ -11,6 +14,7 @@ from blockdb.models import Season, Meeting, Player, SeasonPlayer, Couple
 
 from .forms import SeasonForm, CoupleForm
 from api.apiutils import build_meetings_for_season
+
 
 @class_login_required
 class SeasonsView(TemplateView):
@@ -107,15 +111,29 @@ class SeasonDetailView(TemplateView):
         know which players were update to be in the season, and which we can remove.
         """
 
-        players = Player.objects.all().prefetch_related('seasonplayer_set')
+        sqs = Season.objects.filter(pk=season.pk)
+        inactive = Player.objects \
+            .filter(~Q(seasons__in=sqs)) \
+            .annotate(active=Value(False, models.BooleanField())) \
+            .annotate(uname=Concat('user__last_name',
+                                   Value(', '),
+                                   'user__first_name'))
+        active = Player.objects \
+            .filter(Q(seasons__in=sqs)) \
+            .annotate(active=Value(True, models.BooleanField())) \
+            .annotate(uname=Concat('user__last_name',
+                                   Value(', '),
+                                   'user__first_name'))
+
+        players = inactive.union(active).order_by('uname')
 
         player_data = []
         for p in players:
             player_data.append({
                 'pk': p.pk,
-                'name': "{} {}".format(p.first, p.last),
+                'name': p.uname,
                 'ntrp': p.ntrp,
-                'season_player': p.in_season(season),
+                'season_player': p.active,
                 'block_member': False,
                 'update': False
             })
@@ -141,7 +159,9 @@ class SeasonDetailView(TemplateView):
                         blockmember=True)
                     sp.save()
             elif p['season_player']:
-                SeasonPlayer.objects.filter(season=season, player=player).delete()
+                SeasonPlayer.objects.filter(
+                    season=season,
+                    player=player).delete()
 
 
 @class_login_required

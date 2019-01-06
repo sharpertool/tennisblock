@@ -1,9 +1,7 @@
-
-
 from django.db import connection
 from excel import Excel
 
-from blockdb.models import Player,Couple,Season,SeasonPlayer
+from blockdb.models import Player, Couple, Season, SeasonPlayer
 
 
 class PlayerExcel(Excel):
@@ -11,8 +9,7 @@ class PlayerExcel(Excel):
     def __init__(self):
         pass
 
-
-    def importExcel(self,xlfile):
+    def importExcel(self, xlfile):
         """
         Import the excel file that contains the players.
 
@@ -22,20 +19,20 @@ class PlayerExcel(Excel):
 
         wb = self.openWorkbook(xlfile)
 
-        ws = self.getSheet(wb,'Players')
+        ws = self.getSheet(wb, 'Players')
         if ws == None:
             print("Players worksheet not found in %s" % xlfile)
             return
 
         nrows = self.getRowCount(ws)
-        rowHeadings = self.getValues(ws,0)
+        rowHeadings = self.getValues(ws, 0)
 
         self.colParams = []
 
-        print ("Getting Players")
+        print("Getting Players")
         players = []
-        for rowid in range(1,nrows):
-            theRow = self.getValues(ws,rowid)
+        for rowid in range(1, nrows):
+            theRow = self.getValues(ws, rowid)
             player = dict(zip(rowHeadings, theRow))
             if not player['First'] == "" and not player['Last'] == "":
                 players.append(player)
@@ -44,9 +41,8 @@ class PlayerExcel(Excel):
 
 
 def currentSeason():
-
-    s = Season.objects.filter(name__contains = "2013").filter(name__contains="Fall")
-    #return Season.objects.get(name="Fall 2013")
+    s = Season.objects.filter(name__contains="2013").filter(name__contains="Fall")
+    # return Season.objects.get(name="Fall 2013")
     pass
 
     return s
@@ -57,7 +53,7 @@ def addPlayer(player):
     fname = player['First']
 
     try:
-        p = Player.objects.get(last=lname,first=fname)
+        p = Player.objects.get(last=lname, first=fname)
 
         # If player exist, update, otherwise, add
         p.ntrp = player['NTRP']
@@ -70,11 +66,11 @@ def addPlayer(player):
 
     except:
         p = Player.objects.create(
-            first       = fname,
-            last        = lname,
-            gender      = player['Gender'].upper(),
-            ntrp        = player['NTRP'],
-            microntrp   = player['uNTRP']
+            first=fname,
+            last=lname,
+            gender=player['Gender'].upper(),
+            ntrp=player['NTRP'],
+            microntrp=player['uNTRP']
         )
         if player['email'] != '':
             p.email = player['email']
@@ -97,7 +93,7 @@ def addPlayers(players):
         addPlayer(player)
 
 
-def addSeasonPlayer(season,players):
+def addSeasonPlayer(season, players):
     """
     Add players to the season players table.
 
@@ -108,8 +104,8 @@ def addSeasonPlayer(season,players):
         fname = player['First']
 
         try:
-            p = Player.objects.get(last=lname,first=fname)
-        except:
+            p = Player.objects.get(last=lname, first=fname)
+        except Player.DoesNotExist:
             p = addPlayer(player)
 
         try:
@@ -117,18 +113,19 @@ def addSeasonPlayer(season,players):
                 season=season,
                 player=p)
 
-            sp.blockmember = True
+            sp.blockmember = False
             sp.save()
-        except:
+        except SeasonPlayer.DoesNotExist:
             sp = SeasonPlayer.objects.create(
-                season      =season,
-                player      = hasp,
-                blockmember = True
+                season=season,
+                player=hasp,
+                blockmember=True
             )
             sp.save()
 
-def addCouples(season,players):
-    #Couple.objects.filter(season=season).delete()
+
+def addCouples(season, players):
+    # Couple.objects.filter(season=season).delete()
 
     couples = {}
 
@@ -171,12 +168,12 @@ def addCouples(season,players):
 
         except:
             c = Couple.objects.create(
-                season      = season,
-                name        = couple,
-                male        = guy,
-                female      = gal,
-                fulltime    = theguy['FullTime'],
-                canschedule = theguy['blockmember'],
-                blockcouple = theguy['blockmember']
+                season=season,
+                name=couple,
+                male=guy,
+                female=gal,
+                fulltime=theguy['FullTime'],
+                canschedule=theguy['blockmember'],
+                blockcouple=theguy['blockmember']
             )
             c.save()
