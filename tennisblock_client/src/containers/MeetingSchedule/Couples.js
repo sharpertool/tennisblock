@@ -31,13 +31,24 @@ class Couples extends Component {
                       //className={changes[index].guy ? styles.changed : ''}
                       onChange={(e) => onPlayerChanged({
                         group: 'guys',
+                        index: index,
                         value: parseInt(e.target.value),
                         previous: guy.id
                       })}
                     >
-                      <option value={guy.id}>{guy.name}</option>
+                      <option
+                        value={guy.id}>
+                        {guy.name}
+                      </option>
+                      <option
+                        value={-1}>
+                        {'---'}
+                      </option>
                       {guySubs.map((s, i) => (
-                        <option value={s.id} key={i}>{s.name}</option>
+                        <option
+                          value={s.id} key={i}>
+                          {s.name}
+                        </option>
                       ))}
                     </Input>
                   </Col>
@@ -48,13 +59,24 @@ class Couples extends Component {
                       //className={changes[index].gal ? styles.changed : ''}
                       onChange={(e) => onPlayerChanged({
                         group: 'gals',
+                        index: index,
                         value: parseInt(e.target.value),
                         previous: gal.id
                       })}
                     >
-                      <option value={gal.id}>{gal.name}</option>
+                      <option
+                        value={gal.id}>
+                        {gal.name}
+                      </option>
+                      <option
+                        value={-1}>
+                        {'---'}
+                      </option>
                       {galSubs.map((s, i) => (
-                        <option value={s.id} key={i}>{s.name}</option>
+                        <option
+                          value={s.id} key={i}>
+                          {s.name}
+                        </option>
                       ))}
                     </Input>
                   </Col>

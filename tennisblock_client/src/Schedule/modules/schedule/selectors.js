@@ -20,7 +20,9 @@ export const court_count = state => {
   return null
 }
 export const getCouples = state => {
-  const {players_by_id: pbid, curr_guys: guys, curr_gals: gals} = state
+  const {players_by_id: pbid,
+    curr_guys: guys,
+    curr_gals: gals} = state
   const num_courts = court_count(state)
   // We  need 2 couples per court, so num_courts * 2
   const n = Math.max(guys.length, gals.length)
@@ -29,10 +31,18 @@ export const getCouples = state => {
     )
   )
   gals.map((g, i) => {
-    couples[i].gal = {id: g, name:pbid[g].name}
+    if (g == -1) {
+      couples[i].gal = {id: -1, name:'---'}
+    } else {
+      couples[i].gal = {id: g, name:pbid[g].name}
+    }
   })
   guys.map((g, i) => {
-    couples[i].guy = {id: g, name:pbid[g].name}
+    if (g == -1) {
+      couples[i].guy = {id: -1, name:'---'}
+    } else {
+      couples[i].guy = {id: g, name: pbid[g].name}
+    }
   })
   return couples
 }
@@ -85,11 +95,11 @@ export const changes = state => {
 }
 
 export const canClearSchedule = state => {
-  return state.curr_guys.length != 0 &&state.curr_gals.length != 0
+  return state.curr_guys.length != 0 && state.curr_gals.length != 0
 }
 
 export const canReSchedule = state => {
-  return state.curr_guys.length != 0 &&state.curr_gals.length != 0
+  return state.curr_guys.length == 0 &&state.curr_gals.length == 0
 }
 
 export const canUpdateSchedule = state => {

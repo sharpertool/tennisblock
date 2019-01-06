@@ -1,5 +1,10 @@
+import * as R from 'ramda'
 import { handleActions } from 'redux-actions'
 import * as types from './constants'
+import {
+  groupByGenderAndId,
+  toObjectById
+} from './ramda_utils'
 
 const initialState = {
   current_meeting: {
@@ -21,9 +26,6 @@ const initialState = {
   subs_gals: []
 }
 
-const filter_sub = (sub) => {
-  return sub.id
-}
 const filter_player = (p) => {
   const {name, id} = p
   return {name, id}
@@ -58,6 +60,10 @@ const reducer = handleActions(
 
         [types.SET_BLOCK_PLAYERS](state, { payload }) {
           const {date, guys, gals} = payload
+          // Some Ramda approaches, just testing for now
+          const players_by_id = toObjectById(R.concat(guys, gals))
+          //const curr = groupByGenderAndId(players_by_id)
+          
           const processed = [...guys, ...gals].reduce((acc, p) => {
             acc.players_by_id[p.id] = {
               name: p.name,
@@ -85,6 +91,7 @@ const reducer = handleActions(
           return {
             ...state,
             ...processed,
+            pbyid: players_by_id,
             current_date: date,
             //originalCouples: [...couples],
             guys: guys.map(filter_player),
@@ -104,9 +111,10 @@ const reducer = handleActions(
         },
 
         [types.BLOCK_PLAYER_CHANGED](state, { payload }) {
-          const { group, value, previous } = payload
+          const { group, index, value, previous } = payload
           const [key,skey] = [`curr_${group}`, `subs_${group}`]
           
+          console.log(`Change ${group} idx:${index} from ${previous} to ${value}`)
           // Making a copy of arrays so result is immutable.
           let curr = state[key].slice()
           let subs = state[skey].slice()

@@ -68,7 +68,6 @@ const mapStateToProps = (state) => {
     canClearSchedule: selectors.canClearSchedule(state),
     canReSchedule: selectors.canReSchedule(state),
     canUpdateSchedule: selectors.isScheduleChanged(state),
-    isScheduleChanged: selectors.isScheduleChanged(state),
   }
 }
 
