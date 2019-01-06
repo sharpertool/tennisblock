@@ -59,7 +59,8 @@ const reducer = handleActions(
         },
 
         [types.SET_BLOCK_PLAYERS](state, { payload }) {
-          const {date, guys, gals} = payload
+          const {date, guys, gals, couples} = payload
+          const nCourts = couples.length*2
           // Some Ramda approaches, just testing for now
           const players_by_id = toObjectById(R.concat(guys, gals))
           //const curr = groupByGenderAndId(players_by_id)
@@ -87,6 +88,16 @@ const reducer = handleActions(
             original_guys: [],
             original_gals: [],
           })
+          
+          if (processed.curr_guys.length == 0) {
+            const tmp = [
+              ...Array(nCourts/2).keys()
+            ].map(()=>-1)
+            processed.curr_guys = R.clone(tmp)
+            processed.curr_gals = R.clone(tmp)
+            processed.original_guys = R.clone(tmp)
+            processed.origial_gals = R.clone(tmp)
+          }
 
           return {
             ...state,
@@ -118,15 +129,15 @@ const reducer = handleActions(
           // Making a copy of arrays so result is immutable.
           let curr = state[key].slice()
           let subs = state[skey].slice()
-
-          const idx = curr.indexOf(previous)
-          if (idx > -1) {
-            curr.splice(idx, 1, value)
-          }
           
-          const sidx = subs.indexOf(value)
-          if (idx > -1) {
-            subs.splice(sidx, 1, previous)
+          // Use the index from the original value.
+          // This may
+          const prev = curr.splice(index, 1, value)
+
+          // Remove new player from subs
+          subs = subs.filter(id => id != value)
+          if (previous != -1) {
+            subs.push(previous)
           }
 
           return {
