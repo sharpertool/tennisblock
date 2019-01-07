@@ -11,7 +11,6 @@ const matchRoute = (pathname) => {
 class Breadcrumb extends Component {
   render() {
     const match = matchRoute(this.props.history.location.pathname)
-    console.log('breadcrumb', match)
     return (
       <nav>
         <ol className="breadcrumb">
