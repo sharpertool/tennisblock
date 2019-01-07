@@ -16,7 +16,7 @@ function* requestUserProfile() {
       yield put(actions.updateProfile(profile))
     }
   } catch (error) {
-  
+
   }
 }
 
@@ -66,7 +66,7 @@ function* updateBlockPlayersRequest({payload}) {
         xsrfHeaderName: 'X-CSRFToken'
       })
     }, {couples})
-    
+
     yield put(actions.getBlockPlayers(date))
   } catch (error) {
     yield put(actions.updateBlockPlayersFail(error))
@@ -74,7 +74,8 @@ function* updateBlockPlayersRequest({payload}) {
 }
 
 function* clearScheduleRequest({payload}) {
-  const {date} = payload
+  const gsel = get_global_selectors()
+  const date = yield select(gsel.currentDate)
   try {
     const instance = axios_core.create({
       // ToDo: need a solution that works for deployed app.
@@ -82,7 +83,7 @@ function* clearScheduleRequest({payload}) {
       xsrfCookieName: 'csrftoken',
       xsrfHeaderName: 'X-CSRFToken'
     })
-    
+
     yield call(instance.delete, `/api/blockschedule/${date}`)
     yield call(requestBlockPlayers, {payload: date})
   } catch (error) {
