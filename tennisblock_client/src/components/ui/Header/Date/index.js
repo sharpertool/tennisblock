@@ -10,8 +10,7 @@ const headerDate = ({ link, date, classNames }) => (
         &nbsp;
         {new Date(date).getFullYear()}
         &nbsp;| &nbsp;
-        {new Date(date).toLocaleString('en-us', { month: "long" })}&nbsp;
-        {new Date(date).getDate()}
+        {new Date(date).toLocaleString('en-us', { month: "long", day: "2-digit" })}
     </Link>
   </h2>
 )
