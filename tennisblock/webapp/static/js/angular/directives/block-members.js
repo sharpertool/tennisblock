@@ -22,7 +22,7 @@ tennisblockapp.directive('blockMembers',['Members','$q',
                 console.log("Link blockMembers");
 
                 $scope.memberinfo = {
-                    headings : ['First','Last','Gender', 'NTRP', 'uNTRP','email','phone','blockmember']
+                    headings : ['FIRST', 'LAST', 'GENDER', 'NTRP', 'UNTRP', 'EMAIL', 'PHONE', 'BLOCK MEMBER']
                 };
                 $scope.members = {
                     allmembers : []
@@ -71,4 +71,3 @@ tennisblockapp.directive('blockMembers',['Members','$q',
         };
     }
 ]);
-

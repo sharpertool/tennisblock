@@ -1,10 +1,47 @@
-Total Members {{ members.allmembers.length }}
-<div class="headers">
-    <span ng-repeat="hdg in memberinfo.headings">{{ hdg }}</span>
+<h3>
+  Total Members: {{ members.allmembers.length }}
+
+</h3>
+<div class="table-responsive-lg table-responsive-md table-responsive-xl">
+  <table class="table">
+    <thead>
+      <th ng-repeat="hdg in memberinfo.headings">{{ hdg }}</th>
+      <th>&nbsp;</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="member in members.allmembers">
+        <td><span block-member-item field="first"></span></td>
+        <td><span block-member-item field="last"></span></td>
+        <td><span block-member-item field="gender"></span></td>
+        <td><span block-member-item field="ntrp"></span></td>
+        <td><span block-member-item field="microntrp"></span></td>
+        <td><span block-member-item field="email"></span></td>
+        <td><span block-member-item field="phone"></span></td>
+        <td>
+          <input
+            type="checkbox"
+            ng-model="member.blockmember"
+            ng-change="updateBlockMember(member)"/>
+        </td>
+        <td>
+          <button
+            ng-show="!member.new && memberChanged(member)"
+            ng-click="updateMember(member)"
+            class="btn btn-info">Update</button>
+          <button
+            ng-show="member.new"
+            ng-click="insertNewMember(member)"
+            class="btn btn-primary">Insert</button>
+          <button
+            ng-click="deleteNewMember(member)"
+            class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="10">
+          <button ng-click="addNewMember()" class=" btn btn-danger">New Member</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-<div class="members">
-    <div block-member ng-repeat="member in members.allmembers" member="member"
-        class="memberrow">
-    </div>
-</div>
-<button ng-click="addNewMember()">New Member</button>
