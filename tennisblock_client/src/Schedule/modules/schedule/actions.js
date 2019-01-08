@@ -16,3 +16,4 @@ export const updateBlockPlayersFail = createAction(types.UPDATE_BLOCK_PLAYERS_FA
 export const clearSchedule = createAction(types.CLEAR_SCHEDULE)
 export const clearScheduleFail = createAction(types.CLEAR_SCHEDULE_FAIL)
 export const reSchedule = createAction(types.RE_SCHEDULE)
+export const reScheduleFail = createAction(types.RE_SCHEDULE_FAIL)

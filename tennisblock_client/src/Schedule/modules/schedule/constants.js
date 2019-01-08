@@ -23,4 +23,6 @@ export const BLOCK_PLAYER_CHANGED = mkname('BLOCK_PLAYER_CHANGED')
 
 export const CLEAR_SCHEDULE = mkname('CLEAR_SCHEDULE')
 export const CLEAR_SCHEDULE_FAIL = mkname('CLEAR_SCHEDULE_FAIL')
+
 export const RE_SCHEDULE =mkname('RE_SCHEDULE')
+export const RE_SCHEDULE_FAIL =mkname('RE_SCHEDULE_FAIL')

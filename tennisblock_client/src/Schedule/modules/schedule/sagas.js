@@ -91,6 +91,23 @@ function* clearScheduleRequest({payload}) {
   }
 }
 
+function* reScheduleRequest({ payload }) {
+  const gsel = get_global_selectors()
+  const date = yield select(gsel.currentDate)
+
+  try {
+    const instance = axios_core.create({
+      baseURL: `${window.location.protocol}//${window.location.host}`,
+      xsrfCookieName: 'csrftoken',
+      xsrfHeaderName: 'X-CSRFToken'
+    })
+    const { data } = yield call(instance.post, `/api/blockschedule/${date}`)
+    yield put(actions.setBlockPlayers(data))
+  } catch (error) {
+    yield put(actions.reScheduleFail(error))
+  }
+}
+
 function* getBlockPlayers() {
   yield takeLatest(types.FETCH_BLOCK_PLAYERS, requestBlockPlayers)
 }
@@ -103,6 +120,10 @@ function* clearSchedule() {
   yield takeLatest(types.CLEAR_SCHEDULE, clearScheduleRequest)
 }
 
+function* reSchedule() {
+  yield takeLatest(types.RE_SCHEDULE, reScheduleRequest)
+}
+
 
 export default function* rootSaga() {
   yield all([
@@ -110,6 +131,7 @@ export default function* rootSaga() {
     requestInitialData(),
     getBlockPlayers(),
     updateBlockPlayers(),
-    clearSchedule()
+    clearSchedule(),
+    reSchedule()
   ])
 }
