@@ -103,7 +103,7 @@ class ScheduleNotify(TemplateView):
 
     def get_context_data(self, **kwargs):
 
-        context = super(ScheduleNotify, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         date = kwargs.get('date')
 
@@ -125,7 +125,6 @@ class ScheduleNotify(TemplateView):
         form = NotifyForm()
 
         context['form'] = form
-
         return render(request,
                       self.template_name,
                       context
