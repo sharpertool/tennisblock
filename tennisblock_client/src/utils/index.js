@@ -38,3 +38,8 @@ export const globalizeSelectors = (selectors,path) => {
 
 
 export const actionType = (type, moduleName) => [APP_NAME, moduleName, type].join('/').toLowerCase()
+
+export const LocalDate = (date) => {
+  const [yy, mm, dd] = date.split('-')
+  return new Date(yy, mm-1, dd)
+}

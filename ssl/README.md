@@ -29,7 +29,7 @@ mkcert will create 2 of those, but the 3rd is the .pem file for the CAROOT. To c
 
 	mkcert tennisblock.local localhost ::1
 	
-That will generate 2 files, named someting like this:
+That will generate 2 files, named something like this:
 
 	tennisblock.local+2.pem
 	tennisblock.local+2-key.pem
