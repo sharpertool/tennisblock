@@ -5,18 +5,11 @@
 <div class="table-responsive-lg table-responsive-md table-responsive-xl">
   <table class="table">
     <thead>
-      <th>&nbsp;</th>
       <th ng-repeat="hdg in memberinfo.headings">{{ hdg }}</th>
       <th>&nbsp;</th>
     </thead>
     <tbody>
       <tr ng-repeat="member in members.allmembers">
-        <td>
-          <input
-            type="checkbox"
-            ng-model="member.blockmember"
-            ng-change="updateBlockMember(member)"/>
-        </td>
         <td><span block-member-item field="first"></span></td>
         <td><span block-member-item field="last"></span></td>
         <td><span block-member-item field="gender"></span></td>
@@ -24,7 +17,12 @@
         <td><span block-member-item field="microntrp"></span></td>
         <td><span block-member-item field="email"></span></td>
         <td><span block-member-item field="phone"></span></td>
-        <td><span block-member-item field="phone"></span></td>
+        <td>
+          <input
+            type="checkbox"
+            ng-model="member.blockmember"
+            ng-change="updateBlockMember(member)"/>
+        </td>
         <td>
           <button
             ng-show="!member.new && memberChanged(member)"
