@@ -99,7 +99,7 @@ export const canClearSchedule = state => {
 }
 
 export const canReSchedule = state => {
-  return state.curr_guys.length == 0 &&state.curr_gals.length == 0
+  return state.curr_guys.every(v => v === -1) && state.curr_gals.every(v => v === -1)
 }
 
 export const canUpdateSchedule = state => {
