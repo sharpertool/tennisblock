@@ -1,10 +1,17 @@
 from textwrap import dedent
+import datetime
 
 from django.views.generic import TemplateView
 from django.core.mail import EmailMultiAlternatives
+from django.urls import reverse_lazy
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponseBadRequest
 from django.conf import settings
+
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.throttling import AnonRateThrottle
 
 from TBLib.schedule import Scheduler
 from TBLib.season import SeasonManager
@@ -12,6 +19,7 @@ from TBLib.view import class_login_required
 
 from .forms import NotifyForm
 from .serializers import MeetingSerializer
+from blockdb.models import ScheduleVerify, Schedule
 
 
 @class_login_required
@@ -171,3 +179,47 @@ class ScheduleNotify(TemplateView):
         return render(request,
                       self.template_name,
                       {'form': form})
+
+
+class ScheduleConfirm(APIView):
+    throttle_classes = (AnonRateThrottle),
+    permission_classes = (AllowAny),
+
+    def get(self, request, uuid=None):
+        """
+        Process a uuid code and confirmation type
+        Get the confirmation type for the given uuid if found
+
+        Update the schedule with that confirmation type, and then
+        remove all ScheduleConfirm objects associated with that schedule item
+        """
+
+        try:
+            conf = ScheduleVerify.objects.get(code=uuid)
+            conf.schedule.confirmation_status = conf.confirmation_type
+            conf.schedule.save()
+
+            id = conf.schedule.id
+
+            ScheduleVerify.objects.filter(schedule=conf.schedule).delete()
+
+            if conf.confirmation_type == 'R':
+                # Rejected
+                return redirect(
+                    reverse_lazy('schedule:response_rejected', id=id))
+            else:
+                return redirect(
+                    reverse_lazy('schedule:response_confirmed', id=id))
+
+        except ScheduleVerify.DoesNotExist:
+            return HttpResponseBadRequest()
+
+
+class ScheduleConfirmed(TemplateView):
+    model = Schedule
+    template_name = 'schedule/confirmed.html'
+
+
+class ScheduleRejected(TemplateView):
+    model = Schedule
+    template_name = 'schedule/rejected.html'

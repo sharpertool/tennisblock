@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
@@ -5,6 +6,19 @@ from django.urls import reverse
 from django.conf import settings
 
 User = settings.AUTH_USER_MODEL
+
+VERIFY_CHOICES = (
+    ('C', 'Confirm'),
+    ('R', 'Reject'),
+    ('A', 'Awaiting Response'),
+)
+
+CONFIRM_CHOICES = (
+    ('A', 'Awaiting Response'),
+    ('C', 'Schedule Confirmed'),
+    ('R', 'Scheduled but not available'),
+    ('U', 'Unconfirmed'),
+)
 
 
 class GirlsManager(models.Manager):
@@ -45,6 +59,7 @@ class Player(models.Model):
 
     def get_full_name(self):
         return self.user.first_name + ' ' + self.user.last_name
+
     get_full_name.short_description = 'Full name of player'
     full_name = property(get_full_name)
 
@@ -66,7 +81,7 @@ class Player(models.Model):
         else:
             un = self.ntrp
         return "{} {} {:3.1f},{:4.2f}".format(
-                self.first, self.last, self.ntrp, un)
+            self.first, self.last, self.ntrp, un)
 
     def Name(self):
         return self.first + " " + self.last
@@ -171,8 +186,8 @@ class Couple(models.Model):
 
     def __str__(self):
         return "{} {} and {} as {}".format(
-                self.season, self.female.name, self.male.name,
-                self.name
+            self.season, self.female.name, self.male.name,
+            self.name
         )
 
     class Meta:
@@ -196,7 +211,7 @@ class Meeting(models.Model):
 
     def __str__(self):
         return "{}->{} holdout:{}".format(
-                self.season, self.date, self.holdout
+            self.season, self.date, self.holdout
         )
 
     @property
@@ -217,7 +232,7 @@ class Availability(models.Model):
 
     def __str__(self):
         return "availability for {} on {} is {}".format(
-                self.player.name, self.meeting.date, self.available
+            self.player.name, self.meeting.date, self.available
         )
 
 
@@ -232,17 +247,23 @@ class Schedule(models.Model):
     NOT USED:The partner is the players partner for the night
 
     """
-
     class Meta:
         permissions = (
             ("change_sched", "Can change the schedule"),
         )
 
-    meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-    player = models.ForeignKey(Player, related_name='scheduled', on_delete=models.CASCADE)
+    meeting = models.ForeignKey(Meeting,
+                                on_delete=models.CASCADE)
+    player = models.ForeignKey(Player,
+                               related_name='scheduled', on_delete=models.CASCADE)
     issub = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
-    partner = models.ForeignKey(Player, related_name='scheduled_partner', null=True, on_delete=models.CASCADE)
+    confirmation_status = models.CharField(max_length=2, choices=CONFIRM_CHOICES,
+                                           default='U')
+    partner = models.ForeignKey(Player,
+                                related_name='scheduled_partner',
+                                null=True,
+                                on_delete=models.CASCADE)
 
     def __str__(self):
         partner_name = "---"
@@ -252,6 +273,28 @@ class Schedule(models.Model):
         s1 = f"{self.meeting} {self.player.name} partner:{partner_name} "
         s2 = f"sub:{self.issub} verified:{self.verified}"
         return s1 + s2
+
+
+class ScheduleVerify(models.Model):
+    """
+    Links used to verify a particular schedule item.
+    These codes will be generated when a schedule is sent out.
+    Users will be given the option to click "verify", or "reject"
+    A reject link will mark them as scheduled, but not available.. that means
+    someone needs to be scheduled in!
+    Verified indicates they have confirmed their schedule
+    """
+
+    schedule = models.ForeignKey(Schedule,
+                                 on_delete=models.CASCADE)
+    code = models.UUIDField()
+    created_on = models.DateTimeField(auto_created=True)
+    confirmation_type = models.CharField(max_length=1, choices=VERIFY_CHOICES,
+                                         default='A')
+
+    @property
+    def expired(self):
+        return self.schedule.meeting.date > datetime.date.today()
 
 
 class Matchup(models.Model):
@@ -282,8 +325,8 @@ class Matchup(models.Model):
 
     def __str__(self):
         return "{}:{} set:{} court:{} {}+{} vs {}+{}".format(
-                self.meeting.season, self.meeting.date,
-                self.set, self.court,
-                self.team1_p1.name, self.team1_p2.name,
-                self.team2_p1.name, self.team1_p2.name
+            self.meeting.season, self.meeting.date,
+            self.set, self.court,
+            self.team1_p1.name, self.team1_p2.name,
+            self.team2_p1.name, self.team1_p2.name
         )
