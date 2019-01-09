@@ -38,6 +38,11 @@
   }
 }
 
-.side-navbar {
-  overflow: auto;
+#sidebar {
+  @media (max-width: 992px) {
+    display: none;
+  }
+  .side-navbar {
+    overflow: auto;
+  }
 }
