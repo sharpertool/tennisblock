@@ -363,3 +363,6 @@ RAVEN_CONFIG = {
 
 # Wagtail settings
 WAGTAIL_FRONTEND_LOGIN_URL='/'
+
+CONTACT_US_EMAIL = 'ed@tennisblock.com'
+CONTACT_US_SUBJECT = '[Tennisblock Contact]'

@@ -1,39 +1,34 @@
 {% extends "site_base.html" %}
-{% load staticfiles %}
 
-{% block body %}
-    <h1 class="header_bar">
-        Contact Us
-    </h1>
+{% load wagtailcore_tags %}
+
+{% block page_content %}
+    <h1 class="display-5">Contact Us</h1>
+
     {% if form.errors %}
-    <div class="alert alert-error">Errors on Form</div>
+      <div class="alert alert-error">There iss something wrong while doing your request. Please try again!</div>
     {% endif %}
-    <form enctype="application/x-www-form-urlencoded"
-          class="form-horizontal"
-          action="/contact/"
-          method="post">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="control-group">
-            <label for="bootstrap-{{ field.name }}"
-                   class="control-label optional">
-                {{ field.label }}
-            </label>
-            <div class="controls">
-                {{ field }}
-                <span class="help-inline">{{ field.errors.as_text }}</span>
-            </div>
-        </div>
-        {% endfor %}
-        <div class="control-group">
-            <div class="controls">
-                <input type="submit"
-                       name="bootstrap[send]"
-                       value="Send"
-                id="bootstrap-send"
-                class="btn btn-success" />
-            </div>
-        </div>
-    </form>
 
+    <div class="row">
+      <div class="col-md-5">
+        <form enctype="application/x-www-form-urlencoded"
+              class="form-horizontal"
+              action="/contact/"
+              method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <input type="email" name="email" class="form-control" id="email" placeholder="Email Address" required/>
+            </div>
+
+            <div class="form-group">
+              <textarea name="message" rows="8" cols="80" class="form-control" placeholder="Your message..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-danger pull-right">Send</button>
+            </div>
+        </form>
+      </div>
+    </div>
 {% endblock %}

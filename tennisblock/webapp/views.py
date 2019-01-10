@@ -93,7 +93,7 @@ class ContactView(TemplateView):
         form = ContactForm(request.POST)
 
         if form.is_valid():
-            from_email = settings.EMAIL_HOST_USER
+            from_email = settings.CONTACT_US_EMAIL
             recipient_list = settings.CONTACT_FORM_RECIPIENTS
 
             sender_email = form.cleaned_data['email']
@@ -101,12 +101,10 @@ class ContactView(TemplateView):
 
             message = "FROM: %s\n\n\nMESSAGE:\n\n%s" % (sender_email, message)
 
-            subject = settings.CONTACT_FORM_SUBJECT
+            subject = settings.CONTACT_US_SUBJECT
 
             send_mail(subject, message, from_email, recipient_list)
 
             return render(request, self.thankyou_template)
 
-        return render(request,
-                      self.template_name,
-                      {'form': form})
+        return render(request, self.template_name, {'form': form})
