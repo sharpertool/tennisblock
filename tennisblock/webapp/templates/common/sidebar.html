@@ -45,8 +45,10 @@
         <li class="{% if page and page.slug == 'about-us' %}active{% endif %}">
             <a href="/about-us/"><i class="fa fa-info-circle"></i> About Us</a>
         </li>
-        <li>
-            <a href="#"><i class="fa fa-envelope-o"></i> Contact Us</a>
+
+        {% url 'contact' as contact_url %}
+        <li class="{% if request.path == contact_url %}active{% endif %}">
+            <a href="{{ contact_url }}"><i class="fa fa-envelope-o"></i> Contact Us</a>
         </li>
     </ul>
 </div>
