@@ -8,83 +8,83 @@ class Couples extends Component {
   render() {
     const {couples, guySubs, galSubs, onPlayerChanged} = this.props
     const changes = []
-    
+
     return (
       <React.Fragment>
         <Row>
-          <Col xs={6}>
+          <Col xs={12} md={6} lg={6}>
             <h3 className={styles.tableHeader}>Guys</h3>
-          </Col>
-          <Col xs={6}>
-            <h3 className={styles.tableHeader}>Gals</h3>
-          </Col>
-        </Row>
-        <Row>
-          {couples.map((couple, index) => {
-              const {guy, gal} = couple
+            {couples.map((couple, index) => {
+              const { guy } = couple
               return (
-                <React.Fragment key={index}>
-                  <Col xs={12} md={6}>
-                    <Input
-                      type="select"
-                      value={guy.id}
-                      //className={changes[index].guy ? styles.changed : ''}
-                      onChange={(e) => onPlayerChanged({
-                        group: 'guys',
-                        index: index,
-                        value: parseInt(e.target.value),
-                        previous: guy.id
-                      })}
-                    >
+                <div className="form-group">
+                  <Input
+                    type="select"
+                    value={guy.id}
+                    //className={changes[index].guy ? styles.changed : ''}
+                    onChange={(e) => onPlayerChanged({
+                      group: 'guys',
+                      index: index,
+                      value: parseInt(e.target.value),
+                      previous: guy.id
+                    })}
+                  >
+                    <option
+                      value={guy.id}>
+                      {guy.name}
+                    </option>
+                    <option
+                      value={-1}>
+                      {'---'}
+                    </option>
+                    {guySubs.map((s, i) => (
                       <option
-                        value={guy.id}>
-                        {guy.name}
+                        value={s.id} key={i}>
+                        {s.name}
                       </option>
-                      <option
-                        value={-1}>
-                        {'---'}
-                      </option>
-                      {guySubs.map((s, i) => (
-                        <option
-                          value={s.id} key={i}>
-                          {s.name}
-                        </option>
-                      ))}
-                    </Input>
-                  </Col>
-                  <Col xs={12} md={6}>
-                    <Input
-                      type="select"
-                      value={gal.id}
-                      //className={changes[index].gal ? styles.changed : ''}
-                      onChange={(e) => onPlayerChanged({
-                        group: 'gals',
-                        index: index,
-                        value: parseInt(e.target.value),
-                        previous: gal.id
-                      })}
-                    >
-                      <option
-                        value={gal.id}>
-                        {gal.name}
-                      </option>
-                      <option
-                        value={-1}>
-                        {'---'}
-                      </option>
-                      {galSubs.map((s, i) => (
-                        <option
-                          value={s.id} key={i}>
-                          {s.name}
-                        </option>
-                      ))}
-                    </Input>
-                  </Col>
-                </React.Fragment>
+                    ))}
+                  </Input>
+                </div>
               )
-            }
-          )
-          }
+            })}
+          </Col>
+          <Col xs={12} md={6} lg={6}>
+            <h3 className={styles.tableHeader}>Gals</h3>
+
+            {couples.map((couple, index) => {
+              const { gal } = couple
+              return (
+                <div className="form-group">
+                  <Input
+                    type="select"
+                    value={gal.id}
+                    //className={changes[index].gal ? styles.changed : ''}
+                    onChange={(e) => onPlayerChanged({
+                      group: 'gals',
+                      index: index,
+                      value: parseInt(e.target.value),
+                      previous: gal.id
+                    })}
+                  >
+                    <option
+                      value={gal.id}>
+                      {gal.name}
+                    </option>
+                    <option
+                      value={-1}>
+                      {'---'}
+                    </option>
+                    {galSubs.map((s, i) => (
+                      <option
+                        value={s.id} key={i}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </Input>
+                </div>
+              )
+            })}
+          </Col>
         </Row>
       </React.Fragment>
     )
