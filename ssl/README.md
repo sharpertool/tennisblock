@@ -70,6 +70,8 @@ will put those files in the local system.
 
 # Old Way
 
+Don't use the old way!! Use the force Luke.
+
 The following commands will create a local set of keys that you can use for the django dev server and the webpack dev server for local development using https.
 
     # From the project root
