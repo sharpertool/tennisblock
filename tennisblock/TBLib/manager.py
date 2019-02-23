@@ -15,13 +15,15 @@ class TeamManager(object):
         """ Retrive players for given date """
         men, women = self.dbTeams.get_players(date)
 
-        assert ((len(men)+len(women)) % 4 == 0)
+        assert ((len(men) + len(women)) % 4 == 0)
         return men, women
 
     def pick_teams_for_date(self,
                             date,
                             iterations: int = 100,
-                            max_tries: int = 20):
+                            max_tries: int = 20,
+                            fpartners: float = 1.0,
+                            fteams: float = 1.0):
 
         dbt = self.dbTeams
         dbt.delete_matchup(date)
@@ -30,7 +32,9 @@ class TeamManager(object):
         mgr = TeamManager()
         result = mgr.pick_teams(men=men, women=women,
                                 iterations=iterations,
-                                max_tries=max_tries)
+                                max_tries=max_tries,
+                                fpartners=fpartners,
+                                fteams=fteams)
 
         if result['status'] == 'success':
             result['match'] = mgr.query_match(date)
@@ -40,16 +44,18 @@ class TeamManager(object):
     def pick_teams(self, men=None, women=None, date=None, testing=False,
                    b_allow_duplicates=False, n_courts=None, n_sequences=3,
                    iterations: int = 100,
-                   max_tries: int = 20):
+                   max_tries: int = 20,
+                   fpartners: float = 1.0,
+                   fteams: float = 1.0):
 
         if men is None or women is None:
             men, women = self.get_players(date)
 
         # Calculate number fo courts from sum
         if n_courts is None:
-            n_courts = (len(men)+len(women)) // 4
+            n_courts = (len(men) + len(women)) // 4
 
-        #if len(men) < n_courts * 2 or len(women) < n_courts * 2:
+        # if len(men) < n_courts * 2 or len(women) < n_courts * 2:
         #    errmsg = """
         #    Cannot pick teams, there are not enough men or women.
         #    Need {0} of both. Have {1} men and {2} women.
@@ -60,7 +66,9 @@ class TeamManager(object):
         sequences = tg.generate_set_sequences(
             b_allow_duplicates,
             iterations=iterations,
-            max_tries=max_tries
+            max_tries=max_tries,
+            fpartners=fpartners,
+            fteams=fteams
         )
 
         if sequences is None or len(sequences) < n_sequences:

@@ -27,6 +27,8 @@ class MeetingStats:
         self.women = women
         self.all = men + women
 
+        self.round_template = None
+
         self.maxIterations = 100
         self.n_fails_by_invalid_partner = 0
         self.n_fails_by_diff = 0
@@ -162,7 +164,9 @@ class MeetingStats:
             self.InvalidOpponents[name] = invalid.union(self.Partners[name])
             self.InvalidPartners[name] = invalid.union(set(self.Opposites[name]))
 
-    def get_new_round(self, diff_max, quality_max, max_tries=20):
+    def get_new_round(self, diff_max, quality_min, max_tries=20,
+                      fpartners: float = 1.0,
+                      fteams: float = 1.0):
         """
         This one needs to use the existing sets and list and pick a new
         randomization of the available sets.
@@ -178,29 +182,33 @@ class MeetingStats:
         set
         """
         tries = 0
+        self.round_template = MatchRound(fpartner=fpartners, fspread=fteams)
         new_round: MatchRound = None
 
         min_diff = 1000.0
-        min_q = 1000.0
+        max_q = 10.0
+        minq = maxq = 10.0
         max_build_tries = self.maxIterations
 
         while new_round is None and tries < max_tries:
             self.diff_history = []
             self.quality_history = []
-            new_round = self.build_round(max_build_tries, diff_max, quality_max)
+            new_round = self.build_round(max_build_tries, diff_max, quality_min)
             tries += 1
             md = 0.0
-            mq = 0.0
             if self.diff_history and self.quality_history:
                 md = min(self.diff_history)
-                mq = min(self.quality_history)
+                maxq = max(self.quality_history)
+                minq = min(self.quality_history)
                 min_diff = min(min_diff, md)
-                min_q = min(min_q, mq)
-            print(f"Build a set DiffMax:{diff_max:5.3}({md:5.3}) MinQ:{quality_max:5.3}({mq:5.3}) Try:{tries}.")
+                max_q = max(max_q, maxq)
 
-        return new_round, min_diff, min_q
+            print(
+                f"Build a set DiffMax:{diff_max:5.3}({md:5.3}) MinQ:{quality_min:5.1f}({minq:5.1f}, {maxq:5.1f}) Try:{tries}.")
 
-    def build_round(self, max_tries, diff_max, quality_max) -> MatchRound:
+        return new_round, min_diff, max_q
+
+    def build_round(self, max_tries, diff_max, quality_min) -> MatchRound:
         """
         First, build a set of matches with men only.
         Next, add in the women. The men are assigned
@@ -222,7 +230,7 @@ class MeetingStats:
 
             try:
                 if self.add_women(new_round, t_women,
-                                  diff_max, quality_max,
+                                  diff_max, quality_min,
                                   max_tries):
                     return new_round
                 self.print_check_stats()
@@ -234,7 +242,7 @@ class MeetingStats:
         return None
 
     def add_women(self, new_round: MatchRound, t_women: set,
-                  diff_max: int, quality_max: int, num_tries: int) -> bool:
+                  diff_max: int, quality_min: int, num_tries: int) -> bool:
         """
         Upon entry, new_round will be a set that contains
         the male pairings, but with no women entered. The
@@ -242,11 +250,11 @@ class MeetingStats:
         they should be okay.
         """
         curr_diff = diff_max + 1
-        curr_q = quality_max + 1
+        curr_q = quality_min - 1
         min_diff = 1000
-        min_q = 1000
+        max_q = 10
 
-        while num_tries and (curr_diff > diff_max or curr_q > quality_max):
+        while num_tries and (curr_diff > diff_max or curr_q < quality_min):
             s_women = set(t_women)
 
             for m in new_round.matches:
@@ -262,20 +270,22 @@ class MeetingStats:
                 m.t1.p2 = self.pbyname[f1]
                 m.t2.p2 = self.pbyname[f2]
 
-            curr_diff = max(new_round.diff())
-            curr_q = max(new_round.quality())
+            diffs = new_round.diff()
+            qualities = new_round.quality()
+
+            # We want the worst case values here.
+            curr_diff = max(diffs)
+            curr_q = min(qualities)
 
             min_diff = min(min_diff, curr_diff)
-            min_q = min(min_q, curr_q)
 
             num_tries -= 1
-            #if curr_diff > diff_max or curr_q > quality_max:
-            #    print(f"[add_women] {num_tries} {round(curr_diff-diff_max, 1)} {round(curr_q-quality_max, 1)}")
 
         self.diff_history.append(min_diff)
-        self.quality_history.append(min_q)
+        # We want the best case value here
+        self.quality_history.extend(qualities)
 
-        return curr_diff <= diff_max and curr_q <= quality_max
+        return curr_diff <= diff_max and curr_q >= quality_min
 
     def get_valid_partner(self, m1, m2, s_women, f1=None):
         """
@@ -335,7 +345,7 @@ class MeetingStats:
         random.seed()
 
         while True:
-            new_round = MatchRound()
+            new_round = self.round_template.clone()
             s_men = set(t_men)
             try:
                 for n in range(0, self.n_courts):
@@ -349,7 +359,6 @@ class MeetingStats:
                 return new_round
             except NoValidOpponent:
                 pass
-
 
     def get_valid_opponent(self, player, opponents):
         """

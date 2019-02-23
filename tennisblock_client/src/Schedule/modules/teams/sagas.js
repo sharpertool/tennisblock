@@ -22,7 +22,7 @@ function* fetchCurrentSchedule() {
 }
 
 function* calculateMatchups(action) {
-  const {date, iterations, tries} = action.payload
+  const {date, iterations, tries, fpartner, fteam} = action.payload
   try {
     const {data} = yield call(instance.post,
       `/api/pickteams/${date}`,

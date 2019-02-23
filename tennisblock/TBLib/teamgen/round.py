@@ -5,11 +5,13 @@ from .Match import Match
 
 
 class MatchRound:
-    def __init__(self):
+    def __init__(self, fpartner: float = 3.0, fspread: float = 1.0):
         self.matches: List[Match] = []
+        self.fpartner = fpartner
+        self.fspread = fspread
 
     def clone(self):
-        s = MatchRound()
+        s = MatchRound(fpartner=self.fpartner, fspread=self.fspread)
         s.matches = [m for m in self.matches]
         return s
 
@@ -46,13 +48,16 @@ class MatchRound:
         return diffs
 
     def quality(self):
-        return [m.quality() for m in self.matches]
+        return [
+            m.quality(fpartner=self.fpartner, fspread=self.fspread)
+            for m in self.matches
+        ]
 
     def diff_stats(self):
         diffs = [m.diff() for m in self.matches]
-        #qvals = [m.quality() for m in self.matches]
+        # qvals = [m.quality() for m in self.matches]
         diffs.sort()
-        return max(diffs), sum(diffs)/len(diffs), diffs
+        return max(diffs), sum(diffs) / len(diffs), diffs
 
     def display(self):
         for match in self.matches:

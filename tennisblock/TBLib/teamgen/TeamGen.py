@@ -13,7 +13,9 @@ class TeamGen(object):
     def generate_set_sequences(self,
                                b_allow_duplicates: bool = False,
                                iterations: int = None,
-                               max_tries: int = 20):
+                               max_tries: int = 20,
+                               fpartners: float = 1.0,
+                               fteams: float = 1.0):
         self.meeting.restart()
 
         self.meeting.set_see_player_once(not b_allow_duplicates)
@@ -23,20 +25,22 @@ class TeamGen(object):
         while self.meeting.round_count() < self.n_sequences:
             group_round = None
             diff_max = 0.1
-            max_quality = 1.0
+            min_quality = 8.0
 
-            while diff_max <= 1.0 and max_quality < 2.5 and group_round is None:
+            while diff_max <= 1.0 and min_quality > 0 and group_round is None:
                 results = self.meeting.get_new_round(
-                    diff_max, max_quality, max_tries)
-                group_round, min_found_diff, min_found_q = results
+                    diff_max, min_quality, max_tries,
+                    fpartners=fpartners,
+                    fteams=fteams)
+                group_round, min_found_diff, max_found_q = results
 
                 if group_round is None:
                     # Increase the quality then the diff
-                    max_quality = max(max_quality+0.1, min_found_q)
-                    if max_quality >= 2.5:
-                        max_quality = 1.0
+                    min_quality = min(min_quality - 0.5, max_found_q)
+                    if min_quality <= 2.0:
+                        min_quality = 8.0
                         diff_max += 0.1
-                    print(f"Criteria updated. Diff:{diff_max} Q:{max_quality}")
+                    print(f"Criteria updated. Diff:{diff_max} Q:{min_quality}")
 
             if group_round is None:
                 self.meeting.print_check_stats()

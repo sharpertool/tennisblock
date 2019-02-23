@@ -5,6 +5,7 @@ class Team:
     """
     Represents a pair of players on a team.
     """
+    quality_factor = 1.0
 
     def __init__(self, player1=None, player2=None):
         self.p1: Player = player1
@@ -25,6 +26,11 @@ class Team:
 
     def spread(self):
         return abs(self.p1.microntrp - self.p2.microntrp)
+
+    def inverse_quality(self, factor=None):
+        """ Inverse because 0 is highest quality """
+        factor = factor or self.quality_factor
+        return factor * abs(self.p1.microntrp - self.p2.microntrp)
 
     def display(self):
         p1 = self.p1

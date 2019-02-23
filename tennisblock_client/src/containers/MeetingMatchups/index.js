@@ -15,10 +15,14 @@ class MeetingMatchups extends Component {
 
     this.state = {
       iterations: 1,
-      tries: 1
+      tries: 1,
+      fpartner: 1.0,
+      fteam: 1.0,
     }
     this.ref1 = React.createRef()
     this.ref2 = React.createRef()
+    this.ref3 = React.createRef()
+    this.ref4 = React.createRef()
   }
 
   onChange = (e) => {
@@ -32,11 +36,13 @@ class MeetingMatchups extends Component {
 
   calculateMatchups = () => {
     const {match, calculateMatchups} = this.props
-    const {iterations, tries} = this.state
+    const {iterations, tries, fpartner, fteam} = this.state
     calculateMatchups({
       date: match.params.id,
       iterations: Number.parseInt(iterations),
-      tries: Number.parseInt(tries)
+      tries: Number.parseInt(tries),
+      fpartner: Number.parseFloat(fpartner),
+      fteam: Number.parseFloat(fteam),
     })
   }
 
@@ -77,6 +83,20 @@ class MeetingMatchups extends Component {
                    type="number"
                    min="1" max="100"
                    value={this.state.tries}/>
+            Fpartner:
+            <input name="fpartner"
+                   ref={this.ref3}
+                   onChange={this.onChange}
+                   type="number"
+                   min="1" max="10"
+                   value={this.state.fpartner}/>
+            Fteam:
+            <input name="fteam"
+                   ref={this.ref4}
+                   onChange={this.onChange}
+                   type="number"
+                   min="1" max="10"
+                   value={this.state.fteam}/>
           </Col>
         </Row>
         <Row>
