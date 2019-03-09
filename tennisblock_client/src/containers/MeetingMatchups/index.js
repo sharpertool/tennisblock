@@ -14,8 +14,8 @@ class MeetingMatchups extends Component {
     super(props)
 
     this.state = {
-      iterations: 1,
-      tries: 1,
+      iterations: 25,
+      tries: 25,
       fpartner: 1.0,
       fteam: 1.0,
     }
@@ -30,6 +30,11 @@ class MeetingMatchups extends Component {
   }
 
   handleFocus = (e) => {
+    e.preventDefault()
+    e.target.select()
+  }
+  
+  handleDoubleClick = (e) => {
     e.preventDefault()
     e.target.select()
   }
@@ -72,6 +77,7 @@ class MeetingMatchups extends Component {
                    ref={this.ref1}
                    //onFocus={this.handleFocus}
                    onChange={this.onChange}
+                   onDoubleClick={this.handleDoubleClick}
                    type="number"
                    min="1" max="1000"
                    value={this.state.iterations}/>
@@ -80,6 +86,7 @@ class MeetingMatchups extends Component {
                    ref={this.ref2}
                    //onFocus={this.handleFocus}
                    onChange={this.onChange}
+                   onDoubleClick={this.handleDoubleClick}
                    type="number"
                    min="1" max="100"
                    value={this.state.tries}/>
@@ -87,6 +94,7 @@ class MeetingMatchups extends Component {
             <input name="fpartner"
                    ref={this.ref3}
                    onChange={this.onChange}
+                   onDoubleClick={this.handleDoubleClick}
                    type="number"
                    min="1" max="10"
                    value={this.state.fpartner}/>
@@ -94,6 +102,7 @@ class MeetingMatchups extends Component {
             <input name="fteam"
                    ref={this.ref4}
                    onChange={this.onChange}
+                   onDoubleClick={this.handleDoubleClick}
                    type="number"
                    min="1" max="10"
                    value={this.state.fteam}/>

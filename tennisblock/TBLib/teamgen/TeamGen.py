@@ -24,18 +24,19 @@ class TeamGen(object):
 
         while self.meeting.round_count() < self.n_sequences:
             group_round = None
-            min_quality = 90
+            min_quality = 98
 
             while min_quality >= 50 and group_round is None:
                 results = self.meeting.get_new_round(
                     quality_min=min_quality, max_tries=max_tries,
                     fpartners=fpartners,
                     fteams=fteams)
-                group_round, min_found_diff, max_found_q = results
+                group_round, min_found_diff, min_q, max_q = results
+                print(f"Quality Stats: min:{min_q} max:{max_q}")
 
                 if group_round is None:
                     # Increase the quality then the diff
-                    min_quality = min_quality - 5
+                    min_quality = min_quality - 2
                     print(f"Criteria updated. Q:{min_quality}")
 
             if group_round is None:
