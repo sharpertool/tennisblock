@@ -6,6 +6,7 @@ django-test-plus
 factory_boy
 model_mommy
 
+pytest
 pytest-django
 pytest-sugar
 

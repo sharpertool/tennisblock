@@ -1,11 +1,15 @@
-from blockdb.models import Player
-
+#from blockdb.models import Player
+from .player import Player
 
 class Team:
     """
     Represents a pair of players on a team.
+
+    max_diff is the maximum variation we would expect,
+    so a 2.0 with a 5.0
     """
     quality_factor = 1.0
+    max_diff = 3.0
 
     def __init__(self, player1=None, player2=None):
         self.p1: Player = player1
@@ -13,13 +17,17 @@ class Team:
 
     def combined_microntrp(self):
         """
-        P1 will be a guy, or if this is 2 ladies, a gal and then p2
-        will be a gal.  In this case, p1 gets downgraded as they are
-        playing "as a guy", theoretically.
+        Expecting a mixed team.
+        If there are 2 ladies, i.e. we were short a guy, then make a slight
+        reduction in combined to compensate
+
+        If this is 2 men, then make a slight increase.
 
         """
-        if self.p1.gender == 'F':
+        if self.p1.gender == 'F' and self.p1.gender == 'F':
             combined = 0.92*self.p1.microntrp + self.p2.microntrp
+        elif self.p1.gender == 'M' and self.p1.gender == 'M':
+            combined = 1.08 * (self.p1.microntrp + self.p2.microntrp)
         else:
             combined = self.p1.microntrp + self.p2.microntrp
         return combined
@@ -27,10 +35,12 @@ class Team:
     def spread(self):
         return abs(self.p1.microntrp - self.p2.microntrp)
 
-    def inverse_quality(self, factor=None):
-        """ Inverse because 0 is highest quality """
+    def quality(self, factor=None):
+        """ Range from 100 as best, to zero as worst we calculate """
         factor = factor or self.quality_factor
-        return factor * abs(self.p1.microntrp - self.p2.microntrp)
+        diff = min(self.max_diff, factor*abs(self.p1.microntrp - self.p2.microntrp))
+        Q = round(100 - 100 * (diff/self.max_diff))
+        return Q
 
     def display(self):
         p1 = self.p1
@@ -57,7 +67,7 @@ class Team:
             un2 = self.p2.microntrp
 
         return (f"{name1} and {name2}"
-                f" @ {un1+un2:3.2}")
+                f" @ {un1+un2:3.2} {un1}/{un2}")
 
     def __repr__(self):
         str(self)

@@ -1,4 +1,4 @@
-from blockdb.models import Matchup, Schedule
+from blockdb.models import Matchup, Schedule, Player
 from api.apiutils import get_meeting_for_date
 
 
@@ -63,14 +63,18 @@ class DBTeams:
         for s in seq:
             court = 1
             for m in s.matches:
+                t1_p1 = Player.objects.get(pk=m.t1.p1.pk)
+                t1_p2 = Player.objects.get(pk=m.t1.p2.pk)
+                t2_p1 = Player.objects.get(pk=m.t2.p1.pk)
+                t2_p2 = Player.objects.get(pk=m.t2.p2.pk)
                 matchup = Matchup.objects.create(
                         meeting=meeting,
                         set=set,
                         court=court,
-                        team1_p1=m.t1.p1,
-                        team1_p2=m.t1.p2,
-                        team2_p1=m.t2.p1,
-                        team2_p2=m.t2.p2
+                        team1_p1=t1_p1,
+                        team1_p2=t1_p2,
+                        team2_p1=t2_p1,
+                        team2_p2=t2_p2
                 )
                 matchup.save()
 

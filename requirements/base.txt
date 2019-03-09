@@ -12,7 +12,10 @@ wagtail-autocomplete==0.1.1
 
 django-model-utils==3.1.2
 django-cors-headers==2.4.0
-django-environ==0.4.5
+
+# Reading environment variables, secure enclaves
+git+git://github.com/sharpertool/django-environ.git@develop
+
 django-sekizai==0.10.0
 django-webpack-loader==0.6.0
 fpdf==1.7.2

@@ -5,7 +5,7 @@ from .Match import Match
 
 
 class MatchRound:
-    def __init__(self, fpartner: float = 3.0, fspread: float = 1.0):
+    def __init__(self, fpartner: float = 1.0, fspread: float = 1.0):
         self.matches: List[Match] = []
         self.fpartner = fpartner
         self.fspread = fspread
@@ -52,6 +52,16 @@ class MatchRound:
             m.quality(fpartner=self.fpartner, fspread=self.fspread)
             for m in self.matches
         ]
+
+    def quality_average(self):
+        Q = self.quality()
+        return round(sum(Q)/len(Q))
+
+    def quality_min(self):
+        return min(self.quality())
+
+    def quality_max(self):
+        return max(self.quality())
 
     def diff_stats(self):
         diffs = [m.diff() for m in self.matches]

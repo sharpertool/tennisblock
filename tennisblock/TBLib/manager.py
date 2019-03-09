@@ -1,6 +1,7 @@
 # !/usr/bin/env python
 
 from .teamgen.TeamGen import TeamGen
+from .teamgen.player import Player as TGPlayer
 from .DBTeams import DBTeams
 from api.apiutils import get_current_season
 
@@ -15,8 +16,12 @@ class TeamManager(object):
         """ Retrive players for given date """
         men, women = self.dbTeams.get_players(date)
 
+        make_player = lambda p: TGPlayer(p.pk, p.gender, p.ntrp, p.microntrp, p.phone, p.name)
+
         assert ((len(men) + len(women)) % 4 == 0)
-        return men, women
+        tg_men = [make_player(p) for p in men]
+        tg_women = [make_player(p) for p in women]
+        return tg_men, tg_women
 
     def pick_teams_for_date(self,
                             date,
@@ -27,17 +32,16 @@ class TeamManager(object):
 
         dbt = self.dbTeams
         dbt.delete_matchup(date)
-        men, women = dbt.get_players(date)
+        men, women = self.get_players(date)
 
-        mgr = TeamManager()
-        result = mgr.pick_teams(men=men, women=women,
+        result = self.pick_teams(men=men, women=women,
                                 iterations=iterations,
                                 max_tries=max_tries,
                                 fpartners=fpartners,
                                 fteams=fteams)
 
         if result['status'] == 'success':
-            result['match'] = mgr.query_match(date)
+            result['match'] = self.query_match(date)
 
         return result
 
