@@ -4,6 +4,7 @@ function csrfSafeMethod(method) {
 }
 
 $(document).ready(function() {
+  var csrftoken = Cookies.get('csrftoken')
   $.ajaxSetup({
     beforeSend: function(xhr, settings) {
       if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -19,7 +20,6 @@ $(document).ready(function() {
     const id = $(this).val()
     const blockmember = $(this).is(':checked')
     const url = '/api/members/:id'
-    var csrftoken = Cookies.get('csrftoken')
     $.ajax({
         type: "POST",
         url: url.replace(':id', id),
