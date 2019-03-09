@@ -5,62 +5,62 @@
 <!DOCTYPE HTML>
 
 <html lang="{{ LANGUAGE_CODE }}" ng-app="{{ angularapp }}" class="main">
-    <head>
-        <link rel="icon" href="{% static 'img/favicon.png' %}">
-        <meta name="viewport" content="width=device-width, width=device-width, initial-scale=1.0">
-        <meta name="description" content="TennisBlock Website">
-        <meta name="author" content="SharperTool, LLC">
-        <meta name="csrf-token" content="{{ csrf_token }}">
+<head>
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="TennisBlock Website">
+    <meta name="author" content="SharperTool, LLC">
+    <meta name="csrf-token" content="{{ csrf_token }}">
 
-        {% block style_base %}
-            <!-- base.html: style_base -->
-            <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-            {% block extra_style %}{% endblock %}
-        {% endblock %}
+    {% block style_base %}
+        <!-- base.html: style_base -->
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        {% block extra_style %}{% endblock %}
+    {% endblock %}
 
-        {% block head_script %}
-            <!-- base.html: head_script -->
-        {% endblock %}
+    {% block head_script %}
+        <!-- base.html: head_script -->
+    {% endblock %}
 
-        {% block page_style %}
-            <!-- base.html: page_style -->
-        {% endblock %}
+    {% block page_style %}
+        <!-- base.html: page_style -->
+    {% endblock %}
 
-        <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}
-        {% endblock %}{% endblock %}</title>
+    <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}
+    {% endblock %}{% endblock %}</title>
 
-    </head>
-    <body class="{% block body_class %}{% endblock %}">
-        {% block content %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+{% block content %}{% endblock %}
 
-        {% block body_script %}
-            <!-- base.html: body_script -->
-        {% endblock %}
+{% block body_script %}
+    <!-- base.html: body_script -->
+{% endblock %}
 
-        {% block extra_script %}
-            <!-- base.html: body_extra_script -->
-        {% endblock %}
+{% block extra_script %}
+    <!-- base.html: body_extra_script -->
+{% endblock %}
 
-        {% block page_script %}
-            <!-- base.html: body_page_script -->
-        {% endblock %}
+{% block page_script %}
+    <!-- base.html: body_page_script -->
+{% endblock %}
 
-        {% block extra_js %}
-            {# Override this in templates to add extra javascript #}
-        {% endblock %}
+{% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+{% endblock %}
 
-        {% block render_bundles %}
-            {# Add logic to render bundles #}
-            <!-- Render bundles here -->
-        {% endblock %}
+{% block render_bundles %}
+    {# Add logic to render bundles #}
+    <!-- Render bundles here -->
+{% endblock %}
 
-        {% block initialize_bundles %}
-            {# Add logic to initialize bundles #}
-        {% endblock %}
+{% block initialize_bundles %}
+    {# Add logic to initialize bundles #}
+{% endblock %}
 
-        {% block body_script_final %}
-            <!-- base.html: body_script_final -->
-        {% endblock %}
+{% block body_script_final %}
+    <!-- base.html: body_script_final -->
+{% endblock %}
 
-    </body>
+</body>
 </html>

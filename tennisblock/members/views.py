@@ -180,14 +180,45 @@ class PlayersView(TennisLoginView):
 
 
 @class_login_required
-class MembersView(TennisLoginView):
-    template_name = "members/members_view.html"
+class MembersViewAngular(TennisLoginView):
+    template_name = "members/members_view_angular.html"
     members_only = False
 
     def get_players(self):
         s = get_current_season()
         sp = SeasonPlayer.objects.filter(season=s)
         return [p.player for p in sp if (not self.members_only or p.blockmember)]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        q = self.request.GET.get("q")
+        if q:
+            return queryset.filter(first__icontains=q)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['players'] = self.get_players()
+        return context
+
+
+@class_login_required
+class MembersView(TennisLoginView):
+    template_name = "members/members_view.html"
+    members_only = False
+
+    def get_players(self):
+        s = get_current_season()
+        sp = SeasonPlayer.objects.filter(season=s).select_related('player')
+        if self.members_only:
+            sp.filter(blockmember=True)
+        sp.order_by('player__user__last_name', 'player__gender')
+        # sp.values('id',
+        #           'player__user__first_name', 'player__user__last_name',
+        #           'player__gender', 'player__ntrp', 'player__microntrp',
+        #           'player__user__email', 'player__phone', 'blockmember')
+        return sp
 
     def get_queryset(self):
         queryset = super().get_queryset()

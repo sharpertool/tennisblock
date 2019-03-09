@@ -1,0 +1,29 @@
+{% extends "common/angular_base.html" %}
+{% load staticfiles %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
+
+{% endblock %}
+
+{% block angular_script %}
+    {{ block.super }}
+
+    <script src="{% static 'js/angular/controllers/members-controller.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/directives/block-members.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/angular/directives/block-member.js' %}" type="text/javascript"></script>
+
+{% endblock %}
+
+{% block page_content %}
+    <div id="content" class="dynamic">
+
+        {% verbatim %}
+        <block-members id="members" >
+        </block-members>
+        {% endverbatim %}
+
+    </div>
+
+{% endblock %}

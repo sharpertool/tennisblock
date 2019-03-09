@@ -6,11 +6,12 @@ from django.views.generic.edit import View
 from blockdb.models import Player, SeasonPlayer
 from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .apiutils import JSONResponse, get_current_season
 
 
-class SeasonPlayerView(View):
+class SeasonPlayerView(APIView):
     members_only = True
 
     def serializeSeasonPlayer(self, sp):
@@ -36,7 +37,8 @@ class SeasonPlayerView(View):
 
         if kwargs.get('id'):
             print("Getting one player..")
-            players = SeasonPlayer.objects.filter(season=currseason, player__id=kwargs.get('id'))
+            players = SeasonPlayer.objects.filter(
+                season=currseason, player__id=kwargs.get('id'))
             if len(players):
                 p = self.serializeSeasonPlayer(players[0])
                 return JSONResponse(p)
@@ -59,23 +61,27 @@ class SeasonPlayerView(View):
     def post(self, request, *args, **kwargs):
 
         currseason = get_current_season()
-        data = JSONParser().parse(request)
 
         if kwargs.get('id'):
-            print("Updating one player..")
-            players = SeasonPlayer.objects.filter(season=currseason, player__id=kwargs.get('id'))
+            print(f"Updating one player.. {kwargs.get('id')}")
+            players = SeasonPlayer.objects.all()
+            players = players.filter(season=currseason,
+                                     pk=kwargs.get('id'))
             if len(players):
                 sp = players[0]
-                for key, val in data.items():
-                    if key == 'blockmember':
-                        print("Updating blockmember value to %s" % val)
-                        sp.blockmember = val
-                        sp.save()
+                if 'blockmember' in request.data:
+                    val = False
+                    if request.data['blockmember'] == 'true':
+                        val = True
+                    print(f"Updating blockmember value to {val}")
+                    print(f"Season Player {sp} id:{sp.pk}")
+                    sp.blockmember = val
+                    sp.save()
 
-            return JSONResponse({})
+            return Response({'status': 'success'})
         else:
 
-            member = data.get('member')
+            member = request.data.get('member')
 
             fields = [
                 'first',
@@ -105,7 +111,7 @@ class SeasonPlayerView(View):
                 except Exception as e:
                     print("Error updating the player player!:%s" % e)
 
-        return JSONResponse({})
+        return Response({'status': 'success'})
 
     def put(self, request, *args, **kwargs):
         """
@@ -171,18 +177,17 @@ class SeasonPlayerView(View):
         """
 
         currseason = get_current_season()
-        data = JSONParser().parse(request)
-        member = data.get('member')
+        id = request.data.get('id')
 
-        if member:
-            print("Deleting member! %s %s" % (
-                member.get('first'), member.get('last')))
+        if id:
+            print(f"Deleting member! {id}")
+            try:
+                p = SeasonPlayer.objects.get(season=currseason, pk=id)
+                p.delete()
+                return Response({'status': 'success'})
+            except SeasonPlayer.DoesNotExist:
+                return Response({'status': 'fail', 'error': 'Does not exist'})
+        else:
+            return Response({'status': 'fail', 'error': 'Missing id'})
 
-            print("Deleting player id(%s)" % member.get('id'))
-            SeasonPlayer.objects.filter(
-                season=currseason, player__id=member.get('id')).delete()
-            Player.objects.filter(id=member.get('id')).delete()
 
-            print("Player deleted.")
-
-            return JSONResponse({})
