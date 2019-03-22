@@ -96,6 +96,7 @@ class MeetingMatchups extends Component {
                    onChange={this.onChange}
                    onDoubleClick={this.handleDoubleClick}
                    type="number"
+                   step="0.1"
                    min="1" max="10"
                    value={this.state.fpartner}/>
             Fteam:
@@ -104,6 +105,7 @@ class MeetingMatchups extends Component {
                    onChange={this.onChange}
                    onDoubleClick={this.handleDoubleClick}
                    type="number"
+                   step="0.1"
                    min="1" max="10"
                    value={this.state.fteam}/>
           </Col>
