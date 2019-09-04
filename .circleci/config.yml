@@ -58,7 +58,7 @@ references:
         - *gulp_build_cache_key
 
   client_build_cache_key: &client_build_cache_key
-    v1-client-build-{{ checksum "tennisblock_client/package.json" }}
+    v1-client-build-{{ checksum "client/package.json" }}
 
   restore_client_build_cache: &restore_client_build_cache
     restore_cache:
@@ -175,32 +175,49 @@ jobs:
       - run:
           name: Install npm packages for client_build
           command: |
-            cd tennisblock_client
+            cd client
             yarn install
 
       - save_cache:
           key: *client_build_cache_key
           paths:
-            - tennisblock_client/node_modules
+            - client/node_modules
 
       - run:
           name: Build CSS Assets using Gulp
           command: |
-            cd tennisblock_client
+            cd client
+            yarn build_modules
             yarn compile:prod
 
       - run:
           name: Copy dist.prod over to frontend
           command: |
-            tennisblock_client/scripts/copyprod.sh
+            client/scripts/copyprod.sh
 
       - persist_to_workspace:
           root: *workspace_root
           paths:
             - ./tennisblock/static
+            - ./client/dist.prod
             - ./tennisblock/frontend/static
             - ./tennisblock/frontend/webpack-stats.json
+            - ./client/src/pages
             - ./collectedstatic
+
+  client_code_tests:
+    executor: container_config_min
+    steps:
+      - *restore_repo
+      - *restore_venv
+      - *restore_client_build_cache
+      - *attach_workspace
+
+      - run:
+          name: Run tests
+          command: |
+            cd client
+            yarn test
 
   collectstatic:
     <<: *container_config_min
@@ -357,6 +374,16 @@ workflows:
       - compile_client_code:
           requires:
             - compile_assets
+          filters:
+            tags:
+              only: /v.*/
+            branches:
+              only:
+                - develop
+
+      - client_code_tests:
+          requires:
+            - compile_client_code
           filters:
             tags:
               only: /v.*/
