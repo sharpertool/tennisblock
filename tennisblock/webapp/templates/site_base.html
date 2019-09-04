@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load gbtags %}
+{% load render_bundle from webpack_loader %}
 
 {% block head_script %}
     {{ block.super }}
@@ -39,8 +40,10 @@
           href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
     <link rel="stylesheet"
           href="{% static 'css/font-awesome.css' %}">
-    <link rel="stylesheet"
-          href="{% static 'css/style_base.css' %}">
+
+    {% block render_css_bundles %}
+        {% render_bundle 'style_base' 'css' 'ASSETS' %}
+    {% endblock %}
 
     {% block extra_style %}{% endblock %}
 {% endblock %}

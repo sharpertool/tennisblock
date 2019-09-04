@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
@@ -20,15 +20,13 @@ urlpatterns = [
         template_name='login.html',
         redirect_authenticated_user=True),
          name='login'),
-    path('availability/', AvailabilityView.as_view(), name='availability'),
-    path('availability_form/', AvailabilityFormView.as_view(), name='availability_form'),
-    path('availability_form/<int:pk>/', AvailabilityFormView.as_view(), name='availability_form_post'),
+    path('availability/', include('availability.urls', namespace='availability')),
     path('playsheet/', PlaysheetView.as_view()),
     path('accounts/', include('accounts.urls')),
     path('contact/', ContactView.as_view(), name="contact"),
     path('season/', include('season.urls')),
     path('members/', include('members.urls')),
-    path('schedule/', include('schedule.urls')),
+    path('schedule/', include('schedule.urls', namespace='schedule')),
     path('api/', include('api.urls')),
     path('django-admin/', admin.site.urls),
 

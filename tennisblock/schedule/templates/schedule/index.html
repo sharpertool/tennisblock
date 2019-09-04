@@ -2,16 +2,6 @@
 {% load staticfiles %}
 {% load render_bundle from webpack_loader %}
 
-{% block angular_script %}
-    {{ block.super }}
-
-{% endblock %}
-
-{% block page_style %}
-{{ block.super }}
-    <link  rel="stylesheet" href="{% static 'css/schedule.css' %}" />
-{% endblock page_style %}
-
 {% block title %}
     schedule
 {% endblock %}
@@ -33,9 +23,12 @@
         <div id="dialog_confirm"></div>
     </div>
 
-
 {% endblock page_content %}
 
+{% block render_css_bundles %}
+    {% render_bundle 'style_base' 'css' 'ASSETS' %}
+    {% render_bundle 'schedule' 'css' 'ASSETS' %}
+{% endblock %}
 
 {% block render_bundles %}
     {{ block.super }}
@@ -62,7 +55,6 @@
               {}
             )
           )
-          //window.onDateChanged = Schedule({ target: 'react-schedule'});
 
         </script>
     {% endif %}

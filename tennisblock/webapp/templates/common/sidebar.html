@@ -11,9 +11,14 @@
             <a href="{{ schedule_url }}"><i class="fa fa-calendar"></i> Schedule</a>
         </li>
 
-        {% url 'availability' as availability_url %}
+        {% url 'availability:main' as availability_url %}
         <li class="{% if request.path == availability_url %}active{% endif %}">
             <a href="{{ availability_url }}"><i class="fa fa-calendar-o"></i> Availability</a>
+        </li>
+
+        {% url 'availability:angular' as availability_angular_url %}
+        <li class="{% if request.path == availability_angular_url %}active{% endif %}">
+            <a href="{{ availability_angular_url }}"><i class="fa fa-calendar-o"></i> Availability (Angular)</a>
         </li>
 
         {% url 'members:player_list' as players_url %}

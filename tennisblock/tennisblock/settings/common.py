@@ -222,6 +222,7 @@ INSTALLED_APPS = [
     'members',
     'schedule',
     'season',
+    'availability',
     'webpack_loader',
     'pinax_theme_bootstrap',
     'bootstrap_datepicker_plus',
@@ -321,6 +322,7 @@ if DEBUG and CLIENT_BUILD_DIR != '':
     STATICFILES_DIRS += [str(CLIENT_BUILD_DIR)]
 
     WEBPACK_STATS_FILE = CLIENT_BUILD_DIR('webpack-stats.json')
+    ASSETS_STATS_FILE = DJANGO_ROOT('static/webpack-assets-stats.json')
 
     if exists(WEBPACK_STATS_FILE):
         WEBPACK_LOADER = {
@@ -330,7 +332,14 @@ if DEBUG and CLIENT_BUILD_DIR != '':
                 'STATS_FILE': WEBPACK_STATS_FILE,
                 'POLL_INTERVAL': 0.1,
                 'TIMEOUT': None,
-            }
+            },
+            'ASSETS': {
+                'CACHE': not DEBUG,
+                'BUNDLE_DIR_NAME': env.str('ASSETS_BUNDLE', default='/static'),
+                'STATS_FILE': ASSETS_STATS_FILE,
+                'POLL_INTERVAL': 0.1,
+                'TIMEOUT': None,
+            },
         }
     else:
         RENDER_BUNDLES = False
@@ -341,6 +350,10 @@ else:
 
     WEBPACK_STATS_FILE = env.str('WEBPACK_STATS_FILE',
                                  default=DJANGO_ROOT('frontend/webpack-stats.json'))
+    ASSETS_STATS_FILE = env.str('ASSETS_STATS_FILE',
+                                default=DJANGO_ROOT(
+                                    'static/webpack-assets-stats.json'
+                                ))
 
     if exists(WEBPACK_STATS_FILE):
         ''' Turn off render bundles if no config file is found. '''
@@ -350,7 +363,14 @@ else:
                 'BUNDLE_DIR_NAME': env.str('BUNDLE_DIR_NAME', default='/'),
                 'STATS_FILE': WEBPACK_STATS_FILE,
                 'IGNORE': ['.+\.hot-update.js', '.+\.map']
-            }
+            },
+            'ASSETS': {
+                'CACHE': not DEBUG,
+                'BUNDLE_DIR_NAME': env.str('ASSETS_BUNDLE', default='/'),
+                'STATS_FILE': ASSETS_STATS_FILE,
+                'POLL_INTERVAL': 0.1,
+                'TIMEOUT': None,
+            },
         }
     else:
         RENDER_BUNDLES = False

@@ -30,7 +30,7 @@
 
         <div id="textContent" ng-cloak>
             <div id="blockheading" class="dynamic" >
-                <h2>Availability</h2>
+                <h2>Availability Angular Version</h2>
             </div>
 
             {% verbatim %}
@@ -75,4 +75,9 @@
         </div>
 
     </div>
+{% endblock %}
+
+{% block render_css_bundles %}
+    {% render_bundle 'style_base' 'css' 'ASSETS' %}
+    {% render_bundle 'availability_page' 'css' 'ASSETS' %}
 {% endblock %}

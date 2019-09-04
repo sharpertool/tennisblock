@@ -9,20 +9,18 @@ from django import forms
 from django.shortcuts import render
 from django.conf import settings
 
-from TBLib.view import TennisLoginView
-from .forms import ContactForm
-
 from .forms import AvailabilityForm
 from TBLib.view import class_login_required
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = "home.html"
+@class_login_required
+class AvailabilityView(TemplateView):
+    template_name = "availability/index.html"
 
 
 @class_login_required
-class AvailabilityView(TemplateView):
-    template_name = "availability.html"
+class AvailabilityAngularView(TemplateView):
+    template_name = "availability/angular.html"
 
 
 class AvailabilityFormSet(BaseFormSet):
@@ -70,41 +68,3 @@ class AvailabilityFormView(TemplateView):
             return render(request, self.template_name, context)
 
 
-class PlaysheetView(TennisLoginView):
-    template_name = "playsheet.html"
-
-
-class AboutView(TemplateView):
-    template_name = "about.html"
-
-
-class ContactView(TemplateView):
-    template_name = "contact.html"
-    thankyou_template = "thankyou.html"
-
-    def get(self, request):
-        form = ContactForm()
-        return render(request,
-                      self.template_name,
-                      {'form': form}
-                      )
-
-    def post(self, request):
-        form = ContactForm(request.POST)
-
-        if form.is_valid():
-            from_email = settings.CONTACT_US_EMAIL
-            recipient_list = settings.CONTACT_FORM_RECIPIENTS
-
-            sender_email = form.cleaned_data['email']
-            message = form.cleaned_data['message']
-
-            message = "FROM: %s\n\n\nMESSAGE:\n\n%s" % (sender_email, message)
-
-            subject = settings.CONTACT_US_SUBJECT
-
-            send_mail(subject, message, from_email, recipient_list)
-
-            return render(request, self.thankyou_template)
-
-        return render(request, self.template_name, {'form': form})
