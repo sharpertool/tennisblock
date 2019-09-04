@@ -1,6 +1,7 @@
-import {resolve} from 'path'
+import {basename, relative, resolve} from 'path'
 import merge from 'webpack-merge'
 import BundleTracker from 'webpack-bundle-tracker'
+import glob from 'glob'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import autoprefixer from 'autoprefixer'
 const document_root = '..'
@@ -17,6 +18,17 @@ export const paths = {
   prod: resolve(__dirname, '../dist.prod'),
 }
 
+// Build a bundle for each directory in pages, except common
+const context_path = resolve(__dirname, '..')
+const files = glob.sync(resolve(__dirname, '../src/pages/*'))
+let entries = {}
+files.map(f => {
+  const b = basename(f)
+  if (b != 'common') {
+    entries[b] = ['./' + relative(context_path, f+'/index.js')]
+  }
+})
+
 export default ({env, options}) => {
 
   console.log(`Generating base build for ${env.stage}`)
@@ -27,10 +39,8 @@ export default ({env, options}) => {
   }
 
   return merge.strategy(strategy)({
-      entry: {
-        Availability: [resolve(__dirname, `${document_root}/src/Availability/index.js`)],
-        Schedule: [resolve(__dirname, `${document_root}/src/Schedule/index.js`)]
-      },
+      context: context_path,
+      entry: entries,
       mode: options.mode,
       output: {
         path: paths[env.stage],
@@ -149,7 +159,7 @@ export default ({env, options}) => {
       resolve: {
         alias: {
           '~': resolve(__dirname, '../src'),
-          'Schedule': resolve(__dirname, '../src/Schedule'),
+          //'Schedule': resolve(__dirname, '../src/Schedule'),
         }
       },
       plugins: [

@@ -47,3 +47,6 @@ nbproject
 dist\.dev/
 
 dist\.prod/
+/src/pages/Schedule/modules/
+/src/pages/Availability/modules/
+

@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {Row, Col, Button} from 'reactstrap'
 import {withRouter} from 'react-router-dom'
 import HeaderDate from '~/components/ui/Header/Date'
-import {selectors, actions} from '~/Schedule/modules'
+import {selectors, actions} from '~/redux-page'
 import MatchReview from '~/containers/MatchReview'
 
 

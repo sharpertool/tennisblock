@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import Widget from '~/Availability/Widget'
+import Widget from './Widget'
 
 export default (target) => {
   if (target) {

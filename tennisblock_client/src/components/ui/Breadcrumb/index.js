@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter, matchPath } from 'react-router'
 import { Link } from 'react-router-dom'
-import { selectors } from '~/Schedule/modules'
+import {actions, selectors} from '~/redux-page'
 import classes from './styles.local.scss'
 
 const matchRoute = (pathname) => {

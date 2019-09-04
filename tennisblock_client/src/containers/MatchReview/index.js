@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import classes from './styles.local.scss'
 import {connect} from 'react-redux'
 
-import {selectors as gsel} from '~/Schedule/modules'
-import {actions as t_actions} from '~/Schedule/modules/teams'
+import {actions, selectors} from '~/redux-page'
 
 import Match from '~/components/Match'
 
@@ -35,7 +34,7 @@ class MatchReview extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    play_schedule: gsel.playSchedule(state)
+    play_schedule: selectors.playSchedule(state)
   }
 }
 

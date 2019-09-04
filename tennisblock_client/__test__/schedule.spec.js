@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import sch_init from '../src/Schedule'
+import sch_init from '../src/pages/Schedule'
 
 describe('action tests', () => {
   it('creates a valid simple action', () => {

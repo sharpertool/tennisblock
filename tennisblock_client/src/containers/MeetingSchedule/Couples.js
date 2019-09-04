@@ -43,6 +43,16 @@ class Couples extends Component {
                         {s.name}
                       </option>
                     ))}
+                    <option
+                      value={-1}>
+                      {'---'}
+                    </option>
+                    {galSubs.map((s, i) => (
+                      <option
+                        value={s.id} key={100+i}>
+                        {s.name}
+                      </option>
+                    ))}
                   </Input>
                 </div>
               )
@@ -77,6 +87,16 @@ class Couples extends Component {
                     {galSubs.map((s, i) => (
                       <option
                         value={s.id} key={i}>
+                        {s.name}
+                      </option>
+                    ))}
+                    <option
+                      value={-1}>
+                      {'---'}
+                    </option>
+                    {guySubs.map((s, i) => (
+                      <option
+                        value={s.id} key={100+i}>
                         {s.name}
                       </option>
                     ))}

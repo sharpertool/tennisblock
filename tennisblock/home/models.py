@@ -14,3 +14,8 @@ class Home(Page):
 
     class Meta:
         verbose_name = "Home Page"
+
+    def get_context(self, *args, **kwargs):
+        context = super().get_context(*args, **kwargs)
+        return context
+

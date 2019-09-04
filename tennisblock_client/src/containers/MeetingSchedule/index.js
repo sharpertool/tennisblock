@@ -8,7 +8,7 @@ import HLink from '~/components/ui/Header/Link'
 import ActionButtons from './ActionButtons'
 import Couples from './Couples'
 
-import {actions, selectors} from '~/Schedule'
+import {actions, selectors} from '~/redux-page'
 
 import styles from './styles.local.scss'
 

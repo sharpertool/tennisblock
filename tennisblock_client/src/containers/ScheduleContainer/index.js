@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Breadcrumb from '~/components/ui/Breadcrumb'
-import { selectors } from '~/Schedule/modules'
+import {selectors, actions} from '~/redux-page'
 
 
 class ScheduleContainer extends Component {

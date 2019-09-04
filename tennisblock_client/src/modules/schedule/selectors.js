@@ -31,17 +31,19 @@ export const getCouples = state => {
     )
   )
   gals.map((g, i) => {
+    const couple = couples[i]
     if (g == -1) {
-      couples[i].gal = {id: -1, name:'---'}
+      couple.gal = {id: -1, name:'---'}
     } else {
-      couples[i].gal = {id: g, name:pbid[g].name}
+      couple.gal = {id: g, name:pbid[g].name}
     }
   })
   guys.map((g, i) => {
+    const couple = couples[i]
     if (g == -1) {
-      couples[i].guy = {id: -1, name:'---'}
+      couple.guy = {id: -1, name:'---'}
     } else {
-      couples[i].guy = {id: g, name: pbid[g].name}
+      couple.guy = {id: g, name: pbid[g].name}
     }
   })
   return couples

@@ -1,3 +1,5 @@
+import clone from 'ramda/src/clone'
+import {mergeDeepRightAll} from '~/modules/module_utils'
 import * as R from 'ramda'
 import { handleActions } from 'redux-actions'
 import * as types from './constants'
@@ -6,7 +8,7 @@ import {
   toObjectById
 } from './ramda_utils'
 
-const initialState = {
+let configInitialState = {
   current_meeting: {
     date: null,
     players_by_id: {},
@@ -24,6 +26,10 @@ const initialState = {
   meeting_dates: [],
   subs_guys: [],
   subs_gals: []
+}
+
+export const update_initial_state = (initial_state) => {
+  configInitialState = mergeDeepRightAll(configInitialState, initial_state)
 }
 
 const filter_player = (p) => {
@@ -147,7 +153,7 @@ const reducer = handleActions(
           }
         },
     },
-    initialState
+    clone(configInitialState),
 )
 
 export default reducer

@@ -1,0 +1,19 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+<!-- Define common options -->
+<!-- It is important that all variables here are defined... so add a default -->
+<!-- If any of these variables are defined only on specific pages, add a default to context.py -->
+<script type="text/javascript">
+  let tennisblock_page_options = {
+    sentry_sdk: {
+      dsn: '{{ sentry_dsn }}'
+    },
+    account_opts: {
+      initial_state: {
+      }
+    },
+  }
+
+  let tennisblock_page_elements = {
+  }
+</script>

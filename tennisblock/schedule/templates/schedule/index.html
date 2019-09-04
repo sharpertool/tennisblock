@@ -48,10 +48,21 @@
 {% block initialize_bundles %}
     {{ block.super }}
     {% if render_bundles %}
+        {% include "bundles/common_options.html" %}
         <!-- Initialize bundles -->
         <script type="text/javascript">
           console.log('Initialize component')
-          window.onDateChanged = Schedule({ target: 'react-schedule'});
+          Schedule(
+            Object.assign(
+              tennisblock_page_elements,
+              {schedule_el: 'react-schedule'}
+            ),
+            Object.assign(
+              tennisblock_page_options,
+              {}
+            )
+          )
+          //window.onDateChanged = Schedule({ target: 'react-schedule'});
 
         </script>
     {% endif %}

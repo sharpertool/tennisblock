@@ -299,35 +299,35 @@ class Scheduler(object):
             couples = []
 
             results = self._queryScheduledPlayers(mtg)
-            for cdata in results:
+            for result in results:
                 couple = {
                     'guy': {'name': '----'},
                     'gal': {'name': '----'}
                 }
-                if cdata.get('guy'):
-                    guy = cdata.get('guy')
-                    partner = cdata.get('gal')
+                if result.get('guy'):
+                    guy = result.get('guy')
+                    partner = result.get('gal')
                     g = {
                         'name': guy.get('name'),
                         'id': guy.get('id'),
                         'ntrp': guy.get('ntrp'),
                         'untrp': guy.get('untrp'),
                         'gender': 'm',
-                        'partner': cdata.get('gal'),
-                        'partnername': cdata.get('gal') or '----'
+                        'partner': result.get('gal'),
+                        'partnername': result.get('gal') or '----'
                     }
                     guys.append(g)
                     couple['guy'] = g
-                if cdata.get('gal'):
-                    gal = cdata.get('gal')
+                if result.get('gal'):
+                    gal = result.get('gal')
                     g = {
                         'name': gal.get('name'),
                         'id': gal.get('id'),
                         'ntrp': gal.get('ntrp'),
                         'untrp': gal.get('untrp'),
                         'gender': 'f',
-                        'partner': cdata.get('guy'),
-                        'partnername': cdata.get('guy') or '----'
+                        'partner': result.get('guy'),
+                        'partnername': result.get('guy') or '----'
                     }
                     gals.append(g)
                     couple['gal'] = g

@@ -1,7 +1,7 @@
-import { actionType } from '~/utils'
-export const MODULE_NAME = 'schedule'
-export const PARENT_NAME = 'parent'
-export const APP_NAME = `${PARENT_NAME}/${MODULE_NAME}`
+export const NAME = 'schedule'
+
+const PARENT_NAME = 'parent'
+export const APP_NAME = `${PARENT_NAME}/${NAME}`
 const mkname = (nm) => `${APP_NAME}/${nm}`
 
 export const SET_BLOCKDATES = mkname('SET_BLOCKDATES')
