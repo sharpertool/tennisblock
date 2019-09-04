@@ -49,6 +49,9 @@ references:
       keys:
         - *venv_cache_key
 
+  asset_build_cache_key: &asset_build_cache_key
+    v1-gulp-build-{{ checksum "webpack_assets/package.json" }}
+
   gulp_build_cache_key: &gulp_build_cache_key
     v1-gulp-build-{{ checksum "build_assets/package.json" }}
 
@@ -141,16 +144,38 @@ jobs:
       - *attach_workspace
 
       - run:
-          name: Install npm packages for gulp_build
+          name: Install npm packages for webpack assets using yarn
           command: |
-            cd build_assets
+            cd webpack_assets
             yarn install
 
+      - save_cache:
+          key: *asset_build_cache_key
+          paths:
+            - webpack_assets/node_modules
+
       - run:
-          name: Build CSS Assets using Gulp
+          name: Build CSS Assets using Webpack
           command: |
-            cd build_assets
-            environment=circleci yarn build
+            cd webpack_assets
+            environment=production yarn build:ci
+
+      - run:
+          name: Show compiled contents of webpack build location
+          command: |
+            ls -al ./webpack_assets/dist.prod || true
+            ls -al ./tennisblock/static || true
+
+      - run:
+          name: Copy Webpack compiled dist.prod over to frontend
+          command: |
+            ci_scripts/copy_webpack_assets.sh
+
+      - run:
+          name: Show frontend output directories
+          command: |
+            ls -al ./django_root/frontend || true
+            ls -al ./django_root/frontend/static || true
 
       - save_cache:
           key: *gulp_build_cache_key
@@ -160,8 +185,10 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
+            - ./tennisblock/static
             - ./tennisblock/webapp/static
-            - ./tennisblock/frontend/
+            - ./tennisblock/frontend/static
+            - ./tennisblock/frontend/webpack-assets-stats.json
             - ./collectedstatic
 
   compile_client_code:
