@@ -89,25 +89,12 @@ jobs:
   checkout_code:
     executor: container_config_min
     steps:
-#      - *restore_repo
 
       - run:
           name: Avoid hosts unknown for bitbucket
           command: |
             mkdir -p ~/.ssh/
             echo -e "Host bitbucket.org\n  StrictHostKeyChecking no\n" >> ~/.ssh/config
-
-#      - run:
-#          name: fetch tags
-#          command: |
-#            git fetch --tags | true
-#
-#      - checkout
-#
-#      - run:
-#          name: fetch tags
-#          command: |
-#            git fetch --tags | true
 
       - checkout
 
@@ -127,7 +114,8 @@ jobs:
           command: |
             python3 -m venv .venv
             source .venv/bin/activate
-            pip install -r requirements/test.txt
+            pip install -U pip
+            pip install -r requirements/test.txt --progress-bar off
 
       - save_cache:
           key: *venv_cache_key
@@ -250,7 +238,6 @@ jobs:
     steps:
       - *restore_repo
       - *restore_venv
-
       - *attach_workspace
 
       - run:
@@ -263,8 +250,9 @@ jobs:
           command: |
             source .venv/bin/activate
             cd tennisblock
-            export DJANGO_SETTINGS_MODULE=tennisblock.settings.circleci
             python manage.py collectstatic --noinput --ignore=*.scss
+          environment:
+            DJANGO_SETTINGS_MODULE: tennisblock.settings.circleci
 
       - persist_to_workspace:
           root: *workspace_root
