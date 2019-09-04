@@ -1,16 +1,16 @@
 version: 2.1
+orbs:
+  cypress: cypress-io/cypress@1.1.0
 
-references:
-
-  container_config: &container_config
+executors:
+  container_config:
     working_directory: ~/build
     docker:
-      - image: sharpertool/docker_ci_python3:1.1.1
+      - image: sharpertool/docker_ci_python3:1.5.2
         environment:
           ZIP_PREFIX: tennisblock
 
-
-      - image: sharpertool/ci_postgres:1.0.1
+      - image: sharpertool/ci_postgis:1.0.1
         environment:
           POSTGRES_PASSWORD: testing-password
           POSTGRES_USER: circleci
@@ -18,14 +18,16 @@ references:
 
       - image: sharpertool/smtpd:1.0.1
 
-  container_config_min: &container_config_min
+  container_config_min:
     working_directory: ~/build
     docker:
-      - image: sharpertool/docker_ci_python3:1.1.1
+      - image: sharpertool/docker_ci_python3:1.5.2
         environment:
           ZIP_PREFIX: tennisblock
           DEPLOY_BUCKET: tennisblock.deploy
           DEPLOY_BUCKET_PATH: backend_versions
+
+references:
 
   workspace_root: &workspace_root
     ~/build
@@ -52,13 +54,10 @@ references:
   asset_build_cache_key: &asset_build_cache_key
     v1-gulp-build-{{ checksum "webpack_assets/package.json" }}
 
-  gulp_build_cache_key: &gulp_build_cache_key
-    v1-gulp-build-{{ checksum "build_assets/package.json" }}
-
-  restore_gulp_build_cache: &restore_gulp_build_cache
+  restore_asset_build_cache: &restore_asset_build_cache
     restore_cache:
       keys:
-        - *gulp_build_cache_key
+        - *asset_build_cache_key
 
   client_build_cache_key: &client_build_cache_key
     v1-client-build-{{ checksum "client/package.json" }}
@@ -88,7 +87,7 @@ references:
 
 jobs:
   checkout_code:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
 #      - *restore_repo
 
@@ -118,7 +117,7 @@ jobs:
             - .
 
   build_venv:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
       - *restore_repo
       - *restore_venv
@@ -136,11 +135,11 @@ jobs:
             - .venv
 
   compile_assets:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
       - *restore_repo
       - *restore_venv
-      - *restore_gulp_build_cache
+      - *restore_asset_build_cache
       - *attach_workspace
 
       - run:
@@ -178,7 +177,7 @@ jobs:
             ls -al ./django_root/frontend/static || true
 
       - save_cache:
-          key: *gulp_build_cache_key
+          key: *asset_build_cache_key
           paths:
             - build_assets/node_modules
 
@@ -192,7 +191,7 @@ jobs:
             - ./collectedstatic
 
   compile_client_code:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
       - *restore_repo
       - *restore_venv
@@ -247,7 +246,7 @@ jobs:
             yarn test
 
   collectstatic:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
       - *restore_repo
       - *restore_venv
@@ -273,7 +272,7 @@ jobs:
             - ./collectedstatic
 
   pytest:
-    <<: *container_config
+    executor: container_config
     steps:
       - *restore_repo
       - *restore_venv
@@ -290,7 +289,7 @@ jobs:
             DJANGO_SETTINGS_MODULE=tennisblock.settings.circleci python manage.py test
 
   build_zip_file:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
       - *restore_repo
       - *restore_venv
@@ -313,7 +312,7 @@ jobs:
             - ./zipout
 
   deploy_to_s3_bucket:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
       - *restore_repo
       - *restore_venv
@@ -328,7 +327,7 @@ jobs:
             aws s3 cp zipout/${zipfile} ${s3path}
 
   deploy_to_test_server:
-    <<: *container_config_min
+    executor: container_config_min
     steps:
       - *restore_repo
       - *disable_strict_type_checking
