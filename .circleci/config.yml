@@ -345,7 +345,6 @@ jobs:
             ls -al zipout
             zipfile=$(ls zipout/)
             ssh deploy_host "mkdir -p ${APP_DIR}/deploy/"
-            zipfile=$(./scripts/zipfilename.sh)
             scp zipout/${zipfile} deploy_host:${APP_DIR}/deploy/
 
       - run:
