@@ -24,7 +24,7 @@ describe('test init function', () => {
           <span id="button"/>
       </div>`
     
-    sch_init({target:'root'})
+    sch_init({schedule_el:'root'}, {})
     
     
   })
