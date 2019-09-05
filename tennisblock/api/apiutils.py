@@ -123,20 +123,20 @@ def build_meetings_for_season(season=None, force=False):
         # Looks like we are good
         return
 
-    startDate = season.startdate
     endDate = season.enddate
     blockStart = season.blockstart
-    blocktime = season.blocktime
 
-    dates = []
     currDate = blockStart
+    index = 0
     while currDate <= endDate:
         mtg = Meeting.objects.create(
             season=season,
+            meeting_index=index,
             date=currDate,
             holdout=False,
             comments="")
         mtg.save()
+        index += 1
         currDate += datetime.timedelta(days=7)
 
     update_last_meeting_date(season)

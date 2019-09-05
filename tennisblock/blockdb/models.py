@@ -205,6 +205,7 @@ class Meeting(models.Model):
     special party night, etc.
     """
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    meeting_index = models.IntegerField(default=0)
     date = models.DateField()
     holdout = models.BooleanField(default=False)
     comments = models.CharField(max_length=128)
@@ -242,6 +243,7 @@ class AvailabilityManager(models.Manager):
         try:
             av = PlayerAvailability.objects.get(player=player, season=season)
         except PlayerAvailability.DoesNotExist:
+            mtgs = season.meeting_set.all()
             av = PlayerAvailability(player=player,
                                      season=season,
                                      available=[True for v in mtgs],
@@ -268,6 +270,17 @@ class PlayerAvailability(models.Model):
         return "availability for {} on {} is {}".format(
             self.player.name, self.season, self.available
         )
+
+    def save(self, **kwargs):
+        if self.available == list():
+            print('Initialize values on save if defaulted')
+            mtgs = self.season.meeting_set.all()
+            if mtgs.count():
+                self.available = [True for v in range(mtgs.count())]
+                self.scheduled = [False for v in range(mtgs.count())]
+                self.played = [False for v in range(mtgs.count())]
+
+        return super().save(**kwargs)
 
 
 class Schedule(models.Model):

@@ -20,9 +20,8 @@ class Scheduler(object):
         """
         Return True if this player is available on the meeting date.
         """
-        meetings = Meeting.objects.filter(season=mtg.season).order_by('date').values_list('date', flat=True)
-        mtg_index = list(meetings).index(mtg.date)
-        av = PlayerAvailability.objects.get_for_season_player(seasion=mtg.season, player=player)
+        mtg_index = mtg.meeting_index
+        av = PlayerAvailability.objects.get_for_season_player(season=mtg.season, player=player)
         return av.available[mtg_index]
 
     def isCoupleAvailable(self, mtg, couple):
@@ -30,8 +29,8 @@ class Scheduler(object):
         Check if both members of the given couple are available.
         """
 
-        return self.isPlayerAvailable(mtg, couple.male) \
-               and self.isPlayerAvailable(mtg, couple.female)
+        return all(self.isPlayerAvailable(mtg, couple.male),
+                   self.isPlayerAvailable(mtg, couple.female))
 
     def getAvailableCouples(self, season, mtg, fulltime=True):
         couples = Couple.objects.filter(
@@ -239,7 +238,6 @@ class Scheduler(object):
             }
         return {'name': '----'}
 
-
     def _queryScheduledPlayers(self, mtg):
         """
         Call the stored procedure that does a low-level complex
@@ -280,7 +278,7 @@ class Scheduler(object):
                 'gals': [],
                 'couples': []
             }
-        
+
         season = get_current_season()
         num_courts = mtg.num_courts
 
@@ -328,7 +326,7 @@ class Scheduler(object):
 
                 couples.append(couple)
 
-            while len(couples) < num_courts*2:
+            while len(couples) < num_courts * 2:
                 couples.append({
                     'guy': {'name': '----'},
                     'gal': {'name': '----'}

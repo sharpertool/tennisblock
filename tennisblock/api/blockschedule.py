@@ -84,8 +84,7 @@ class SubsView(APIView):
 
         if mtg:
 
-            meetings = Meeting.objects.filter(season=mtg.season).order_by('date').values_list('date', flat=True)
-            mtg_index = list(meetings).index(mtg.date)
+            mtg_index = mtg.meeting_index
 
             playingIds = {}
             schedulePlayers = Schedule.objects.filter(meeting=mtg)
