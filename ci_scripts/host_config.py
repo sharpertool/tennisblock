@@ -10,7 +10,7 @@ def get_args():
     parser.add_argument('deploy_host',
                         help='Hostname or IP of deploy host')
     parser.add_argument('--user',
-                        default='django',
+                        default='ubuntu',
                         help='User on deploy host')
     parser.add_argument('--dest',
                         default='~/.ssh/config',
