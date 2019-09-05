@@ -5,7 +5,7 @@ echo "Target Host: ${target_host}"
 
 host="Host deploy_host"
 nm="  Hostname ${target_host}"
-user="User django"
+user="User ubuntu"
 strict="  StrictHostKeyChecking no"
 
 mkdir -p ~/.ssh
