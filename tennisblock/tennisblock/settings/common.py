@@ -352,7 +352,7 @@ else:
                                  default=DJANGO_ROOT('frontend/webpack-stats.json'))
     ASSETS_STATS_FILE = env.str('ASSETS_STATS_FILE',
                                 default=DJANGO_ROOT(
-                                    'static/webpack-assets-stats.json'
+                                    'frontend/webpack-assets-stats.json'
                                 ))
 
     if exists(WEBPACK_STATS_FILE):

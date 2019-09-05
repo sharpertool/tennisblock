@@ -26,6 +26,7 @@ executors:
           ZIP_PREFIX: tennisblock
           DEPLOY_BUCKET: tennisblock.deploy
           DEPLOY_BUCKET_PATH: backend_versions
+          APP_DIR: /var/www/tennisblock
 
 references:
 
@@ -156,13 +157,13 @@ jobs:
       - run:
           name: Copy Webpack compiled dist.prod over to frontend
           command: |
-            ci_scripts/copy_webpack_assets.sh
+            ./ci_scripts/copy_webpack_assets.sh
 
       - run:
           name: Show frontend output directories
           command: |
-            ls -al ./django_root/frontend || true
-            ls -al ./django_root/frontend/static || true
+            ls -al ./tennisblock/frontend || true
+            ls -al ./tennisblock/frontend/static || true
 
       - save_cache:
           key: *asset_build_cache_key
@@ -287,7 +288,8 @@ jobs:
           name: Build zip deploy file and persist to workspace
           command: |
             mkdir -p zipout
-            zipfile=$(./scripts/zipfilename.sh)
+            zipfile=$(./ci_scripts/zipfilename.sh)
+            echo "Zip file name:${zipfile}"
             zip -r zipout/${zipfile} \
               collectedstatic/ *.wsgi tennisblock/ scripts/ \
               requirements/ requirements.txt \
@@ -309,12 +311,15 @@ jobs:
       - run:
           name: Deploy the zip file to the remote bucket
           command: |
-            zipfile=$(./scripts/zipfilename.sh)
+            pwd
+            ls -al zipout
+            zipfile=$(ls zipout/)
+            echo "Deploying ${zipfile} to S3"
             VERSION=${CIRCLE_TAG:-${CIRCLE_SHA1}}
-            s3path="s3://${DEPLOY_BUCKET}/${DEPLOY_BUCKET_PATH}/${VERSION}/${zipfile}"
+            s3path="s3://${DEPLOY_BUCKET}/${DEPLOY_BUCKET_PATH}/${zipfile}"
             aws s3 cp zipout/${zipfile} ${s3path}
 
-  deploy_to_test_server:
+  deploy_to_prod_server:
     executor: container_config_min
     steps:
       - *restore_repo
@@ -324,7 +329,7 @@ jobs:
       - run:
           name: Add Target Host to config to disable strict type checking
           command: |
-            ./scripts/host_config.sh
+            ./ci_scripts/host_config.sh ${DEPLOY_HOST}
 
       - run:
           name: Show current config value.
@@ -335,26 +340,44 @@ jobs:
             fi
 
       - run:
-          name: Copy deploy script to test server
+          name: Copy deploy script to server
           command: |
-            scp ./scripts/site_deploy_zip.sh deploy_host:site_deploy_zip.sh
-            scp ./server_setup/tennisblock_exclude.lst deploy_host:
+            ./ci_scripts/copy_deploy_script.sh
+          environment:
+            SRC_SCRIPT: site_deploy_zip.sh
 
       - run:
           name: Copy zipfile to test server
           command: |
-            ssh deploy_host "mkdir -p deploy/"
+            ls -al zipout
+            zipfile=$(ls zipout/)
+            ssh deploy_host "mkdir -p ${APP_DIR}/deploy/"
             zipfile=$(./scripts/zipfilename.sh)
-            scp zipout/${zipfile} deploy_host:deploy/
+            scp zipout/${zipfile} deploy_host:${APP_DIR}/deploy/
 
       - run:
           name: Run deploy script on test server
           command: |
-            zipfile=$(./scripts/zipfilename.sh)
-            export VERSION=${CIRCLE_TAG:-${CIRCLE_SHA1}}
+            zipfile=$(ls zipout/)
+            echo "Deploying zipfile ${zipfile} on server"
+            timestamp=$(date +%Y-%m-%d)
+            export VERSION=${CIRCLE_TAG:-${timestamp}_${CIRCLE_SHA1}}
             echo "Updating the version to ${VERSION}"
             ssh deploy_host \
-              "./site_deploy_zip.sh ${zipfile} ${VERSION}"
+              "${APP_DIR}/site_deploy_zip.sh ${zipfile} ${VERSION}"
+
+      - run:
+          name: Add Sentry release
+          command: |
+            export VERSION=$(sentry-cli releases propose-version)
+            sentry-cli releases new $VERSION
+            sentry-cli releases set-commits --auto $VERSION
+            sentry-cli releases files $VERSION upload-sourcemaps ./client/dist.prod
+            sentry-cli releases finalize $VERSION
+            sentry-cli releases deploys $VERSION new -e test
+          environment:
+            SENTRY_ORG: sharpertool-vc
+            SENTRY_PROJECT: tennisblock
 
 
 workflows:
@@ -446,7 +469,7 @@ workflows:
             branches:
               ignore: /.*/
 
-      - deploy_to_test_server:
+      - deploy_to_prod_server:
           requires:
             - build_zip_file
           filters:

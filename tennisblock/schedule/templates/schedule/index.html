@@ -34,6 +34,7 @@
     {{ block.super }}
     {% if render_bundles %}
         <!-- Render bundles here -->
+        {% render_bundle 'vendor' 'js' %}
         {% render_bundle 'Schedule' 'js' %}
     {% endif %}
 {% endblock %}

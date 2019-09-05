@@ -6,6 +6,7 @@ import {join, resolve} from 'path'
 import {devServer} from './partials'
 import BundleTracker from 'webpack-bundle-tracker'
 import autoprefixer from 'autoprefixer'
+
 const DOMAIN = process.env.DOMAIN || 'tennisblock.local'
 const PORT = process.env.PORT || 8081
 const PROTOCOL = process.env.PROTOCOL || 'http'
@@ -47,8 +48,7 @@ const rules = [
       require.resolve('style-loader'),
       {
         loader: require.resolve('css-loader'),
-        options: {
-        },
+        options: {},
       },
       {
         loader: require.resolve('postcss-loader'),
@@ -105,18 +105,18 @@ const rules = [
 ]
 
 export default ({env, options}) => {
-
+  
   const strategy = {
     entry: 'prepend',
     output: 'append',
     'output.publicPath': 'replace',
     'module.rules': 'replace'
   }
-
+  
   const mainConfig = baseConfig({env, options})
   const baseEntry = mainConfig.entry
   const entry = {}
-
+  
   map(baseEntry, (v, k) => {
     entry[k] = [
       'react-hot-loader/patch',
@@ -126,35 +126,52 @@ export default ({env, options}) => {
       'webpack/hot/only-dev-server'
     ]
   })
-
+  
   return merge.strategy(strategy)(mainConfig, {
-    devtool: 'source-map',
-    entry,
-    module: {
-      rules
+      devtool: 'source-map',
+      entry,
+      module: {
+        rules
+      },
+      output: {
+        publicPath: `${PROTOCOL}://${DOMAIN}:${PORT}/hot/`
+        //publicPath: '/hot/',
+      }
     },
-    output: {
-      publicPath: `${PROTOCOL}://${DOMAIN}:${PORT}/hot/`
-    }
-  }, devServer({
-    hot: true,
-    https: env.https ? {
-      key: fs.readFileSync('../ssl/private.key'),
-      cert: fs.readFileSync('../ssl/private.crt'),
-      ca: fs.readFileSync('../ssl/private.pem')
-    } : false,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    {
+      optimization: {
+        splitChunks: {
+          cacheGroups: {
+            vendor: {
+              test: /node_modules/,
+              chunks: 'initial',
+              name: 'vendor',
+              enforce: true
+            },
+          }
+        }
+      }
     },
-    port: PORT,
-    protocol: `${PROTOCOL}`,
-    base: paths.hot,
-    allowedHosts: [
-      '.tennisblock.local',
-      `${DOMAIN}`,
-    ]
-
-  }))
+    devServer({
+      hot: true,
+      host: DOMAIN,
+      port: PORT,
+      https: env.https ? {
+        key: fs.readFileSync('../ssl/private.key'),
+        cert: fs.readFileSync('../ssl/private.crt'),
+        ca: fs.readFileSync('../ssl/private.pem')
+      } : false,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+      },
+      protocol: `${PROTOCOL}`,
+      base: paths.hot,
+      allowedHosts: [
+        '.tennisblock.local',
+        `${DOMAIN}`,
+      ]
+      
+    }))
 }

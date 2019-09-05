@@ -1,0 +1,18 @@
+# rsync exclude list for server.
+# Keeps rsync from removing configuration files
+health
+local_config.py
+tennisblock_exclude.lst
+manage
+deploy
+zipdir
+reload.me
+uwsgi.ini
+wsgi.py
+.env
+.versions.env
+.env.local
+.venv3
+.venv
+maintenance.on
+deploy_zip.sh
