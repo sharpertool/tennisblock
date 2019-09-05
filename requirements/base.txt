@@ -1,34 +1,36 @@
-wagtail==2.4
-Django==2.1.5
+wagtail==2.6.1
+Django==2.2.4
 
-django-contrib-comments==1.9.0
-djangorestframework==3.9.0
-markdown==3.0.1
-django-filter==2.0.0
+django-contrib-comments==1.9.1
+djangorestframework==3.10.2
+markdown==3.1.1
+django-filter==2.2.0
 django-bootstrap-datepicker-plus
 
 # Wagtail plugins and addons
-wagtail-autocomplete==0.1.1
+wagtail-autocomplete==0.3.1
 
-django-model-utils==3.1.2
-django-cors-headers==2.4.0
+django-model-utils==3.2.0
+django-cors-headers==3.1.0
 
 # Reading environment variables, secure enclaves
 git+git://github.com/sharpertool/django-environ.git@develop
 
-django-sekizai==0.10.0
+django-sekizai==1.0.0
 django-webpack-loader==0.6.0
 fpdf==1.7.2
 pinax-theme-bootstrap==8.0.1
-psycopg2==2.7.6.1
-python-dateutil==2.7.5
-pytz==2018.9
+
+psycopg2-binary~=2.8
+
+python-dateutil==2.8.0
+pytz==2019.2
 
 Pillow==5.4.1
 
 # Social login
 django-user-accounts==2.1.0
-django-allauth==0.38.0
+django-allauth==0.39.1
 social-auth-app-django==3.1.0
 
 # Logging, errors
@@ -36,15 +38,15 @@ raven==6.10.0
 
 # Static and Media files
 django-storages==1.7.1
-boto3==1.9.31
+boto3==1.9.216
 
 # SCSS files
-django-compressor==2.2
+django-compressor==2.3
 django-pipeline==1.6.14
 
-reportlab==3.5.12
+reportlab==3.5.23
 django-crispy-forms==1.7.2
 
 # Email
-django-anymail[mailgun]==5.0
+django-anymail[mailgun]==6.1.0
 

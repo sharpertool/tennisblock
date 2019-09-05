@@ -46,9 +46,9 @@ AUTHENTICATION_BACKENDS = (
 
 # Added the django cors module
 CORS_ORIGIN_WHITELIST = (
-    'tennisblock.com',
-    'dev.tennisblock.com',
-    'test.tennisblock.com',
+    'https://tennisblock.com',
+    'http://dev.tennisblock.com',
+    'http://test.tennisblock.com',
 )
 
 CORS_ORIGIN_REGEX_WHITELIST = (

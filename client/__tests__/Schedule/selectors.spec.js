@@ -1,5 +1,4 @@
-import {selectors} from '~/Schedule/modules/schedule'
-import * as R from 'ramda'
+import {getCouples} from '~/modules/schedule/selectors'
 
 describe('Insure selectors return valid stuff', () => {
   
@@ -22,13 +21,15 @@ describe('Insure selectors return valid stuff', () => {
   ]
   
   const state = {
+    current_date: 'current',
+    meeting_dates: [{date: 'current', num_courts: 2}],
     players_by_id: {},
     curr_guys: [],
     curr_gals: [],
   }
   
   it('should return couples', () => {
-    const c = selectors.getCouples({})
+    const c = getCouples(state)
     
     expect(c).toBe({couples: []})
   })
