@@ -16,3 +16,5 @@ wsgi.py
 .venv
 maintenance.on
 deploy_zip.sh
+site_deploy_zip.sh
+
