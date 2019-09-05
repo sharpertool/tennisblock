@@ -4,12 +4,13 @@ import datetime
 from django.views.generic.base import View
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework import authentication, permissions
-from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability
+from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability, PlayerAvailability
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, time_to_js
 from TBLib.manager import TeamManager
@@ -71,10 +72,9 @@ def _AvailabilityInit(player, meetings):
             av.save()
 
 
-def getSubList(request, date=None):
-    r = Request(request)
+class SubsView(APIView):
 
-    if r.method == 'GET':
+    def get(self, request, format=None, date=None):
         mtg = get_meeting_for_date(date)
 
         if mtg:
@@ -84,54 +84,56 @@ def getSubList(request, date=None):
 
         if mtg:
 
+            meetings = Meeting.objects.filter(season=mtg.season).order_by('date').values_list('date', flat=True)
+            mtg_index = list(meetings).index(mtg.date)
+
             playingIds = {}
             schedulePlayers = Schedule.objects.filter(meeting=mtg)
             for p in schedulePlayers:
                 playingIds[p.player.id] = p.player
                 print("Playing this meeting:%s" % p.player.Name())
 
-            avail = Availability.objects.filter(meeting=mtg, available=True)
+            subs = PlayerAvailability.objects.filter(~Q(player__in=playingIds))
+            subs = subs.filter(**{f'available__{mtg_index}': True})
+
             fsubs = []
             msubs = []
-            for a in avail:
-                if not a.player.id in playingIds:
-                    s = {
-                        'name': a.player.Name(),
-                        'id': a.player.id,
-                        'ntrp': a.player.ntrp,
-                        'untrp': a.player.microntrp,
-                        'gender': a.player.gender.lower()
-                    }
 
-                    if a.player.gender == 'F':
-                        fsubs.append(s)
-                    else:
-                        msubs.append(s)
+            for p in subs:
+                s = {
+                    'name': p.player.Name(),
+                    'id': p.player.id,
+                    'ntrp': p.player.ntrp,
+                    'untrp': p.player.microntrp,
+                    'gender': p.player.gender.lower()
+                }
 
-            others = SeasonPlayer.objects.filter(blockmember=False)
-            for sp in others:
-                if sp.player.id not in playingIds:
-                    s = {
-                        'name': sp.player.Name(),
-                        'id': sp.player.id,
-                        'ntrp': sp.player.ntrp,
-                        'untrp': sp.player.microntrp,
-                        'gender': sp.player.gender.lower()
-                    }
+                fsubs.append(s) if p.player.gender == 'F' else msubs.append(s)
 
-                    if sp.player.gender == 'F':
-                        fsubs.append(s)
-                    else:
-                        msubs.append(s)
+            others = SeasonPlayer.objects.filter(
+                blockmember=False,
+                season=mtg.season
+            ).filter(
+                ~Q(player__in=playingIds)
+            )
+
+            for p in others:
+                s = {
+                    'name': p.player.Name(),
+                    'id': p.player.id,
+                    'ntrp': p.player.ntrp,
+                    'untrp': p.player.microntrp,
+                    'gender': p.player.gender.lower()
+                }
+
+                fsubs.append(s) if p.player.gender == 'F' else msubs.append(s)
 
             data['guysubs'] = msubs
             data['galsubs'] = fsubs
         else:
             data['mtg'] = {'error': 'Could not determine meeting.'}
 
-        return JSONResponse(data)
-
-    return JSONResponse({})
+        return Response(data)
 
 
 class BlockPlayers(APIView):

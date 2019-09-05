@@ -28,50 +28,12 @@
 {% block page_content %}
     <div id="content" class="dynamic" ng-controller="Availability">
 
-        <div id="textContent" ng-cloak>
+        <div id="textContent">
             <div id="blockheading" class="dynamic" >
                 <h2>Availability</h2>
             </div>
 
-            {% verbatim %}
-
-            <div ng-hide="initialized">
-                <h2>Loading Data</h2>
-            </div>
-            <div id="available" ng-show="initialized" >
-                <table class="member_list table">
-                    <thead>
-                        <tr class="even">
-                            <th>Name</th>
-                            <th ng-repeat="date in dates"
-                                ng-class="{true: 'holdout',false:'play'}[date.holdout == true]">
-                                {{ date.date | date:'MMM dd' }}
-                            </th>
-                            <th>Played</th>
-                            <th>Scheduled</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-                        <tr ng-repeat="player in players"
-                            ng-class-odd="'odd'" ng-class-even="'even'"
-                            ng-class="{true: 'single'}[player.single == true]"
-                                >
-                            <td>{{ player.name }}</td>
-                            <td
-                                    ng-repeat="avail in player.isavail track by $index"
-                                    ng-class="{cplayed:player.scheduled[$index]}"
-                                    >
-                                <input ng-enabled=true type="checkbox" ng-model="player.isavail[$index]" ng-change="updateAvail(player,$index)"/>
-                            </td>
-                            <td>{{ player.nplayed }}</td>
-                            <td>{{ player.nscheduled }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            {% endverbatim %}
+            <div id="root"></div>
         </div>
 
     </div>
@@ -80,4 +42,34 @@
 {% block render_css_bundles %}
     {% render_bundle 'style_base' 'css' 'ASSETS' %}
     {% render_bundle 'availability_page' 'css' 'ASSETS' %}
+{% endblock %}
+
+{% block render_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        <!-- Render bundles here -->
+        {% render_bundle 'Availability' 'js' %}
+    {% endif %}
+{% endblock %}
+
+{% block initialize_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        {% include "bundles/common_options.html" %}
+        <!-- Initialize bundles -->
+        <script type="text/javascript">
+          console.log('Initialize component')
+          Availability(
+            Object.assign(
+              tennisblock_page_elements,
+              {availability_el: 'root'}
+            ),
+            Object.assign(
+              tennisblock_page_options,
+              {}
+            )
+          )
+
+        </script>
+    {% endif %}
 {% endblock %}

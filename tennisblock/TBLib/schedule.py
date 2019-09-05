@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, Count, F
 from django.db import connection
 
-from blockdb.models import *
+from blockdb.models import PlayerAvailability, Meeting, Couple, Schedule, Player, SeasonPlayer
 from api.apiutils import get_current_season, get_next_meeting, get_meeting_for_date
 
 
@@ -20,16 +20,10 @@ class Scheduler(object):
         """
         Return True if this player is available on the meeting date.
         """
-        try:
-            av = Availability.objects.get(meeting=mtg, player=player)
-            return av.available
-        except ObjectDoesNotExist:
-            print("Added availability for %s" % player)
-            Availability.objects.create(meeting=mtg,
-                                        player=player,
-                                        available=True)
-
-        return True
+        meetings = Meeting.objects.filter(season=mtg.season).order_by('date').values_list('date', flat=True)
+        mtg_index = list(meetings).index(mtg.date)
+        av = PlayerAvailability.objects.get_for_season_player(seasion=mtg.season, player=player)
+        return av.available[mtg_index]
 
     def isCoupleAvailable(self, mtg, couple):
         """

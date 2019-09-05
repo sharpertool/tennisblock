@@ -1,7 +1,7 @@
 import datetime
 from django.views.generic.base import View
 from rest_framework.parsers import JSONParser
-from blockdb.models import Player, Couple, Meeting, Availability, Schedule
+from blockdb.models import Player, Couple, Meeting, Availability, Schedule, SeasonPlayer, PlayerAvailability
 
 from .apiutils import JSONResponse, get_current_season
 
@@ -17,15 +17,15 @@ def _AvailabilityInit(player, meetings):
 
         except Availability.DoesNotExist:
             Availability.objects.create(
-                    meeting=mtg,
-                    player=player,
-                    available=True
+                meeting=mtg,
+                player=player,
+                available=True
             ).save()
 
 
 class AvailabilityView(View):
 
-    def get_player_data(self, player, mtgs=None, past=None, future=None, single=False):
+    def get_player_data(self, player, season, mtgs=None, past=None, future=None, single=False):
         """
         Assemble the player data into a structure for the availability index.
         """
@@ -35,34 +35,24 @@ class AvailabilityView(View):
 
         # Should be empty arrays if None
         if past is None:
-            past =[]
+            past = []
         if future is None:
             future = []
 
         nplayed = Schedule.objects.filter(meeting__in=past, player=player).count()
         nscheduled = Schedule.objects.filter(meeting__in=future, player=player).count()
 
+        av = PlayerAvailability.objects.get_for_season_player(player, season)
+
         p = {
             'name': player.first + ' ' + player.last,
             'id': player.id,
-            'isavail': avail,
-            'scheduled': scheduled,
+            'isavail': av.available,
+            'scheduled': av.scheduled,
             'nplayed': nplayed,
             'nscheduled': nscheduled + nplayed,
             'single': single
         }
-
-        avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
-        if avlist.count() != mtgs.count():
-            _AvailabilityInit(player, mtgs)
-            avlist = Availability.objects.filter(player=player, meeting__in=mtgs).order_by('meeting__date')
-
-        for idx, mtg in enumerate(mtgs):
-            av = avlist[idx]
-
-            avail.append(av.available)
-            sch = Schedule.objects.filter(player=player, meeting=mtg)
-            scheduled.append(sch.count() > 0)
 
         return p
 
@@ -70,18 +60,22 @@ class AvailabilityView(View):
 
         currseason = get_current_season()
         mtgs = Meeting.objects.filter(season=currseason).order_by('date')
+        availability_count = len(mtgs)
         couples = Couple.objects.filter(season=currseason, blockcouple=True).order_by('as_singles')
+
+        season_players = SeasonPlayer.objects.filter(
+            season=currseason)
 
         past_mtgs = Meeting.objects.filter(season=currseason, date__lte=datetime.date.today())
         future_mtgs = Meeting.objects.filter(season=currseason, date__gt=datetime.date.today())
 
         pdata = []
-        for couple in couples:
-            pdata.append(self.get_player_data(couple.male,
-                                              single=couple.as_singles, mtgs=mtgs, past=past_mtgs, future=future_mtgs))
-
-            pdata.append(self.get_player_data(couple.female,
-                                              single=couple.as_singles, mtgs=mtgs, past=past_mtgs, future=future_mtgs))
+        for sp in season_players:
+            pdata.append(self.get_player_data(sp.player,
+                                              currseason,
+                                              mtgs=mtgs,
+                                              past=past_mtgs,
+                                              future=future_mtgs))
 
         return JSONResponse(pdata)
 
@@ -89,19 +83,17 @@ class AvailabilityView(View):
         # elif request.method == 'PUT':
 
         data = JSONParser().parse(request)
+        index = data['mtgidx']
+        available = data['isavail']
         currseason = get_current_season()
-        mtgs = Meeting.objects.filter(season=currseason).order_by('date')
-        try:
-            mtg = mtgs[data['mtgidx']]
-            p = Player.objects.get(pk=data['id'])
-            print("Updating availability for %s on %s to %s" % (p.Name(), mtg.date, data['isavail']))
-            av = Availability.objects.get(meeting=mtg, player=p)
-            av.available = data['isavail']
+        player = Player.objects.get(pk=data['id'])
+        av = PlayerAvailability.objects.get_for_season_player(player, currseason)
+
+        response = {'status': 'success'}
+        if index < len(av.available):
+            av.available[index] = available
             av.save()
-        except:
-            print("Error trying to update availability")
+        else:
+            response = {'status': 'failed', 'msg': 'index out of range'}
 
-            # data = request.DATA
-        # Update availability for someone.
-
-        return JSONResponse({})
+        return JSONResponse(response)

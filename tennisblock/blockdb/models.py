@@ -1,5 +1,6 @@
 import datetime
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 
@@ -233,6 +234,39 @@ class Availability(models.Model):
     def __str__(self):
         return "availability for {} on {} is {}".format(
             self.player.name, self.meeting.date, self.available
+        )
+
+
+class AvailabilityManager(models.Manager):
+    def get_for_season_player(self, player, season):
+        try:
+            av = PlayerAvailability.objects.get(player=player, season=season)
+        except PlayerAvailability.DoesNotExist:
+            av = PlayerAvailability(player=player,
+                                     season=season,
+                                     available=[True for v in mtgs],
+                                     scheduled=[False for v in mtgs],
+                                     played=[False for v in mtgs])
+            av.save()
+        return av
+
+
+class PlayerAvailability(models.Model):
+    """
+    Better optimized version of the original
+    """
+    player = models.ForeignKey(Player, related_name='availabiliy', on_delete=models.CASCADE)
+    season = models.ForeignKey(Season,
+                               on_delete=models.CASCADE)
+    available = ArrayField(models.BooleanField(), blank=True, default=list)
+    scheduled = ArrayField(models.BooleanField(), blank=True, default=list)
+    played = ArrayField(models.BooleanField(), blank=True, default=list)
+
+    objects = AvailabilityManager()
+
+    def __str__(self):
+        return "availability for {} on {} is {}".format(
+            self.player.name, self.season, self.available
         )
 
 
