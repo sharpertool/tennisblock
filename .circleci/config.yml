@@ -340,13 +340,6 @@ jobs:
             fi
 
       - run:
-          name: Copy deploy script to server
-          command: |
-            ./ci_scripts/copy_deploy_script.sh
-          environment:
-            SRC_SCRIPT: site_deploy_zip.sh
-
-      - run:
           name: Copy zipfile to test server
           command: |
             ls -al zipout
@@ -354,6 +347,13 @@ jobs:
             ssh deploy_host "mkdir -p ${APP_DIR}/deploy/"
             zipfile=$(./scripts/zipfilename.sh)
             scp zipout/${zipfile} deploy_host:${APP_DIR}/deploy/
+
+      - run:
+          name: Copy deploy script to server
+          command: |
+            ./ci_scripts/copy_deploy_script.sh || true
+          environment:
+            SRC_SCRIPT: site_deploy_zip.sh
 
       - run:
           name: Run deploy script on test server
