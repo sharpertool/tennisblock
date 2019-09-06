@@ -13,6 +13,8 @@ const Couple = ({
                    onRemove,
                  }) => {
   
+  const pname = (p) => `${p.first} ${p.last}`
+  
   return (
     <tr>
       <td>
@@ -23,8 +25,8 @@ const Couple = ({
           onChange={e => onNameChange(e)}
         />
       </td>
-      <td>{guy.name}</td>
-      <td>{girl.name}</td>
+      <td>{pname(guy)}</td>
+      <td>{pname(girl)}</td>
       <td>
         <input
           type='checkbox'

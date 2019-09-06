@@ -77,7 +77,7 @@ const guys = [
   {id: 11, first: 'Fred', last: 'Wolins', gender: 'm'},
   {id: 12, first: 'Rick', last: 'Jones', gender: 'm'},
   {id: 13, first: 'Matt', last: 'Carney', gender: 'm'},
-  {id: 14, first: 'Bart', last: 'Restle', gender: 'm'},
+  {id: 14, first: 'Dave', last: 'Bettis', gender: 'm'},
   {id: 15, first: 'Randy', last: 'Staufer', gender: 'm'},
   {id: 16, first: 'Brian', last: 'Kittleson', gender: 'm'},
   {id: 17, first: 'Oscar', last: 'Martinez', gender: 'm'},

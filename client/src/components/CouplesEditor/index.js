@@ -4,6 +4,10 @@ import classes from './styles.local.scss'
 import Couples from './Couples'
 import CoupleTarget from './CoupleTarget'
 
+const pluralize = nm => {
+  return nm.charAt(nm.length-1) == 's' ? nm + 'es' : nm + 's'
+}
+
 const CouplesEditor = (props) => {
   
   const default_couple = {
@@ -90,7 +94,7 @@ const CouplesEditor = (props) => {
       const girl = mycouple.girl
       const guy = mycouple.guy
       if (girl.last == guy.last) {
-        mycouple.name = `${girl.last}s'`
+        mycouple.name = pluralize(girl.last)
       } else {
         mycouple.name = `${girl.first} & ${guy.first}`
       }
