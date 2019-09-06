@@ -273,7 +273,6 @@ class PlayerAvailability(models.Model):
 
     def save(self, **kwargs):
         if self.available == list():
-            print('Initialize values on save if defaulted')
             mtgs = self.season.meeting_set.all()
             if mtgs.count():
                 self.available = [True for v in range(mtgs.count())]

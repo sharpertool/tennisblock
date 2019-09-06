@@ -1,7 +1,9 @@
-from blockdb.models import Season, SeasonPlayer, Couple
+from blockdb.models import Season, SeasonPlayer, Couple, Player
 
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import authentication, permissions
 from ..apiutils import JSONResponse, get_current_season as gcs, SeasonSerializer
 
 
@@ -37,12 +39,15 @@ def get_latest_buzz(request):
 
 class CouplesView(APIView):
 
-    def get(self, request, format=None):
-        currseason = gcs()
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, format=None, season_id=None):
+
+        currseason = get_object_or_404(Season, pk=season_id) if season_id else gcs()
 
         context = {}
-        players = SeasonPlayer.objects.filter(season=currseason)
-        couples = Couple.objects.filter(season=currseason)
+        players = SeasonPlayer.objects.filter(season=currseason).all()
+        couples = Couple.objects.filter(season=currseason).all()
 
         player_data = {'guys': [], 'girls': []}
         guys = player_data['guys']
@@ -83,3 +88,53 @@ class CouplesView(APIView):
         }
 
         return Response(context)
+
+    def post(self, request):
+        """
+        Update the couples. Expected input:
+
+            couples -- array
+            couple: {
+              name: 'Name for this couple, i.e. Hendersons',
+              guy: <player id of the guy>,
+              girl: <player id of the girl>,
+              fulltime: <boolean if they are fulltime>,
+              as_singles: <boolean if they are coupled as singles>,
+          }
+
+        """
+        currseason = gcs()
+        couples = request.data.get('couples', [])
+
+        for couple in couples:
+            name = couple.get('name', '')
+            guy_id = couple.get('guy_id')
+            girl_id = couple.get('girl_id')
+            fulltime = couple.get('fulltime')
+            as_singles = couple.get('as_singles')
+
+            male = Player.objects.get(id=guy_id)
+            female = Player.objects.get(id=girl_id)
+
+            try:
+                c = Couple.objects.get(season=currseason, male=male, female=female)
+                c.assingles = as_singles
+                c.fulltime = fulltime
+                c.name = name
+                c.save()
+
+            except Couple.DoesNotExist:
+                c = Couple(
+                    season=currseason,
+                    name=name,
+                    male=male,
+                    female=female,
+                    fulltime=fulltime,
+                    as_singles=as_singles,
+                    canschedule=True,
+                    blockcouple=True
+                   )
+                c.save()
+
+        return Response({'status': 'success'})
+

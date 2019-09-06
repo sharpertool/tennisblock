@@ -100,7 +100,6 @@ def player_post_save(sender, instance=None, created=False, **kwargs):
 
 @receiver(post_save, sender=Season)
 def season_post_save(sender, instance=None, created=False, **kwargs):
-    print("Build meetings for season if needed.")
     build_meetings_for_season(season=instance)
 
 

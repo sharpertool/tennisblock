@@ -81,6 +81,7 @@ class SeasonFactory(factory.django.DjangoModelFactory):
     firstcourt = 9
     startdate = factory.fuzzy.FuzzyDate(start_date=datetime.date(2019, 9, 1), end_date=datetime.date(2019, 9, 30))
     enddate = factory.LazyAttribute(lambda o: o.startdate + o.duration)
+    lastdate = factory.LazyAttribute(lambda o: o.startdate + o.duration)
     blockstart = factory.LazyAttribute(lambda o: o.startdate + datetime.timedelta((4 - o.startdate.weekday()) % 7))
     blocktime = '19:00:00'
 

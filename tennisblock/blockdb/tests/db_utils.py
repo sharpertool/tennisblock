@@ -22,17 +22,21 @@ from blockdb.factories import (
 
 
 @tag('medium')
-class TestBlockSchedule(TestCase):
+class TennisTestSetup(TestCase):
 
-    def setUp(self):
+    def coreSetup(self):
         self.guys = [GuyPlayerFactory() for g in range(8)]
         self.girls = [GirlPlayerFactory() for g in range(8)]
         self.season = MutedSeasonFactory()
-        self.meetings = [MutedMeetingFactory() for m in range(16)]
-        self.splayers = [SeasonPlayerFactory() for m in range(len(self.guys) + len(self.girls))]
+        self.meetings = [MutedMeetingFactory(season=self.season) for m in range(16)]
+
+    def playersSetup(self):
+        self.splayers = [SeasonPlayerFactory(season=self.season, player=p)
+                         for p in self.guys + self.girls]
         for player in self.guys + self.girls:
             PlayerAvailabilityFactory(season=self.season, player=player)
 
+    def meetingSetup(self):
         for mtg in self.meetings:
             # Schedule all players to each meeting
             for idx, player in enumerate(self.guys):
@@ -40,6 +44,7 @@ class TestBlockSchedule(TestCase):
             for idx, player in enumerate(self.girls):
                 ScheduleFactory(meeting=mtg, player=player, partner=self.guys[idx])
 
+    def matchupSetup(self):
         for mtg in self.meetings:
             for set in range(3):
                 for court in range(4):
@@ -55,31 +60,8 @@ class TestBlockSchedule(TestCase):
                         team2_p2=gals[1],
                     )
 
-    def test_sub_list(self):
-        self.assertEqual(0, 1, 'Force a TDD failure')
-
-    def test_build_meetings(self):
-        self.assertEqual(1, Season.objects.all().count(), "Should have had 16 meetings")
-        self.assertEqual(16, Meeting.objects.all().count(), "Should have had 16 meetings")
-        self.assertEqual(16, SeasonPlayer.objects.all().count())
-        avlist = PlayerAvailability.objects.all()
-        for av in avlist:
-            self.assertEqual(len(av.available), 16, 'Expected availability to have 16 items')
-
-    def test_block_players_get(self):
-        pass
-
-    def test_block_players_post(self):
-        pass
-
-    def test_block_dates_query(self):
-        pass
-
-    def test_block_schedule_query(self):
-        pass
-
-    def test_block_schedule_update(self):
-        pass
-
-    def test_block_schedule_delete(self):
-        pass
+    def allSetup(self):
+        self.coreSetup()
+        self.playersSetup()
+        self.meetingSetup()
+        self.matchupSetup()
