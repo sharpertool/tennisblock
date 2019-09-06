@@ -3,6 +3,8 @@
 import environ
 from os.path import join, exists
 import sys
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env()
 
@@ -375,10 +377,21 @@ else:
     else:
         RENDER_BUNDLES = False
 
+APP_VERSION = env.str("APP_VERSION", default='unknown')
+
+DJANGO_SENTRY_DSN = env.str(
+    'DJANGO_SENTRY_DSN',
+    default='https://f2e48c144dce410895eab7c02949a977@sentry.io/1552115')
+sentry_sdk.init(
+    dsn=DJANGO_SENTRY_DSN,
+    integrations=[DjangoIntegration()],
+    release=f"tennisblock@{APP_VERSION}"
+)
+
 # Set your DSN value
 RAVEN_CONFIG = {
-    'dsn': env("DJANGO_SENTRY_DSN",
-               default='')
+    'dsn': DJANGO_SENTRY_DSN,
+    'release': APP_VERSION,
 }
 
 # Wagtail settings

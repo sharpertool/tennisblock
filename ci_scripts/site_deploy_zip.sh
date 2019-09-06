@@ -46,7 +46,6 @@ echo "Updating APP_VERSION to match production version"
 cat << EOF >| .versions.env
 # Versions for app monitoring
 APP_VERSION=${VERSION}
-DJANGO_SENTRY_RELEASE=${VERSION}
 SERVER_VERSION=${VERSION}
 
 EOF
