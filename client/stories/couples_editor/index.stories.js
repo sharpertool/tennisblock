@@ -19,7 +19,7 @@ import {
   rootSaga,
   rootReducer,
   set_config, initialize
-} from '~/pages/SchedulePage/modules'
+} from '~/pages/Schedule/modules'
 import {makeStore, mockAxios} from '../stories_utils'
 
 import mkProvider from '../provider'
@@ -59,5 +59,32 @@ const store = makeStore({
 
 const Provider = mkProvider(store)
 
+import CouplesEditor from '~/components/CouplesEditor'
+
+const girls = [
+  {id: 0, name: 'Vicki', gender: 'f'},
+  {id: 1, name: 'Lynn', gender: 'f'},
+  {id: 2, name: 'Stacy', gender: 'f'},
+  {id: 3, name: 'Sue', gender: 'f'},
+  {id: 4, name: 'Veronica', gender: 'f'},
+  {id: 5, name: 'Lisa', gender: 'f'},
+  {id: 6, name: 'Kristine', gender: 'f'},
+  {id: 7, name: 'Ellen', gender: 'f'},
+]
+
+const guys = [
+  {id: 10, name: 'Ed', gender: 'm'},
+  {id: 11, name: 'Fred', gender: 'm'},
+  {id: 12, name: 'Rick', gender: 'm'},
+  {id: 13, name: 'Matt', gender: 'm'},
+  {id: 14, name: 'Bart', gender: 'm'},
+  {id: 15, name: 'Randy', gender: 'm'},
+  {id: 16, name: 'Jack', gender: 'm'},
+  {id: 17, name: 'Oscar', gender: 'm'},
+]
+
 storiesOf('Couples Editor', module)
   .addDecorator(story => <Provider story={story()}/>)
+  .add('Couples Editor', () => (
+    <CouplesEditor girls={girls} guys={guys}/>
+  ))

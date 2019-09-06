@@ -23,7 +23,7 @@ module.exports = async ({config, env}) => {
         path.resolve(__dirname, '../src/HomePage'),
       'FeaturedGarden':
         path.resolve(__dirname, '../src/FeaturedGarden'),
-      'static/': path.resolve(__dirname, '../../django_root/static'),
+      'static/': path.resolve(__dirname, '../../tennisblock/webpack/static'),
       ...mapToFolder([
           'react', 'react-dom', 'react-dom/server'],
         constants.NODE_MODULES_DIR

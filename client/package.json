@@ -21,7 +21,9 @@
     "lint:fix": "npm run lint -- --fix",
     "test:watch": "npm run test -- --watch",
     "coverage": "NODE_PATH=src jest --coverage",
-    "clean": "rimraf dist.dev dist.prod"
+    "clean": "rimraf dist.dev dist.prod",
+    "storybook": "cross-env STORYBOOK=true start-storybook -p 6008 -c .storybook -s ../django_root/",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -68,6 +70,7 @@
     "@storybook/addon-viewport": "^5.1.11",
     "@storybook/addons": "^5.1.11",
     "@storybook/react": "^5.1.11",
+    "addon-redux": "^1.0.0",
     "alias-quokka-plugin": "^0.1.0",
     "autoprefixer": "^9.6.1",
     "axios-mock-adapter": "^1.17.0",
@@ -120,10 +123,13 @@
     "redux-devtools-dock-monitor": "^1.1.3",
     "redux-devtools-extension": "^2.13.8",
     "redux-devtools-log-monitor": "^1.4.0",
+    "redux-immutable-state-invariant": "^2.1.0",
+    "redux-logger": "^3.0.6",
     "regenerator-runtime": "^0.13.3",
     "resolve": "1.12.0",
     "sass-loader": "^8.0.0",
     "sinon": "^7.4.2",
+    "storybook-addon-redux-listener": "^0.1.7",
     "style-loader": "1.0.0",
     "sw-precache-webpack-plugin": "0.11.5",
     "url-loader": "2.1.0",

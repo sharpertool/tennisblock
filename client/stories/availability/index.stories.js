@@ -19,7 +19,7 @@ import {
   rootSaga,
   rootReducer,
   set_config, initialize
-} from '~/pages/StoriesTestingPage/modules'
+} from '~/pages/Schedule/modules'
 import {makeStore, mockAxios} from '../stories_utils'
 
 import mkProvider from '../provider'
@@ -29,6 +29,7 @@ const maxios = mockAxios()
 addMocks(maxios)
 
 moduleConfig.selectors = selectors
+
 
 const options = merge(common_options, {
   tronictalk_opts: {
@@ -58,6 +59,8 @@ initialize(options)
 //import configureStore from './store'
 //const store = configureStore(null, null)
 
+import Widget from '~/pages/Availability/Widget'
+
 // Create the store
 const store = makeStore({
   rootSaga: rootSaga,
@@ -67,99 +70,9 @@ const store = makeStore({
 
 const Provider = mkProvider(store)
 
-import CommentHeader from '~/components/TreeComments/CommentHeader'
-import CommentItem from '~/components/TreeComments/CommentList/CommentItem/connected'
-import CommentList from '~/components/TreeComments/CommentList/connected'
-import CommentForm from '~/components/TreeComments/CommentForm'
-import CommentsContainer from '~/components/TreeComments'
 
 storiesOf('Gardentronic Comment', module)
   .addDecorator(story => <Provider story={story()}/>)
-  .add('CommentHeader', () => {
-    return (
-      <div>
-        <CommentHeader onNewCommentClick={() => {
-        }}/>
-      </div>
-    )
-  })
-  .add('Comment', () => {
-    return (
-      <div>
-        <CommentItem
-          id={1}
-          replies={[]}
-          addComment={() => {}}
-        />
-      </div>
-    )
-  })
-  .add('Comment with replies', () => {
-    return (
-      <div>
-        <CommentItem
-          id={1}
-          replies={[
-            {id: 2, children: []},
-            {
-              id: 6, children: [
-                {id: 4, children: []},
-              ]
-            },
-          ]
-          }
-          addComment={() => {}}
-        />
-      </div>
-    )
-  })
-  .add('CommentForm', () => {
-    return (
-      <div>
-        <CommentForm addCommentOrReply={() => {
-        }}/>
-      </div>
-    )
-  })
-  .add('Comment List', () => {
-    return (
-      <div>
-        <CommentList
-          comments={comments_gen}
-          addComment={() => {}}
-        />
-      </div>
-    )
-  })
-  .add('Nested Comment List', () => {
-    return (
-      <div>
-        <CommentList
-          comments={comments_gen}
-          addComment={() => {}}
-        />
-      </div>
-    )
-  })
-  .add('Comments Complete Section', () => {
-    return (
-      <div>
-        <CommentsContainer
-          comments={comments_gen}
-          addComment={action('add comment')}
-          mode={'desktop'}
-        />
-      </div>
-    )
-  })
-  .add('Comments Complete Section Mobile', () => {
-    return (
-      <div>
-        <CommentsContainer
-          comments={comments_gen}
-          addComment={action('add comment')}
-          mode={'mobile'}
-        />
-      </div>
-    )
-  })
+  .add('Widget', () => (
+    <Widget/>
+  ))
