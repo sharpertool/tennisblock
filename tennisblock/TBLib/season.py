@@ -3,6 +3,7 @@ import datetime
 
 from blockdb.models import Season, Meeting
 
+
 class SeasonManager(object):
     """
     Manage season information and calculate season related values.

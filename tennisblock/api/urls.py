@@ -9,7 +9,7 @@ from .blockschedule import (BlockNotifyer,
                             BlockDates)
 
 
-from .views import get_seasons, get_current_season, get_latest_buzz
+from .views.season import get_seasons, get_current_season, get_latest_buzz, CouplesView
 from .teams import Teams
 
 from . import converters
@@ -38,4 +38,5 @@ urlpatterns = (
     path('members/<int:id>', SeasonPlayerView.as_view()),
     path('members', SeasonPlayerView.as_view()),
     path('schedule/notify/<date:date>', BlockNotifyer.as_view(), name="schedule_notify"),
+    path('couples/', CouplesView.as_view(), name='couples')
 )
