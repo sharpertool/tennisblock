@@ -1,8 +1,17 @@
 .container {
     display: grid;
     border: 1px solid lightgrey;
-    grid-template-columns: 20% auto 20%;
-    grid-template-rows: 100px 400px;
+    grid-template-columns: 30% auto 30%;
+    grid-template-rows: 100px auto auto;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    justify-items: stretch;
+
+    grid-template-areas:
+        "guys       droparea    girls"
+        "guys       .           girls"
+        "couples    couples     couples"
+    ;
 
     height-min: 400px;
     margin: 5px 15px;
@@ -11,33 +20,17 @@
 .guys {
     border: 1px solid blue;
     padding: 4px;
-    grid-column-start: 1;
-    grid-column-end: 2;
-
-    grid-row-start: 1;
-    grid-row-end: -1;
+    grid-area: guys;
 }
 
 .girls {
     border: 1px solid pink;
     padding: 4px;
-    grid-column-start: 3;
-    grid-column-end: 4;
-
-    grid-row-start: 1;
-    grid-row-end: -1;
-}
-
-.droparea:-moz-drag-over {
-    outline: 1px solid black;
+    grid-area: girls;
 }
 
 .couple {
-    grid-column-start: 2;
-    grid-column-end: 3;
-
-    grid-row-start: 1;
-    grid-row-end: 2;
+    grid-area: droparea;
 
     .guy {
         border: 1px solid lightblue;
@@ -52,9 +45,5 @@
 }
 
 .couples {
-    grid-column-start: 2;
-    grid-column-end: 3;
-
-    grid-row-start: 2;
-    grid-row-end: -1;
+    grid-area: couples;
 }

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import classes from './styles.local.scss'
 
 const Couple = ({
                    name,
@@ -16,35 +15,35 @@ const Couple = ({
   const pname = (p) => `${p.first} ${p.last}`
   
   return (
-    <tr>
-      <td>
+    <>
+      <div>
         <input
           type='text'
           name='name'
           value={name}
           onChange={e => onNameChange(e)}
         />
-      </td>
-      <td>{pname(guy)}</td>
-      <td>{pname(girl)}</td>
-      <td>
+      </div>
+      <div>{pname(guy)}</div>
+      <div>{pname(girl)}</div>
+      <div>
         <input
           type='checkbox'
           checked={fulltime}
           onChange={(e) => onFulltimeChange(e)}
           name='fulltime'/>
-      </td>
-      <td>
+      </div>
+      <div>
         <input
           type='checkbox'
           checked={as_singles}
           onChange={(e) => onSinglesChange(e)}
           name='as_singles'/>
-      </td>
-      <td>
+      </div>
+      <div>
         <button onClick={onRemove}>Remove</button>
-      </td>
-    </tr>
+      </div>
+    </>
   )
 }
 

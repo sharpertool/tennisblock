@@ -1,11 +1,36 @@
 import React, {useEffect, useState} from 'react'
 import classes from './styles.local.scss'
+import styled from 'styled-components'
 
 import Couples from './Couples'
 import CoupleTarget from './CoupleTarget'
 
+const PlayerList = styled.ul`
+  list-style: none;
+  margin: 2px 2px;
+  padding: 1px;
+`
+const ListItem = styled.li`
+  padding: 2px;
+  padding-left: 5px;
+  border: 1px solid lightgrey;
+  background-color: lightseagreen;
+  border-radius: 2px;
+`
+
 const pluralize = nm => {
-  return nm.charAt(nm.length-1) == 's' ? nm + 'es' : nm + 's'
+  return nm.charAt(nm.length - 1) == 's' ? nm + 'es' : nm + 's'
+}
+
+const build_name = couple => {
+  const {girl, guy} = couple
+  let name = ''
+  if (girl.last == guy.last) {
+    name = pluralize(girl.last)
+  } else {
+    name = `${girl.first} & ${guy.first}`
+  }
+  return name
 }
 
 const CouplesEditor = (props) => {
@@ -27,7 +52,18 @@ const CouplesEditor = (props) => {
   const {guys, girls} = props
   
   useEffect(() => {
-    setCouples([])
+    const couples = [
+      {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      {...default_couple, girl: girls.pop(), guy: guys.pop()},
+    ]
+    couples.map(couple => {
+      couple.name = build_name(couple)
+    })
+    
+    setCouples(couples)
     setGuys(guys)
     setGirls(girls)
   }, [guys, girls])
@@ -93,11 +129,7 @@ const CouplesEditor = (props) => {
     if (mycouple.girl && mycouple.guy) {
       const girl = mycouple.girl
       const guy = mycouple.guy
-      if (girl.last == guy.last) {
-        mycouple.name = pluralize(girl.last)
-      } else {
-        mycouple.name = `${girl.first} & ${guy.first}`
-      }
+      mycouple.name = build_name(mycouple)
       setCouples([...couples, mycouple])
       setCouple(default_couple)
     } else {
@@ -141,38 +173,44 @@ const CouplesEditor = (props) => {
       <h1>Couples Editor</h1>
       <div className={classes.container}>
         <div className={classes.guys}>
-          <ul>
-            {_guys.map(guy => {
+          <PlayerList>
+            {_guys.map((g, idx) => {
                 return (
-                  <li draggable
-                      onDragStart={(e) => onDragStart(e, guy)}
-                      onDragEnd={onDragEnd}
-                  >{`${guy.first} ${guy.last}`}</li>
+                  <ListItem
+                    key={idx}
+                    draggable
+                    onDragStart={(e) => onDragStart(e, g)}
+                    onDragEnd={onDragEnd}
+                  >{`${g.first} ${g.last}`}</ListItem>
                 )
               }
             )}
-          </ul>
+          </PlayerList>
         </div>
         <div className={classes.girls}>
-          <ul>
-            {_girls.map(g => {
+          <PlayerList>
+            {_girls.map((g, idx) => {
                 return (
-                  <li draggable
-                      onDragStart={(e) => onDragStart(e, g)}
-                      onDragEnd={onDragEnd}
-                  >{`${g.first} ${g.last}`}</li>
+                  <ListItem
+                    key={idx}
+                    draggable
+                    onDragStart={(e) => onDragStart(e, g)}
+                    onDragEnd={onDragEnd}
+                  >{`${g.first} ${g.last}`}</ListItem>
                 )
               }
             )}
-          </ul>
+          </PlayerList>
         </div>
         <CoupleTarget
+          grid_class={classes.couple}
           guy={couple.guy} girl={couple.girl}
           onDragEnter={onDragEnter}
           onDragOver={onDragOver}
           onDrop={onDrop}
         />
         <Couples
+          div_class={classes.couples}
           couples={couples}
           onCoupleNameChange={onCoupleNameChange}
           onCoupleFulltimeChange={onFulltimeChange}
