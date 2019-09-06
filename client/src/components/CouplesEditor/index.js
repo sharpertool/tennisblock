@@ -1,15 +1,25 @@
 import React, {useEffect, useState} from 'react'
 import classes from './styles.local.scss'
 
+import Couples from './Couples'
+import CoupleTarget from './CoupleTarget'
+
 const CouplesEditor = (props) => {
   
-  const default_couple = {guy: null, girl: null, singles:false}
+  const default_couple = {
+    name: '',
+    guy: null,
+    girl: null,
+    as_singles: false,
+    fulltime: false,
+    blockcouple: true,
+  }
   const [couples, setCouples] = useState([])
   const [couple, setCouple] = useState(default_couple)
   const [_guys, setGuys] = useState([])
   const [_girls, setGirls] = useState([])
-  const [dragObj, setDragObj]= useState(null)
-
+  const [dragObj, setDragObj] = useState(null)
+  
   const {guys, girls} = props
   
   useEffect(() => {
@@ -33,23 +43,23 @@ const CouplesEditor = (props) => {
   }
   
   const onDragEnter = (e) => {
-    const target = e.target.getAttribute('data-target')
-    if (target != dragObj.gender) {
-      return false
-    }
+    // const target = e.target.getAttribute('data-target')
+    // if (target != dragObj.gender) {
+    //   return false
+    // }
     const dt = e.dataTransfer
-    dt.dropEffect='move'
+    dt.dropEffect = 'move'
     e.preventDefault()
   }
   
   const onDragOver = (e) => {
-    const target = e.target.getAttribute('data-target')
-    if (target != dragObj.gender) {
-      return false
-    }
-
+    // const target = e.target.getAttribute('data-target')
+    // if (target != dragObj.gender) {
+    //   return false
+    // }
+    //
     const dt = e.dataTransfer
-    dt.dropEffect='move'
+    dt.dropEffect = 'move'
     e.preventDefault()
   }
   
@@ -65,7 +75,7 @@ const CouplesEditor = (props) => {
         remaining.push(couple.girl)
       }
       setGirls(remaining)
-      mycouple = {...mycouple, girl:obj}
+      mycouple = {...mycouple, girl: obj}
     } else {
       const remaining = _guys.filter(g => g.id != obj.id)
       // Return that girl to list
@@ -73,10 +83,17 @@ const CouplesEditor = (props) => {
         remaining.push(couple.guy)
       }
       setGuys(remaining)
-      mycouple = {...mycouple, guy:obj}
+      mycouple = {...mycouple, guy: obj}
     }
     setDragObj(null)
     if (mycouple.girl && mycouple.guy) {
+      const girl = mycouple.girl
+      const guy = mycouple.guy
+      if (girl.last == guy.last) {
+        mycouple.name = `${girl.last}s'`
+      } else {
+        mycouple.name = `${girl.first} & ${guy.first}`
+      }
       setCouples([...couples, mycouple])
       setCouple(default_couple)
     } else {
@@ -91,16 +108,27 @@ const CouplesEditor = (props) => {
    * Return the girl and guy in the couple to the guy and girl lists
    * @param id
    */
-  const removeCouple = (id) => {
+  const onCoupleRemove = (id) => {
     const couple = couples[id]
     setCouples(couples.filter(c => c != couple))
     setGuys([..._guys, couple.guy])
     setGirls([..._girls, couple.girl])
   }
   
-  const onSingleChange = (e, idx) => {
+  const onSinglesChange = (e, idx) => {
     console.log(`Changed for ${idx} to ${e.target.checked}`)
-    couples[idx].singles = e.target.checked
+    couples[idx].as_singles = e.target.checked
+    setCouples([...couples])
+  }
+  
+  const onFulltimeChange = (e, idx) => {
+    console.log(`Changed for ${idx} to ${e.target.checked}`)
+    couples[idx].fulltime = e.target.checked
+    setCouples([...couples])
+  }
+  
+  const onCoupleNameChange = (e, idx) => {
+    couples[idx].name = e.target.value
     setCouples([...couples])
   }
   
@@ -115,7 +143,7 @@ const CouplesEditor = (props) => {
                   <li draggable
                       onDragStart={(e) => onDragStart(e, guy)}
                       onDragEnd={onDragEnd}
-                  >{guy.name}</li>
+                  >{`${guy.first} ${guy.last}`}</li>
                 )
               }
             )}
@@ -128,57 +156,26 @@ const CouplesEditor = (props) => {
                   <li draggable
                       onDragStart={(e) => onDragStart(e, g)}
                       onDragEnd={onDragEnd}
-                  >{g.name}</li>
+                  >{`${g.first} ${g.last}`}</li>
                 )
               }
             )}
           </ul>
         </div>
-        <div className={classes.couples}>
-          <table>
-            <tr>
-              <th>Guy</th>
-              <th>Girl</th>
-              <th>As Single</th>
-              <th>Remove</th>
-            </tr>
-            
-            {couples.map((couple, idx) => {
-              return (
-                <tr>
-                  <td>{couple.guy.name}</td>
-                  <td>{couple.girl.name}</td>
-                  <td>
-                    <input
-                      type='checkbox'
-                      checked={couple.singles}
-                      onChange={(e) => onSingleChange(e, idx)}
-                      name='as_single'/>
-                  </td>
-                  <td><button onClick={() => removeCouple(idx)}>Remove</button></td>
-                </tr>
-              )
-            })}
-          </table>
-        </div>
-        <div className={classes.couple}>
-          <div
-            data-target="m"
-            onDragOver={onDragOver}
-            onDragEnter={onDragEnter}
-            onDrop={onDrop}
-            className={classes.guy}>
-            {couple.guy ? couple.guy.name : ''}
-          </div>
-          <div
-            data-target="f"
-            onDragOver={onDragOver}
-            onDragEnter={onDragEnter}
-            onDrop={onDrop}
-            className={classes.girl}>
-            {couple.girl ? couple.girl.name : ''}
-          </div>
-        </div>
+        <CoupleTarget
+          guy={couple.guy} girl={couple.girl}
+          onDragEnter={onDragEnter}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+        />
+        <Couples
+          couples={couples}
+          onCoupleNameChange={onCoupleNameChange}
+          onCoupleFulltimeChange={onFulltimeChange}
+          onCoupleSinglesChange={onSinglesChange}
+          onCoupleRemove={onCoupleRemove}
+        />
+      
       </div>
     </>
   )

@@ -62,25 +62,25 @@ const Provider = mkProvider(store)
 import CouplesEditor from '~/components/CouplesEditor'
 
 const girls = [
-  {id: 0, name: 'Vicki', gender: 'f'},
-  {id: 1, name: 'Lynn', gender: 'f'},
-  {id: 2, name: 'Stacy', gender: 'f'},
-  {id: 3, name: 'Sue', gender: 'f'},
-  {id: 4, name: 'Veronica', gender: 'f'},
-  {id: 5, name: 'Lisa', gender: 'f'},
-  {id: 6, name: 'Kristine', gender: 'f'},
-  {id: 7, name: 'Ellen', gender: 'f'},
+  {id: 0, first: 'Vicki', last: 'Henderson', gender: 'f'},
+  {id: 1, first: 'Lynn', last: 'Kirshaw', gender: 'f'},
+  {id: 2, first: 'Stacy', last: 'Jones', gender: 'f'},
+  {id: 3, first: 'Sue', last: 'Carney', gender: 'f'},
+  {id: 4, first: 'Veronica', last: 'Mars', gender: 'f'},
+  {id: 5, first: 'Lisa', last: 'Bettis', gender: 'f'},
+  {id: 6, first: 'Kristine', last: 'Kittleson', gender: 'f'},
+  {id: 7, first: 'Ellen', last: 'Quinn', gender: 'f'},
 ]
 
 const guys = [
-  {id: 10, name: 'Ed', gender: 'm'},
-  {id: 11, name: 'Fred', gender: 'm'},
-  {id: 12, name: 'Rick', gender: 'm'},
-  {id: 13, name: 'Matt', gender: 'm'},
-  {id: 14, name: 'Bart', gender: 'm'},
-  {id: 15, name: 'Randy', gender: 'm'},
-  {id: 16, name: 'Jack', gender: 'm'},
-  {id: 17, name: 'Oscar', gender: 'm'},
+  {id: 10, first: 'Ed', last: 'Henderson', gender: 'm'},
+  {id: 11, first: 'Fred', last: 'Wolins', gender: 'm'},
+  {id: 12, first: 'Rick', last: 'Jones', gender: 'm'},
+  {id: 13, first: 'Matt', last: 'Carney', gender: 'm'},
+  {id: 14, first: 'Bart', last: 'Restle', gender: 'm'},
+  {id: 15, first: 'Randy', last: 'Staufer', gender: 'm'},
+  {id: 16, first: 'Brian', last: 'Kittleson', gender: 'm'},
+  {id: 17, first: 'Oscar', last: 'Martinez', gender: 'm'},
 ]
 
 storiesOf('Couples Editor', module)
