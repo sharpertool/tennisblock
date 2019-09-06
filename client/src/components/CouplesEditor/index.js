@@ -53,11 +53,11 @@ const CouplesEditor = (props) => {
   
   useEffect(() => {
     const couples = [
-      {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
+      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
     ]
     couples.map(couple => {
       couple.name = build_name(couple)
@@ -67,7 +67,6 @@ const CouplesEditor = (props) => {
     setGuys(guys)
     setGirls(girls)
   }, [guys, girls])
-  
   
   const onDragStart = (e, obj) => {
     const sobj = JSON.stringify(obj)

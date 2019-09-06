@@ -1,8 +1,13 @@
 {% extends "common/angular_base.html" %}
 {% load staticfiles %}
+{% load render_bundle from webpack_loader %}
 
 {% block page_content %}
-    <div class="container">
+
+    <div id="root">
+    </div>
+
+    <div class="ro">
         <div class="row">
             <div class="col">
                 <h2>Couple Editor</h2>
@@ -41,4 +46,44 @@
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block render_css_bundles %}
+    {% render_bundle 'style_base' 'css' 'ASSETS' %}
+{% endblock %}
+
+{% block render_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        <!-- Render bundles here -->
+        {% render_bundle 'vendor' 'js' %}
+        {% render_bundle 'CouplesEditor' 'js' %}
+    {% endif %}
+{% endblock %}
+
+{% block initialize_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        {% include "bundles/common_options.html" %}
+        <!-- Initialize bundles -->
+        <script type="text/javascript">
+          console.log('Initialize component')
+          CouplesEditor(
+            Object.assign(
+              tennisblock_page_elements,
+              {editor_el: 'root'}
+            ),
+            Object.assign(
+              tennisblock_page_options,
+              {
+                season_opts: {
+                  couples_url: '{% url "api:couples" %}',
+                  initial_state: {}
+                }
+              }
+            )
+          )
+
+        </script>
+    {% endif %}
 {% endblock %}

@@ -83,7 +83,7 @@ const DragDrop = (props) => {
   }
   
   return render(
-    {children()}
+    children()
   )
   
 }

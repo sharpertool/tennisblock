@@ -1,7 +1,5 @@
-import React from 'react'
-import {render} from 'react-dom'
-
-import './index.scss'
+import React from 'react';
+import {render} from 'react-dom';
 
 export const moduleConfig = {
   axios_config: {
@@ -17,8 +15,8 @@ import {makeStore, connect_site_actions} from '~/utils'
 import Root from './root'
 
 export default (elements, options) => {
-  const { schedule_el } = elements
-
+  const {editor_el} = elements
+  
   moduleConfig.selectors = selectors
 
   set_config({defaults: moduleConfig, options: options})
@@ -37,10 +35,9 @@ export default (elements, options) => {
   })
 
   initialize(options)
-
+  
   render(
     <Root store={store}/>,
-    document.getElementById(schedule_el)
+    document.getElementById(editor_el)
   )
 }
-
