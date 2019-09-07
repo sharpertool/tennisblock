@@ -29,8 +29,8 @@ class Scheduler(object):
         Check if both members of the given couple are available.
         """
 
-        return all(self.isPlayerAvailable(mtg, couple.male),
-                   self.isPlayerAvailable(mtg, couple.female))
+        return all([self.isPlayerAvailable(mtg, couple.male),
+                   self.isPlayerAvailable(mtg, couple.female)])
 
     def getAvailableCouples(self, season, mtg, fulltime=True):
         couples = Couple.objects.filter(

@@ -1,11 +1,10 @@
 import {all, put, takeLatest, select, fork, call} from 'redux-saga/effects'
-import {getCouples, getSubs} from './selectors'
-import {get_global_selectors} from './index'
+import {selectors, actions} from '~/redux-page'
 import axios_core from 'axios'
 import axios from '~/axios-tennisblock'
 
-import * as actions from './actions'
 import * as types from './constants'
+import * as Sentry from '@sentry/browser'
 
 function* requestUserProfile() {
   try {
@@ -15,21 +14,20 @@ function* requestUserProfile() {
     if (status === 'success') {
       yield put(actions.updateProfile(profile))
     }
-  } catch (error) {
-
+  } catch (e) {
+    Sentry.captureException(e)
   }
 }
 
 function* requestInitialData() {
-  //yield fork(requestUserProfile)
 }
 
 function* fetchBlockDates() {
   try {
     const {data} = yield call(axios.get, 'api/blockdates')
     yield put(actions.setBlockDates(data))
-  } catch ({response}) {
-    console.log(response)
+  } catch (e) {
+    Sentry.captureException(e)
   }
 }
 
@@ -52,13 +50,14 @@ function* requestBlockPlayers({payload}) {
     }
   } catch (error) {
     yield put(actions.getBlockPlayersFail(error))
+    Sentry.captureException(error)
   }
 }
 
 function* updateBlockPlayersRequest({payload}) {
-  const gsel = get_global_selectors()
-  const couples = yield select(gsel.getCouples)
-  const date = yield select(gsel.currentDate)
+  const {getCouples, currentData} = selectors
+  const couples = yield select(getCouples)
+  const date = yield select(currentDate)
   try {
     const {data} = yield call((params) => {
       return axios.post(`/api/blockplayers/${date}`, params, {
@@ -70,12 +69,13 @@ function* updateBlockPlayersRequest({payload}) {
     yield put(actions.getBlockPlayers(date))
   } catch (error) {
     yield put(actions.updateBlockPlayersFail(error))
+    Sentry.captureException(error)
   }
 }
 
 function* clearScheduleRequest({payload}) {
-  const gsel = get_global_selectors()
-  const date = yield select(gsel.currentDate)
+  const {currentDate} = selectors
+  const date = yield select(currentDate)
   try {
     const instance = axios_core.create({
       // ToDo: need a solution that works for deployed app.
@@ -88,12 +88,13 @@ function* clearScheduleRequest({payload}) {
     yield call(requestBlockPlayers, {payload: date})
   } catch (error) {
     yield put(actions.clearScheduleFail(error))
+    Sentry.captureException(error)
   }
 }
 
 function* reScheduleRequest({ payload }) {
-  const gsel = get_global_selectors()
-  const date = yield select(gsel.currentDate)
+  const {currentDate} = selectors
+  const date = yield select(currentDate)
 
   try {
     const instance = axios_core.create({
@@ -105,6 +106,7 @@ function* reScheduleRequest({ payload }) {
     yield put(actions.setBlockPlayers(data))
   } catch (error) {
     yield put(actions.reScheduleFail(error))
+    Sentry.captureException(error)
   }
 }
 
