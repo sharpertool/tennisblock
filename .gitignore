@@ -56,3 +56,6 @@ db_learning.txt
 .venv
 /tennisblock/frontend/static/js_webpack
 /tennisblock/frontend/static/css_webpack
+/tennisblock/static/webpack-assets-stats.json
+/tennisblock/static/js_webpack
+/tennisblock/static/css_webpack
