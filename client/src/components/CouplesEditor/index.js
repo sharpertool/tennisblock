@@ -52,11 +52,11 @@ const CouplesEditor = ({
     fulltime: false,
     blockcouple: true,
   }
-  // const [couples, setCouples] = useState([])
+  
+  // Handle the drag-drop assignment locally with hooks
   const [couple, setCouple] = useState(default_couple)
   const [_guys, setGuys] = useState([])
   const [_girls, setGirls] = useState([])
-  const [dragObj, setDragObj] = useState(null)
   
   useEffect(() => {
     setGuys(guys)
@@ -68,30 +68,19 @@ const CouplesEditor = ({
     const dt = e.dataTransfer
     dt.setData('text/json', sobj)
     dt.setData('text/plain', obj.id)
-    setDragObj(obj)
     dt.effectAllowed = 'move'
   }
   
   const onDragEnd = (e) => {
-    setDragObj(null)
   }
   
   const onDragEnter = (e) => {
-    // const target = e.target.getAttribute('data-target')
-    // if (target != dragObj.gender) {
-    //   return false
-    // }
     const dt = e.dataTransfer
     dt.dropEffect = 'move'
     e.preventDefault()
   }
   
   const onDragOver = (e) => {
-    // const target = e.target.getAttribute('data-target')
-    // if (target != dragObj.gender) {
-    //   return false
-    // }
-    //
     const dt = e.dataTransfer
     dt.dropEffect = 'move'
     e.preventDefault()
@@ -119,15 +108,13 @@ const CouplesEditor = ({
       setGuys(remaining)
       mycouple = {...mycouple, guy: obj}
     }
-    setDragObj(null)
     if (mycouple.girl && mycouple.guy) {
       const girl = mycouple.girl
       const guy = mycouple.guy
       mycouple.name = build_name(mycouple)
-      mycouple.guy = mycouple.guy.id
-      mycouple.girl = mycouple.girl.id
+      mycouple.guy = guy.id
+      mycouple.girl = girl.id
       addCouple(mycouple)
-      //setCouples([...couples, mycouple])
       setCouple(default_couple)
     } else {
       setCouple(mycouple)
@@ -143,30 +130,18 @@ const CouplesEditor = ({
    */
   const onCoupleRemove = (idx) => {
     removeCouple({idx: idx})
-    //const couple = couples[id]
-    //setCouples(couples.filter(c => c != couple))
-    //setGuys([..._guys, couple.guy])
-    //setGirls([..._girls, couple.girl])
   }
   
   const onSinglesChange = (e, idx) => {
     updateSingles({idx: idx, value: e.target.checked})
-    console.log(`Changed for ${idx} to ${e.target.checked}`)
-    //couples[idx].as_singles = e.target.checked
-    //setCouples([...couples])
   }
   
   const onFulltimeChange = (e, idx) => {
     updateFulltime({idx: idx, value: e.target.checked})
-    console.log(`Changed for ${idx} to ${e.target.checked}`)
-    //couples[idx].fulltime = e.target.checked
-    //setCouples([...couples])
   }
   
   const onCoupleNameChange = (e, idx) => {
     updateName({idx: idx, value: e.target.value})
-    couples[idx].name = e.target.value
-    //setCouples([...couples])
   }
   
   return (
