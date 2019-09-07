@@ -5,10 +5,10 @@ from blockdb.models import (
     PlayerAvailability
 )
 
-from blockdb.tests.db_utils import TennisTestSetup
+from blockdb.tests.db_utils import BlockDBTestBase
 
 @tag('medium')
-class TestBlockSchedule(TennisTestSetup):
+class TestBlockSchedule(BlockDBTestBase):
 
     def setUp(self):
         self.coreSetup()

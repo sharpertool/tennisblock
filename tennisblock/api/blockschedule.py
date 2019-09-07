@@ -142,7 +142,7 @@ class BlockPlayers(APIView):
     def get(self, request, date=None):
         print(f"Getting players for block for date {date}")
         tb = Scheduler()
-        data = tb.querySchedule(date)
+        data = tb.query_schedule(date)
         return Response(data)
 
     def post(self, request, date=None):
@@ -193,24 +193,24 @@ class BlockSchedule(APIView):
 
     def get(self, request, date=None):
         tb = Scheduler()
-        sched = tb.querySchedule(date)
+        sched = tb.query_schedule(date)
         return Response(sched)
 
     def post(self, request, date=None):
         # ToDo: Insure is Admin user, not just authenticated
         tb = Scheduler()
         print("blockSchedule POST for date:%s" % date)
-        group = tb.getNextGroup(date)
+        group = tb.get_next_group(date)
         print("Groups:")
         for g in group:
             print("\tHe:%s She:%s" % (g.male.Name(), g.female.Name()))
 
-        tb.addCouplesToSchedule(date, group)
+        tb.add_couples_to_schedule(date, group)
 
         mgr = TeamManager()
         mgr.dbTeams.delete_matchup(date)
 
-        sched = tb.querySchedule(date)
+        sched = tb.query_schedule(date)
 
         return Response(sched)
 
@@ -220,7 +220,7 @@ class BlockSchedule(APIView):
         print("blockSchedule DELETE for date:%s" % date)
         mgr = TeamManager()
         mgr.dbTeams.delete_matchup(date)
-        tb.removeAllCouplesFromSchedule(date)
+        tb.remove_all_couples_from_schedule(date)
         return Response({'status': 'success'})
 
 
@@ -296,7 +296,7 @@ Here is the schedule for Friday, %s:
     def post(self, request, date):
         tb = Scheduler()
 
-        players = tb.querySchedule(date)
+        players = tb.query_schedule(date)
 
         from_email = settings.EMAIL_HOST_USER
 
@@ -309,7 +309,7 @@ Here is the schedule for Friday, %s:
         if settings.BLOCK_NOTIFY_RECIPIENTS:
             recipient_list = ['ed@tennisblock.com', 'viquee@me.com']
         else:
-            recipient_list = tb.getBlockEmailList()
+            recipient_list = tb.get_block_email_list()
 
         msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
         msg.attach_alternative(html, 'text/html')

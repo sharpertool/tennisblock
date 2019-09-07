@@ -8,13 +8,13 @@ from blockdb.models import (
 )
 
 from api.views.season import CouplesView
-from blockdb.tests.db_utils import TennisTestSetup
+from blockdb.tests.db_utils import BlockDBTestBase
 
 request_factory = APIRequestFactory()
 
 
 @tag('medium')
-class TestBlockSchedule(TennisTestSetup):
+class TestBlockSchedule(BlockDBTestBase):
 
     def setUp(self):
         self.coreSetup()

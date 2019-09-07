@@ -39,40 +39,36 @@
             <tbody>
             {% for sp in players %}
                 {% with sp.player as player %}
-                <tr>
-                    <td class="">{{ player.full_name }}</td>
-                    <td class="">{{ player.gender }}</td>
-                    <td class="">{{ player.ntrp }}</td>
-                    <td class="">{{ player.untrp }}</td>
-                    <td class="">{{ player.email }}</td>
-                    <td class="">{{ player.phone }}</td>
-                    <td class="">
-                        <input
-                                type="checkbox"
-                                name="bp"
-                                value="{{ sp.id }}"
-                                {% if sp.blockmember %}
-                                checked
-                                {% endif %}
-                                >
-                    </td>
-                    {% if not sp.blockmember %}
-                    <td class="">
-                        <button class="delete-member btn btn-danger"
-                                data-id="{{ sp.id }}">
-                            Delete</button>
-                    </td>
-                    {% endif %}
-                </tr>
-                </div>
+                    <tr>
+                        <td class="">{{ player.full_name }}</td>
+                        <td class="">{{ player.gender }}</td>
+                        <td class="">{{ player.ntrp }}</td>
+                        <td class="">{{ player.untrp }}</td>
+                        <td class="">{{ player.email }}</td>
+                        <td class="">{{ player.phone }}</td>
+                        <td class="">
+                            <input
+                                    type="checkbox"
+                                    name="bp"
+                                    value="{{ sp.id }}"
+                                    {% if sp.blockmember %}
+                                    checked
+                                    {% endif %}
+                            >
+                        </td>
+                        {% if not sp.blockmember %}
+                            <td class="">
+                                <button class="delete-member btn btn-danger"
+                                        data-id="{{ sp.id }}">
+                                    Delete
+                                </button>
+                            </td>
+                        {% endif %}
+                    </tr>
                 {% endwith %}
             {% endfor %}
-
-    </tbody>
-
-
-    </table>
-
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}

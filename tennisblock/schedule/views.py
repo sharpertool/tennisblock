@@ -119,9 +119,9 @@ class ScheduleNotify(TemplateView):
         if settings.BLOCK_NOTIFY_RECIPIENTS:
             recipient_list = settings.BLOCK_NOTIFY_RECIPIENTS
         else:
-            recipient_list = tb.getBlockEmailList()
+            recipient_list = tb.get_block_email_list()
 
-        schedule = tb.querySchedule(date)
+        schedule = tb.query_schedule(date)
         context['couples'] = self.get_couples(schedule)
         context['date'] = date
 
@@ -148,7 +148,7 @@ class ScheduleNotify(TemplateView):
 
             tb = Scheduler()
 
-            players = tb.querySchedule(date)
+            players = tb.query_schedule(date)
 
             from_email = settings.EMAIL_HOST_USER
 
@@ -161,7 +161,7 @@ class ScheduleNotify(TemplateView):
             if settings.BLOCK_NOTIFY_RECIPIENTS:
                 recipient_list = settings.BLOCK_NOTIFY_RECIPIENTS
             else:
-                recipient_list = tb.getBlockEmailList()
+                recipient_list = tb.get_block_email_list()
 
             msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
             msg.attach_alternative(html, 'text/html')

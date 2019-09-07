@@ -24,6 +24,6 @@ from api.apiutils import get_current_season,get_next_meeting,get_meeting_for_dat
 #         s = Scheduler()
 #         season = get_current_season()
 #
-#         g = s.getNextGroup()
+#         g = s.get_next_group()
 
 

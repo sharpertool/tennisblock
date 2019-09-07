@@ -22,7 +22,7 @@ from blockdb.factories import (
 
 
 @tag('medium')
-class TennisTestSetup(TestCase):
+class BlockDBTestBase(TestCase):
 
     def coreSetup(self):
         self.guys = [GuyPlayerFactory() for g in range(8)]

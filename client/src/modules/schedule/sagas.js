@@ -55,7 +55,7 @@ function* requestBlockPlayers({payload}) {
 }
 
 function* updateBlockPlayersRequest({payload}) {
-  const {getCouples, currentData} = selectors
+  const {getCouples, currentDate} = selectors
   const couples = yield select(getCouples)
   const date = yield select(currentDate)
   try {
