@@ -25,6 +25,7 @@ export const girlById = createSelector(
   }
 )
 
+export const getCouplesRaw = state => state.couples
 export const getCouples = createSelector(
   guysById, girlById, couples,
   (guysById, girlById, couples) => {

@@ -42,6 +42,7 @@ const CouplesEditor = ({
                          updateSingles,
                          updateFulltime,
                          updateName,
+  saveChanges,
                        }) => {
   
   const default_couple = {
@@ -193,7 +194,7 @@ const CouplesEditor = ({
           onCoupleSinglesChange={onSinglesChange}
           onCoupleRemove={onCoupleRemove}
         />
-      
+        <button className="btn btnprimary" onClick={saveChanges}>Save</button>
       </div>
     </>
   )

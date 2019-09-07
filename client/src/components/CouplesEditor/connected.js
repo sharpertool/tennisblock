@@ -13,6 +13,7 @@ const connectedComponent = ({
                               updateSingles,
                               updateFulltime,
                               updateName,
+  saveChanges,
                             }) => {
   return (
     <CouplesEditor
@@ -24,6 +25,7 @@ const connectedComponent = ({
       updateSingles={updateSingles}
       updateFulltime={updateFulltime}
       updateName={updateName}
+      saveChanges={saveChanges}
     />
 )
 }
@@ -42,6 +44,7 @@ const dispatchActions = {
   updateSingles: actions['season:coupleChangeSingles'],
   updateFulltime: actions['season:coupleChangeFulltime'],
   updateName: actions['season:coupleChangeName'],
+  saveChanges: actions['season:coupleSaveChanges'],
 }
 
 export default connect(mapStateToProps, dispatchActions)(connectedComponent)

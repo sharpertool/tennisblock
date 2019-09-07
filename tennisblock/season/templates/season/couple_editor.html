@@ -7,45 +7,6 @@
     <div id="root">
     </div>
 
-    <div class="ro">
-        <div class="row">
-            <div class="col">
-                <h2>Old, Busted ass Couple Editor</h2>
-                <h3>Season: {{ season.name }}</h3>
-            </div>
-        </div>
-        <div class="row"></div>
-        <span class="col">Courts:{{ season.courts }}</span>
-        <span class="col">First Court:{{ season.firstcourt }}</span>
-        <span class="col">Season Starts:{{ season.startdate }}</span>
-        <span class="col">Season Ends:{{ season.enddate }}</span>
-        <span class="col">Block Starts:{{ season.blockstart }}</span>
-        <span class="col">Block Time:{{ season.blocktime }}</span>
-    </div>
-
-    {% if couples %}
-        <div class="row">
-            <div class="col">
-                <h3>Couples</h3>
-                <ul>
-                    {% for couple in couples %}
-                        <li>Name: {{ couple.name }} </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="row">
-        <div class="col">
-            <h3>New Couple</h3>
-            <form action="{% url 'season:couple_editor' season.pk %}" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="Submit"/>
-            </form>
-        </div>
-    </div>
 {% endblock %}
 
 {% block render_css_bundles %}

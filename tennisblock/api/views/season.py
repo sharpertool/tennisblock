@@ -1,5 +1,6 @@
 from blockdb.models import Season, SeasonPlayer, Couple, Player
 
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -108,22 +109,40 @@ class CouplesView(APIView):
         currseason = gcs()
         couples = request.data.get('couples', [])
 
-        for couple in couples:
+        result = {
+            'status': 'success',
+            'updated': [],
+            'created': [],
+        }
+
+        current_id_list =[]
+
+        for index, couple in enumerate(couples):
+            id = couple.get('id')
             name = couple.get('name', '')
-            guy_id = couple.get('guy_id')
-            girl_id = couple.get('girl_id')
+            guy = couple.get('guy')
+            girl = couple.get('girl')
             fulltime = couple.get('fulltime')
             as_singles = couple.get('as_singles')
 
-            male = Player.objects.get(id=guy_id)
-            female = Player.objects.get(id=girl_id)
+            male = Player.objects.get(id=guy)
+            female = Player.objects.get(id=girl)
 
             try:
-                c = Couple.objects.get(season=currseason, male=male, female=female)
-                c.assingles = as_singles
+                if id is not None:
+                    c = Couple.objects.get(pk=id)
+                else:
+                    c = Couple.objects.get(season=currseason, male=male, female=female)
+                c.as_singles = as_singles
                 c.fulltime = fulltime
                 c.name = name
                 c.save()
+
+                result['updated'].append({
+                    'id': c.id,
+                    'index': index,
+                })
+                current_id_list.append(c.id)
 
             except Couple.DoesNotExist:
                 c = Couple(
@@ -137,6 +156,16 @@ class CouplesView(APIView):
                     blockcouple=True
                    )
                 c.save()
+                current_id_list.append(c.id)
 
-        return Response({'status': 'success'})
+                result['created'].append({
+                    'id': c.id,
+                    'index': index,
+                    'name': c.name,
+                })
+
+        # Now, remove extra couples!
+        Couple.objects.filter(~Q(id__in=current_id_list)).delete()
+
+        return Response(result)
 
