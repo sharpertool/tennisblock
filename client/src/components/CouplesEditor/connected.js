@@ -8,14 +8,24 @@ const connectedComponent = ({
                               guys,
                               girls,
                               couples,
+                              addCouple,
+                              removeCouple,
+                              updateSingles,
+                              updateFulltime,
+                              updateName,
                             }) => {
   return (
     <CouplesEditor
       guys={guys}
       girls={girls}
-      store_couples={couples}
+      couples={couples}
+      addCouple={addCouple}
+      removeCouple={removeCouple}
+      updateSingles={updateSingles}
+      updateFulltime={updateFulltime}
+      updateName={updateName}
     />
-  )
+)
 }
 
 const mapStateToProps = (state) => {
@@ -26,6 +36,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-const dispatchActions = {}
+const dispatchActions = {
+  addCouple: actions['season:addCouple'],
+  removeCouple: actions['season:removeCouple'],
+  updateSingles: actions['season:coupleChangeSingles'],
+  updateFulltime: actions['season:coupleChangeFulltime'],
+  updateName: actions['season:coupleChangeName'],
+}
 
 export default connect(mapStateToProps, dispatchActions)(connectedComponent)

@@ -30,18 +30,18 @@ function mainReducer(state = clone(configInitialState), action) {
         couples: [...state.couples, action.payload]
       }
     case types.REMOVE_COUPLE: {
-      
+      const {idx} = action.payload
       return {
         ...state,
-        couples: [...state.couples]
+        couples: state.couples.filter((c,i) => i != idx)
       }
     }
     case types.COUPLE_CHANGE_SINGLES: {
-      const {id, value} = action.payload
+      const {idx, value} = action.payload
       return {
         ...state,
-        couples: state.couples.map(c => {
-          if (c.id == id) {
+        couples: state.couples.map((c,i) => {
+          if (i === idx) {
             return {...c, as_singles: value}
           }
           return c
@@ -49,11 +49,11 @@ function mainReducer(state = clone(configInitialState), action) {
       }
     }
     case types.COUPLE_CHANGE_FULLTIME: {
-      const {id, value} = action.payload
+      const {idx, value} = action.payload
       return {
         ...state,
-        couples: state.couples.map(c => {
-          if (c.id == id) {
+        couples: state.couples.map((c,i) => {
+          if (i === idx) {
             return {...c, fulltime: value}
           }
           return c
@@ -61,12 +61,12 @@ function mainReducer(state = clone(configInitialState), action) {
       }
     }
     case types.COUPLE_CHANGE_NAME: {
-      const {id, name} = action.payload
+      const {idx, value} = action.payload
       return {
         ...state,
-        couples: state.couples.map(c => {
-          if (c.id == id) {
-            return {...c, name: name}
+        couples: state.couples.map((c,i) => {
+          if (i === idx) {
+            return {...c, name: value}
           }
           return c
         })

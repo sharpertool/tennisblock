@@ -33,7 +33,16 @@ const build_name = couple => {
   return name
 }
 
-const CouplesEditor = (props) => {
+const CouplesEditor = ({
+                         guys,
+                         girls,
+                         couples,
+                         addCouple,
+                         removeCouple,
+                         updateSingles,
+                         updateFulltime,
+                         updateName,
+                       }) => {
   
   const default_couple = {
     name: '',
@@ -43,31 +52,16 @@ const CouplesEditor = (props) => {
     fulltime: false,
     blockcouple: true,
   }
-  const [couples, setCouples] = useState([])
+  // const [couples, setCouples] = useState([])
   const [couple, setCouple] = useState(default_couple)
   const [_guys, setGuys] = useState([])
   const [_girls, setGirls] = useState([])
   const [dragObj, setDragObj] = useState(null)
   
-  const {guys, girls, store_couples} = props
-  
   useEffect(() => {
-    const couples = [
-      ...store_couples
-      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
-      // {...default_couple, girl: girls.pop(), guy: guys.pop()},
-    ]
-    couples.map(couple => {
-      couple.name = build_name(couple)
-    })
-    
-    setCouples(couples)
     setGuys(guys)
     setGirls(girls)
-  }, [guys, girls, store_couples])
+  }, [guys, girls, couples])
   
   const onDragStart = (e, obj) => {
     const sobj = JSON.stringify(obj)
@@ -130,7 +124,10 @@ const CouplesEditor = (props) => {
       const girl = mycouple.girl
       const guy = mycouple.guy
       mycouple.name = build_name(mycouple)
-      setCouples([...couples, mycouple])
+      mycouple.guy = mycouple.guy.id
+      mycouple.girl = mycouple.girl.id
+      addCouple(mycouple)
+      //setCouples([...couples, mycouple])
       setCouple(default_couple)
     } else {
       setCouple(mycouple)
@@ -144,28 +141,32 @@ const CouplesEditor = (props) => {
    * Return the girl and guy in the couple to the guy and girl lists
    * @param id
    */
-  const onCoupleRemove = (id) => {
-    const couple = couples[id]
-    setCouples(couples.filter(c => c != couple))
-    setGuys([..._guys, couple.guy])
-    setGirls([..._girls, couple.girl])
+  const onCoupleRemove = (idx) => {
+    removeCouple({idx: idx})
+    //const couple = couples[id]
+    //setCouples(couples.filter(c => c != couple))
+    //setGuys([..._guys, couple.guy])
+    //setGirls([..._girls, couple.girl])
   }
   
   const onSinglesChange = (e, idx) => {
+    updateSingles({idx: idx, value: e.target.checked})
     console.log(`Changed for ${idx} to ${e.target.checked}`)
-    couples[idx].as_singles = e.target.checked
-    setCouples([...couples])
+    //couples[idx].as_singles = e.target.checked
+    //setCouples([...couples])
   }
   
   const onFulltimeChange = (e, idx) => {
+    updateFulltime({idx: idx, value: e.target.checked})
     console.log(`Changed for ${idx} to ${e.target.checked}`)
-    couples[idx].fulltime = e.target.checked
-    setCouples([...couples])
+    //couples[idx].fulltime = e.target.checked
+    //setCouples([...couples])
   }
   
   const onCoupleNameChange = (e, idx) => {
+    updateName({idx: idx, value: e.target.value})
     couples[idx].name = e.target.value
-    setCouples([...couples])
+    //setCouples([...couples])
   }
   
   return (
