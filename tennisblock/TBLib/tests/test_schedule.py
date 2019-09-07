@@ -18,9 +18,13 @@ from blockdb.tests.db_utils import BlockDBTestBase
 
 class TestAvailability(BlockDBTestBase):
 
+    @classmethod
+    def setUpTestData(cls):
+        results = cls.staticCoreSetup()
+        [cls.guys, cls.girls, cls.season, cls.meetings] = results
+
     def setUp(self):
-        self.coreSetup()
-        self.playersSetup()
+        pass
 
     def test_is_player_available(self):
         """
@@ -65,10 +69,21 @@ class TestAvailability(BlockDBTestBase):
 
 class TestGroups(BlockDBTestBase):
 
+    @classmethod
+    def setUpTestData(cls):
+        results = cls.staticCoreSetup()
+        [cls.guys, cls.girls, cls.season, cls.meetings] = results
+        cls.splayers = cls.staticPlayersSetup(
+            cls.season,
+            cls.girls,
+            cls.guys)
+        cls.couples = cls.static_couples_setup(
+            cls.season,
+            cls.girls,
+            cls.guys)
+
     def setUp(self):
-        self.coreSetup()
-        self.playersSetup()
-        self.couples_setup()
+        pass
 
     def couples_setup(self):
         self.couples = []
@@ -120,7 +135,7 @@ class TestGroups(BlockDBTestBase):
         info = scheduler.calc_play_stats_for_couple(self.season, couple)
         self.assertEqual(info.get('total_plays'), 4)
         self.assertEqual(info.get('couple'), couple)
-        #self.assertEqual(info.get('weight'), 0)
+        # self.assertEqual(info.get('weight'), 0)
 
     def test_play_stats_calc_with_plays_1(self):
         scheduler = Scheduler()
