@@ -23,36 +23,11 @@ def _BuildMeetings(force=False):
 
     """
 
-    currSeason = get_current_season()
-    if not currSeason:
+    current_season = get_current_season()
+    if not current_season:
         return
 
-    if force:
-        # Remove existing meetings if we are forcing this.
-        # Note that this will also remove all 'Availability' for these meetings.
-        Meeting.objects.filter(season=currSeason).delete()
-
-    meetings = Meeting.objects.filter(season=currSeason)
-
-    if len(meetings) > 0:
-        # Looks like we are good
-        return
-
-    startDate = currSeason.startdate
-    endDate = currSeason.enddate
-    blockStart = currSeason.blockstart
-    blocktime = currSeason.blocktime
-
-    dates = []
-    currDate = blockStart
-    while currDate <= endDate:
-        mtg = Meeting.objects.create(
-            season=currSeason,
-            date=currDate,
-            holdout=False,
-            comments="")
-        mtg.save()
-        currDate += datetime.timedelta(days=7)
+    current_season.ensure_meetings_exist(recreate=Force)
 
 
 def _AvailabilityInit(player, meetings):

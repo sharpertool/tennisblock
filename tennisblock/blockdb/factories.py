@@ -99,8 +99,8 @@ class MeetingFactory(factory.django.DjangoModelFactory):
         model = Meeting
 
     season = factory.Iterator(models.Season.objects.all())
-    meeting_index = factory.Sequence(lambda n: n)
-    date = factory.lazy_attribute(lambda o: o.season.blockstart + datetime.timedelta(weeks=o.meeting_index))
+    season_index = 0
+    date = factory.lazy_attribute(lambda o: o.season.blockstart + datetime.timedelta(weeks=o.season_index))
     holdout = False
     court_count = factory.lazy_attribute(lambda o: o.season.courts)
 

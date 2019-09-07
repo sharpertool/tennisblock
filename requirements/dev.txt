@@ -9,6 +9,7 @@ Werkzeug
 
 ipython
 ipython[notebook]
+jupyter
 
 sh==1.12.14
 path.py==12.0.1

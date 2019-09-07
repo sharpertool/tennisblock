@@ -32,68 +32,109 @@ class Scheduler(object):
         return all([self.is_player_available(mtg, couple.male),
                     self.is_player_available(mtg, couple.female)])
 
-    def get_available_couples(self, season, mtg, fulltime=True):
+    def get_available_couples(self, mtg, fulltime=True):
         couples = Couple.objects.filter(
-            season=season, fulltime=fulltime, blockcouple=True)
+            season=mtg.season,
+            fulltime=fulltime,
+            as_singles=False,
+            blockcouple=True)
 
-        availableCouples = [c for c in couples if self.is_couple_available(mtg, c)]
+        availableCouples = [
+            c for c in couples if self.is_couple_available(mtg, c)]
 
         return availableCouples
 
+    def get_available_singles(self, mtg):
+        couples = Couple.objects.filter(
+            season=mtg.season,
+            as_singles=True,
+            blockcouple=True)
+
+        guys = []
+        girls = []
+        for couple in couples:
+            if self.is_player_available(mtg, couple.male):
+                guys.append(couple.male)
+            if self.is_player_available(mtg, couple.female):
+                girls.append(couple.female)
+
+        return guys, girls
+
+    @staticmethod
+    def calc_play_stats_for_couple(season=None, couple=None):
+        cinfo = {
+            'couple': couple,
+            'total_plays': 0,
+            'he_only': 0,
+            'she_only': 0,
+            'weight': 0.0
+        }
+
+        f = Count('player', filter=Q(player__gender='F'))
+        m = Count('player', filter=Q(player__gender='M'))
+
+        stats = Schedule.objects.filter(
+            meeting__season=season
+        ).order_by(
+            'meeting__date'
+        ).values('meeting').annotate(f=f).annotate(m=m)
+
+        they = 0
+        he = 0
+        she = 0
+
+        for stat in stats:
+            f = stat.get('f')
+            m = stat.get('m')
+            if f and m:
+                they += 1
+            if m and not f:
+                he += 1
+            if f and not m:
+                she += 1
+
+        cinfo['he_only'] = he
+        cinfo['she_only'] = she
+        cinfo['total_plays'] = she + he + they
+        cinfo['weight'] = they + he * 0.5 + she * 0.5
+
+        return cinfo
+
     def get_couple_stats(self, season, couples):
-        # Organize by # of plays
-        coupleInfo = {}
+        """ Organize by # of plays """
 
-        meetings = Meeting.objects.filter(season=season)
+        info = {}
+        for couple in couples:
+            couple_info = self.calc_play_stats_for_couple(
+                season=season,
+                couple=couple,
+            )
+            info[couple.name] = couple_info
 
-        scheduled_meetings = Schedule.objects.filter(meeting__in=meetings)
+        return info
 
-        for c in couples:
-            cid = c.id
+    def get_singles_stats(self, season, players):
+        """
+        Return stats for how many times the player has played
+        """
+        for player in players:
+            played = Schedule.objects.filter(
+                meeting__season=season,
+                player=player
+            ).count()
 
-            cinfo = {
-                'couple': c,
-                'plays': {
-                    'he': 0,
-                    'she': 0,
-                    'they': 0,
-                    'total': 0
-                },
-                'weight': 0.0
-            }
-            coupleInfo[c.name] = cinfo
+        return {}
 
-            either = list(
-                scheduled_meetings.filter(Q(player=c.male) | Q(player=c.female)).values('meeting_id', 'player'))
 
-            he = Schedule.objects.filter(meeting__in=meetings, player=c.male).count()
-            she = Schedule.objects.filter(meeting__in=meetings, player=c.female).count()
+    @staticmethod
+    def sort_info(stats):
+        couples_by_plays = {}
+        for info in stats.values():
+            nplays = info['total_plays']
+            a = couples_by_plays.setdefault(nplays, [])
+            a.append(info)
 
-            meeting_sum = defaultdict(int)
-
-            cp = cinfo['plays']
-            cp_he = cp['he']
-            cp_she = cp['she']
-            cp_they = cp['they']
-
-            for e in either:
-                mtgid = e.get('meeting_id')
-                playerid = e.get('player')
-                if playerid == c.male.pk:
-                    cp_he += 1
-                    meeting_sum[mtgid] += 1
-                elif playerid == c.female.pk:
-                    cp_she += 1
-                    meeting_sum[mtgid] += 1
-
-            cp_they = sum(1 for x in meeting_sum.values() if x == 2)
-            cp_he -= cp_they
-            cp_she -= cp_they
-
-            cinfo['weight'] = cp_they + cp_he * 0.5 + cp_she * 0.5
-            cinfo['plays']['total'] = cp_they + cp_he + cp_she
-
-        return coupleInfo
+        return couples_by_plays
 
     def get_next_group(self, date=None):
         """
@@ -112,43 +153,34 @@ class Scheduler(object):
             print("No current season configured")
             return None
 
-        if date:
-            mtg = get_meeting_for_date(date)
-        else:
-            mtg = get_next_meeting(season)
-        if mtg:
-            print("Scheduling for date:%s" % mtg.date)
+        mtg = get_meeting_for_date(date=date)
+        print("Scheduling for date:%s" % mtg.date)
 
         needed = season.courts * 2
         group = []
 
-        ft = self.get_available_couples(season, mtg, fulltime=True)
+        ft = self.get_available_couples(mtg)
         if ft:
             for f in ft:
                 group.append(f)
                 needed -= 1
 
-        pt = self.get_available_couples(season, mtg, fulltime=False)
+        guys, girls = self.get_available_singles(mtg)
+
+        pt = self.get_available_couples(mtg, fulltime=False)
 
         stats = self.get_couple_stats(season, pt)
 
-        numberOfPlaysMap = {}
-        maxNumberOfPlays = 0
-        for info in iter(stats.values()):
-            nplays = info['plays']['total']
-            a = numberOfPlaysMap.setdefault(nplays, [])
+        info_by_plays = self.sort_info(stats)
+        plays = sorted(info_by_plays.keys())
+        for i in plays:
+            info_data = info_by_plays.get(i)
+            if info_data:
+                info_data = self.sort_shuffle(info_data)
 
-            a.append(info)
-            maxNumberOfPlays = max(maxNumberOfPlays, nplays)
-
-        for i in range(0, maxNumberOfPlays + 1):
-            cinfo = numberOfPlaysMap.get(i)
-            if cinfo:
-                cinfo = self.sort_shuffle(cinfo)
-
-                while len(cinfo) and needed > 0:
-                    info = cinfo.pop(0)
-                    group.append(info['couple'])
+                while len(info_data) and needed > 0:
+                    info = info_data.pop(0)
+                    group.append(info.get('couple'))
                     needed -= 1
 
             if needed == 0:
@@ -157,7 +189,8 @@ class Scheduler(object):
         # Should have a full block now..
         return group
 
-    def sort_shuffle(self, cinfo):
+    @staticmethod
+    def sort_shuffle(cinfo):
         """
         Sort and shuffle the list of couples.
 

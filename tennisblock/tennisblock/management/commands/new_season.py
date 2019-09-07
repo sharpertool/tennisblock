@@ -63,6 +63,6 @@ class Command(BaseCommand):
 
         mgr = SeasonManager()
 
-        mgr.addSeason(bs)
+        mgr.add_season(bs)
 
-        mgr.addAllCurrentPlayers(bs.season)
+        mgr.add_all_current_players(bs.season)

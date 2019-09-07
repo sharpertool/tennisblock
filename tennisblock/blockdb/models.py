@@ -1,5 +1,6 @@
 import datetime
 from django.db import models
+from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
@@ -124,10 +125,79 @@ class Season(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return (f"{self.id}: {self.name} "
+                f"Start:{self.startdate} End:{self.enddate}")
 
     def get_absolute_url(self):
         return reverse('season:season_detail', kwargs={'pk': self.pk})
+
+    def update_meeting_indexes(self):
+        mtgs = Meeting.objects.filter(season=self).order_by('date')
+
+        for idx, mtg in enumerate(mtgs):
+            mtg.season_index = idx
+            mtg.save()
+
+    @property
+    def meetings(self):
+        return Meeting.objects.filter(season=self).order_by('date')
+
+    def get_meeting(self, date=None):
+        self.ensure_meetings_exist()
+
+    def ensure_meetings_exist(self, recreate=False):
+        """
+        Ensure that all of the meetings for this season exist.
+        Create any missing ones.
+        """
+
+        if recreate:
+            Meeting.objects.filter(season=self).delete()
+
+        validated_ids = []
+
+        current_date = self.blockstart
+        index = 0
+        while current_date <= self.enddate:
+            try:
+                mtg = Meeting.objects.get(
+                    season=self,
+                    date=current_date
+                )
+            except Meeting.DoesNotExist:
+                mtg = Meeting.objects.create(
+                    season=self,
+                    season_index=index,
+                    date=current_date,
+                    holdout=False,
+                    comments="")
+                mtg.save()
+            validated_ids.append(mtg.id)
+            index += 1
+            current_date += datetime.timedelta(days=7)
+
+        self.update_last_meeting_date()
+        # Clean any extra meetings
+        Meeting.objects.filter(
+            Q(season=self) & ~Q(pk__in=validated_ids)
+        ).delete()
+
+    def update_last_meeting_date(self):
+        """
+        Find the last meeting, and update the lastmeeting date. This value
+        is a convenience to make it easier to get the last date, rather
+        than having to search through it.
+        """
+        try:
+            meeting = Meeting.objects.order_by('-date').filter(
+                season=self,
+                holdout=False).first()
+
+            if self.lastdate != meeting.date:
+                self.lastdate = meeting.date
+                self.save()
+        finally:
+            pass
 
 
 class SeasonPlayer(models.Model):
@@ -186,9 +256,10 @@ class Couple(models.Model):
     blockcouple = models.BooleanField(default=False)
 
     def __str__(self):
-        return "{} {} and {} as {}".format(
-            self.season, self.female.name, self.male.name,
-            self.name
+        return (
+            f"CID:{self.id} name:{self.name} SID:{self.season.id} "
+            f"guy:{self.male.name} girl:{self.female.name}"
+            f" {self.fulltime} {self.as_singles} {self.blockcouple}"
         )
 
     class Meta:
@@ -205,7 +276,7 @@ class Meeting(models.Model):
     special party night, etc.
     """
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    meeting_index = models.IntegerField(default=0)
+    season_index = models.IntegerField(default=-1)
     date = models.DateField()
     holdout = models.BooleanField(default=False)
     comments = models.CharField(max_length=128)
@@ -222,6 +293,14 @@ class Meeting(models.Model):
             return self.court_count
         return self.season.courts
 
+    @property
+    def meeting_index(self):
+        return self.season_index
+
+    def __str__(self):
+        return (f"Meeting({self.id}) SeasonID:{self.season.id} "
+                f"date:{self.date} ho:{self.holdout} courts:{self.court_count}")
+
 
 class Availability(models.Model):
     """
@@ -234,7 +313,9 @@ class Availability(models.Model):
 
     def __str__(self):
         return "availability for {} on {} is {}".format(
-            self.player.name, self.meeting.date, self.available
+            self.player.name,
+            self.meeting.date,
+            self.available
         )
 
 
@@ -245,10 +326,10 @@ class AvailabilityManager(models.Manager):
         except PlayerAvailability.DoesNotExist:
             mtgs = season.meeting_set.all()
             av = PlayerAvailability(player=player,
-                                     season=season,
-                                     available=[True for v in mtgs],
-                                     scheduled=[False for v in mtgs],
-                                     played=[False for v in mtgs])
+                                    season=season,
+                                    available=[True for v in mtgs],
+                                    scheduled=[False for v in mtgs],
+                                    played=[False for v in mtgs])
             av.save()
         return av
 
@@ -257,7 +338,7 @@ class PlayerAvailability(models.Model):
     """
     Better optimized version of the original
     """
-    player = models.ForeignKey(Player, related_name='availabiliy', on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, related_name='availability', on_delete=models.CASCADE)
     season = models.ForeignKey(Season,
                                on_delete=models.CASCADE)
     available = ArrayField(models.BooleanField(), blank=True, default=list)
@@ -267,8 +348,11 @@ class PlayerAvailability(models.Model):
     objects = AvailabilityManager()
 
     def __str__(self):
-        return "availability for {} on {} is {}".format(
-            self.player.name, self.season, self.available
+        return (
+            f"Availability {self.player.name} on {self.meeting.date}"
+            f" available: {self.available} "
+            f" scheduled: {self.scheduled}"
+            f" played: {self.played}"
         )
 
     def save(self, **kwargs):
@@ -293,10 +377,12 @@ class Schedule(models.Model):
     NOT USED:The partner is the players partner for the night
 
     """
+
     class Meta:
         permissions = (
             ("change_sched", "Can change the schedule"),
         )
+        unique_together=['meeting', 'player']
 
     meeting = models.ForeignKey(Meeting,
                                 on_delete=models.CASCADE)

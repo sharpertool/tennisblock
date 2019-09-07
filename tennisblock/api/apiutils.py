@@ -112,52 +112,7 @@ def build_meetings_for_season(season=None, force=False):
         if not season:
             return
 
-    if force:
-        # Remove existing meetings if we are forcing this.
-        # Note that this will also remove all 'Availability' for these meetings.
-        Meeting.objects.filter(season=season).delete()
-
-    meetings = Meeting.objects.filter(season=season)
-
-    if len(meetings) > 0:
-        # Looks like we are good
-        return
-
-    endDate = season.enddate
-    blockStart = season.blockstart
-
-    currDate = blockStart
-    index = 0
-    while currDate <= endDate:
-        mtg = Meeting.objects.create(
-            season=season,
-            meeting_index=index,
-            date=currDate,
-            holdout=False,
-            comments="")
-        mtg.save()
-        index += 1
-        currDate += datetime.timedelta(days=7)
-
-    update_last_meeting_date(season)
-
-
-def update_last_meeting_date(season):
-    """
-    Find the last meeting, and update the lastmeeting date. This value
-    is a convenience to make it easier to get the last date, rather
-    than having to search through it.
-    """
-    meetings = Meeting.objects.order_by('-date').filter(
-        season=season,
-        holdout=False)
-
-    if meetings.count() > 0:
-        last = meetings[0]
-        if season.lastdate != last.date:
-            season.lastdate = last.date
-            season.save()
-
+    season.insure_meetings_exist(recreate=force)
 
 def time_to_js(tval):
     """

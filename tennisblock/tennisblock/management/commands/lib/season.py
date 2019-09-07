@@ -41,7 +41,7 @@ class BlockSeason(object):
 
 class SeasonManager(object):
 
-    def addSeason(self, sobj):
+    def add_season(self, sobj):
         """
         Add/Update the given season
         """
@@ -70,13 +70,9 @@ class SeasonManager(object):
             )
             s.save()
 
-        current = sobj.block_start
-        while current <= sobj.season_end:
-            isHoldout = current in sobj.holdouts
-            self.create_or_update_mtg(s, current, isHoldout)
-            current = current + relativedelta(weeks=+1)
+        s.ensure_meetings_exist()
 
-    def addAllCurrentPlayers(self, seasonName):
+    def add_all_current_players(self, seasonName):
         """
         This just adds *all* current players as season players. Then, I
         can go in and adjust the players to see who is on a particular block.
@@ -100,25 +96,5 @@ class SeasonManager(object):
                     sp.save()
 
         except ObjectDoesNotExist:
-            print("Can't udpate players, can't find season")
+            print("Can't update players, can't find season")
 
-    def create_or_update_mtg(self, season, date, isHoldout):
-
-        from blockdb.models import Season, Meeting
-
-        try:
-            mtg = Meeting.objects.get(season=season, date=date)
-            mtg.holdout = isHoldout
-            mtg.save()
-
-        except ObjectDoesNotExist:
-
-            mtg = Meeting.objects.create(
-                season=season,
-                date=date,
-                holdout=isHoldout,
-                comments=""
-            )
-            mtg.save()
-
-        return mtg
