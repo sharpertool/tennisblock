@@ -63,6 +63,7 @@ const Couples = (props) => {
           {couples.map((couple, idx) => {
             return (
               <Couple
+                key={idx}
                 {...couple}
                 onNameChange={(e) => onCoupleNameChange(e, idx)}
                 onFulltimeChange={(e) => onCoupleFulltimeChange(e, idx)}

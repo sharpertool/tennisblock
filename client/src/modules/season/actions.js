@@ -10,3 +10,8 @@ export const updatePlayers = createAction(types.UPDATE_PLAYERS)
 export const updateCouplesSuccess = createAction(types.UPDATE_COUPLES_SUCCESS)
 export const updateCouplesFail = createAction(types.UPDATE_COUPLES_FAIL)
 
+export const addCouple = createAction(types.ADD_COUPLE)
+export const removeCouple = createAction(types.REMOVE_COUPLE)
+export const coupleChangeSingles = createAction(types.COUPLE_CHANGE_SINGLES)
+export const coupleChangeFulltime = createAction(types.COUPLE_CHANGE_FULLTIME)
+export const coupleChangeName = createAction(types.COUPLE_CHANGE_NAME)

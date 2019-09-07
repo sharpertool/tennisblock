@@ -16,14 +16,9 @@ function* fetchCouplesData() {
   
   const axios = get_axios()
   
-  console.log(`Fetching couples data from ${couples_url}`)
   try {
     const {data} = yield call(axios.get, couples_url)
-    console.log('Get Worked')
-    console.dir(data)
     const {players, couples} = data
-    console.dir(players)
-    console.dir(couples)
     yield put(actions.updatePlayers(players))
     yield put(actions.updateCouples(couples))
   } catch (e) {

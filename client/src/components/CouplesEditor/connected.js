@@ -13,6 +13,7 @@ const connectedComponent = ({
     <CouplesEditor
       guys={guys}
       girls={girls}
+      store_couples={couples}
     />
   )
 }

@@ -71,10 +71,12 @@ class CouplesView(APIView):
         for c in couples:
             data = {
                 'id': c.id,
-                'girl': c.female.id,
+                'name': c.name,
                 'guy': c.male.id,
+                'girl': c.female.id,
                 'fulltime': c.fulltime,
-                'as_single': c.as_single,
+                'as_singles': c.as_singles,
+                'blockcouple': c.blockcouple,
             }
             couple_data.append(data)
 

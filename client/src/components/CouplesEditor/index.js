@@ -49,10 +49,11 @@ const CouplesEditor = (props) => {
   const [_girls, setGirls] = useState([])
   const [dragObj, setDragObj] = useState(null)
   
-  const {guys, girls} = props
+  const {guys, girls, store_couples} = props
   
   useEffect(() => {
     const couples = [
+      ...store_couples
       // {...default_couple, girl: girls.pop(), guy: guys.pop()},
       // {...default_couple, girl: girls.pop(), guy: guys.pop()},
       // {...default_couple, girl: girls.pop(), guy: guys.pop()},
@@ -66,7 +67,7 @@ const CouplesEditor = (props) => {
     setCouples(couples)
     setGuys(guys)
     setGirls(girls)
-  }, [guys, girls])
+  }, [guys, girls, store_couples])
   
   const onDragStart = (e, obj) => {
     const sobj = JSON.stringify(obj)
@@ -107,7 +108,7 @@ const CouplesEditor = (props) => {
     const obj = JSON.parse(dt.getData('text/json'))
     const effect = dt.dropEffect
     let mycouple = {...couple}
-    if (obj.gender == 'f') {
+    if (obj.gender == 'F') {
       const remaining = _girls.filter(g => g.id != obj.id)
       // Return that girl to list
       if (couple.girl) {
