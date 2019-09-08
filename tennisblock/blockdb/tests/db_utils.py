@@ -38,26 +38,33 @@ class BlockDBTestBase(TestCase):
     @staticmethod
     def staticPlayersSetup(season, girls, guys):
         splayers = [SeasonPlayerFactory(season=season, player=p)
-                         for p in guys + girls]
+                    for p in guys + girls]
         for player in guys + girls:
             PlayerAvailabilityFactory(season=season, player=player)
 
         return splayers
 
     @staticmethod
-    def static_couples_setup(season, girls, guys):
+    def static_couples_setup(season, girls, guys,
+                             fulltime=None,
+                             singles=None):
         couples = []
         for i, guy in enumerate(guys):
             gal = girls[i]
             couple = Couple(
                 season=season,
-                name="bogus",
+                name=f"bogus_{i}",
                 male=guy,
                 female=gal,
-                fulltime=False,
+                fulltime=(i == 0),
                 blockcouple=True,
                 as_singles=False,
             )
+            if fulltime and i < len(fulltime):
+                couple.fulltime = fulltime[i]
+            if singles and i < len(singles):
+                couple.as_singles = singles[i]
+            couple.save()
             couples.append(couple)
 
         return couples

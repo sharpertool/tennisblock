@@ -32,12 +32,25 @@ class Scheduler(object):
         return all([self.is_player_available(mtg, couple.male),
                     self.is_player_available(mtg, couple.female)])
 
-    def get_available_couples(self, mtg, fulltime=True):
+    def get_available_couples(self, mtg, fulltime=True,
+                              as_singles=None):
+        """
+        Get a list of couples that are available for this meeting
+        if as_singles is none, then ignore that value
+        If set to True or False, apply that filter
+        """
+
+        flt = Q(season=mtg.season,
+                fulltime=fulltime,
+                blockcouple=True
+                )
+        singles_flt = Q()
+        if as_singles:
+            singles_flt = Q(as_singles=True)
+
         couples = Couple.objects.filter(
-            season=mtg.season,
-            fulltime=fulltime,
-            as_singles=False,
-            blockcouple=True)
+            flt & singles_flt
+        )
 
         availableCouples = [
             c for c in couples if self.is_couple_available(mtg, c)]
@@ -125,7 +138,6 @@ class Scheduler(object):
 
         return {}
 
-
     @staticmethod
     def sort_info(stats):
         couples_by_plays = {}
@@ -136,7 +148,7 @@ class Scheduler(object):
 
         return couples_by_plays
 
-    def get_next_group(self, date=None):
+    def get_next_group(self, date=None, with_singles=None):
         """
         Get the next group of players.
 
@@ -167,7 +179,13 @@ class Scheduler(object):
 
         guys, girls = self.get_available_singles(mtg)
 
-        pt = self.get_available_couples(mtg, fulltime=False)
+        as_singles = None
+        if with_singles:
+            as_singles = False
+        pt = self.get_available_couples(mtg,
+                                        fulltime=False,
+                                        as_singles=as_singles
+                                        )
 
         stats = self.get_couple_stats(season, pt)
 

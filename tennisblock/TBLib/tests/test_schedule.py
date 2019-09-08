@@ -67,7 +67,7 @@ class TestAvailability(BlockDBTestBase):
         self.assertFalse(sch.is_couple_available(mtg, couple))
 
 
-class TestGroups(BlockDBTestBase):
+class TestPlayStats(BlockDBTestBase):
 
     @classmethod
     def setUpTestData(cls):
@@ -84,22 +84,6 @@ class TestGroups(BlockDBTestBase):
 
     def setUp(self):
         pass
-
-    def couples_setup(self):
-        self.couples = []
-        for i, guy in enumerate(self.guys):
-            gal = self.girls[i]
-            couple = Couple(
-                season=self.season,
-                name=f"couple_{i}",
-                male=guy,
-                female=gal,
-                fulltime=(i == 0),
-                blockcouple=True,
-                as_singles=(i > 5),
-            )
-            couple.save()
-            self.couples.append(couple)
 
     @staticmethod
     def add_to_schedule(player, meetings, plays):
@@ -170,14 +154,57 @@ class TestGroups(BlockDBTestBase):
         self.assertEqual(info.get('total_plays'), 3)
         self.assertEqual(info.get('weight'), 2.5)
 
+
+class TestGroups(BlockDBTestBase):
+
+    @classmethod
+    def setUpTestData(cls):
+        results = cls.staticCoreSetup()
+        [cls.guys, cls.girls, cls.season, cls.meetings] = results
+        cls.splayers = cls.staticPlayersSetup(
+            cls.season,
+            cls.girls,
+            cls.guys)
+        cls.couples = cls.static_couples_setup(
+            cls.season,
+            cls.girls,
+            cls.guys,
+            fulltime=[1, 0, 0, 0, 0, 0, 0, 0],
+            singles=[0, 0, 0, 0, 0, 1, 1, 1])
+
+        cls.season.courts=2
+        cls.season.save()
+
+    def setUp(self):
+        pass
+
+    def couples_modify(self, fulltime=None, singles=None):
+        for i, couple in enumerate(self.couples):
+            couple.fulltime = fulltime[i]
+            couple.as_singles = singles[i]
+            couple.save()
+
+    @staticmethod
+    def add_to_schedule(player, meetings, plays):
+        for i, did_play in enumerate(plays):
+            if did_play:
+                try:
+                    Schedule.objects.create(
+                        meeting=meetings[i],
+                        player=player
+                    )
+                except IntegrityError:
+                    pass
+
     def test_get_next_group_meeting_one(self):
         """
         Test the initial version where there is no play history
         """
         scheduler = Scheduler()
 
-        group = scheduler.get_next_group()
+        group = scheduler.get_next_group(with_singles=False)
         self.assertIsNotNone(group)
+        self.assertEqual(len(group), 4)
 
     def test_get_next_group_with_history(self):
         """
