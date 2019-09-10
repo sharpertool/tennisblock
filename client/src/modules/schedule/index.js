@@ -14,12 +14,18 @@ import {APP_NAME} from './constants'
 export {APP_NAME}
 export {types, actions, selectors, eventsMap, NAME, rootSaga};
 
-let moduleConfig = {
+export let moduleConfig = {
   axios_config: {
     baseURL: '/',
+  },
+  api: {
+    blockdates: '/api/blockdates',
+    matchdata: '/api/matchdata/0000-00-00',
+    blockplayers: '/api/blockplayers/0000-00-00',
+    subs: '/api/subs/0000-00-00',
+    blockschedule: '/api/blockschedule/0000-00-00',
   }
 }
-
 
 export const setConfig = ({defaults, options}) => {
   if (options && options[optkey]) {

@@ -10,14 +10,14 @@ class Couples extends Component {
     const changes = []
 
     return (
-      <React.Fragment>
+      <>
         <Row>
           <Col xs={12} md={6} lg={6}>
             <h3 className={styles.tableHeader}>Guys</h3>
             {couples.map((couple, index) => {
               const { guy } = couple
               return (
-                <div className="form-group">
+                <div key={index} className="form-group">
                   <Input
                     type="select"
                     value={guy.id}
@@ -64,7 +64,7 @@ class Couples extends Component {
             {couples.map((couple, index) => {
               const { gal } = couple
               return (
-                <div className="form-group">
+                <div key={index} className="form-group">
                   <Input
                     type="select"
                     value={gal.id}
@@ -106,7 +106,7 @@ class Couples extends Component {
             })}
           </Col>
         </Row>
-      </React.Fragment>
+      </>
     )
   }
 }

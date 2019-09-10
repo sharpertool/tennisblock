@@ -53,7 +53,17 @@
             ),
             Object.assign(
               tennisblock_page_options,
-              {}
+              {
+                schedule_opts: {
+                  api: {
+                    blockdates: '{% url "api:blockdates" %}',
+                    matchdata: '{% url "api:matchdata_for_date" "0000-00-00" %}',
+                    blockplayers: '{% url "api:blockplayers_for_date" "0000-00-00" %}',
+                    subs: '{% url "api:subs_for_date" "0000-00-00" %}',
+                    blockschedule: '{% url "api:blockschedule_for_date" "0000-00-00" %}',
+                  }
+                }
+              }
             )
           )
 

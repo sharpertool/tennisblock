@@ -26,3 +26,6 @@ export const CLEAR_SCHEDULE_FAIL = mkname('CLEAR_SCHEDULE_FAIL')
 
 export const RE_SCHEDULE =mkname('RE_SCHEDULE')
 export const RE_SCHEDULE_FAIL =mkname('RE_SCHEDULE_FAIL')
+
+export const SCHEDULE_NOTIFY = mkname('SCHEDULE_NOTIFY')
+

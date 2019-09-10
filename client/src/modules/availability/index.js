@@ -14,7 +14,7 @@ import {APP_NAME} from './constants'
 export {APP_NAME}
 export {types, actions, selectors, eventsMap, NAME, rootSaga};
 
-let moduleConfig = {
+export let moduleConfig = {
   axios_config: {
     baseURL: '/',
   }

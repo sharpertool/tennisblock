@@ -51,7 +51,7 @@ class SubsView(APIView):
 
     def get(self, request, format=None, date=None):
         mtg = get_meeting_for_date(date)
-
+        #print(f"Date: {date} Meeting:{mtg}")
         if mtg:
             data = {'date': mtg.date}
         else:
@@ -65,7 +65,7 @@ class SubsView(APIView):
             schedulePlayers = Schedule.objects.filter(meeting=mtg)
             for p in schedulePlayers:
                 playingIds[p.player.id] = p.player
-                print("Playing this meeting:%s" % p.player.Name())
+                #print("Playing this meeting:%s" % p.player.Name())
 
             subs = PlayerAvailability.objects.filter(~Q(player__in=playingIds))
             subs = subs.filter(**{f'available__{mtg_index}': True})

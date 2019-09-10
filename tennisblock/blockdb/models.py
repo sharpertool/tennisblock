@@ -349,7 +349,7 @@ class PlayerAvailability(models.Model):
 
     def __str__(self):
         return (
-            f"Availability {self.player.name} on {self.meeting.date}"
+            f"Availability {self.player.name} for {self.season}"
             f" available: {self.available} "
             f" scheduled: {self.scheduled}"
             f" played: {self.played}"
