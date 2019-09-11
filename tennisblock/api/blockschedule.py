@@ -257,6 +257,7 @@ class ScheduleNotifyView(APIView):
                     request,
                     date=mtg.date,
                     message=message,
+                    force_to=settings.NOTIFY_FORCE_EMAIL
                 )
                 verify.sent_on = timezone.now()
                 verify.save()

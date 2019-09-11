@@ -399,3 +399,5 @@ WAGTAIL_FRONTEND_LOGIN_URL='/'
 
 CONTACT_US_EMAIL = 'ed@tennisblock.com'
 CONTACT_US_SUBJECT = '[Tennisblock Contact]'
+
+NOTIFY_FORCE_EMAIL = env.str('NOTIFY_FORCE_EMAIL', '')
