@@ -1,0 +1,24 @@
+{{ player.name }},
+
+A message from the block captain
+
+{{message}}
+
+You are scheduled to play on our block on {{ date }}.
+
+To insure a great block night for all, please validate that you have
+    received the notice, and you can play.
+
+If for any reason you cannot play, please click the "I Cannot Play" button and
+    we will work to find a replacement.
+
+I am confirming I will be there:
+http://{{ site.domain }}/api/verify/{{ uuid }}/confirm
+
+I cannot make the block, so I am rejecting the schedule.
+http://{{ site.domain }}/api/verify/{{ uuid }}/reject
+
+Thank you for keeping us informed.
+--
+Kind regards,
+Your block captains!

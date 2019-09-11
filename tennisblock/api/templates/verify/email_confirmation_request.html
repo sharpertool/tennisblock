@@ -1,0 +1,31 @@
+<p>{{ player.name }},</p>
+
+{% if force_to %}
+    <p>This is a test email -- it would have been sent to {email}</p>
+{% endif %}
+<p>A message from the Block Captain</p>
+
+<p>{{ message }}</p>
+
+<p>You are scheduled to play on our block on {{ date }}.</p>
+
+<p>To insure a great block night for all, please validate that you have
+    received the notice, and you can play.</p>
+
+<p>If for any reason you cannot play, please click the "I Cannot Play" button and
+    we will work to find a replacement</p>
+
+<p>I am
+<a href="http://{{ site.domain }}/api/verify/{{ uuid }}/confirm">confirming</a>
+    I will be there.
+</p>
+
+<p>I cannot make the block, so I am
+<a href="http://{{ site.domain }}/api/verify/{{ uuid }}/reject">rejecting</a>
+    this scheduled date.
+</p>
+
+<p>Thank you for keeping us informed.<br/>
+--<br/>
+Kind regards,<br/>
+Your block captains!</p>
