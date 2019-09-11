@@ -5,6 +5,8 @@ from django.views.generic.base import View
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
+from django.urls import reverse
+from django.shortcuts import redirect
 from django.db.models import Q, ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework.request import Request
@@ -272,13 +274,14 @@ class ScheduleNotifyView(APIView):
 
 
 class ScheduleVerifyView(APIView):
-    def get(self, request, uuid=None, confirmation=None):
+    permission_classes = ()
+    def get(self, request, code=None, confirmation=None):
         """
         Player clicked a verification link
         """
 
         try:
-            verify = ScheduleVerify.objects.get(uuid=uuid)
+            verify = ScheduleVerify.objects.get(code=code)
         except:
             ScheduleVerify.DoesNotExist
             # ToDo: Redirect to this link is no longer valid page!
@@ -288,16 +291,22 @@ class ScheduleVerifyView(APIView):
                 verify.received_on = timezone.now()
                 verify.confirmation_type = "C"
                 verify.save()
+                return redirect(
+                    reverse('schedule:response_confirmed'))
             elif confirmation == 'reject':
                 verify.confirmation_type = "R"
                 verify.received_on = timezone.now()
                 verify.save()
+                return redirect(
+                    reverse('schedule:response_rejected'))
             else:
                 # Invalid confirmation type
                 # ToDo: Refer to error page
                 pass
 
-            # ToDo: Redirect to a confirmation page.
+        # ToDo: Redirect to a confirmation page.
+        response = redirect('/')
+        return response
 
 
 class BlockNotifyer(View):

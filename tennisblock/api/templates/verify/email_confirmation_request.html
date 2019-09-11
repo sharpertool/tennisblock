@@ -1,8 +1,9 @@
 <p>{{ player.name }},</p>
 
 {% if force_to %}
-    <p>This is a test email -- it would have been sent to {email}</p>
+    <p>This is a test email -- it would have been sent to {{email}}</p>
 {% endif %}
+
 <p>A message from the Block Captain</p>
 
 <p>{{ message }}</p>
@@ -16,12 +17,12 @@
     we will work to find a replacement</p>
 
 <p>I am
-<a href="http://{{ site.domain }}/api/verify/{{ uuid }}/confirm">confirming</a>
+<a href="https://{{ site.domain|default:"tennisblock.com" }}/api/verify/{{ uuid }}/confirm">confirming</a>
     I will be there.
 </p>
 
 <p>I cannot make the block, so I am
-<a href="http://{{ site.domain }}/api/verify/{{ uuid }}/reject">rejecting</a>
+<a href="https://{{ site.domain|default:"tennisblock.com" }}/api/verify/{{ uuid }}/reject">rejecting</a>
     this scheduled date.
 </p>
 

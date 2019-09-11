@@ -206,20 +206,18 @@ class ScheduleConfirm(APIView):
             if conf.confirmation_type == 'R':
                 # Rejected
                 return redirect(
-                    reverse_lazy('schedule:response_rejected', id=id))
+                    reverse_lazy('schedule:response_rejected'))
             else:
                 return redirect(
-                    reverse_lazy('schedule:response_confirmed', id=id))
+                    reverse_lazy('schedule:response_confirmed'))
 
         except ScheduleVerify.DoesNotExist:
             return HttpResponseBadRequest()
 
 
 class ScheduleConfirmed(TemplateView):
-    model = Schedule
-    template_name = 'schedule/confirmed.html'
+    template_name = 'schedule/schedule_confirmed.html'
 
 
 class ScheduleRejected(TemplateView):
-    model = Schedule
-    template_name = 'schedule/rejected.html'
+    template_name = 'schedule/schedule_rejected.html'
