@@ -4,13 +4,15 @@ import datetime
 from django.views.generic.base import View
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.db.models import Q
+from django.utils import timezone
+from django.db.models import Q, ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework import authentication, permissions
-from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability, PlayerAvailability
+from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability, PlayerAvailability, \
+    ScheduleVerify
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, time_to_js
 from TBLib.manager import TeamManager
@@ -51,7 +53,7 @@ class SubsView(APIView):
 
     def get(self, request, format=None, date=None):
         mtg = get_meeting_for_date(date)
-        #print(f"Date: {date} Meeting:{mtg}")
+        # print(f"Date: {date} Meeting:{mtg}")
         if mtg:
             data = {'date': mtg.date}
         else:
@@ -65,7 +67,7 @@ class SubsView(APIView):
             schedulePlayers = Schedule.objects.filter(meeting=mtg)
             for p in schedulePlayers:
                 playingIds[p.player.id] = p.player
-                #print("Playing this meeting:%s" % p.player.Name())
+                # print("Playing this meeting:%s" % p.player.Name())
 
             subs = PlayerAvailability.objects.filter(~Q(player__in=playingIds))
             subs = subs.filter(**{f'available__{mtg_index}': True})
@@ -200,7 +202,6 @@ class BlockSchedule(APIView):
 
 
 class MatchData(APIView):
-
     def get(self, request, date=None):
         mgr = TeamManager()
 
@@ -210,13 +211,55 @@ class MatchData(APIView):
         return Response({})
 
 
-class ScheduleNotify(APIView):
+class ScheduleNotifyView(APIView):
     def post(self, request, date=None):
         """
         Send a notification to all scheduled players for the given date
+
+        ToDo:
+            - Send request if created
+            - Remove existing ScheduleVerify objects if player was removed
+              from the schedule
+            - Ignore a verification if a person clicks on an out-of-date
+              verifiation
         """
         message = request.data.get('message')
         print(f"Message to home: {message}")
+
+        mtg = get_meeting_for_date(date)
+        scheduled_players = Schedule.objects.filter(
+            meeting=mtg).select_related('player')
+
+        email_list = []
+        for scheduled_player in scheduled_players:
+            email = scheduled_player.player.user.email
+
+            try:
+                verify = ScheduleVerify.objects.get(
+                    schedule=scheduled_player,
+                    email=email
+                )
+                created = False
+            except ObjectDoesNotExist:
+                verify = ScheduleVerify.objects.create(
+                    schedule=scheduled_player,
+                    email=email
+                )
+                created = True
+
+            if created or verify.sent_on is None:
+                if created:
+                    print(f'Created a new verify object for {verify.email}')
+                else:
+                    print(f"Verify for {verify.email} already exists")
+                print(f'Time to send a notification to {verify.code}')
+                verify.send_verify_request(
+                    request,
+                    date=mtg.date,
+                    message=message,
+                )
+                verify.sent_on = timezone.now()
+                verify.save()
 
         if message:
             return Response({"status": "success"})
@@ -225,6 +268,35 @@ class ScheduleNotify(APIView):
                 "status": "fail",
                 "message": "The message value cannot be empty!"
             })
+
+
+class ScheduleVerifyView(APIView):
+    def get(self, request, uuid=None, confirmation=None):
+        """
+        Player clicked a verification link
+        """
+
+        try:
+            verify = ScheduleVerify.objects.get(uuid=uuid)
+        except:
+            ScheduleVerify.DoesNotExist
+            # ToDo: Redirect to this link is no longer valid page!
+        else:
+            # Valid link
+            if confirmation == 'confirm':
+                verify.received_on = timezone.now()
+                verify.confirmation_type = "C"
+                verify.save()
+            elif confirmation == 'reject':
+                verify.confirmation_type = "R"
+                verify.received_on = timezone.now()
+                verify.save()
+            else:
+                # Invalid confirmation type
+                # ToDo: Refer to error page
+                pass
+
+            # ToDo: Redirect to a confirmation page.
 
 
 class BlockNotifyer(View):

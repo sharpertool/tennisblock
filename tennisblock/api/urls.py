@@ -6,7 +6,7 @@ from .blocksheet import blockSheet
 from .blockschedule import (BlockNotifyer,
                             SubsView, BlockPlayers,
                             MatchData, BlockSchedule,
-                            ScheduleNotify,
+                            ScheduleNotifyView, ScheduleVerifyView,
                             BlockDates)
 
 from .views.season import get_seasons, get_current_season, get_latest_buzz, CouplesView
@@ -63,6 +63,8 @@ urlpatterns = (
          name='couples'),
     path('couples/<int:season_id>/', CouplesView.as_view(),
          name='couples_for_season'),
-    path('notify/<date:date>', ScheduleNotify.as_view(),
-         name='notify')
+    path('notify/<date:date>', ScheduleNotifyView.as_view(),
+         name='notify'),
+    path('verify/<uuid:code>/<str:confirmation>', ScheduleVerifyView.as_view(),
+         name='verify')
 )

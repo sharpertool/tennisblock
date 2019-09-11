@@ -1,11 +1,17 @@
 import datetime
+import uuid
 from django.db import models
 from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from django.template import loader
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 
 from django.conf import settings
+from wagtail.core.models import Site
 
 User = settings.AUTH_USER_MODEL
 
@@ -382,7 +388,7 @@ class Schedule(models.Model):
         permissions = (
             ("change_sched", "Can change the schedule"),
         )
-        unique_together=['meeting', 'player']
+        unique_together = ['meeting', 'player']
 
     meeting = models.ForeignKey(Meeting,
                                 on_delete=models.CASCADE)
@@ -416,17 +422,68 @@ class ScheduleVerify(models.Model):
     someone needs to be scheduled in!
     Verified indicates they have confirmed their schedule
     """
+    text_template = "verify/email_confirmation_request.txt"
+    html_template = "verify/email_confirmation_request.html"
 
     schedule = models.ForeignKey(Schedule,
-                                 on_delete=models.CASCADE)
-    code = models.UUIDField()
-    created_on = models.DateTimeField(auto_created=True)
+                                 on_delete=models.CASCADE,
+                                 primary_key=True,
+                                 related_name='verification')
+    code = models.UUIDField(default=uuid.uuid4, editable=False)
+    created_on = models.DateTimeField(auto_now_add=True)
     confirmation_type = models.CharField(max_length=1, choices=VERIFY_CHOICES,
                                          default='A')
+    sent_on = models.DateTimeField(blank=True, null=True)
+    received_on = models.DateTimeField(blank=True, null=True)
+    email = models.EmailField(_('email address'), blank=True)
 
     @property
     def expired(self):
         return self.schedule.meeting.date > datetime.date.today()
+
+    def send_verify_request(self,
+                            request,
+                            date="",
+                            message="",
+                            force_to=None):
+        """
+        This is it!
+        """
+        formatted_date = date.strftime("%A, %B %d, %Y")
+        site = Site.find_for_request(request)
+        context = {
+            'player': self.schedule.player,
+            'email': self.email,
+            'date': formatted_date,
+            'message': message,
+            'uuid': self.code,
+            'force_to': force_to,
+            'site': site
+        }
+
+        if force_to:
+            recipient_list = [force_to]
+        else:
+            recipient_list = [self.email]
+
+        subject = _(f"Friday Night Block Schedule Confirmation for {formatted_date}")
+        html_template = loader.get_template(self.html_template)
+        html_context = html_template.render(context)
+        text_template = loader.get_template(self.text_template)
+        text_content = text_template.render(context)
+
+        msg = EmailMultiAlternatives(
+            subject=subject,
+            body=text_content,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=recipient_list,
+            bcc=['ed@tennisblock.com']
+        )
+        msg.attach_alternative(html_context, "text/html")
+        msg.send()
+
+    class Meta:
+        unique_together = ('schedule', 'email')
 
 
 class Matchup(models.Model):
