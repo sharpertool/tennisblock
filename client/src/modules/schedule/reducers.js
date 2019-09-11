@@ -25,7 +25,12 @@ let configInitialState = {
   originalCouples: [],
   meeting_dates: [],
   subs_guys: [],
-  subs_gals: []
+  subs_gals: [],
+  
+  // Notification
+  notify_errors: [],
+  notify_message: '',
+  notify_in_progress: false,
 }
 
 export const update_initial_state = (initial_state) => {
@@ -152,6 +157,36 @@ const reducer = handleActions(
             [skey]: subs
           }
         },
+      
+      [types.SCHEDULE_NOTIFY_MSG_UPDATE](state, {payload}) {
+          console.log(`Message updated to ${payload}`)
+          return {
+            ...state,
+            notify_message: payload
+          }
+      },
+      
+      [types.SCHEDULE_NOTIFY_STARTED](state, {payload}) {
+          return {
+            ...state,
+            notify_in_progress: true,
+            notify_errors: [],
+          }
+      },
+      [types.SCHEDULE_NOTIFY_SUCCESS](state, {payload}) {
+          return {
+            ...state,
+            notify_in_progress: false,
+            notify_errors: [],
+          }
+      },
+      [types.SCHEDULE_NOTIFY_FAIL](state, {payload}) {
+          return {
+            ...state,
+            notify_in_progress: false,
+            notify_errors: payload,
+          }
+      },
     },
     clone(configInitialState),
 )

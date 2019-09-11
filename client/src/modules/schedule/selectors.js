@@ -49,6 +49,18 @@ export const getCouples = state => {
   return couples
 }
 
+export const getScheduledPlayers = state => {
+  return {
+    guys: state.curr_guys,
+    girls: state.curr_gals,
+  }
+}
+
+// Notification
+export const notify_message = state => state.notify_message
+export const notify_errors = state => state.notify_errors
+
+
 export const currentDate = state => state.current_date
 
 export const getGuySubs = state => {

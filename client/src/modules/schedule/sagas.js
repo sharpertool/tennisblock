@@ -34,7 +34,8 @@ function* requestMatchData(date) {
 }
 
 
-function* requestBlockPlayers({payload: date}) {
+function* requestBlockPlayers({payload: {date}}) {
+  console.log(`Requets Block players for date ${date}`)
   const {api: {blockplayers: urlpattern}} = moduleConfig
   const {api: {subs: subspattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
@@ -69,7 +70,7 @@ function* updateBlockPlayersRequest({payload}) {
   try {
     const {data} = yield call(axios.post, url, {couples: couples})
 
-    yield put(actions.getBlockPlayers(date))
+    yield put(actions.getBlockPlayers({date: date}))
   } catch (error) {
     yield put(actions.updateBlockPlayersFail(error))
     Sentry.captureException(error)
@@ -110,24 +111,26 @@ function* reScheduleRequest() {
   }
 }
 
-function* scheduleNotify() {
+function* scheduleNotify({payload:{message}}) {
+  console.log('Message:', message)
   const {currentDate} = selectors
   const date = yield select(currentDate)
 
-  const {api: {blockschedule: urlpattern}} = moduleConfig
+  const {api: {notify: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
-
-  // Send email notification to everyone scheduled for this meeting
-  const {getCouples} = selectors
-  const couples = yield select(getCouples)
 
   const axios = get_axios()
 
   try {
-    const { data } = yield call(axios.post, url)
-    yield put(actions.setBlockPlayers(data))
+    yield put(actions.scheduleNotifyStarted())
+    const { data } = yield call(axios.post, url, {message: message})
+    if (data.status == 'success') {
+      yield put(actions.scheduleNotifySuccess())
+    } else {
+      yield put(actions.scheduleNotifyFail([data.message]))
+    }
   } catch (error) {
-    yield put(actions.reScheduleFail(error))
+    yield put(actions.scheduleNotifyFail([error]))
     Sentry.captureException(error)
   }
   

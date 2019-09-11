@@ -17,4 +17,10 @@ export const clearSchedule = createAction(types.CLEAR_SCHEDULE)
 export const clearScheduleFail = createAction(types.CLEAR_SCHEDULE_FAIL)
 export const reSchedule = createAction(types.RE_SCHEDULE)
 export const reScheduleFail = createAction(types.RE_SCHEDULE_FAIL)
+
+// Notify
 export const scheduleNotify = createAction(types.SCHEDULE_NOTIFY)
+export const scheduleNotifySuccess = createAction(types.SCHEDULE_NOTIFY_SUCCESS)
+export const scheduleNotifyFail = createAction(types.SCHEDULE_NOTIFY_FAIL)
+export const scheduleNotifyStarted = createAction(types.SCHEDULE_NOTIFY_STARTED)
+export const scheduleNotifyMsgUpdate = createAction(types.SCHEDULE_NOTIFY_MSG_UPDATE)

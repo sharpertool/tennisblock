@@ -27,7 +27,7 @@ def _BuildMeetings(force=False):
     if not current_season:
         return
 
-    current_season.ensure_meetings_exist(recreate=Force)
+    current_season.ensure_meetings_exist(recreate=force)
 
 
 def _AvailabilityInit(player, meetings):
@@ -208,6 +208,23 @@ class MatchData(APIView):
         if matchData:
             return Response({"match": matchData})
         return Response({})
+
+
+class ScheduleNotify(APIView):
+    def post(self, request, date=None):
+        """
+        Send a notification to all scheduled players for the given date
+        """
+        message = request.data.get('message')
+        print(f"Message to home: {message}")
+
+        if message:
+            return Response({"status": "success"})
+        else:
+            return Response({
+                "status": "fail",
+                "message": "The message value cannot be empty!"
+            })
 
 
 class BlockNotifyer(View):

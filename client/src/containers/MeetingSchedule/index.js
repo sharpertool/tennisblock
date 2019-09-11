@@ -17,7 +17,7 @@ class MeetingSchedule extends Component {
     const {match, getBlockPlayers} = this.props
     const {params} = match
     if (match) {
-      getBlockPlayers(params.id)
+      getBlockPlayers({date: params.id})
     }
   }
   
