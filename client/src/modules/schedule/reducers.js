@@ -31,6 +31,9 @@ let configInitialState = {
   notify_errors: [],
   notify_message: '',
   notify_in_progress: false,
+
+  // Verification
+  verify_status_by_id: {},
 }
 
 export const update_initial_state = (initial_state) => {
@@ -187,6 +190,12 @@ const reducer = handleActions(
             notify_errors: payload,
           }
       },
+      [types.UPDATE_VERIFY_STATUS](state, {payload}) {
+          return {
+            ...state,
+            verify_status_by_id: payload
+          }
+      }
     },
     clone(configInitialState),
 )

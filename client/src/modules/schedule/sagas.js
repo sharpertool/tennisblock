@@ -26,24 +26,42 @@ function* requestMatchData(date) {
   const {api: {matchdata: urlpattern}} = moduleConfig
   
   const url = urlpattern.replace('0000-00-00', date)
-  console.log(`Retrieve match data from ${url}`)
+  //console.log(`Retrieve match data from ${url}`)
   
   const axios = get_axios()
   const response = yield call(axios.get, url)
   yield put(actions.updatePlaySchedule(response.data))
 }
 
+function* queryVerifyStatus(date) {
+  const {api: {verifystatus: verifypat}} = moduleConfig
+  const url = verifypat.replace('0000-00-00', date)
+
+  console.log(`query Verify status at ${url}`)
+  const axios = get_axios()
+  try {
+    const {data} = yield call(axios.get, url)
+    console.log('Verify status: ', data)
+    const {status, results} = data
+    yield put(actions.updateVerifyStatus(results))
+  } catch (error) {
+    Sentry.captureException(error)
+  }
+}
 
 function* requestBlockPlayers({payload: {date}}) {
-  console.log(`Requets Block players for date ${date}`)
+  //console.log(`Requets Block players for date ${date}`)
   const {api: {blockplayers: urlpattern}} = moduleConfig
   const {api: {subs: subspattern}} = moduleConfig
+
+
   const url = urlpattern.replace('0000-00-00', date)
   const suburl = subspattern.replace('0000-00-00', date)
 
   const axios = get_axios()
   try {
     yield fork(requestMatchData, date)
+    yield fork(queryVerifyStatus, date)
 
     const {data} = yield call(axios.get, url)
     yield put(actions.fetchBlockPlayersSuccess())

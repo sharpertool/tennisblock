@@ -19,6 +19,8 @@ export const UPDATE_BLOCK_PLAYERS_FAILED = mkname('UPDATE_BLOCK_PLAYERS_FAILED')
 export const GET_SUBS = mkname('GET_SUBS')
 export const SET_SUBS = mkname('SET_SUBS')
 
+export const UPDATE_VERIFY_STATUS = mkname('UPDATE_VERIFY_STATUS')
+
 export const BLOCK_PLAYER_CHANGED = mkname('BLOCK_PLAYER_CHANGED')
 
 export const CLEAR_SCHEDULE = mkname('CLEAR_SCHEDULE')

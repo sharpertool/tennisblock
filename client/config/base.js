@@ -9,7 +9,7 @@ const document_root = '..'
 import * as partials from './partials'
 
 const DOMAIN = process.env.DOMAIN || 'localhost'
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8082
 const PROTOCOL = process.env.PROTOCOL || 'http'
 
 export const paths = {

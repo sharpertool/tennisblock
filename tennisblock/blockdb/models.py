@@ -425,7 +425,7 @@ class ScheduleVerify(models.Model):
     text_template = "verify/email_confirmation_request.txt"
     html_template = "verify/email_confirmation_request.html"
 
-    schedule = models.ForeignKey(Schedule,
+    schedule = models.OneToOneField(Schedule,
                                  on_delete=models.CASCADE,
                                  primary_key=True,
                                  related_name='verification')
@@ -451,6 +451,7 @@ class ScheduleVerify(models.Model):
         """
         formatted_date = date.strftime("%A, %B %d, %Y")
         site = Site.find_for_request(request)
+
         context = {
             'player': self.schedule.player,
             'email': self.email,

@@ -60,3 +60,7 @@ db_learning.txt
 /tennisblock/static/js_webpack
 /tennisblock/static/css_webpack
 /tennisblock/.ipynb_checkpoints
+/tennisblock_client/dist.dev
+/tennisblock_client/hot
+/tennisblock_client/node_modules
+/tennisblock_client/yarn-error.log

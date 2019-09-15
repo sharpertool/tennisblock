@@ -27,3 +27,22 @@
   fill: #78fbff;
   shape-rendering: crispEdges;
 }
+
+.Draftail-Editor {
+  width: 100%;
+}
+
+.Draftail-Toolbar {
+  border: 1px solid lightgray;
+}
+
+.Draftail-ToolbarGroup {
+  display: inline-block;
+}
+
+.DraftEditor-editorContainer {
+  border: 1px solid lightskyblue;
+  width: 100%;
+  min-height: 200px;
+}
+

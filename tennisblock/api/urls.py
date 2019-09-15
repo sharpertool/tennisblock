@@ -43,6 +43,9 @@ urlpatterns = (
          name='blockplayers_for_date'),
     path('blockplayers', BlockPlayers.as_view(),
          name='blockplayers'),
+    path('scheduleverify/<date:date>', ScheduleNotifyView.as_view(),
+         name='scheduleverify_for_date'
+         ),
     path('blockschedule/', BlockSchedule.as_view(),
          name='blockschedule'),
     path('blockschedule/<date:date>', BlockSchedule.as_view(),

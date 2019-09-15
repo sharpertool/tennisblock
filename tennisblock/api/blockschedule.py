@@ -214,6 +214,26 @@ class MatchData(APIView):
 
 
 class ScheduleNotifyView(APIView):
+
+    def get(self, request, date=None):
+        mtg = get_meeting_for_date(date)
+        sch = Schedule.objects.filter(meeting=mtg)
+        sch = sch.select_related('player').select_related('verification')
+
+        schdata = [
+            (s.player.id,
+             s.verification.confirmation_type,)
+            for s in sch.all()
+        ]
+        results = {}
+        for data in schdata:
+            results[data[0]] = data[1]
+
+        return Response({
+            "status": "success",
+            "results": results
+        })
+
     def post(self, request, date=None):
         """
         Send a notification to all scheduled players for the given date
