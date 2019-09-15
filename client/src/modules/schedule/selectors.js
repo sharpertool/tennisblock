@@ -2,7 +2,7 @@ import {isEqual} from 'lodash'
 export const blockUpdates = ({ blockUpdates }) => ({ ...blockUpdates })
 
 export const getBlockPlayers = ({ blockplayers }) => (blockplayers)
-
+export const getVerifyStatus = state => state.verify_status_by_id
 export const currentMeeting = state => {
   const {current_date, meeting_dates} = state
   const mtgs = meeting_dates.filter(m => m.date == current_date)

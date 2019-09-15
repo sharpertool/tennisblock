@@ -55,6 +55,7 @@ class MeetingSchedule extends Component {
               couples={props.couples}
               guySubs={props.guySubs}
               galSubs={props.galSubs}
+              verifyStatus={props.verifyStatus}
             />
           </Col>
         </Row>
@@ -76,6 +77,7 @@ const mapStateToProps = (state) => {
     canClearSchedule: selectors.canClearSchedule(state),
     canReSchedule: selectors.canReSchedule(state),
     canUpdateSchedule: selectors.isScheduleChanged(state),
+    verifyStatus: selectors.getVerifyStatus(state,)
   }
 }
 

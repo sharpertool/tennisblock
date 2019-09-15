@@ -6,7 +6,11 @@ import styles from './styles.local.scss'
 
 class Couples extends Component {
   render() {
-    const {couples, guySubs, galSubs, onPlayerChanged} = this.props
+    const {couples,
+      guySubs, galSubs,
+      onPlayerChanged,
+      verifyStatus
+    } = this.props
     const changes = []
 
     return (
@@ -16,10 +20,16 @@ class Couples extends Component {
             <h3 className={styles.tableHeader}>Guys</h3>
             {couples.map((couple, index) => {
               const { guy } = couple
+              const vcode = verifyStatus[guy.id]
               return (
                 <div key={index} className="form-group">
                   <Input
                     type="select"
+                    className={vcode == 'C'
+                      ? styles.verified
+                      : vcode == 'R' ?
+                        styles.rejected
+                    : styles.awaiting}
                     value={guy.id}
                     //className={changes[index].guy ? styles.changed : ''}
                     onChange={(e) => onPlayerChanged({
@@ -63,11 +73,17 @@ class Couples extends Component {
 
             {couples.map((couple, index) => {
               const { gal } = couple
+              const vcode = verifyStatus[gal.id]
               return (
                 <div key={index} className="form-group">
                   <Input
                     type="select"
                     value={gal.id}
+                    className={vcode == 'C'
+                      ? styles.verified
+                      : vcode == 'R' ?
+                        styles.rejected
+                    : styles.awaiting}
                     //className={changes[index].gal ? styles.changed : ''}
                     onChange={(e) => onPlayerChanged({
                       group: 'gals',
@@ -77,7 +93,8 @@ class Couples extends Component {
                     })}
                   >
                     <option
-                      value={gal.id}>
+                      value={gal.id}
+                    >
                       {gal.name}
                     </option>
                     <option
