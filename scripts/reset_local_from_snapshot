@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+scripts=$(cd $(dirname $0);pwd)
+root=$(cd $(dirname $0);cd ..;pwd)
+
+echo "Root dir: ${root}"
+
+if [[ $# -eq 0 ]];then
+    echo "usage:"
+    echo "  $0 <backup-file>"
+    echo " "
+
+    #docker-compose exec postgres list-backups
+    exit 1
+
+fi
+
+BACKUPFILE=$1
+
+docker-compose exec postgres restore ${BACKUPFILE}
+./manage migrate
+./manage localize_sites
+
+# Not needed for tennisblock
+#rclone -v copy gardentronic:gardentronic.media/mediafiles media
+
+

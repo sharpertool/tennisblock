@@ -3,7 +3,7 @@
 server=localhost
 dt=$(date '+%Y-%m-%d-%H_%M')
 filename="tennisblock_prod_db_${dt}.sql"
-backup_path=~/DropboxST/Tennisblock/database_backups/
+backup_path=~/DropboxST/SharperToolDev/database/tennisblock/
 full_filename=${backup_path}/${filename}
 echo "${full_filename}"
 
