@@ -29,7 +29,7 @@ class Couples extends Component {
                       ? styles.verified
                       : vcode == 'R' ?
                         styles.rejected
-                    : styles.awaiting}
+                    : vcode == 'A' ? styles.awaiting : null}
                     value={guy.id}
                     //className={changes[index].guy ? styles.changed : ''}
                     onChange={(e) => onPlayerChanged({
@@ -83,7 +83,7 @@ class Couples extends Component {
                       ? styles.verified
                       : vcode == 'R' ?
                         styles.rejected
-                    : styles.awaiting}
+                    : vcode == 'A' ? styles.awaiting : null }
                     //className={changes[index].gal ? styles.changed : ''}
                     onChange={(e) => onPlayerChanged({
                       group: 'gals',
