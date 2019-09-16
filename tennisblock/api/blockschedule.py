@@ -265,12 +265,18 @@ class ScheduleNotifyView(APIView):
 
             verify = scheduled_player.get_verification()
 
-            should_send = any((verify.sent_on is None,
-                               all((verify.sent_to is not None, email != verify.sent_to,)),)
-                              )
+            should_send = any([
+                verify.sent_on is None,
+                all([
+                    verify.sent_to is not None,
+                    verify.sent_to != '',
+                    email != verify.sent_to
+                ])
+            ])
 
             if should_send:
                 print(f'Time to send a notification to {verify.code}')
+                verify.email = email
                 sent_to = verify.send_verify_request(
                     request,
                     date=mtg.date,
@@ -279,15 +285,10 @@ class ScheduleNotifyView(APIView):
                 )
                 verify.sent_on = timezone.now()
                 verify.sent_to = sent_to
+                verify.confirmation_type = 'A'
                 verify.save()
 
-        if message:
-            return Response({"status": "success"})
-        else:
-            return Response({
-                "status": "fail",
-                "message": "The message value cannot be empty!"
-            })
+        return Response({"status": "success"})
 
 
 class ScheduleVerifyView(APIView):

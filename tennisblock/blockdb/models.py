@@ -19,6 +19,7 @@ VERIFY_CHOICES = (
     ('C', 'Confirm'),
     ('R', 'Reject'),
     ('A', 'Awaiting Response'),
+    ('N', 'Not Sent',),
 )
 
 CONFIRM_CHOICES = (
@@ -445,7 +446,7 @@ class ScheduleVerify(models.Model):
     code = models.UUIDField(default=uuid.uuid4, editable=False)
     created_on = models.DateTimeField(auto_now_add=True)
     confirmation_type = models.CharField(max_length=1, choices=VERIFY_CHOICES,
-                                         default='A')
+                                         default='N')
     sent_on = models.DateTimeField(blank=True, null=True)
     sent_to = models.EmailField(_('send email address'), blank=True, null=True)
     received_on = models.DateTimeField(blank=True, null=True)
