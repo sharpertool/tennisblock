@@ -130,7 +130,7 @@ class BlockPlayers(APIView):
 
         if couples:
             tb = Scheduler()
-            result['status'] = tb.updateSchedule(date, couples)
+            result['status'] = tb.update_schedule(date, couples)
             mgr = TeamManager()
             mgr.dbTeams.delete_matchup(date)
         else:
@@ -220,9 +220,15 @@ class ScheduleNotifyView(APIView):
         sch = Schedule.objects.filter(meeting=mtg)
         sch = sch.select_related('player').select_related('verification')
 
+        def vtype(s):
+            v = s.get_verification()
+            if v:
+                return v.confirmation_type
+            return ''
+
         schdata = [
             (s.player.id,
-             s.verification.confirmation_type,)
+             vtype(s),)
             for s in sch.all()
         ]
         results = {}
@@ -250,38 +256,29 @@ class ScheduleNotifyView(APIView):
 
         mtg = get_meeting_for_date(date)
         scheduled_players = Schedule.objects.filter(
-            meeting=mtg).select_related('player')
+            meeting=mtg
+        ).select_related('player').select_related('verification')
 
         email_list = []
         for scheduled_player in scheduled_players:
             email = scheduled_player.player.user.email
 
-            try:
-                verify = ScheduleVerify.objects.get(
-                    schedule=scheduled_player,
-                    email=email
-                )
-                created = False
-            except ObjectDoesNotExist:
-                verify = ScheduleVerify.objects.create(
-                    schedule=scheduled_player,
-                    email=email
-                )
-                created = True
+            verify = scheduled_player.get_verification()
 
-            if created or verify.sent_on is None:
-                if created:
-                    print(f'Created a new verify object for {verify.email}')
-                else:
-                    print(f"Verify for {verify.email} already exists")
+            should_send = any((verify.sent_on is None,
+                               all((verify.sent_to is not None, email != verify.sent_to,)),)
+                              )
+
+            if should_send:
                 print(f'Time to send a notification to {verify.code}')
-                verify.send_verify_request(
+                sent_to = verify.send_verify_request(
                     request,
                     date=mtg.date,
                     message=message,
                     force_to=settings.NOTIFY_FORCE_EMAIL
                 )
                 verify.sent_on = timezone.now()
+                verify.sent_to = sent_to
                 verify.save()
 
         if message:
@@ -295,6 +292,7 @@ class ScheduleNotifyView(APIView):
 
 class ScheduleVerifyView(APIView):
     permission_classes = ()
+
     def get(self, request, code=None, confirmation=None):
         """
         Player clicked a verification link

@@ -26,7 +26,8 @@ export const getCouples = state => {
   const num_courts = court_count(state)
   // We  need 2 couples per court, so num_courts * 2
   const n = Math.max(guys.length, gals.length)
-  const couples = [...Array(num_courts*2).keys()].map(() => (
+  const couple_cnt = Math.max(num_courts*2, gals.length, guys.length)
+  const couples = [...Array(couple_cnt).keys()].map(() => (
     {guy: {id: -1, name:'---'}, gal: {id:-1, name:'---'}}
     )
   )

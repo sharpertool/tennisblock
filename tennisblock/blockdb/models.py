@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from django.db import models
+from django.db import models, IntegrityError
 from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ObjectDoesNotExist
@@ -412,6 +412,19 @@ class Schedule(models.Model):
         s2 = f"sub:{self.issub} verified:{self.verified}"
         return s1 + s2
 
+    def get_verification(self):
+        try:
+            verify = ScheduleVerify.objects.get(
+                schedule=self,
+            )
+        except ScheduleVerify.DoesNotExist:
+            verify = ScheduleVerify.objects.create(
+                schedule=self,
+            )
+
+        verify.email = self.player.user.email
+        return verify
+
 
 class ScheduleVerify(models.Model):
     """
@@ -434,6 +447,7 @@ class ScheduleVerify(models.Model):
     confirmation_type = models.CharField(max_length=1, choices=VERIFY_CHOICES,
                                          default='A')
     sent_on = models.DateTimeField(blank=True, null=True)
+    sent_to = models.EmailField(_('send email address'), blank=True, null=True)
     received_on = models.DateTimeField(blank=True, null=True)
     email = models.EmailField(_('email address'), blank=True)
 
@@ -482,9 +496,7 @@ class ScheduleVerify(models.Model):
         )
         msg.attach_alternative(html_context, "text/html")
         msg.send()
-
-    class Meta:
-        unique_together = ('schedule', 'email')
+        return recipient_list[0]
 
 
 class Matchup(models.Model):

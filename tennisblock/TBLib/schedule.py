@@ -392,6 +392,89 @@ class Scheduler(object):
 
         return data
 
+    def update_schedule_players(self, meeting, couples):
+
+        schedule_player_ids = []
+        for cpl in couples:
+            md = cpl['guy']
+            fd = cpl['gal']
+            msub, fsub = md.get('issub', False), fd.get('issub', False)
+            mverified, fverified = md.get('verified', False), fd.get('verified', False)
+            player, partner = self.get_players(md, fd)
+
+            if player:
+                self.add_or_update_schedule(meeting, player, partner,
+                                            is_sub=msub,
+                                            verified=mverified
+                                            )
+                schedule_player_ids.append(player.id)
+            if partner:
+                self.add_or_update_schedule(meeting, partner, player,
+                                            is_sub=fsub,
+                                            verified=fverified
+                                            )
+                schedule_player_ids.append(partner.id)
+        Schedule.objects.filter(meeting=meeting).filter(
+            ~Q(player_id__in=schedule_player_ids)).delete()
+
+    def get_players(self, player, partner):
+        """ Get the player and partner objects from dict """
+
+        try:
+            player_obj = Player.objects.get(id=player.get('id'))
+        except Player.DoesNotExist:
+            player_obj = None
+
+        try:
+            partner_obj = Player.objects.get(id=partner.get('id'))
+        except Player.DoesNotExist:
+            partner_obj = None
+
+        return player_obj, partner_obj
+
+    def add_or_update_schedule(self, meeting, player, partner,
+                               is_sub=False, verified=False):
+        """
+        Add or update the schedule
+        Retain the existing schedule object for a player so that
+        we can retain the schedule verification
+
+        The caller is simplified, so it may send a None as player,
+        which we just ignore
+
+        """
+        if player is None:
+            return
+
+        try:
+            schedule = Schedule.objects.get(
+                meeting=meeting, player=player
+            )
+            changed = False
+            if schedule.partner != partner:
+                schedule.partner = partner
+                changed = True
+            if schedule.issub != is_sub:
+                schedule.issub = is_sub
+                changed = True
+
+            if changed:
+                schedule.save()
+                return True
+
+        except Schedule.DoesNotExist:
+            schedule = Schedule(
+                meeting=meeting,
+                player=player,
+                issub=is_sub,
+                verified=verified,
+                partner=partner
+            )
+            schedule.save()
+            return True
+
+        return False
+
     def _add_to_schedule(self, mtg, player, partner):
         """
         Add a player to the schedule.
@@ -404,8 +487,8 @@ class Scheduler(object):
         """
 
         try:
-            player_obj = Player.objects.get(id=player.get('id', -1))
-            if partner.get('id', 0):
+            player_obj = Player.objects.get(id=player.get('id'))
+            if partner.get('id') is not None:
                 partner = Player.objects.get(id=partner.get('id'))
             else:
                 partner = None
@@ -421,28 +504,14 @@ class Scheduler(object):
         except ObjectDoesNotExist:
             pass
 
-    def updateSchedule(self, date, couples):
+    def update_schedule(self, date, couples):
         """
         Update the schedule with the given list.
         """
         mtg = get_meeting_for_date(date)
 
         if mtg:
-            data = {'date': mtg.date}
-
-            # Clear any existing one first.
-            Schedule.objects.filter(meeting=mtg).delete()
-
-            for cpl in couples:
-                try:
-                    md = cpl['guy']
-                    fd = cpl['gal']
-                    self._add_to_schedule(mtg, md, fd)
-                    self._add_to_schedule(mtg, fd, md)
-
-                except:
-                    pass
-
+            self.update_schedule_players(mtg, couples)
             return "Schedule updated"
         else:
             return "Could not update schedule."
