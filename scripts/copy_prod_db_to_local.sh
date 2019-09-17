@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
+scripts=$(cd $(dirname $0);pwd)
+root=$(cd $(dirname $0);cd ..;pwd)
+
 server=localhost
 dt=$(date '+%Y-%m-%d-%H_%M')
 filename="tennisblock_prod_db_${dt}.sql"
-backup_path=~/DropboxST/SharperToolDev/database/tennisblock/
+
+shared_path=$(grep SHARED_BACKUPS $root/.env | sed 's/^.*=//')
+backup_path=$(eval echo ${shared_path})
+echo "Backup Path: ${backup_path}"
 full_filename=${backup_path}/${filename}
 echo "${full_filename}"
 
