@@ -21,6 +21,8 @@ from .forms import NotifyForm
 from .serializers import MeetingSerializer
 from blockdb.models import ScheduleVerify, Schedule
 
+from .signals import player_confirmed, player_rejected
+
 
 @class_login_required
 class BlockSchedule(TemplateView):

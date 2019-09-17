@@ -20,6 +20,7 @@ from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, ti
 from TBLib.manager import TeamManager
 from TBLib.schedule import Scheduler
 
+from schedule.signals import player_rejected, player_confirmed
 
 def _BuildMeetings(force=False):
     """
@@ -310,12 +311,18 @@ class ScheduleVerifyView(APIView):
                 verify.received_on = timezone.now()
                 verify.confirmation_type = "C"
                 verify.save()
+                player_confirmed.send(verify,
+                                      player=verify.schedule.player,
+                                      request=request)
                 return redirect(
                     reverse('schedule:response_confirmed'))
             elif confirmation == 'reject':
                 verify.confirmation_type = "R"
                 verify.received_on = timezone.now()
                 verify.save()
+                player_rejected.send(verify,
+                                     player=verify.schedule.player,
+                                     request=request)
                 return redirect(
                     reverse('schedule:response_rejected'))
             else:
