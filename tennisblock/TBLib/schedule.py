@@ -533,6 +533,30 @@ class Scheduler(object):
 
         return addresses
 
+    def get_notify_email_lists(self, date=None):
+        """
+        Return an email list for scheduled players,
+        and a CC list for players that are not scheduled
+        but members of the block.
+        """
+
+        mtg = get_meeting_for_date(date)
+        players = Schedule.objects.filter(meeting=mtg)
+        season_players = SeasonPlayer.objects.filter(
+            blockmember=True,
+            season=mtg.season
+        )
+        ids = [s.player.id for s in players]
+        other_players = season_players.filter(
+            ~Q(player__in=ids)
+        )
+        cc_list = [s.player.user.email
+                   for s in other_players]
+        email_list = [s.player.user.email
+                      for s in players]
+
+        return email_list, cc_list
+
 
 def main():
     tb = Scheduler()

@@ -301,8 +301,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BLOCK_NOTIFY_FROM = 'ed@tennisblock.com'
 BLOCK_NOTIFY_SUBJECT = "Friday 7PM Night Block Schedule for %s"
-# Set this for development, but clear for PROD
-BLOCK_NOTIFY_RECIPIENTS = ['ed@tennisblock.com', 'viquee@me.com']
+
+TEST_BLOCK_NOTIFY_RECIPIENTS = env.list('TEST_BLOCK_NOTIFY_RECIPIENTS', default='')
 
 STATIC_PRECOMPILER_COMPILERS = (
     'static_precompiler.compilers.LESS',

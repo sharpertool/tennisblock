@@ -1,9 +1,5 @@
 {{ player.name }},
 
-A message from the block captain
-
-{{message}}
-
 You are scheduled to play on our block on {{ date }}.
 
 To insure a great block night for all, please validate that you have

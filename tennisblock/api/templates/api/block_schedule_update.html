@@ -1,0 +1,31 @@
+<html>
+<head></head>
+<body>
+    <h1>Schedule Update for {{date}}</h1>
+
+    {% if message %}
+        <hr/>
+
+        {{ message }}
+
+        <hr/>
+    {% endif %}
+
+
+    <ul>
+        {% for player in players %}
+            <li>
+                <span>{{player.0}}</span> and <span>{{player.1}}</span>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3>See you on the courts!</h3>
+    <p>
+        --<br/>
+        Kind regards,<br/>
+        Your block captains!
+    </p>
+
+</body>
+</html>

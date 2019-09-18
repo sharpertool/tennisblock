@@ -1,0 +1,14 @@
+Schedule Update for {{date}}
+
+{% if message %}
+    {{message}}
+{% endif %}
+
+{% for player in players %}
+    {{player.0}} and {{player.1}}
+{% endfor %}
+
+See you on the courts
+--
+Kind regards,
+Your block captains!

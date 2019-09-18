@@ -2,6 +2,7 @@ from django.shortcuts import render
 import datetime
 
 from django.urls import reverse_lazy, reverse
+from django.utils import timezone
 from django.views.generic import TemplateView, FormView
 from blockdb.models import ScheduleVerify, Schedule
 
@@ -29,6 +30,9 @@ class VerifyMixin:
             context['first'] = self.verify.schedule.player.user.first_name
             context['date'] = self.verify.schedule.meeting.date.strftime(
                 "%A, %B %-d")
+            context['sent_on'] = self.verify.sent_on
+            context['sent_to'] = self.verify.sent_to
+            context['received_on'] = self.verify.received_on
         return context
 
 
@@ -39,8 +43,15 @@ class ScheduleConfirmed(VerifyMixin, TemplateView):
         print(f"Schedule was confirmed with code {code}")
         self.code = code
         self.verify = self.get_verify(code)
+        verify = self.verify
+        self.already_verifyed = True
 
-        if self.verify is not None:
+        if verify is not None and verify.received_on is None:
+            self.already_verifyed = False
+            verify.received_on = timezone.now()
+            verify.confirmation_type = "C"
+            verify.save()
+
             player_confirmed.send(self.verify,
                                  player=self.verify.schedule.player,
                                  request=request)

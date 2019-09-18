@@ -116,8 +116,8 @@ class ScheduleNotify(TemplateView):
         date = kwargs.get('date')
 
         tb = Scheduler()
-        if settings.BLOCK_NOTIFY_RECIPIENTS:
-            recipient_list = settings.BLOCK_NOTIFY_RECIPIENTS
+        if settings.TEST_BLOCK_NOTIFY_RECIPIENTS:
+            recipient_list = settings.TEST_BLOCK_NOTIFY_RECIPIENTS
         else:
             recipient_list = tb.get_block_email_list()
 
@@ -158,8 +158,8 @@ class ScheduleNotify(TemplateView):
 
             subject = settings.BLOCK_NOTIFY_SUBJECT % date
 
-            if settings.BLOCK_NOTIFY_RECIPIENTS:
-                recipient_list = settings.BLOCK_NOTIFY_RECIPIENTS
+            if settings.TEST_BLOCK_NOTIFY_RECIPIENTS:
+                recipient_list = settings.TEST_BLOCK_NOTIFY_RECIPIENTS
             else:
                 recipient_list = tb.get_block_email_list()
 

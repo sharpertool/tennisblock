@@ -1,11 +1,12 @@
-# Create your views here.
-
+import random
 import datetime
+from textwrap import dedent
 from django.views.generic.base import View
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
 from django.urls import reverse
+from django.template import loader
 from django.shortcuts import redirect
 from django.db.models import Q, ObjectDoesNotExist
 from rest_framework.views import APIView
@@ -214,7 +215,91 @@ class MatchData(APIView):
         return Response({})
 
 
-class ScheduleNotifyView(APIView):
+class BlockNotifierMixin:
+    html_template = 'api/block_schedule_update.html'
+    text_template = 'api/block_schedule_update.txt'
+
+    @staticmethod
+    def build_player_list(players):
+        playerlist = []
+
+        gals = players.get('gals')
+        guys = players.get('guys')
+
+        for x in range(0, len(gals)):
+            couple = [gals[x], guys[x]]
+            random.shuffle(couple)
+            playerlist.append((couple[0].get('name'), couple[1].get('name'),))
+
+        return playerlist
+
+    def build_notify_message(self, date, players, message=None):
+        """
+        Generate plain text version of message.
+        """
+        playerlist = self.build_player_list(players)
+
+        context = {
+            'players': playerlist,
+            'date': date.strftime('%A, %B %-d'),
+            'message': message,
+        }
+
+        text_template = loader.get_template(self.text_template)
+        rendered = text_template.render(context)
+
+        return rendered
+
+    def build_html_notify_message(self, date, players, message=None):
+        """
+        Generate an HTML Formatted version of the message.
+        """
+
+        playerlist = self.build_player_list(players)
+        context = {
+            'players': playerlist,
+            'date': date.strftime('%A, %B %-d'),
+            'message': message,
+        }
+
+        html_template = loader.get_template(self.html_template)
+        rendered = html_template.render(context)
+
+        return rendered
+
+    def send_schedule_update(self, request, date, message=None):
+        tb = Scheduler()
+
+        mtg = get_meeting_for_date(date)
+        players = tb.query_schedule(date)
+
+        from_email = settings.EMAIL_HOST_USER
+
+        # Generate Text and HTML versions.
+        body = self.build_notify_message(mtg.date, players, message=message)
+        html_body = self.build_html_notify_message(mtg.date, players, message=message)
+
+        subject = settings.BLOCK_NOTIFY_SUBJECT % date
+
+        if settings.TEST_BLOCK_NOTIFY_RECIPIENTS:
+            recipients = settings.TEST_BLOCK_NOTIFY_RECIPIENTS
+            cc_list = []
+        else:
+            recipients, cc_list = tb.get_notify_email_lists()
+
+        msg = EmailMultiAlternatives(subject=subject,
+                                     body=body,
+                                     from_email=from_email,
+                                     to=recipients,
+                                     cc=cc_list)
+        msg.attach_alternative(html_body, 'text/html')
+
+        msg.send()
+
+        return JSONResponse({})
+
+
+class ScheduleNotifyView(BlockNotifierMixin, APIView):
 
     def get(self, request, date=None):
         mtg = get_meeting_for_date(date)
@@ -271,7 +356,8 @@ class ScheduleNotifyView(APIView):
                 all([
                     verify.sent_to is not None,
                     verify.sent_to != '',
-                    email != verify.sent_to
+                    email != verify.sent_to,
+                    verify.sent_to != settings.NOTIFY_FORCE_EMAIL,
                 ])
             ])
 
@@ -288,6 +374,8 @@ class ScheduleNotifyView(APIView):
                 verify.sent_to = sent_to
                 verify.confirmation_type = 'A'
                 verify.save()
+
+        self.send_schedule_update(request, date, message=message)
 
         return Response({"status": "success"})
 
@@ -336,14 +424,10 @@ class ScheduleVerifyView(APIView):
 
 
 class BlockNotifyer(View):
-    def generateNotifyMessage(self, date, players):
-        """
-        Generate plain text version of message.
-        """
 
-        import random
-        playerList = []
-        prefix = "      - "
+    @staticmethod
+    def build_player_list(players):
+        playerlist = []
 
         gals = players.get('gals')
         guys = players.get('guys')
@@ -351,45 +435,54 @@ class BlockNotifyer(View):
         for x in range(0, len(gals)):
             couple = [gals[x], guys[x]]
             random.shuffle(couple)
-            playerList.append("%s and %s" % (couple[0].get('name'), couple[1].get('name')))
-        msg = """
-=
+            playerlist.append((couple[0].get('name'), couple[1].get('name'),))
 
-Here is the schedule for Friday, %s:
-%s
+        return playerlist
 
-        """ % (date, prefix + prefix.join(playerList))
+    def build_notify_message(self, date, players):
+        """
+        Generate plain text version of message.
+        """
+        playerlist = self.build_player_list(players)
+
+        prefix = "      - "
+        couples = [f"{c[0]} and {c[1]}" for c in playerlist ]
+        player_string = prefix + prefix.join(couples)
+
+        msg = dedent(f"""
+            =
+            
+            Here is the schedule for Friday, {date}:
+            {player_string}
+                        
+        """)
 
         return msg
 
-    def generateHtmlNotifyMessage(self, date, players):
+    def build_html_notify_message(self, date, players):
         """
         Generate an HTML Formatted version of the message.
         """
 
-        import random
-        playerList = []
+        playerlist = self.build_player_list(players)
 
-        gals = players.get('gals')
-        guys = players.get('guys')
+        items = [
+            f"<li><span>{c[0]}</span> and <span>{c[1]}</span></li>"
+            for c in playerlist
+        ]
+        items_string = '\n'.join(items)
 
-        for x in range(0, len(gals)):
-            couple = [gals[x], guys[x]]
-            random.shuffle(couple)
-            playerList.append(
-                "<li><span>%s</span> and <span>%s</span></li>" % (couple[0].get('name'), couple[1].get('name')))
-        msg = """
-
-        <html>
-        <head></head>
-        <body>
-            <h3>Here is the schedule for Friday, %s:</h3>
-
-        <ul>
-            %s
-        </ul>
-
-        """ % (date, "\n".join(playerList))
+        msg = dedent(f"""
+            <html>
+            <head></head>
+            <body>
+                <h3>Here is the schedule 
+                    for {date.strftime('%A, %B %-d')}:</h3>
+    
+            <ul>
+                {items_string}
+            </ul>
+        """)
 
         return msg
 
@@ -401,17 +494,22 @@ Here is the schedule for Friday, %s:
         from_email = settings.EMAIL_HOST_USER
 
         # Generate Text and HTML versions.
-        message = self.generateNotifyMessage(date, players)
-        html = self.generateHtmlNotifyMessage(date, players)
+        message = self.build_notify_message(date, players)
+        html = self.build_html_notify_message(date, players)
 
         subject = settings.BLOCK_NOTIFY_SUBJECT % date
 
-        if settings.BLOCK_NOTIFY_RECIPIENTS:
-            recipient_list = ['ed@tennisblock.com', 'viquee@me.com']
+        if settings.TEST_BLOCK_NOTIFY_RECIPIENTS:
+            recipients = settings.TEST_BLOCK_NOTIFY_RECIPIENTS
+            cc_list = []
         else:
-            recipient_list = tb.get_block_email_list()
+            recipients, cc_list = tb.get_notify_email_lists()
 
-        msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
+        msg = EmailMultiAlternatives(subject=subject,
+                                     body=message,
+                                     from_email=from_email,
+                                     to=recipients,
+                                     cc=cc_list)
         msg.attach_alternative(html, 'text/html')
 
         msg.send()

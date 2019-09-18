@@ -4,9 +4,15 @@
 {% block home_content %}
     <div class="confirm">
         {% if found %}
+            {% if received_on %}
+            <h1 class="header_bar">
+                    Schedule Already Confirmed
+                </h1>
+                {% else %}
             <h1 class="header_bar">
                 Schedule Confirmed
             </h1>
+            {% endif %}
 
             <p>Thanks {{ first }},</p>
             <p> You have been confirmed on {{ date }}.
