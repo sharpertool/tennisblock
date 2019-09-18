@@ -39,7 +39,8 @@ sentry-sdk~=0.10
 
 # Static and Media files
 django-storages==1.7.1
-boto3==1.9.216
+boto3~=1.9
+premailer~=3.6
 
 # SCSS files
 django-compressor==2.3

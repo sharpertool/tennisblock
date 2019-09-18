@@ -1,3 +1,32 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .button {
+            padding: 8px 12px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: white;
+            height-min: 80px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .confirm {
+            background-color: lightgreen;
+            color: black;
+        }
+
+        .reject {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
 <p>{{ player.name }},</p>
 
 {% if force_to %}
@@ -13,13 +42,17 @@
     we will work to find a replacement</p>
 
 <h3>Confirm</h3>
-<a href="https://{{ request.get_host }}{% url 'confirmation:confirm' uuid %}">
+<br/>
+<a class="button confirm"
+        href="https://{{ request.get_host }}{% url 'confirmation:confirm' uuid %}">
     I am confirming
 </a>
 
 <br/>
 <h3>Reject</h3>
-<a href="https://{{ request.get_host }}{% url 'confirmation:reject' uuid %}">
+<br/>
+<a class="button reject"
+        href="https://{{ request.get_host }}{% url 'confirmation:reject' uuid %}">
     I cannot be there!
 </a>
 
@@ -27,3 +60,5 @@
     --<br/>
     Kind regards,<br/>
     Your block captains!</p>
+</body>
+</html>

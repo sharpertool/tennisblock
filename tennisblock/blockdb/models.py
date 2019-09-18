@@ -1,5 +1,6 @@
 import datetime
 import uuid
+from premailer import transform
 from django.db import models, IntegrityError
 from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
@@ -479,13 +480,17 @@ class ScheduleVerify(models.Model):
         }
 
         if force_to:
-            recipient_list = [force_to]
+            if isinstance(force_to, list):
+                recipient_list = force_to
+            else:
+                recipient_list = [force_to]
         else:
             recipient_list = [self.email]
 
         subject = _(f"Friday Night Block Schedule Confirmation for {formatted_date}")
         html_template = loader.get_template(self.html_template)
-        html_context = html_template.render(context)
+        html_content = html_template.render(context)
+        html_content = transform(html_content)
         text_template = loader.get_template(self.text_template)
         text_content = text_template.render(context)
 
@@ -496,7 +501,7 @@ class ScheduleVerify(models.Model):
             to=recipient_list,
             bcc=['ed@tennisblock.com']
         )
-        msg.attach_alternative(html_context, "text/html")
+        msg.attach_alternative(html_content, "text/html")
         msg.send()
         return recipient_list[0]
 

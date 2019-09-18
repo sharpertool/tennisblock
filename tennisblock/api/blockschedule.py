@@ -358,6 +358,7 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
                     verify.sent_to != '',
                     email != verify.sent_to,
                     verify.sent_to != settings.NOTIFY_FORCE_EMAIL,
+                    verify.sent_to != settings.TEST_BLOCK_NOTIFY_RECIPIENTS[0],
                 ])
             ])
 
@@ -368,7 +369,7 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
                     request,
                     date=mtg.date,
                     message=message,
-                    force_to=settings.NOTIFY_FORCE_EMAIL
+                    force_to=settings.TEST_BLOCK_NOTIFY_RECIPIENTS
                 )
                 verify.sent_on = timezone.now()
                 verify.sent_to = sent_to
