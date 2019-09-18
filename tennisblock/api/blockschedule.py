@@ -345,6 +345,13 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
             meeting=mtg
         ).select_related('player').select_related('verification')
 
+        ignore_emails = []
+        if settings.NOTIFY_FORCE_EMAIL:
+            ignore_emails += settings.NOTIFY_FORCE_EMAIL
+
+        if settings.TEST_BLOCK_NOTIFY_RECIPIENTS:
+            ignore_emails += settings.TEST_BLOCK_NOTIFY_RECIPIENTS[0]
+
         email_list = []
         for scheduled_player in scheduled_players:
             email = scheduled_player.player.user.email
@@ -357,8 +364,7 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
                     verify.sent_to is not None,
                     verify.sent_to != '',
                     email != verify.sent_to,
-                    verify.sent_to != settings.NOTIFY_FORCE_EMAIL,
-                    verify.sent_to != settings.TEST_BLOCK_NOTIFY_RECIPIENTS[0],
+                    verify.sent_to in ignore_emails,
                 ])
             ])
 
