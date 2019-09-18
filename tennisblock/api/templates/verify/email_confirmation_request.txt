@@ -13,10 +13,10 @@ If for any reason you cannot play, please click the "I Cannot Play" button and
     we will work to find a replacement.
 
 I am confirming I will be there:
-https://{{ site.domain|default:"tennisblock.com" }}/api/verify/{{ uuid }}/confirm
+https://{{ request.get_host }}{% url 'confirmation:confirm' uuid %}
 
 I cannot make the block, so I am rejecting the schedule.
-https://{{ site.domain|default:"tennisblock.com" }}/api/verify/{{ uuid }}/reject
+https://{{ request.get_host }}{% url 'confirmation:reject' uuid %}
 
 Thank you for keeping us informed.
 --

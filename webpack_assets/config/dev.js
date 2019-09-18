@@ -6,7 +6,6 @@ import baseConfigFunc from './base'
 module.exports = ({env, options}) => {
   const strategy = {
     'output.path': 'replace',
-    'output.filename': 'replace',
     'module.rules': 'append',
   };
 

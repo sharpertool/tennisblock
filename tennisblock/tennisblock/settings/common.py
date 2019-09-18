@@ -2,6 +2,7 @@
 
 import environ
 from os.path import join, exists
+from email.utils import getaddresses
 import sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -19,9 +20,13 @@ sys.path.append(PROJECT_ROOT("scripts"))
 # DEBUG
 DEBUG = env.bool("DJANGO_DEBUG", False)
 
-ADMINS = (
-    ('Ed Henderson', 'ed@tennisblock.com'),
-)
+ADMINS = getaddresses([
+    env('DJANGO_ADMINS', default='Ed Henderson <ed@tennisblock.com>')
+])
+
+BLOCK_CAPTAINS = getaddresses([
+    env('BLOCK_CAPTAINS', default='Ed Henderson <ed@tennisblock.com>')
+])
 
 MANAGERS = ADMINS
 
@@ -223,6 +228,7 @@ INSTALLED_APPS = [
     'api',
     'members',
     'schedule',
+    'confirm',
     'season',
     'availability',
     'webpack_loader',

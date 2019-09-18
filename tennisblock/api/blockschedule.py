@@ -20,7 +20,7 @@ from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, ti
 from TBLib.manager import TeamManager
 from TBLib.schedule import Scheduler
 
-from schedule.signals import player_rejected, player_confirmed
+from confirm.signals import player_rejected, player_confirmed
 
 def _BuildMeetings(force=False):
     """
@@ -302,8 +302,8 @@ class ScheduleVerifyView(APIView):
 
         try:
             verify = ScheduleVerify.objects.get(code=code)
-        except:
-            ScheduleVerify.DoesNotExist
+        except ScheduleVerify.DoesNotExist:
+            pass
             # ToDo: Redirect to this link is no longer valid page!
         else:
             # Valid link

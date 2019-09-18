@@ -1,0 +1,60 @@
+/* ==========================================================================
+
+
+/* *********** */
+/* LESS Styles */
+
+
+@import 'tbdefs'; // Define locations of resources
+@import 'common/classes';
+@import 'common/helpers';
+@import 'common/mixins';
+@import 'common/fonts';
+@import 'common/typography';
+
+@import 'common/base';
+@import 'common/layout';
+
+.confirm {
+
+    width: 90%;
+    //height: 100%;
+    background-color: lightgray;
+    padding: 20px;
+    margin: 20px;
+    color: blue;
+}
+
+.reject {
+  width: 90%;
+  //height: 100%;
+  background-color: lightcoral;
+  padding: 20px;
+  margin: 20px;
+  color: blue;
+}
+
+.page-container {
+  padding-top: 104px;
+}
+
+.page-container {
+  @media (max-width: 992px) {
+    padding-top: 0px;
+  }
+}
+
+#navbar {
+  @media (max-width: 992px) {
+    position: static;
+  }
+}
+
+#sidebar {
+  @media (max-width: 992px) {
+    display: none;
+  }
+  .side-navbar {
+    overflow: auto;
+  }
+}

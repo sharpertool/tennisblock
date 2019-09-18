@@ -27,6 +27,8 @@ if DEBUG:
 if ENABLE_DEBUG_TOOLBAR:
     INSTALLED_APPS += ['debug_toolbar', ]
 
+STATICFILES_DIRS += [DJANGO_ROOT('static'),]
+
 
 DEBUG_TOOLBAR_CONFIG = {
     'DISABLE_PANELS': [

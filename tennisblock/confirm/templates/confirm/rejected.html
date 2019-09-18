@@ -1,0 +1,30 @@
+{% extends "confirm_base.html" %}
+{% load staticfiles %}
+
+{% block home_content %}
+    {%if found %}
+        <div class="reject">
+            <h1>
+                Removed
+            </h1>
+
+            <p>Hi {{ first }},</p>
+
+            <p>We have removed you from the schedule. Thanks for letting us
+                know, and we will schedule you in the next available slot.</p>
+
+            <p>See you on the courts soon!</p>
+        </div>
+    {% else %}
+    <div class="reject">
+            <h1>
+                Removed
+            </h1>
+
+            <p>We have removed you from the schedule. Thanks for letting us
+                know, and we will schedule you in the next available slot.</p>
+
+            <p>See you on the courts soon!</p>
+        </div>
+    {% endif %}
+{% endblock %}

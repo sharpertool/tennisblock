@@ -1,32 +1,36 @@
 <p>{{ player.name }},</p>
 
 {% if force_to %}
-    <p>This is a test email -- it would have been sent to {{email}}</p>
+    <p>This is a test email -- it would have been sent to {{ email }}</p>
 {% endif %}
 
-<p>A message from the Block Captain</p>
+{% if message %}
+    <h2>A message from the Block Captain</h2>
 
-<p>{{ message }}</p>
+    <p>{{ message }}</p>
+
+    <p>===================================</p>
+{% endif %}
 
 <p>You are scheduled to play on our block on {{ date }}.</p>
 
 <p>To insure a great block night for all, please validate that you have
-    received the notice, and you can play.</p>
+    received the notice, and you can play by clicking the "Confirm" button.</p>
 
-<p>If for any reason you cannot play, please click the "I Cannot Play" button and
+<p>If for any reason you cannot play, please click the "I Cannot Be There" button and
     we will work to find a replacement</p>
 
-<p>I am
-<a href="https://{{ site.domain|default:"tennisblock.com" }}/api/verify/{{ uuid }}/confirm">confirming</a>
-    I will be there.
-</p>
+<button
+        href="https://{{ request.get_host }}{% url 'confirmation:confirm' uuid %}">
+    Confirm
+</button>
 
-<p>I cannot make the block, so I am
-<a href="https://{{ site.domain|default:"tennisblock.com" }}/api/verify/{{ uuid }}/reject">rejecting</a>
-    this scheduled date.
-</p>
+<button
+        href="https://{{ request.get_host }}{% url 'confirmation:reject' uuid %}">
+    I Cannot Be There
+</button>
 
 <p>Thank you for keeping us informed.<br/>
---<br/>
-Kind regards,<br/>
-Your block captains!</p>
+    --<br/>
+    Kind regards,<br/>
+    Your block captains!</p>

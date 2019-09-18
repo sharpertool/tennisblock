@@ -21,3 +21,4 @@ CACHES = {
     }
 }
 
+BLOCK_CAPTAINS="Ed Henderson <ed@tennisblock.com>,viquee@me.com"

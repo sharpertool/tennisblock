@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load gbtags %}
+{% load render_bundle from webpack_loader %}
+
+{% block head_script %}
+    {{ block.super }}
+    <!-- site_base.html: head_script -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript"
+            src="{% static 'js/HeadFinal.js' %}"></script>
+
+{% endblock %}
+
+{% block style_base %}
+    {{ block.super }}
+    <!-- site_base.html: style_base -->
+
+    {% comment %}
+    {% block google_fonts %}
+        <link
+        href='http://fonts.googleapis.com/css?family=BenchNine:300,400,700|Roboto+Slab:400,100,300,700'
+        rel='stylesheet' type='text/css'>
+    {% endblock google_fonts %}
+    {% endcomment %}
+
+    {% block typekit %}
+        <script type="text/javascript" src="//use.typekit.net/den5ddu.js"></script>
+        <script type="text/javascript">try {
+          Typekit.load()
+        } catch (e) {
+        }</script>
+    {% endblock typekit %}
+
+    <link rel="stylesheet"
+          href="{% static 'css/mint-choc/jquery-ui-1.10.3.custom.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/font-awesome.css' %}">
+
+    {% block render_css_bundles %}
+        {% render_bundle 'confirm_base' 'css' 'ASSETS' %}
+    {% endblock %}
+
+    {% block extra_style %}{% endblock %}
+{% endblock %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- site_base.html: page_style -->
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+{% endblock %}
+
+{% block head_title %}
+    {% trans "TennisBlock" %} - {% block title %}{% endblock %}
+{% endblock %}
+
+{% block body_class %}
+    {% if user.is_authenticated %}
+        authenticated
+    {% else %}
+        guest
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+
+        <main class="page-container h-100">
+            <div class="row h-100 mr-0">
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-2 pr-0" id="sidebar">
+                    {% include "common/sidebar.html" %}
+                </div>
+                <div class="col pr-0" id="page_content">
+                    <div class="container-fluid mt-3">
+                        {% block page_content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    {% else %}
+        {% block home_content %}{% endblock %}
+    {% endif %}
+{% endblock %}
+
+{% block body_script %}
+    {{ block.super }}
+    <!-- site_base.html: body_script -->
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+    <script type="text/javascript"
+            src="{% static 'js/library/amplify.core.min.js' %}"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/Client.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisEnvironment.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/tennisconstants.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisGui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisUtils.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tennislib/TennisMain.js' %}"></script>
+{% endblock %}
+
+{% block extra_script %}
+    <!-- site_base.html: extra_script -->
+
+    <script type="text/javascript">
+      (function() {
+        var toggler = $('#toggler')
+        var sidebar = $('#sidebar')
+        toggler.on('click', function(e) {
+          if (sidebar.css('display') === 'none') {
+            sidebar.css('display', 'block')
+          } else {
+            sidebar.css('display', 'none')
+          }
+        })
+      })()
+    </script>
+
+
+    {% block angular_script %}
+        <!-- Use angular_base.html to get angular setup -->
+    {% endblock %}
+
+    {% block tennisblock_script %}
+        <!-- site_base.html: tennisblock_script -->
+        <script type="text/javascript">
+          GBBasePath = "/static/js/"
+          GBStaticPath = "/static"
+          AngularPartialsBase = '/static/partials'
+        </script>
+
+        <script type="text/javascript">
+          django = {
+            'username': "{{ user.username }}",
+            'first': "{{ user.first_name }}",
+            'last': "{{ user.last_name }}",
+            'blockcaptain': "{{ perms.blockdb.change_sched }}"
+          }
+
+          console.log("Initialized username to " + django.username)
+        </script>
+
+    {% endblock %}
+
+
+    {% if not debug %}
+        <script>
+          (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r
+            i[r] = i[r] || function() {
+              (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date()
+            a = s.createElement(o),
+              m = s.getElementsByTagName(o)[0]
+            a.async = 1
+            a.src = g
+            m.parentNode.insertBefore(a, m)
+          })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga')
+
+          ga('create', 'UA-35101738-1', 'gardenbuzz.com')
+          ga('send', 'pageview')
+
+        </script>
+    {% endif %}
+
+{% endblock %}

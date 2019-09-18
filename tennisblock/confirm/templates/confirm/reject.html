@@ -1,0 +1,27 @@
+{% extends "confirm_base.html" %}
+{% load staticfiles %}
+
+{% block home_content %}
+    <div class="confirm">
+        {% if found %}
+            <h1 class="header_bar">
+                Schedule Rejection
+            </h1>
+
+            <p>Hi {{ first }},</p>
+            <p>It looks like you are unable to play on {{ date }}.</p>
+            <p>Please provide an optional reason, and click confirm</p>
+            <form method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" value="Submit"/>
+            </form>
+
+        {% else %}
+            <h1>Confirmation Link Not Found</h1>
+
+            <p>We were unable to find that link. The link may be out-dated,
+            or for a past meeting.</p>
+        {% endif %}
+    </div>
+{% endblock %}

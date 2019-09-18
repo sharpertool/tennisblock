@@ -21,8 +21,6 @@ from .forms import NotifyForm
 from .serializers import MeetingSerializer
 from blockdb.models import ScheduleVerify, Schedule
 
-from .signals import player_confirmed, player_rejected
-
 
 @class_login_required
 class BlockSchedule(TemplateView):
@@ -185,7 +183,7 @@ class ScheduleNotify(TemplateView):
 
 class ScheduleConfirm(APIView):
     throttle_classes = (AnonRateThrottle),
-    permission_classes = (AllowAny),
+    permission_classes = (AllowAny,)
 
     def get(self, request, uuid=None):
         """
@@ -217,9 +215,3 @@ class ScheduleConfirm(APIView):
             return HttpResponseBadRequest()
 
 
-class ScheduleConfirmed(TemplateView):
-    template_name = 'schedule/schedule_confirmed.html'
-
-
-class ScheduleRejected(TemplateView):
-    template_name = 'schedule/schedule_rejected.html'

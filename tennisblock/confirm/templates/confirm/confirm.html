@@ -1,0 +1,23 @@
+{% extends "confirm_base.html" %}
+{% load staticfiles %}
+
+{% block home_content %}
+    <div class="confirm">
+        {% if found %}
+            <h1 class="header_bar">
+                Schedule Confirmed
+            </h1>
+
+            <p>Thanks {{ first }},</p>
+            <p> You have been confirmed on {{ date }}.
+            </p>
+            <p>See you on the courts!</p>
+        {% else %}
+            <h1>Confirmation Link Not Found</h1>
+
+            <p>We were unable to find that link. The link may be out-dated,
+            or for a past meeting.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

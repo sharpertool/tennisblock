@@ -468,6 +468,7 @@ class ScheduleVerify(models.Model):
         site = Site.find_for_request(request)
 
         context = {
+            'request': request,
             'player': self.schedule.player,
             'email': self.email,
             'date': formatted_date,
