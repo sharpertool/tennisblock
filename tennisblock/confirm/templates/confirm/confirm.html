@@ -6,7 +6,7 @@
         {% if found %}
             {% if received_on %}
             <h1 class="header_bar">
-                    Schedule Already Confirmed
+                    Schedule {% if already_verified %}Already {% endif %}Confirmed
                 </h1>
                 {% else %}
             <h1 class="header_bar">

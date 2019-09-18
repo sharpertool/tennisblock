@@ -20,14 +20,6 @@
     {{ block.super }}
     <!-- site_base.html: style_base -->
 
-    {% comment %}
-    {% block google_fonts %}
-        <link
-        href='http://fonts.googleapis.com/css?family=BenchNine:300,400,700|Roboto+Slab:400,100,300,700'
-        rel='stylesheet' type='text/css'>
-    {% endblock google_fonts %}
-    {% endcomment %}
-
     {% block typekit %}
         <script type="text/javascript" src="//use.typekit.net/den5ddu.js"></script>
         <script type="text/javascript">try {
@@ -69,24 +61,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-
-        <main class="page-container h-100">
-            <div class="row h-100 mr-0">
-                <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-2 pr-0" id="sidebar">
-                    {% include "common/sidebar.html" %}
-                </div>
-                <div class="col pr-0" id="page_content">
-                    <div class="container-fluid mt-3">
-                        {% block page_content %}{% endblock %}
-                    </div>
-                </div>
-            </div>
-        </main>
-
-    {% else %}
-        {% block home_content %}{% endblock %}
-    {% endif %}
+    {% block home_content %}{% endblock %}
 {% endblock %}
 
 {% block body_script %}

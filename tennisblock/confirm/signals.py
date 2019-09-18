@@ -10,10 +10,10 @@ def send_verify_email_to_captains(confirmed=True, player=None, reason=None):
     name = player.get_full_name()
     if confirmed:
         message = f"{name} has confirmed"
-        subject = f"{name} Confirmed"
+        subject = f"{name} Confirmed Schedule"
     else:
         message = f"{name} has rejected.\nReason is:\n{reason}"
-    subject = f"{name} Rejected"
+        subject = f"{name} Rejected Schedule7"
 
     recipient_list = ['ed@tennisblock.com']
     from_email = settings.EMAIL_HOST_USER

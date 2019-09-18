@@ -7,20 +7,21 @@
 <p>You are scheduled to play on our block on {{ date }}.</p>
 
 <p>To insure a great block night for all, please validate that you have
-    received the notice, and you can play by clicking the "Confirm" button.</p>
+    received the notice, and you can play by clicking the "Confirm" link.</p>
 
-<p>If for any reason you cannot play, please click the "I Cannot Be There" button and
+<p>If for any reason you cannot play, please click the "I Cannot Be There" link below and
     we will work to find a replacement</p>
 
-<button
-        href="https://{{ request.get_host }}{% url 'confirmation:confirm' uuid %}">
-    Confirm
-</button>
+<h3>Confirm</h3>
+<a href="https://{{ request.get_host }}{% url 'confirmation:confirm' uuid %}">
+    I am confirming
+</a>
 
-<button
-        href="https://{{ request.get_host }}{% url 'confirmation:reject' uuid %}">
-    I Cannot Be There
-</button>
+<br/>
+<h3>Reject</h3>
+<a href="https://{{ request.get_host }}{% url 'confirmation:reject' uuid %}">
+    I cannot be there!
+</a>
 
 <p>Thank you for keeping us informed.<br/>
     --<br/>

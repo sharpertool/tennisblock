@@ -39,12 +39,16 @@ class VerifyMixin:
 class ScheduleConfirmed(VerifyMixin, TemplateView):
     template_name = 'confirm/confirm.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['already_verified'] = self.already_verifyed
+        return context
+
     def get(self, request, code=None, **kwargs):
         print(f"Schedule was confirmed with code {code}")
         self.code = code
         self.verify = self.get_verify(code)
         verify = self.verify
-        self.already_verifyed = True
 
         if verify is not None and verify.received_on is None:
             self.already_verifyed = False
@@ -55,6 +59,8 @@ class ScheduleConfirmed(VerifyMixin, TemplateView):
             player_confirmed.send(self.verify,
                                  player=self.verify.schedule.player,
                                  request=request)
+        else:
+            self.already_verifyed = True
 
         return super().get(request, **kwargs)
 
