@@ -4,128 +4,160 @@ import {Row, Col, Input} from 'reactstrap'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import styles from './styles.local.scss'
 
-class Couples extends Component {
-  render() {
-    const {couples,
-      guySubs, galSubs,
-      onPlayerChanged,
-      verifyStatus
-    } = this.props
-    const changes = []
-
-    return (
-      <>
-        <Row>
-          <Col xs={12} md={6} lg={6}>
-            <h3 className={styles.tableHeader}>Guys</h3>
-            {couples.map((couple, index) => {
-              const { guy } = couple
-              const vcode = verifyStatus[guy.id]
-              return (
-                <div key={index} className="form-group">
-                  <Input
-                    type="select"
-                    className={vcode == 'C'
-                      ? styles.verified
-                      : vcode == 'R' ?
-                        styles.rejected
-                    : vcode == 'A' ? styles.awaiting : null}
-                    value={guy.id}
-                    //className={changes[index].guy ? styles.changed : ''}
-                    onChange={(e) => onPlayerChanged({
-                      group: 'guys',
-                      index: index,
-                      value: parseInt(e.target.value),
-                      previous: guy.id
-                    })}
-                  >
-                    <option
-                      value={guy.id}>
-                      {guy.name}
-                    </option>
-                    <option
-                      value={-1}>
-                      {'---'}
-                    </option>
-                    {guySubs.map((s, i) => (
-                      <option
-                        value={s.id} key={i}>
-                        {s.name}
-                      </option>
-                    ))}
-                    <option
-                      value={-1}>
-                      {'---'}
-                    </option>
-                    {galSubs.map((s, i) => (
-                      <option
-                        value={s.id} key={100+i}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </Input>
-                </div>
-              )
-            })}
-          </Col>
-          <Col xs={12} md={6} lg={6}>
-            <h3 className={styles.tableHeader}>Gals</h3>
-
-            {couples.map((couple, index) => {
-              const { gal } = couple
-              const vcode = verifyStatus[gal.id]
-              return (
-                <div key={index} className="form-group">
-                  <Input
-                    type="select"
-                    value={gal.id}
-                    className={vcode == 'C'
-                      ? styles.verified
-                      : vcode == 'R' ?
-                        styles.rejected
-                    : vcode == 'A' ? styles.awaiting : null }
-                    //className={changes[index].gal ? styles.changed : ''}
-                    onChange={(e) => onPlayerChanged({
-                      group: 'gals',
-                      index: index,
-                      value: parseInt(e.target.value),
-                      previous: gal.id
-                    })}
-                  >
-                    <option
-                      value={gal.id}
-                    >
-                      {gal.name}
-                    </option>
-                    <option
-                      value={-1}>
-                      {'---'}
-                    </option>
-                    {galSubs.map((s, i) => (
-                      <option
-                        value={s.id} key={i}>
-                        {s.name}
-                      </option>
-                    ))}
-                    <option
-                      value={-1}>
-                      {'---'}
-                    </option>
-                    {guySubs.map((s, i) => (
-                      <option
-                        value={s.id} key={100+i}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </Input>
-                </div>
-              )
-            })}
-          </Col>
-        </Row>
-      </>
-    )
+const Couples = (props) => {
+  
+  const onSendVerify = (id) => {
+    console.log(`Send verification to ${id}`)
   }
+  
+  const onManualVerify = (id) => {
+    console.log(`Manually verify id ${id}`)
+  }
+  
+  const buttons = (vcode, id) => {
+    switch (vcode) {
+      case 'N':
+        return (
+          <>
+            <button onClick={() => onSendVerify(id)}>Send Verification Request</button>
+            <button onClick={() => onManualVerify(id)}>Verify</button>
+          </>
+        
+        )
+      case 'A':
+        return (
+          <>
+            <button onClick={() => onSendVerify(id)}>re-send Verification Request</button>
+            <button onClick={() => onManualVerify(id)}>Verify</button>
+          </>
+        )
+      default:
+        return null
+    }
+  }
+  
+  const {
+    couples,
+    guySubs, galSubs,
+    onPlayerChanged,
+    verifyStatus
+  } = props
+  const changes = []
+  
+  return (
+    <>
+      <Row>
+        <Col xs={12} md={6} lg={6}>
+          <h3 className={styles.tableHeader}>Guys</h3>
+          {couples.map((couple, index) => {
+            const {guy} = couple
+            const vcode = verifyStatus[guy.id]
+            return (
+              <div key={index} className="form-group">
+                <Input
+                  type="select"
+                  className={vcode == 'C'
+                    ? styles.verified
+                    : vcode == 'R' ?
+                      styles.rejected
+                      : vcode == 'A' ? styles.awaiting : null}
+                  value={guy.id}
+                  //className={changes[index].guy ? styles.changed : ''}
+                  onChange={(e) => onPlayerChanged({
+                    group: 'guys',
+                    index: index,
+                    value: parseInt(e.target.value),
+                    previous: guy.id
+                  })}
+                >
+                  <option
+                    value={guy.id}>
+                    {guy.name}
+                  </option>
+                  <option
+                    value={-1}>
+                    {'---'}
+                  </option>
+                  {guySubs.map((s, i) => (
+                    <option
+                      value={s.id} key={i}>
+                      {s.name}
+                    </option>
+                  ))}
+                  <option
+                    value={-1}>
+                    {'---'}
+                  </option>
+                  {galSubs.map((s, i) => (
+                    <option
+                      value={s.id} key={100 + i}>
+                      {s.name}
+                    </option>
+                  ))}
+                </Input>
+                {buttons(vcode, guy.id)}
+              </div>
+            )
+          })}
+        </Col>
+        <Col xs={12} md={6} lg={6}>
+          <h3 className={styles.tableHeader}>Gals</h3>
+          
+          {couples.map((couple, index) => {
+            const {gal} = couple
+            const vcode = verifyStatus[gal.id]
+            return (
+              <div key={index} className="form-group">
+                <Input
+                  type="select"
+                  value={gal.id}
+                  className={vcode == 'C'
+                    ? styles.verified
+                    : vcode == 'R' ?
+                      styles.rejected
+                      : vcode == 'A' ? styles.awaiting : null}
+                  //className={changes[index].gal ? styles.changed : ''}
+                  onChange={(e) => onPlayerChanged({
+                    group: 'gals',
+                    index: index,
+                    value: parseInt(e.target.value),
+                    previous: gal.id
+                  })}
+                >
+                  <option
+                    value={gal.id}
+                  >
+                    {gal.name}
+                  </option>
+                  <option
+                    value={-1}>
+                    {'---'}
+                  </option>
+                  {galSubs.map((s, i) => (
+                    <option
+                      value={s.id} key={i}>
+                      {s.name}
+                    </option>
+                  ))}
+                  <option
+                    value={-1}>
+                    {'---'}
+                  </option>
+                  {guySubs.map((s, i) => (
+                    <option
+                      value={s.id} key={100 + i}>
+                      {s.name}
+                    </option>
+                  ))}
+                </Input>
+                {buttons(vcode, gal.id)}
+              </div>
+            )
+          })}
+        </Col>
+      </Row>
+    </>
+  )
 }
 
 Couples.propTypes = {
