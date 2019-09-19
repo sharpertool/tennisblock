@@ -25,6 +25,8 @@ export let moduleConfig = {
     subs: '/api/subs/0000-00-00',
     blockschedule: '/api/blockschedule/0000-00-00',
     notify: '/api/notify/0000-00-00',
+    notify_player: '',
+    verify_player: '',
   }
 }
 

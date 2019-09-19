@@ -3,13 +3,12 @@ from django.urls import path, re_path, register_converter
 from .availability import AvailabilityView
 from .members import SeasonPlayerView
 from .blocksheet import blockSheet
-from .blockschedule import (BlockNotifyer,
-                            SubsView, BlockPlayers,
+from .blockschedule import (SubsView, BlockPlayers,
                             MatchData, BlockSchedule,
-                            ScheduleNotifyView, ScheduleVerifyView,
+                            ScheduleNotifyView,
                             BlockDates)
 
-from .views.season import get_seasons, get_current_season, get_latest_buzz, CouplesView
+from .views.season import get_seasons, get_current_season, CouplesView
 from .teams import Teams
 
 from . import converters
@@ -22,8 +21,6 @@ urlpatterns = (
          name='seasons'),
     path('currentseason', get_current_season,
          name='current_season'),
-    path('buzz', get_latest_buzz,
-         name='buzz'),
     path('pickteams/<date:date>', Teams.as_view(),
          name='pickteams_for_date'),
     path('pickteams', Teams.as_view(),
@@ -60,14 +57,10 @@ urlpatterns = (
          name='members_by_date'),
     path('members', SeasonPlayerView.as_view(),
          name='members'),
-    path('schedule/notify/<date:date>', BlockNotifyer.as_view(),
-         name="schedule_notify"),
     path('couples/', CouplesView.as_view(),
          name='couples'),
     path('couples/<int:season_id>/', CouplesView.as_view(),
          name='couples_for_season'),
     path('notify/<date:date>', ScheduleNotifyView.as_view(),
          name='notify'),
-    path('verify/<uuid:code>/<str:confirmation>', ScheduleVerifyView.as_view(),
-         name='verify')
 )

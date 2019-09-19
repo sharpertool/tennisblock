@@ -31,13 +31,6 @@ def get_current_season(request):
             return "Failed"
 
 
-def get_latest_buzz(request):
-    return JSONResponse([
-        {'text': "Block starts September 20th"},
-        {'text': "I don't know the holdout dates yet."}
-    ])
-
-
 class CouplesView(APIView):
 
     permission_classes = [permissions.IsAdminUser]

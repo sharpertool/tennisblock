@@ -63,6 +63,14 @@
                     blockschedule: '{% url "api:blockschedule_for_date" "0000-00-00" %}',
                     notify: '{%  url "api:notify" "0000-00-00" %}',
                     verifystatus: '{% url "api:scheduleverify_for_date" "0000-00-00" %}',
+                    notify_player: '',
+                    verify_player: '',
+                  }
+                },
+                teams_opts: {
+                  api: {
+                    matchdata: '{% url "api:matchdata" %}',
+                    pickteams: '{% url "api:pickteams_for_date" "0000-00-00" %}',
                   }
                 }
               }

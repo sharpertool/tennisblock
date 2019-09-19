@@ -1,17 +1,31 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 import {Row, Col, Input} from 'reactstrap'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import styles from './styles.local.scss'
+import {actions, selectors} from '~/redux-page'
 
 const Couples = (props) => {
   
+  const {
+    couples,
+    guySubs, galSubs,
+    onPlayerChanged,
+    verifyStatus,
+    verifyPlayer,
+    notifyPlayer,
+  } = props
+  const changes = []
+  
   const onSendVerify = (id) => {
     console.log(`Send verification to ${id}`)
+    notifyPlayer({id: id})
   }
   
   const onManualVerify = (id) => {
     console.log(`Manually verify id ${id}`)
+    verifyPlayer({id: id})
   }
   
   const buttons = (vcode, id) => {
@@ -35,14 +49,6 @@ const Couples = (props) => {
         return null
     }
   }
-  
-  const {
-    couples,
-    guySubs, galSubs,
-    onPlayerChanged,
-    verifyStatus
-  } = props
-  const changes = []
   
   return (
     <>
@@ -174,4 +180,16 @@ Couples.propTypes = {
   galSubs: PropTypes.array,
 }
 
-export default Couples
+const mapStateToProps = (state) => {
+  return {
+  
+  }
+}
+
+console.dir(actions)
+const mapDispatchToProps = {
+  verifyPlayer: actions['schedule:manualVerifyPlayer'],
+  notifyPlayer: actions['schedule:notifyPlayer'],
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Couples)

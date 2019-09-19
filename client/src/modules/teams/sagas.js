@@ -10,11 +10,13 @@ const instance = axios.create({
 
 import * as actions from './actions'
 import * as types from './constants'
+import {moduleConfig} from './index'
 
 
 function* fetchCurrentSchedule() {
+  const {api: {matchdata}} = moduleConfig
   try {
-    const {data} = yield call(instance.get, '/api/matchdata')
+    const {data} = yield call(instance.get, matchdata)
     yield put(actions.updateMatchData(data.match))
   } catch ({response}) {
     console.log(response)
@@ -22,10 +24,13 @@ function* fetchCurrentSchedule() {
 }
 
 function* calculateMatchups(action) {
+  const {api: {pickteams}} = moduleConfig
+  
   const {date, iterations, tries, fpartner, fteam} = action.payload
+  const url = pickteams.replace('0000-00-00', date)
   try {
     const {data} = yield call(instance.post,
-      `/api/pickteams/${date}`,
+      url,
       action.payload)
     if (data.status == 'success') {
       yield put(actions.updateMatchData(data.match))

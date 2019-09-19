@@ -17,6 +17,10 @@ export {types, actions, selectors, eventsMap, NAME, rootSaga};
 export let moduleConfig = {
   axios_config: {
     baseURL: '/',
+  },
+  api: {
+    matchdata: '',
+    pickteams: '',
   }
 }
 

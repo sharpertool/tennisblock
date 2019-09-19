@@ -1,9 +1,0 @@
-{
-  "name": "CircleCI",
-  "strict": false,
-  "breakOnError": false,
-  "src": "../tennisblock",
-  "dest": "../tennisblock/frontend/static",
-  "srcmap": false,
-  "minify": false
-}

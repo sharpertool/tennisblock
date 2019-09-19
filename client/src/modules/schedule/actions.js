@@ -26,3 +26,10 @@ export const scheduleNotifyStarted = createAction(types.SCHEDULE_NOTIFY_STARTED)
 export const scheduleNotifyMsgUpdate = createAction(types.SCHEDULE_NOTIFY_MSG_UPDATE)
 
 export const updateVerifyStatus  = createAction(types.UPDATE_VERIFY_STATUS)
+
+export const manualVerifyPlayer = createAction(types.MANUAL_VERIFY_PLAYER)
+
+export const notifyPlayer = createAction(types.NOTIFY_PLAYER)
+export const notifyPlayerSuccess = createAction(types.NOTIFY_PLAYER_SUCCESS)
+export const notifyPlayerFail = createAction(types.NOTIFY_PLAYER_FAIL)
+

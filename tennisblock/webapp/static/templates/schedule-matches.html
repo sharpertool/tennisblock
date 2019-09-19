@@ -1,7 +1,10 @@
 <div id="matches">
     <h3>Play Schedule</h3>
     <button ng-click="pickTeams()">Pick Teams</button>
-    <a target="_blank" href="/api/blocksheet/{{ queryDate }}">Download Block Sheet</a>
+    <a target="_blank"
+       href="{% url 'api:blocksheet_for_date' {{ queryDate }} %}"
+    >Download Block Sheet
+    </a>
     <table id="table_matches" ng-show="match.sets.length > 0">
         <tr>
             <th>Set</th>

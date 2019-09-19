@@ -335,7 +335,7 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
             - Remove existing ScheduleVerify objects if player was removed
               from the schedule
             - Ignore a verification if a person clicks on an out-of-date
-              verifiation
+              verification
         """
         message = request.data.get('message')
         print(f"Message to home: {message}")
@@ -352,7 +352,6 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
         if settings.TEST_BLOCK_NOTIFY_RECIPIENTS:
             ignore_emails += settings.TEST_BLOCK_NOTIFY_RECIPIENTS[0]
 
-        email_list = []
         for scheduled_player in scheduled_players:
             email = scheduled_player.player.user.email
 
@@ -386,139 +385,3 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
 
         return Response({"status": "success"})
 
-
-class ScheduleVerifyView(APIView):
-    permission_classes = ()
-
-    def get(self, request, code=None, confirmation=None):
-        """
-        Player clicked a verification link
-        """
-
-        try:
-            verify = ScheduleVerify.objects.get(code=code)
-        except ScheduleVerify.DoesNotExist:
-            pass
-            # ToDo: Redirect to this link is no longer valid page!
-        else:
-            # Valid link
-            if confirmation == 'confirm':
-                verify.received_on = timezone.now()
-                verify.confirmation_type = "C"
-                verify.save()
-                player_confirmed.send(verify,
-                                      player=verify.schedule.player,
-                                      request=request)
-                return redirect(
-                    reverse('schedule:response_confirmed'))
-            elif confirmation == 'reject':
-                verify.confirmation_type = "R"
-                verify.received_on = timezone.now()
-                verify.save()
-                player_rejected.send(verify,
-                                     player=verify.schedule.player,
-                                     request=request)
-                return redirect(
-                    reverse('schedule:response_rejected'))
-            else:
-                # Invalid confirmation type
-                # ToDo: Refer to error page
-                pass
-
-        # ToDo: Redirect to a confirmation page.
-        response = redirect('/')
-        return response
-
-
-class BlockNotifyer(View):
-
-    @staticmethod
-    def build_player_list(players):
-        playerlist = []
-
-        gals = players.get('gals')
-        guys = players.get('guys')
-
-        for x in range(0, len(gals)):
-            couple = [gals[x], guys[x]]
-            random.shuffle(couple)
-            playerlist.append((couple[0].get('name'), couple[1].get('name'),))
-
-        return playerlist
-
-    def build_notify_message(self, date, players):
-        """
-        Generate plain text version of message.
-        """
-        playerlist = self.build_player_list(players)
-
-        prefix = "      - "
-        couples = [f"{c[0]} and {c[1]}" for c in playerlist ]
-        player_string = prefix + prefix.join(couples)
-
-        msg = dedent(f"""
-            =
-            
-            Here is the schedule for Friday, {date}:
-            {player_string}
-                        
-        """)
-
-        return msg
-
-    def build_html_notify_message(self, date, players):
-        """
-        Generate an HTML Formatted version of the message.
-        """
-
-        playerlist = self.build_player_list(players)
-
-        items = [
-            f"<li><span>{c[0]}</span> and <span>{c[1]}</span></li>"
-            for c in playerlist
-        ]
-        items_string = '\n'.join(items)
-
-        msg = dedent(f"""
-            <html>
-            <head></head>
-            <body>
-                <h3>Here is the schedule 
-                    for {date.strftime('%A, %B %-d')}:</h3>
-    
-            <ul>
-                {items_string}
-            </ul>
-        """)
-
-        return msg
-
-    def post(self, request, date):
-        tb = Scheduler()
-
-        players = tb.query_schedule(date)
-
-        from_email = settings.EMAIL_HOST_USER
-
-        # Generate Text and HTML versions.
-        message = self.build_notify_message(date, players)
-        html = self.build_html_notify_message(date, players)
-
-        subject = settings.BLOCK_NOTIFY_SUBJECT % date
-
-        if settings.TEST_BLOCK_NOTIFY_RECIPIENTS:
-            recipients = settings.TEST_BLOCK_NOTIFY_RECIPIENTS
-            cc_list = []
-        else:
-            recipients, cc_list = tb.get_notify_email_lists()
-
-        msg = EmailMultiAlternatives(subject=subject,
-                                     body=message,
-                                     from_email=from_email,
-                                     to=recipients,
-                                     cc=cc_list)
-        msg.attach_alternative(html, 'text/html')
-
-        msg.send()
-
-        return JSONResponse({})

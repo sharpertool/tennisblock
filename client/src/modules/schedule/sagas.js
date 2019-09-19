@@ -1,4 +1,4 @@
-import {all, put, takeLatest, select, fork, call} from 'redux-saga/effects'
+import {all, put, takeLatest, select, fork, call, delay} from 'redux-saga/effects'
 import {selectors, actions} from '~/redux-page'
 import axioscore from 'axios'
 import {moduleConfig} from './index'
@@ -154,6 +154,16 @@ function* scheduleNotify({payload:{message}}) {
   
 }
 
+function* notifyPlayer({payload:{id}}) {
+  yield delay(10)
+  console.log(`call api to notify player ${id}`)
+}
+
+function* verifyPlayer({payload:{id}}) {
+  yield delay(10)
+  console.log(`call api to verify player ${id}`)
+}
+
 export default function* rootSaga() {
   yield all([
     fetchBlockDates(),
@@ -161,6 +171,8 @@ export default function* rootSaga() {
     takeLatest(types.UPDATE_BLOCK_PLAYERS, updateBlockPlayersRequest),
     takeLatest(types.CLEAR_SCHEDULE, clearScheduleRequest),
     takeLatest(types.RE_SCHEDULE, reScheduleRequest),
-    takeLatest(types.SCHEDULE_NOTIFY, scheduleNotify)
+    takeLatest(types.SCHEDULE_NOTIFY, scheduleNotify),
+    takeLatest(types.NOTIFY_PLAYER, notifyPlayer),
+    takeLatest(types.MANUAL_VERIFY_PLAYER, verifyPlayer),
   ])
 }
