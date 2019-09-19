@@ -36,7 +36,7 @@ function* requestMatchData(date) {
 function* queryVerifyStatus(date) {
   const {api: {verifystatus: verifypat}} = moduleConfig
   const url = verifypat.replace('0000-00-00', date)
-
+  
   console.log(`query Verify status at ${url}`)
   const axios = get_axios()
   try {
@@ -53,16 +53,16 @@ function* requestBlockPlayers({payload: {date}}) {
   //console.log(`Requets Block players for date ${date}`)
   const {api: {blockplayers: urlpattern}} = moduleConfig
   const {api: {subs: subspattern}} = moduleConfig
-
-
+  
+  
   const url = urlpattern.replace('0000-00-00', date)
   const suburl = subspattern.replace('0000-00-00', date)
-
+  
   const axios = get_axios()
   try {
     yield fork(requestMatchData, date)
     yield fork(queryVerifyStatus, date)
-
+    
     const {data} = yield call(axios.get, url)
     yield put(actions.fetchBlockPlayersSuccess())
     yield put(actions.setBlockPlayers(data))
@@ -80,14 +80,14 @@ function* updateBlockPlayersRequest({payload}) {
   const {getCouples, currentDate} = selectors
   const couples = yield select(getCouples)
   const date = yield select(currentDate)
-
+  
   const {api: {blockplayers: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
-
+  
   const axios = get_axios()
   try {
     const {data} = yield call(axios.post, url, {couples: couples})
-
+    
     yield put(actions.getBlockPlayers({date: date}))
   } catch (error) {
     yield put(actions.updateBlockPlayersFail(error))
@@ -98,10 +98,10 @@ function* updateBlockPlayersRequest({payload}) {
 function* clearScheduleRequest() {
   const {currentDate} = selectors
   const date = yield select(currentDate)
-
+  
   const {api: {blockschedule: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
-
+  
   const axios = get_axios()
   try {
     yield call(axios.delete, url)
@@ -115,13 +115,13 @@ function* clearScheduleRequest() {
 function* reScheduleRequest() {
   const {currentDate} = selectors
   const date = yield select(currentDate)
-
+  
   const {api: {blockschedule: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
-
+  
   const axios = get_axios()
   try {
-    const { data } = yield call(axios.post, url)
+    const {data} = yield call(axios.post, url)
     yield put(actions.setBlockPlayers(data))
   } catch (error) {
     yield put(actions.reScheduleFail(error))
@@ -129,19 +129,19 @@ function* reScheduleRequest() {
   }
 }
 
-function* scheduleNotify({payload:{message}}) {
+function* scheduleNotify({payload: {message}}) {
   console.log('Message:', message)
   const {currentDate} = selectors
   const date = yield select(currentDate)
-
+  
   const {api: {notify: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
-
+  
   const axios = get_axios()
-
+  
   try {
     yield put(actions.scheduleNotifyStarted())
-    const { data } = yield call(axios.post, url, {message: message})
+    const {data} = yield call(axios.post, url, {message: message})
     if (data.status == 'success') {
       yield put(actions.scheduleNotifySuccess())
     } else {
@@ -154,14 +154,34 @@ function* scheduleNotify({payload:{message}}) {
   
 }
 
-function* notifyPlayer({payload:{id}}) {
-  yield delay(10)
-  console.log(`call api to notify player ${id}`)
+function* notifyPlayer({payload: {id}}) {
+  const {api: {notify_player: apiurl}} = moduleConfig
+  const url = apiurl.replace('000', id)
+  const axios = get_axios()
+  try {
+    const {data} = yield call(axios.post, url)
+    if (data.status == 'success') {
+    } else {
+    }
+  } catch (error) {
+    Sentry.captureException(error)
+  }
 }
 
-function* verifyPlayer({payload:{id}}) {
-  yield delay(10)
-  console.log(`call api to verify player ${id}`)
+function* verifyPlayer({payload: {id}}) {
+  const {api: {verify_player: apiurl}} = moduleConfig
+  const url = apiurl.replace('000', id)
+  const axios = get_axios()
+  
+  console.log(`Verify player with ${url}`)
+  try {
+    const {data} = yield call(axios.post, url)
+    if (data.status == 'success') {
+    } else {
+    }
+  } catch (error) {
+    Sentry.captureException(error)
+  }
 }
 
 export default function* rootSaga() {
