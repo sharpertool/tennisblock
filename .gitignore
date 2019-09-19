@@ -65,3 +65,4 @@ db_learning.txt
 /tennisblock_client/node_modules
 /tennisblock_client/yarn-error.log
 /tennisblock/notebooks/
+/.vscode
