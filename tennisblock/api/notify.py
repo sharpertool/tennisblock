@@ -119,7 +119,15 @@ class BlockNotifierMixin:
         return ignore_emails
 
     def verify_player(self, request, meeting, player):
-        pass
+
+        verify = player.get_verification()
+        if verify.confirmation_type != 'C':
+            if verify.sent_on is None:
+                verify.sent_on = timezone.now()
+                verify.sent_to = player.player.user.email
+            verify.received_on = timezone.now()
+            verify.confirmation_type = 'C'
+            verify.save()
 
     def notify_player(self, request, meeting,
                       message, scheduled_player,
