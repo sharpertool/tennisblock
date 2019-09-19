@@ -7,7 +7,7 @@ import {devServer} from './partials'
 import BundleTracker from 'webpack-bundle-tracker'
 import autoprefixer from 'autoprefixer'
 
-const DOMAIN = process.env.DOMAIN || 'tennisblock.local'
+const DOMAIN = process.env.DOMAIN || 'bnp.tennisblock.local'
 const PORT = process.env.PORT || 8081
 const PROTOCOL = process.env.PROTOCOL || 'http'
 
@@ -134,7 +134,7 @@ export default ({env, options}) => {
         rules
       },
       output: {
-        publicPath: `${PROTOCOL}://${DOMAIN}:${PORT}/hot/`
+        publicPath: `${PROTOCOL}://${DOMAIN}/hot/`
         //publicPath: '/hot/',
       }
     },
