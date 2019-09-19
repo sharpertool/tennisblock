@@ -1,15 +1,18 @@
 .changed {
-  background: #E8E8E8;
+    background: #E8E8E8;
 }
 
 .verified {
-  background-color: green;
+    background-color: green;
+    color: white;
 }
 
 .rejected {
-  background-color: lightcoral;
+    background-color: lightcoral;
+    color: black;
 }
 
 .awaiting {
-  background-color: lightgray
+    background-color: lightgray;
+    color: black;
 }

@@ -4,6 +4,8 @@ import {Input} from 'reactstrap'
 import SelectBox from '~/components/Form/Fields/SelectBox'
 import styles from './styles.local.scss'
 
+import VerifyButtons from './VerifyButtons'
+
 const SchedulePlayer = (props) => {
   
   const {
@@ -45,28 +47,6 @@ const SchedulePlayer = (props) => {
       className = ''
   }
   
-  const buttons = (vcode, id) => {
-    switch (vcode) {
-      case 'N':
-        return (
-          <>
-            <button onClick={() => onSendVerify(id)}>Send Verification Request</button>
-            <button onClick={() => onManualVerify(id)}>Verify</button>
-          </>
-        
-        )
-      case 'A':
-        return (
-          <>
-            <button onClick={() => onSendVerify(id)}>re-send Verification Request</button>
-            <button onClick={() => onManualVerify(id)}>Verify</button>
-          </>
-        )
-      default:
-        return null
-    }
-  }
-  
   return (
     <div className="form-group">
       <Input
@@ -105,7 +85,12 @@ const SchedulePlayer = (props) => {
           </option>
         ))}
       </Input>
-      {buttons(vcode, player.id)}
+      <VerifyButtons
+        id={player.id}
+        vcode={vcode}
+        onSendVerify={onSendVerify}
+        onManualVerify={onManualVerify}
+      />
     </div>
   )
 }
