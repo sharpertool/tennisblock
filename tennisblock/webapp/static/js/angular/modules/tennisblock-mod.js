@@ -21,7 +21,7 @@ angular.module('tennisblock', [])
       $scope.isFirstDate = isFirstBlockDate()
     }
     
-    $http.get('/api/blockdates').success(function(data) {
+    $http.get('/api/blockdates/').success(function(data) {
       $scope.dates = data
       $scope.firstDate = tb.utils.pyDate2js(data[0].date)
       $scope.lastDate = tb.utils.pyDate2js(data[data.length - 1].date)
@@ -147,7 +147,7 @@ angular.module('tennisblock', [])
   .controller('BlockPlayers', function($scope, $http) {
     $scope.couples = []
     
-    $http.get('/api/blockplayers').success(function(data) {
+    $http.get('/api/blockplayers/').success(function(data) {
       $scope.couples = data
     })
     
@@ -165,11 +165,11 @@ angular.module('tennisblock', [])
       }
     }
     
-    $http.get('/api/blockdates').success(function(data) {
+    $http.get('/api/blockdates/').success(function(data) {
       $scope.dates = data
       updateInitialized()
     })
-    $http.get('/api/availability').success(function(data) {
+    $http.get('/api/availability/').success(function(data) {
       console.log('calling availability from module')
       $scope.players = data
       updateInitialized()

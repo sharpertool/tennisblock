@@ -43,7 +43,7 @@ tennisblockapp.controller('Availability', function($scope,$http,BlockDates,Avail
 
     $scope.updateAvail = function(p,idx) {
         console.log('Updating for player ' + p.id + " index " + idx + " is avail?" + p.isavail[idx]);
-        $http.put('/api/availability',{
+        $http.put('/api/availability/',{
             'id' : p.id,
             'mtgidx' : idx,
             'isavail' : p.isavail[idx]

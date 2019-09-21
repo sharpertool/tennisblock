@@ -1,10 +1,3 @@
-/**
- * Copyright: Aspen Labs, LLC. 2011
- * User: kutenai
- * Date: 10/17/13
- * Time: 4:10 PM
- */
-
 (function() {
 
     amplify.request.decoders.customError = function(data, status, xhr, success, error) {

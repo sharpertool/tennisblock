@@ -1,11 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: kutenai
- * Date: 8/13/12
- * Time: 10:01 PM
- * To change this template use File | Settings | File Templates.
- */
-
 var TennisClient = {
 
     VERSION: '1.0.0',

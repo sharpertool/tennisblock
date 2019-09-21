@@ -59,7 +59,7 @@ class MeetingMatchups extends Component {
     }
     
     const download = validPlaySchedule ?
-              <a href={`/api/blocksheet/${match.params.id}`}
+              <a href={`/api/blocksheet/${match.params.id}/`}
                 target="_blank"
                  role="button"
                 className="btn btn-danger pull-right"
