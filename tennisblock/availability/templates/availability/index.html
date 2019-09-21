@@ -67,7 +67,13 @@
             ),
             Object.assign(
               tennisblock_page_options,
-              {}
+              {
+                availability_opts: {
+                  apis: {
+                    availability_url: '{% url "api:availability" %}'
+                  }
+                }
+              }
             )
           )
 

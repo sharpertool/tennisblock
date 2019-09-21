@@ -3,10 +3,42 @@ import {render} from 'react-dom';
 
 import Widget from './Widget'
 
+export const moduleConfig = {
+  axios_config: {
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFTOKEN',
+  },
+}
+
+import {selectors, actions, eventsMap, rootSaga, rootReducer, set_config, initialize} from './modules'
+export {selectors, actions }
+import {makeStore, connect_site_actions} from '~/utils'
+
 export default (elements, options) => {
   const {availability_el} = elements
-  console.log(`Rendering to target ${availability_el}`)
+
+  moduleConfig.selectors = selectors
+
+  set_config({defaults: moduleConfig, options: options})
+
+  // Create the store
+  const store = makeStore({
+    rootSaga: rootSaga,
+    rootReducer: rootReducer,
+    actions: actions,
+    options: options,
+    eventsMap: eventsMap,
+  })
+
+  connect_site_actions({
+    store: store, actions: actions
+  })
+
+  initialize(options)
+
   render(
-    <Widget/>, document.getElementById(availability_el)
+    <>
+      <Widget/>
+    </>, document.getElementById(availability_el)
   )
 }

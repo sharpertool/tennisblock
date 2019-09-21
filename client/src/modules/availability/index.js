@@ -17,9 +17,11 @@ export {types, actions, selectors, eventsMap, NAME, rootSaga};
 export let moduleConfig = {
   axios_config: {
     baseURL: '/',
+  },
+  apis: {
+    availability_url: '',
   }
 }
-
 
 export const setConfig = ({defaults, options}) => {
   if (options && options[optkey]) {
