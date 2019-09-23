@@ -65,5 +65,6 @@ function* updatePlayerAvailability({payload}) {
 export default function* rootSaga() {
   yield all([
     fork(fetchBlockDates),
+    takeLatest(types.ON_PLAYER_AVAILABILITY_CHANGE, updatePlayerAvailability)
   ])
 }

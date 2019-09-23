@@ -30,8 +30,22 @@ function reducer(state = clone(configInitialState), action) {
     case types.UPDATE_PLAYER_AVAILABILITY: {
       // ToDo: Update the player by ID
       // Payload: {id: nn, mtgidx: nn, isavail: true|false}
+      const {id, mtgidx, isavail} = action.payload
+      const newav = state.availability.map((item, idx) => {
+        if (item.id != id) {
+          return item
+        }
+        // This is our item to update
+        const newavail = item.isavail.slice()
+        newavail[mtgidx] = isavail
+        return {
+          ...item,
+          isavail: newavail
+        }
+      })
       return {
         ...state,
+        availability: newav
       }
     }
     case types.UPDATE_BLOCK_DATES: {

@@ -11,8 +11,8 @@ const AvailabilityRow = ({
   const onAvailChanged = (idx) => {
     availabilityChanged({
       id: availability.id,
-      idx: idx,
-      value: !isavail[idx]
+      mtgidx: idx,
+      isavail: !isavail[idx]
     })
   }
   
