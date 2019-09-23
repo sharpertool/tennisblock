@@ -49,6 +49,7 @@ class AvailabilityView(View):
             'id': player.id,
             'isavail': av.available,
             'scheduled': av.scheduled,
+            'played': av.played,
             'nplayed': nplayed,
             'nscheduled': nscheduled + nplayed,
             'single': single

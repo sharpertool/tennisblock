@@ -6,7 +6,7 @@ const AvailabilityRow = ({
                            availabilityChanged,
                          }) => {
   
-  const {name, isavail, scheduled} = availability
+  const {name, isavail, scheduled, played, nplayed, nscheduled} = availability
   
   const onAvailChanged = (idx) => {
     availabilityChanged({
@@ -22,8 +22,12 @@ const AvailabilityRow = ({
       {isavail.map((avail, idx) => {
           let classes = ['avrow_item', 'item']
           const is_scheduled = scheduled[idx]
+          const did_play = played[idx]
           if (is_scheduled) {
             classes.push('scheduled')
+          }
+          if (did_play) {
+            classes.push('played')
           }
           return (
             <td
@@ -42,10 +46,10 @@ const AvailabilityRow = ({
       }
       
       <td>
-        0
+        {nplayed}
       </td>
       <td>
-        0
+        {nscheduled}
       </td>
     
     </tr>

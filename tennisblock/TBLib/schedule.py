@@ -7,9 +7,25 @@ import textwrap
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, Count, F
 from django.db import connection
+from django.utils import timezone
 
 from blockdb.models import PlayerAvailability, Meeting, Couple, Schedule, Player, SeasonPlayer
 from api.apiutils import get_current_season, get_next_meeting, get_meeting_for_date
+
+
+def reset_availability_arrays(date=None):
+    """ Reset availability arrays for given meeting date,
+    or all in current season if date is empty """
+
+    if date:
+        meetings = [get_meeting_for_date(date)]
+    else:
+        season = get_current_season()
+        meetings = Meeting.objects.filter(season=season)
+
+    scheduler = Scheduler()
+    for meeting in meetings:
+        scheduler.update_scheduled_for_players(meeting)
 
 
 class Scheduler(object):
@@ -414,8 +430,83 @@ class Scheduler(object):
                                             verified=fverified
                                             )
                 schedule_player_ids.append(partner.id)
+
+        # Delete any players that were scheduled.
         Schedule.objects.filter(meeting=meeting).filter(
             ~Q(player_id__in=schedule_player_ids)).delete()
+
+        # Update the player availability arrays.
+        self.update_schedule_players(meeting, schedule_player_ids)
+
+    @staticmethod
+    def update_scheduled_for_players(meeting, scheduled_pks=None):
+        """ Set scheduled PK's to True, others to false """
+
+        is_future = meeting.date > timezone.now().date()
+        if scheduled_pks is None:
+            scheduled_pks = Schedule.objects.filter(
+                meeting=meeting).values_list('player__pk', flat=True)
+
+        idx = meeting.season_index
+        scheduled = PlayerAvailability.objects.filter(
+            season=meeting.season,
+            player_id__in=scheduled_pks)
+        for av in scheduled:
+            changed = False
+            if not av.scheduled[idx]:
+                av.scheduled[idx] = True
+                changed = True
+
+            if is_future:
+                if av.played[idx]:
+                    av.played[idx] = False
+                    changed = True
+            else:
+                if not av.played[idx]:
+                    av.played[idx] = True
+                    changed = True
+
+            if changed:
+                av.save()
+
+        unscheduled = PlayerAvailability.objects.filter(
+            season=meeting.season).filter(~Q(player_id__in=scheduled_pks))
+        for av in unscheduled:
+            changed = False
+            if av.scheduled[idx]:
+                av.scheduled[idx] = False
+                changed = True
+
+            if av.played[idx]:
+                av.played[idx] = False
+                changed = True
+
+            if changed:
+                av.save()
+
+    @staticmethod
+    def update_played_for_players(self,  meeting, scheduled_pks=None):
+        """ Set played PK's to True, others to false """
+
+        if scheduled_pks is None:
+            scheduled_pks = Schedule.objects.filter(
+                meeting=meeting).values_list('player__pk', flat=True)
+
+        idx = meeting.season_index
+        scheduled = PlayerAvailability.objects.filter(
+            season=meeting.season,
+            player_id__in=scheduled_pks)
+        for av in scheduled:
+            if not av.scheduled[idx]:
+                av.scheduled[idx] = True
+                av.save()
+
+        unscheduled = PlayerAvailability.objects.filter(
+            season=meeting.season).fitler(~Q(player_id__in=scheduled_pks))
+        for av in unscheduled:
+            if av.scheduled[idx]:
+                av.scheduled[idx] = False
+                av.save()
 
     def get_players(self, player, partner):
         """ Get the player and partner objects from dict """
