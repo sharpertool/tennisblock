@@ -1,7 +1,6 @@
-import React from 'react';
-import {render} from 'react-dom';
+import React from 'react'
+import {render} from 'react-dom'
 
-import Widget from './Widget'
 
 export const moduleConfig = {
   axios_config: {
@@ -11,15 +10,19 @@ export const moduleConfig = {
 }
 
 import {selectors, actions, eventsMap, rootSaga, rootReducer, set_config, initialize} from './modules'
-export {selectors, actions }
+
+export {selectors, actions}
 import {makeStore, connect_site_actions} from '~/utils'
+
+import Root from './root'
 
 export default (elements, options) => {
   const {availability_el} = elements
-
+  
   moduleConfig.selectors = selectors
-
+  
   set_config({defaults: moduleConfig, options: options})
+  
 
   // Create the store
   const store = makeStore({
@@ -29,16 +32,15 @@ export default (elements, options) => {
     options: options,
     eventsMap: eventsMap,
   })
-
+  
   connect_site_actions({
     store: store, actions: actions
   })
-
+  
   initialize(options)
-
+  
   render(
-    <>
-      <Widget/>
-    </>, document.getElementById(availability_el)
+    <Root store={store}/>
+    , document.getElementById(availability_el)
   )
 }

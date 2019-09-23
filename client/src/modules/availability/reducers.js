@@ -10,6 +10,8 @@ import {
 
 let configInitialState = {
   availability: [],
+  blockdates: [],
+  scrollLeft: 0,
 }
 
 export const update_initial_state = (initial_state) => {
@@ -32,6 +34,14 @@ function reducer(state = clone(configInitialState), action) {
         ...state,
       }
     }
+    case types.UPDATE_BLOCK_DATES: {
+      return {
+        ...state,
+        blockdates: action.payload
+      }
+    }
+    case types.ON_ITEMS_SCROLL:
+      return {...state, scrollLeft: action.payload}
     default: return state
   }
 }

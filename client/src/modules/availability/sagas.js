@@ -13,6 +13,18 @@ const get_axios = () => {
   return axioscore.create(axios_config)
 }
 
+function* fetchBlockDates() {
+  const {apis: {blockdates: url}} = moduleConfig
+  const axios = get_axios()
+  try {
+    const {data} = yield call(axios.get, url)
+    yield put(actions.updateBlockDates(data))
+    yield fetchAvailabilityData()
+  } catch (e) {
+    Sentry.captureException(e)
+  }
+}
+
 function* fetchAvailabilityData() {
   const {apis: {availability_url}} = moduleConfig
   
@@ -52,6 +64,6 @@ function* updatePlayerAvailability({payload}) {
 
 export default function* rootSaga() {
   yield all([
-    fork(fetchAvailabilityData),
+    fork(fetchBlockDates),
   ])
 }

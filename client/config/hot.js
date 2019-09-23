@@ -7,7 +7,7 @@ import {devServer} from './partials'
 import BundleTracker from 'webpack-bundle-tracker'
 import autoprefixer from 'autoprefixer'
 
-const DOMAIN = process.env.DOMAIN || 'bnp.tennisblock.local'
+const DOMAIN = process.env.DOMAIN || 'tennisblock.local'
 const PORT = process.env.PORT || 8081
 const PROTOCOL = process.env.PROTOCOL || 'http'
 
@@ -122,6 +122,7 @@ export default ({env, options}) => {
       'react-hot-loader/patch',
       //Dev server bundle
       `webpack-dev-server/client?${PROTOCOL}://${DOMAIN}:${PORT}`,
+      //`webpack-dev-server/`,
       //Only reload successful updates
       'webpack/hot/only-dev-server'
     ]
@@ -154,6 +155,7 @@ export default ({env, options}) => {
     },
     devServer({
       hot: true,
+      protocol: `${PROTOCOL}`,
       host: DOMAIN,
       port: PORT,
       https: env.https ? {
@@ -166,7 +168,6 @@ export default ({env, options}) => {
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
         'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
       },
-      protocol: `${PROTOCOL}`,
       base: paths.hot,
       allowedHosts: [
         '.tennisblock.local',

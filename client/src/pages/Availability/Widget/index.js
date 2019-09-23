@@ -1,13 +1,19 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import classes from './styles.scss'
+
+const StyledP = styled.p`
+  color: blue;
+  background-color: lightgray;
+`
 
 const widget = () => {
   return (
     <div className={classes.Widget}>
       <h1>{'I am a widget'}</h1>
-      <h3>{'I\'m here also'}</h3>
-      <p>Wiki wiki wow</p>
+      <p>Just a test component.</p>
+      <StyledP>Ah, this works for HMR... nice.</StyledP>
     </div>
   )
 }

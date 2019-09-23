@@ -15,11 +15,11 @@
     <script src="{% static 'js/angular/controllers/availability.js' %}" type="text/javascript"></script>
 
     <script>
-        {% if perms.blockdb.change_availability %}
-        window.can_edit = false;
-        {% else %}
-        window.can_edit = false;
-        {% endif %}
+      {% if perms.blockdb.change_availability %}
+        window.can_edit = false
+      {% else %}
+        window.can_edit = false
+      {% endif %}
     </script>
 
 {% endblock %}
@@ -29,7 +29,7 @@
     <div id="content" class="dynamic" ng-controller="Availability">
 
         <div id="textContent">
-            <div id="blockheading" class="dynamic" >
+            <div id="blockheading" class="dynamic">
                 <h2>Availability</h2>
             </div>
 
@@ -70,13 +70,14 @@
               {
                 availability_opts: {
                   apis: {
-                    availability_url: '{% url "api:availability" %}'
+                    availability_url: '{% url "api:availability" %}',
+                    blockdates: '{% url 'api:blockdates' %}',
                   }
                 }
               }
             )
           )
-
         </script>
     {% endif %}
+
 {% endblock %}

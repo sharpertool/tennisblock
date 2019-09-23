@@ -19,7 +19,6 @@ class PlayClass(object):
         show_args(*args,**kwargs)
 
 
-
 if __name__ == "__main__":
     PlayClass.static_one(1,2,3)
     PlayClass.class_one("a","b","c")
