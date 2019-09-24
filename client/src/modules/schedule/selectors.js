@@ -12,6 +12,8 @@ export const currentMeeting = state => {
   return null
 }
 
+export const verifyCode = (state, id) => getVerifyStatus(state)[id]
+
 export const court_count = state => {
   const mtg = currentMeeting(state)
   if (mtg) {

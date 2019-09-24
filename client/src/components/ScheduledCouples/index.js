@@ -24,6 +24,7 @@ const ScheduledCouples = (props) => {
               <SchedulePlayer
                 key={index}
                 index={index}
+                id={guy.id}
                 player={guy}
                 group='guys'
                 subs={guySubs}
@@ -41,6 +42,7 @@ const ScheduledCouples = (props) => {
               <SchedulePlayer
                 key={index}
                 index={index}
+                id={gal.id}
                 player={gal}
                 group='gals'
                 subs={galSubs}

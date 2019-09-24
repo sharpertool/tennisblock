@@ -14,10 +14,10 @@ const SchedulePlayer = (props) => {
     group,
     subs,
     altsubs,
-    verifyStatus,
     verifyPlayer,
     notifyPlayer,
     onPlayerChanged,
+    verifyCode,
   } = props
   
   const onSendVerify = (id) => {
@@ -31,9 +31,8 @@ const SchedulePlayer = (props) => {
   }
   
   let className = ''
-  const vcode = verifyStatus[player.id]
   
-  switch (vcode) {
+  switch (verifyCode) {
     case 'C':
       className = styles.verified
       break
@@ -87,7 +86,7 @@ const SchedulePlayer = (props) => {
       </Input>
       <VerifyButtons
         id={player.id}
-        vcode={vcode}
+        vcode={verifyCode}
         onSendVerify={onSendVerify}
         onManualVerify={onManualVerify}
       />

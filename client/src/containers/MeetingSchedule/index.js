@@ -9,7 +9,7 @@ import ActionButtons from './ActionButtons'
 
 import {actions, selectors} from '~/redux-page'
 
-import ScheduleCouples from '~/components/ScheduledCouples/connected'
+import ScheduledCouples from '~/components/ScheduledCouples/connected'
 
 const MeetingSchedule = (props) =>  {
 
@@ -49,7 +49,7 @@ const MeetingSchedule = (props) =>  {
       </Row>
       <Row>
         <Col md={12}>
-          <ScheduleCouples
+          <ScheduledCouples
             couples={props.couples}
           />
         </Col>

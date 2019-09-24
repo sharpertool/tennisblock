@@ -4,9 +4,9 @@ import {actions, selectors} from '~/redux-page'
 
 import SchedulePlayer from './index'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    verifyStatus: selectors.getVerifyStatus(state),
+    verifyCode: selectors['schedule:verifyCode'](state, props.id),
   }
 }
 

@@ -11,7 +11,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-console.dir(actions)
 const mapDispatchToProps = {
 }
 

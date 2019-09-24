@@ -123,6 +123,7 @@ function* reScheduleRequest() {
   try {
     const {data} = yield call(axios.post, url)
     yield put(actions.setBlockPlayers(data))
+    yield call(queryVerifyStatus, date)
   } catch (error) {
     yield put(actions.reScheduleFail(error))
     Sentry.captureException(error)

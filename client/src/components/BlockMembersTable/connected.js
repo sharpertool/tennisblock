@@ -4,22 +4,6 @@ import {selectors, actions} from '~/redux-page'
 
 import BlockMembers from './index'
 
-const connectedComponent = ({
-                              blockmembers,
-  subs,
-  moreplayers,
-                              onBlockmemberChange,
-                            }) => {
-  return (
-    <BlockMembers
-      blockmembers={blockmembers}
-      subs={subs}
-      moreplayers={moreplayers}
-      onBlockmemberChange={onBlockmemberChange}
-    />
-  )
-}
-
 const mapStateToProps = (state) => {
   return {
     blockmembers: selectors['members:blockmembers'](state),
@@ -32,4 +16,4 @@ const mapDispatchToProps = {
   onBlockmemberChange: actions['members:onBlockMemberChanged'],
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(connectedComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(BlockMembers)
