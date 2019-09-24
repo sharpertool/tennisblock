@@ -63,8 +63,8 @@
                     blockschedule: '{% url "api:blockschedule_for_date" "0000-00-00" %}',
                     notify: '{%  url "api:notify" "0000-00-00" %}',
                     verifystatus: '{% url "api:scheduleverify_for_date" "0000-00-00" %}',
-                    notify_player: '{% url "api:notify_player" "000" %}',
-                    verify_player: '{% url "api:verify_player" "000" %}',
+                    notify_player: '{% url "api:notify_player" "000" "0000-00-00" %}',
+                    verify_player: '{% url "api:verify_player" "000" "0000-00-00" %}',
                   }
                 },
                 teams_opts: {

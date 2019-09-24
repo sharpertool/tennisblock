@@ -69,8 +69,8 @@ urlpatterns = (
     path('notify/<date:date>/', ScheduleNotifyView.as_view(),
          name='notify'),
 
-    path('verifyplayer/<int:player_id>/', PlayerVerifyView.as_view(),
+    path('verifyplayer/<int:player_id>/<date:date>/', PlayerVerifyView.as_view(),
          name='verify_player'),
-    path('notifyplayer/<int:player_id>/', PlayerNotifyView.as_view(),
+    path('notifyplayer/<int:player_id>/<date:date>/', PlayerNotifyView.as_view(),
          name='notify_player'),
 )

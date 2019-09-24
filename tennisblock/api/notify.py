@@ -221,8 +221,8 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
 
 class PlayerNotifyView(BlockNotifierMixin, APIView):
 
-    def post(self, request, player_id=None):
-        mtg = get_meeting_for_date()
+    def post(self, request, player_id=None, date=None):
+        mtg = get_meeting_for_date(date)
         player = get_object_or_404(Schedule,
                                    meeting=mtg,
                                    player__id=player_id)
@@ -236,8 +236,8 @@ class PlayerNotifyView(BlockNotifierMixin, APIView):
 
 class PlayerVerifyView(BlockNotifierMixin, APIView):
 
-    def post(self, request, player_id=None):
-        mtg = get_meeting_for_date()
+    def post(self, request, player_id=None, date=None):
+        mtg = get_meeting_for_date(date)
         player = get_object_or_404(Schedule,
                                    meeting=mtg,
                                    player__id=player_id)

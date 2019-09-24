@@ -156,22 +156,31 @@ function* scheduleNotify({payload: {message}}) {
 }
 
 function* notifyPlayer({payload: {id}}) {
+  const {currentDate} = selectors
+  const date = yield select(currentDate)
   const {api: {notify_player: apiurl}} = moduleConfig
-  const url = apiurl.replace('000', id)
+  const url = apiurl
+    .replace('000', id)
+    .replace('0000-00-00', date)
   const axios = get_axios()
   try {
     const {data} = yield call(axios.post, url)
     if (data.status == 'success') {
     } else {
     }
+    yield call(queryVerifyStatus, date)
   } catch (error) {
     Sentry.captureException(error)
   }
 }
 
 function* verifyPlayer({payload: {id}}) {
+  const {currentDate} = selectors
   const {api: {verify_player: apiurl}} = moduleConfig
-  const url = apiurl.replace('000', id)
+  const date = yield select(currentDate)
+  const url = apiurl
+    .replace('000', id)
+    .replace('0000-00-00', date)
   const axios = get_axios()
   
   console.log(`Verify player with ${url}`)
@@ -180,6 +189,7 @@ function* verifyPlayer({payload: {id}}) {
     if (data.status == 'success') {
     } else {
     }
+    yield call(queryVerifyStatus, date)
   } catch (error) {
     Sentry.captureException(error)
   }
