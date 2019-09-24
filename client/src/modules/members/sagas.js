@@ -15,6 +15,7 @@ function* fetchBlockMembers() {
   const {apis: {blockmembers: url}} = moduleConfig
   const axios = get_axios()
   try {
+    yield fetchAllPlayers()
     const {data} = yield call(axios.get, url)
     yield put(actions.updateBlockMembers(data))
   } catch (e) {
@@ -25,6 +26,7 @@ function* fetchBlockMembers() {
 function* fetchAllPlayers() {
   const {apis: {allplayers: url}} = moduleConfig
   const axios = get_axios()
+  
   try {
     const {data} = yield call(axios.get, url)
     yield put(actions.updateAllPlayers(data))
@@ -33,9 +35,23 @@ function* fetchAllPlayers() {
   }
 }
 
+function* toggleBlockSub({payload}) {
+  const {apis: {season_subs: url}} = moduleConfig
+  const axios = get_axios()
+  
+  try {
+    const {data} = yield call(axios.put, url, payload)
+    console.log(data)
+    yield fetchBlockMembers()
+  } catch (e) {
+    Sentry.captureException(e)
+  }
+
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchBlockMembers),
-    fork(fetchAllPlayers),
+    takeLatest(types.TOGGLE_BLOCK_SUB, toggleBlockSub)
   ])
 }

@@ -11,3 +11,4 @@ export const UPDATE_ALL_PLAYERS = mkname('UPDATE_ALL_PLAYERS')
 
 export const UPDATE_BLOCK_MEMBERS = mkname('UPDATE_BLOCK_MEMBERS')
 export const ON_BLOCK_MEMBER_CHANGED = mkname('ON_BLOCK_MEMBER_CHANGED')
+export const TOGGLE_BLOCK_SUB = mkname('TOGGLE_BLOCK_SUB')

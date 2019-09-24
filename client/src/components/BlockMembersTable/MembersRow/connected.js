@@ -2,29 +2,26 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {selectors, actions} from '~/redux-page'
 
-import BlockMembers from './index'
+import Member from './index'
 
 const connectedComponent = ({
-                              blockmembers,
-  subs,
-  moreplayers,
+                              member,
+                              player,
                               onBlockmemberChange,
                             }) => {
   return (
-    <BlockMembers
-      blockmembers={blockmembers}
-      subs={subs}
-      moreplayers={moreplayers}
+    <Member
+      member={member}
+      player={player}
       onBlockmemberChange={onBlockmemberChange}
     />
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    blockmembers: selectors['members:blockmembers'](state),
-    subs: selectors['members:subs'](state),
-    moreplayers: selectors['members:more_players'](state),
+    player: selectors['members:getPlayerById'](state, props.id),
+    member: selectors['members:getMemberById'](state, props.id),
   }
 }
 

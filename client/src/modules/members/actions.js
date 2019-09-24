@@ -8,3 +8,4 @@ export const updateAllPlayers = createAction(types.UPDATE_ALL_PLAYERS)
 
 export const updateBlockMembers = createAction(types.UPDATE_BLOCK_MEMBERS)
 export const onBlockMemberChanged = createAction(types.ON_BLOCK_MEMBER_CHANGED)
+export const toggleBlockSub = createAction(types.TOGGLE_BLOCK_SUB)

@@ -1,6 +1,5 @@
 # Create your views here.
-
-
+from django.shortcuts import get_object_or_404
 from django.views.generic.edit import View
 from django.db.models import Q
 
@@ -33,6 +32,31 @@ class SeasonSubs(APIView):
             'status': 'success',
             'subs': subs_ids,
             'moresubs': moresubs
+        })
+
+    def put(self, request):
+        id = request.data.get('id')
+        print(f"Toggle this id: {id}")
+        player = get_object_or_404(Player, pk=id)
+        season = get_current_season()
+
+        created = False
+        try:
+            sp = SeasonPlayer.objects.get(
+                season=season,
+                player=player
+            )
+            sp.delete()
+        except SeasonPlayer.DoesNotExist:
+            sp = SeasonPlayer.objects.create(
+                season=season,
+                player=player,
+                blockmember=False)
+            created = True
+
+        return Response({
+            'status': 'success',
+            'created': created
         })
 
 

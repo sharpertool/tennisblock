@@ -1,14 +1,26 @@
 import React, {useRef, useEffect} from 'react'
 
-const MembersRow = ({
-                           member,
-                           even,
-                           onBlockmemberChange
-                         }) => {
+const Member = ({
+                  member,
+                  player,
+                  even,
+                  onBlockmemberChange
+                }) => {
   
   const {
-    id, first, last, gender, ntrp, microntrp, email, phone, blockmember
+    first, last,
+    gender,
+    ntrp,
+    microntrp,
+    email,
+    phone,
+    blockmember
   } = member
+
+  const {
+    user: {first_name: fn},
+    user: {last_name: ln},
+  } = player
   
   const onMemberChange = (idx) => {
     onBlockmemberChange({
@@ -28,13 +40,14 @@ const MembersRow = ({
       <td>{email}</td>
       <td>{phone}</td>
       <td>{blockmember ? 'true' : 'false'}</td>
-      <td><button>Edit</button></td>
+      <td>
+      </td>
     </tr>
   )
 }
 
-MembersRow.default_props = {}
+Member.default_props = {}
 
-MembersRow.propTypes = {}
+Member.propTypes = {}
 
-export default MembersRow
+export default Member
