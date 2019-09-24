@@ -14,7 +14,7 @@ import {moduleConfig} from './index'
 
 
 function* fetchCurrentSchedule() {
-  const {api: {matchdata}} = moduleConfig
+  const {apis: {matchdata}} = moduleConfig
   try {
     const {data} = yield call(instance.get, matchdata)
     yield put(actions.updateMatchData(data.match))
@@ -24,7 +24,7 @@ function* fetchCurrentSchedule() {
 }
 
 function* calculateMatchups(action) {
-  const {api: {pickteams}} = moduleConfig
+  const {apis: {pickteams}} = moduleConfig
   
   const {date, iterations, tries, fpartner, fteam} = action.payload
   const url = pickteams.replace('0000-00-00', date)

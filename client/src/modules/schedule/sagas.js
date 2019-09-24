@@ -12,7 +12,7 @@ const get_axios = () => {
 }
 
 function* fetchBlockDates() {
-  const {api: {blockdates: url}} = moduleConfig
+  const {apis: {blockdates: url}} = moduleConfig
   const axios = get_axios()
   try {
     const {data} = yield call(axios.get, url)
@@ -23,7 +23,7 @@ function* fetchBlockDates() {
 }
 
 function* requestMatchData(date) {
-  const {api: {matchdata: urlpattern}} = moduleConfig
+  const {apis: {matchdata: urlpattern}} = moduleConfig
   
   const url = urlpattern.replace('0000-00-00', date)
   //console.log(`Retrieve match data from ${url}`)
@@ -34,7 +34,7 @@ function* requestMatchData(date) {
 }
 
 function* queryVerifyStatus(date) {
-  const {api: {verifystatus: verifypat}} = moduleConfig
+  const {apis: {verifystatus: verifypat}} = moduleConfig
   const url = verifypat.replace('0000-00-00', date)
   
   console.log(`query Verify status at ${url}`)
@@ -51,8 +51,8 @@ function* queryVerifyStatus(date) {
 
 function* requestBlockPlayers({payload: {date}}) {
   //console.log(`Requets Block players for date ${date}`)
-  const {api: {blockplayers: urlpattern}} = moduleConfig
-  const {api: {subs: subspattern}} = moduleConfig
+  const {apis: {blockplayers: urlpattern}} = moduleConfig
+  const {apis: {subs: subspattern}} = moduleConfig
   
   
   const url = urlpattern.replace('0000-00-00', date)
@@ -81,7 +81,7 @@ function* updateBlockPlayersRequest({payload}) {
   const couples = yield select(getCouples)
   const date = yield select(currentDate)
   
-  const {api: {blockplayers: urlpattern}} = moduleConfig
+  const {apis: {blockplayers: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
   
   const axios = get_axios()
@@ -99,7 +99,7 @@ function* clearScheduleRequest() {
   const {currentDate} = selectors
   const date = yield select(currentDate)
   
-  const {api: {blockschedule: urlpattern}} = moduleConfig
+  const {apis: {blockschedule: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
   
   const axios = get_axios()
@@ -116,7 +116,7 @@ function* reScheduleRequest() {
   const {currentDate} = selectors
   const date = yield select(currentDate)
   
-  const {api: {blockschedule: urlpattern}} = moduleConfig
+  const {apis: {blockschedule: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
   
   const axios = get_axios()
@@ -135,7 +135,7 @@ function* scheduleNotify({payload: {message}}) {
   const {currentDate} = selectors
   const date = yield select(currentDate)
   
-  const {api: {notify: urlpattern}} = moduleConfig
+  const {apis: {notify: urlpattern}} = moduleConfig
   const url = urlpattern.replace('0000-00-00', date)
   
   const axios = get_axios()
@@ -158,7 +158,7 @@ function* scheduleNotify({payload: {message}}) {
 function* notifyPlayer({payload: {id}}) {
   const {currentDate} = selectors
   const date = yield select(currentDate)
-  const {api: {notify_player: apiurl}} = moduleConfig
+  const {apis: {notify_player: apiurl}} = moduleConfig
   const url = apiurl
     .replace('000', id)
     .replace('0000-00-00', date)
@@ -176,7 +176,7 @@ function* notifyPlayer({payload: {id}}) {
 
 function* verifyPlayer({payload: {id}}) {
   const {currentDate} = selectors
-  const {api: {verify_player: apiurl}} = moduleConfig
+  const {apis: {verify_player: apiurl}} = moduleConfig
   const date = yield select(currentDate)
   const url = apiurl
     .replace('000', id)

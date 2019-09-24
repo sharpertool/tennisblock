@@ -18,7 +18,7 @@ export let moduleConfig = {
   axios_config: {
     baseURL: '/',
   },
-  api: {
+  apis: {
     matchdata: '',
     pickteams: '',
   }

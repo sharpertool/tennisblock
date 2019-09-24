@@ -18,7 +18,7 @@ export let moduleConfig = {
   axios_config: {
     baseURL: '/',
   },
-  api: {
+  apis: {
     blockdates: '/api/blockdates',
     matchdata: '/api/matchdata/0000-00-00',
     blockplayers: '/api/blockplayers/0000-00-00',

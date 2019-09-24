@@ -55,7 +55,7 @@
               tennisblock_page_options,
               {
                 schedule_opts: {
-                  api: {
+                  apis: {
                     blockdates: '{% url "api:blockdates" %}',
                     matchdata: '{% url "api:matchdata_for_date" "0000-00-00" %}',
                     blockplayers: '{% url "api:blockplayers_for_date" "0000-00-00" %}',
@@ -68,7 +68,7 @@
                   }
                 },
                 teams_opts: {
-                  api: {
+                  apis: {
                     matchdata: '{% url "api:matchdata" %}',
                     pickteams: '{% url "api:pickteams_for_date" "0000-00-00" %}',
                   }
