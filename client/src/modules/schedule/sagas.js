@@ -105,7 +105,7 @@ function* clearScheduleRequest() {
   const axios = get_axios()
   try {
     yield call(axios.delete, url)
-    yield call(requestBlockPlayers, {payload: date})
+    yield call(requestBlockPlayers, {payload: {date:date}})
   } catch (error) {
     yield put(actions.clearScheduleFail(error))
     Sentry.captureException(error)

@@ -16,11 +16,6 @@
             <a href="{{ availability_url }}"><i class="fa fa-calendar-o"></i> Availability</a>
         </li>
 
-        {% url 'availability:angular' as availability_angular_url %}
-        <li class="{% if request.path == availability_angular_url %}active{% endif %}">
-            <a href="{{ availability_angular_url }}"><i class="fa fa-calendar-o"></i> Availability (Angular)</a>
-        </li>
-
         {% url 'members:player_list' as players_url %}
         <li class="{% if request.path == players_url %}active{% endif %}">
             <a href="{{ players_url }}"><i class="fa fa-users"></i> Players</a>

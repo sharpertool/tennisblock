@@ -273,6 +273,8 @@ class Scheduler(object):
             )
             sh.save()
 
+        self.update_scheduled_for_players(mtg)
+
     def remove_all_couples_from_schedule(self, date):
         """
         Remove all couples from the given date.
@@ -281,6 +283,7 @@ class Scheduler(object):
 
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
+        self.update_scheduled_for_players(mtg)
 
     def get_partner_id(self, player):
 
@@ -436,7 +439,7 @@ class Scheduler(object):
             ~Q(player_id__in=schedule_player_ids)).delete()
 
         # Update the player availability arrays.
-        self.update_schedule_players(meeting, schedule_player_ids)
+        self.update_scheduled_for_players(meeting)
 
     @staticmethod
     def update_scheduled_for_players(meeting, scheduled_pks=None):
