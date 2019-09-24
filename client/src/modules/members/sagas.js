@@ -22,8 +22,20 @@ function* fetchBlockMembers() {
   }
 }
 
+function* fetchAllPlayers() {
+  const {apis: {allplayers: url}} = moduleConfig
+  const axios = get_axios()
+  try {
+    const {data} = yield call(axios.get, url)
+    yield put(actions.updateAllPlayers(data))
+  } catch (e) {
+    Sentry.captureException(e)
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchBlockMembers),
+    fork(fetchAllPlayers),
   ])
 }

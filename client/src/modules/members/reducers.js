@@ -4,6 +4,7 @@ import * as types from './constants'
 
 let configInitialState = {
   blockmembers: [],
+  allplayers: [],
 }
 
 export const update_initial_state = (initial_state) => {
@@ -17,6 +18,12 @@ function reducer(state = clone(configInitialState), action) {
       return {
         ...state,
         blockmembers: action.payload
+      }
+    }
+    case types.UPDATE_ALL_PLAYERS: {
+      return {
+        ...state,
+        allplayers: action.payload,
       }
     }
     default: return state

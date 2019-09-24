@@ -28,11 +28,6 @@
 
 {% endblock page_content %}
 
-{% block tennisblock_script %}
-    {{ block.super }}
-    <script type="text/javascript" src="{% static 'js/members.js' %}"></script>
-{% endblock %}
-
 {% block render_css_bundles %}
     {% render_bundle 'style_base' 'css' 'ASSETS' %}
     {% render_bundle 'blockmembers_page' 'css' 'ASSETS' %}
@@ -65,6 +60,7 @@
                 members_opts: {
                   apis: {
                     blockmembers: '{% url "api:members" %}',
+                    allplayers: '{% url "api:all_players" %}',
                   }
                 },
               }

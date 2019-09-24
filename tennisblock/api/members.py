@@ -2,6 +2,7 @@
 
 
 from django.views.generic.edit import View
+from django.db.models import Q
 
 from blockdb.models import Player, SeasonPlayer
 from django.contrib.auth.models import User
@@ -9,6 +10,30 @@ from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .apiutils import JSONResponse, get_current_season
+
+
+class SeasonPossibleSubs(APIView):
+    """ List of Players That can be added to season as subs """
+
+
+class SeasonSubs(APIView):
+    """ List of Players That can be added to season as subs """
+
+    def get(self, request, *args, **kwargs):
+        season = get_current_season()
+
+        season_players = SeasonPlayer.objects.filter(season=season)
+        sp_ids = season_players.filter(blockmember=True).values_list('player__pk', flat=True)
+        subs_ids = season_players.filter(blockmember=False).values_list('player__pk', flat=True)
+
+        moresubs = Player.objects.filter(
+            ~Q(pk__in=sp_ids) & ~Q(pk__in=subs_ids)
+        ).values_list('pk', flat=True)
+        return Response({
+            'status': 'success',
+            'subs': subs_ids,
+            'moresubs': moresubs
+        })
 
 
 class SeasonPlayerView(APIView):
@@ -48,12 +73,14 @@ class SeasonPlayerView(APIView):
         else:
             pdata = []
 
-            players = SeasonPlayer.objects.filter(season=currseason) \
-                .order_by('player__user__last_name', 'player__gender')
+            players = SeasonPlayer.objects.filter(season=currseason)
+            players = players.order_by(
+                'player__user__last_name',
+                'player__gender'
+            )
 
             for sp in players:
                 p = self.serializeSeasonPlayer(sp)
-
                 pdata.append(p)
 
             return JSONResponse(pdata)
@@ -189,5 +216,3 @@ class SeasonPlayerView(APIView):
                 return Response({'status': 'fail', 'error': 'Does not exist'})
         else:
             return Response({'status': 'fail', 'error': 'Missing id'})
-
-

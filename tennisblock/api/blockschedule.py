@@ -3,6 +3,7 @@ import datetime
 from textwrap import dedent
 from django.views.generic.base import View
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
 from django.urls import reverse
@@ -10,18 +11,23 @@ from django.template import loader
 from django.shortcuts import redirect
 from django.db.models import Q, ObjectDoesNotExist
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework import serializers
 from rest_framework.parsers import JSONParser
 from rest_framework import authentication, permissions
-from blockdb.models import Schedule, Couple, Player, SeasonPlayer, Meeting, Availability, PlayerAvailability, \
-    ScheduleVerify
+from blockdb.models import (Schedule, Couple, Player,
+                            SeasonPlayer, Meeting, Availability,
+                            PlayerAvailability,
+                            ScheduleVerify)
 
 from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, time_to_js
 from TBLib.manager import TeamManager
 from TBLib.schedule import Scheduler
 
 from confirm.signals import player_rejected, player_confirmed
+
 
 def _BuildMeetings(force=False):
     """
@@ -215,3 +221,24 @@ class MatchData(APIView):
         return Response({})
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name', 'username', 'email']
+
+
+class PlayerSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Player
+        fields = ['pk', 'user', 'gender',
+                  'ntrp', 'microntrp',
+                  'phone'
+                  ]
+
+
+class AllPlayers(ListAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer

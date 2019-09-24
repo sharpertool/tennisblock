@@ -1,11 +1,11 @@
 from django.urls import path, re_path, register_converter
 
 from .availability import AvailabilityView
-from .members import SeasonPlayerView
+from .members import SeasonPlayerView, SeasonSubs
 from .blocksheet import blockSheet
 from .blockschedule import (SubsView, BlockPlayers,
                             MatchData, BlockSchedule,
-                            BlockDates)
+                            BlockDates, AllPlayers)
 
 from .notify import (ScheduleNotifyView, PlayerVerifyView, PlayerNotifyView)
 
@@ -41,6 +41,8 @@ urlpatterns = (
          name='blockplayers_for_date'),
     path('blockplayers/', BlockPlayers.as_view(),
          name='blockplayers'),
+    path('players/', AllPlayers.as_view(),
+         name='all_players'),
     path('scheduleverify/<date:date>/', ScheduleNotifyView.as_view(),
          name='scheduleverify_for_date'
          ),
@@ -58,6 +60,8 @@ urlpatterns = (
          name='members_by_date'),
     path('members/', SeasonPlayerView.as_view(),
          name='members'),
+    path('member_subs/', SeasonSubs.as_view(),
+         name='season_subs'),
     path('couples/', CouplesView.as_view(),
          name='couples'),
     path('couples/<int:season_id>/', CouplesView.as_view(),
