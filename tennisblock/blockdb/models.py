@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.template import loader
 from django.core.mail import send_mail
@@ -456,6 +457,11 @@ class ScheduleVerify(models.Model):
     @property
     def expired(self):
         return self.schedule.meeting.date > datetime.date.today()
+
+    def reject(self):
+        self.received_on = timezone.now()
+        self.confirmation_type = 'R'
+        self.save()
 
     def send_verify_request(self,
                             request,

@@ -90,6 +90,10 @@ class ScheduleRejected(VerifyMixin, FormView):
         """If the form is valid, save the associated model."""
         reason = form.cleaned_data.get('reason')
         print(f"Rejected form is valid. We are done. Reason was {reason}")
+        verify = self.get_verify(self.code)
+        if verify is not None:
+            verify.reject()
+
         player_rejected.send(self.verify,
                     player=self.verify.schedule.player,
                     reason=reason,
