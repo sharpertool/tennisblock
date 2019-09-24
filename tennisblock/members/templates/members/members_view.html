@@ -19,6 +19,7 @@
 
 
 {% block page_content %}
+    
     <div id="content" class="dynamic">
         <h3>Block Members</h3>
         <table id="player_table" class="display table
@@ -71,9 +72,10 @@
         </table>
     </div>
 
-{% endblock %}
+{% endblock page_content %}
 
 {% block tennisblock_script %}
     {{ block.super }}
     <script type="text/javascript" src="{% static 'js/members.js' %}"></script>
 {% endblock %}
+

@@ -1,0 +1,76 @@
+{% extends "common/angular_base.html" %}
+{% load staticfiles %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_style %}
+    {{ block.super }}
+    <!-- about.html: page_style -->
+
+{% endblock %}
+
+{% block body_script %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+{% endblock %}
+
+{% block style_base %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+{% endblock %}
+
+
+{% block page_content %}
+    
+    <div class="dynamic" id="content">
+        <h3>Block Members React</h3>
+
+    </div>
+
+{% endblock page_content %}
+
+{% block tennisblock_script %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/members.js' %}"></script>
+{% endblock %}
+
+{% block render_css_bundles %}
+    {% render_bundle 'style_base' 'css' 'ASSETS' %}
+    {% render_bundle 'blockmembers_page' 'css' 'ASSETS' %}
+{% endblock %}
+
+{% block render_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        <!-- Render bundles here -->
+        {% render_bundle 'vendor' 'js' %}
+        {% render_bundle 'Members' 'js' %}
+    {% endif %}
+{% endblock %}
+
+{% block initialize_bundles %}
+    {{ block.super }}
+    {% if render_bundles %}
+        {% include "bundles/common_options.html" %}
+        <!-- Initialize bundles -->
+        <script type="text/javascript">
+          console.log('Initialize component')
+          Members(
+            Object.assign(
+              tennisblock_page_elements,
+              {members_el: 'content'}
+            ),
+            Object.assign(
+              tennisblock_page_options,
+              {
+                members_opts: {
+                  apis: {
+                    blockmembers: '{% url "api:members" %}',
+                  }
+                },
+              }
+            )
+          )
+
+        </script>
+    {% endif %}
+{% endblock %}

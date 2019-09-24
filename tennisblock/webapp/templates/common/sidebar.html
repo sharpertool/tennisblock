@@ -21,14 +21,19 @@
             <a href="{{ players_url }}"><i class="fa fa-users"></i> Players</a>
         </li>
 
-        {% url 'members:seasonplayers' as members_url %}
-        <li class="{% if request.path == members_url %}active{% endif %}">
-            <a href="{{ members_url }}"><i class="fa fa-sitemap"></i> Block Members (Angular)</a>
+        {% url 'members:block_react' as block_members_react_url %}
+        <li class="{% if request.path == block_members_react_url %}active{% endif %}">
+            <a href="{{ block_members_react_url }}"><i class="fa fa-sitemap"></i> Block Members (React)</a>
         </li>
 
         {% url 'members:block' as block_members_url %}
         <li class="{% if request.path == block_members_url %}active{% endif %}">
             <a href="{{ block_members_url }}"><i class="fa fa-sitemap"></i> Block Members</a>
+        </li>
+
+        {% url 'members:seasonplayers' as members_url %}
+        <li class="{% if request.path == members_url %}active{% endif %}">
+            <a href="{{ members_url }}"><i class="fa fa-sitemap"></i> Block Members (Angular)</a>
         </li>
 
         {% url 'season:seasons' as seasons_url %}
