@@ -1,20 +1,30 @@
 import React from 'react'
-import { Switch , Route, BrowserRouter as Router } from 'react-router-dom'
+import {Switch, Route, BrowserRouter as Router} from 'react-router-dom'
 
 import ScheduleContainer from '~/containers/ScheduleContainer'
 
-import MeetingSchedule from '~/containers/MeetingSchedule'
+import MeetingSchedule from '~/components/MeetingSchedule/connected'
 import BlockSchedule from '~/containers/BlockSchedule'
-import MeetingMatchups from '~/containers/MeetingMatchups'
 import MeetingNotify from '~/containers/MeetingNotify'
+import MeetingMatchups from '~/components/MeetingMatchups/connected'
 
 const routes = () => (
-    <ScheduleContainer>
-      <Route exact path="/schedule/" component={BlockSchedule} />
-      <Route exact path="/schedule/:id" component={MeetingSchedule} />
-      <Route exact path="/schedule/:id/mixer" component={MeetingMatchups} />
-      <Route exact path="/schedule/:id/notify" component={MeetingNotify} />
-    </ScheduleContainer>
+  <ScheduleContainer>
+    <Switch>
+      <Route exact path="/schedule/">
+        <BlockSchedule/>
+      </Route>
+      <Route exact path="/schedule/:id">
+        <MeetingSchedule/>
+      </Route>
+      <Route exact path="/schedule/:id/mixer">
+        <MeetingMatchups/>
+      </Route>
+      <Route exact path="/schedule/:id/notify">
+        <MeetingNotify/>
+      </Route>
+    </Switch>
+  </ScheduleContainer>
 )
 
 export default routes

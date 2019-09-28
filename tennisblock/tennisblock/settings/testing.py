@@ -1,4 +1,4 @@
-print ("Running Development Settings.")
+print("Running Development Settings.")
 
 from .common import *
 

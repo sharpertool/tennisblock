@@ -8,15 +8,19 @@ const instance = axios.create({
   xsrfHeaderName: 'X-CSRFToken'
 })
 
-import * as actions from './actions'
+import {selectors, actions} from '~/redux-page'
 import * as types from './constants'
 import {moduleConfig} from './index'
 
 
-function* fetchCurrentSchedule() {
+function* fetchCurrentSchedule({payload: {date}}) {
   const {apis: {matchdata}} = moduleConfig
+  
+  const url = matchdata.replace('0000-00-00', date)
+  console.log(`Query match data at ${url}`)
+  
   try {
-    const {data} = yield call(instance.get, matchdata)
+    const {data} = yield call(instance.get, url)
     yield put(actions.updateMatchData(data.match))
   } catch ({response}) {
     console.log(response)
@@ -43,7 +47,7 @@ function* calculateMatchups(action) {
 
 export default function* rootSaga() {
   yield all([
-    fetchCurrentSchedule(),
+    takeLatest(types.FETCH_CURRENT_SCHEDULE, fetchCurrentSchedule),
     takeLatest(types.CALCULATE_MATCHUPS, calculateMatchups),
   ])
 }
