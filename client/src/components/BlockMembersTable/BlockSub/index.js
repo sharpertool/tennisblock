@@ -14,7 +14,7 @@ const BlockSub = ({
     gender,
     ntrp,
     microntrp,
-    email,
+    user: {email},
     phone,
   } = player
   
