@@ -32,7 +32,8 @@ class Scheduler(object):
     def __init__(self):
         pass
 
-    def is_player_available(self, mtg, player):
+    @staticmethod
+    def is_player_available(mtg, player):
         """
         Return True if this player is available on the meeting date.
         """
@@ -40,15 +41,17 @@ class Scheduler(object):
         av = PlayerAvailability.objects.get_for_season_player(season=mtg.season, player=player)
         return av.available[mtg_index]
 
-    def is_couple_available(self, mtg, couple):
+    @staticmethod
+    def is_couple_available(mtg, couple):
         """
         Check if both members of the given couple are available.
         """
 
-        return all([self.is_player_available(mtg, couple.male),
-                    self.is_player_available(mtg, couple.female)])
+        return all([Scheduler.is_player_available(mtg, couple.male),
+                    Scheduler.is_player_available(mtg, couple.female)])
 
-    def get_available_couples(self, mtg, fulltime=True,
+    @staticmethod
+    def get_available_couples(mtg, fulltime=True,
                               as_singles=None):
         """
         Get a list of couples that are available for this meeting
@@ -69,11 +72,12 @@ class Scheduler(object):
         )
 
         availableCouples = [
-            c for c in couples if self.is_couple_available(mtg, c)]
+            c for c in couples if Scheduler.is_couple_available(mtg, c)]
 
         return availableCouples
 
-    def get_available_singles(self, mtg):
+    @staticmethod
+    def get_available_singles(mtg):
         couples = Couple.objects.filter(
             season=mtg.season,
             as_singles=True,
@@ -82,9 +86,9 @@ class Scheduler(object):
         guys = []
         girls = []
         for couple in couples:
-            if self.is_player_available(mtg, couple.male):
+            if Scheduler.is_player_available(mtg, couple.male):
                 guys.append(couple.male)
-            if self.is_player_available(mtg, couple.female):
+            if Scheduler.is_player_available(mtg, couple.female):
                 girls.append(couple.female)
 
         return guys, girls
@@ -129,12 +133,13 @@ class Scheduler(object):
 
         return cinfo
 
-    def get_couple_stats(self, season, couples):
+    @staticmethod
+    def get_couple_stats(season, couples):
         """ Organize by # of plays """
 
         info = {}
         for couple in couples:
-            couple_info = self.calc_play_stats_for_couple(
+            couple_info = Scheduler.calc_play_stats_for_couple(
                 season=season,
                 couple=couple,
             )
@@ -142,7 +147,8 @@ class Scheduler(object):
 
         return info
 
-    def get_singles_stats(self, season, players):
+    @staticmethod
+    def get_singles_stats(season, players):
         """
         Return stats for how many times the player has played
         """
@@ -164,7 +170,8 @@ class Scheduler(object):
 
         return couples_by_plays
 
-    def get_next_group(self, date=None, with_singles=None):
+    @staticmethod
+    def get_next_group(date=None, with_singles=None):
         """
         Get the next group of players.
 
@@ -193,24 +200,24 @@ class Scheduler(object):
                 group.append(f)
                 needed -= 1
 
-        guys, girls = self.get_available_singles(mtg)
+        guys, girls = Scheduler.get_available_singles(mtg)
 
         as_singles = None
         if with_singles:
             as_singles = False
-        pt = self.get_available_couples(mtg,
+        pt = Scheduler.get_available_couples(mtg,
                                         fulltime=False,
                                         as_singles=as_singles
                                         )
 
-        stats = self.get_couple_stats(season, pt)
+        stats = Scheduler.get_couple_stats(season, pt)
 
-        info_by_plays = self.sort_info(stats)
+        info_by_plays = Scheduler.sort_info(stats)
         plays = sorted(info_by_plays.keys())
         for i in plays:
             info_data = info_by_plays.get(i)
             if info_data:
-                info_data = self.sort_shuffle(info_data)
+                info_data = Scheduler.sort_shuffle(info_data)
 
                 while len(info_data) and needed > 0:
                     info = info_data.pop(0)
@@ -247,7 +254,8 @@ class Scheduler(object):
 
         return cinfosortedshuffled
 
-    def add_couples_to_schedule(self, date, couples):
+    @staticmethod
+    def add_couples_to_schedule(date, couples):
 
         mtg = get_meeting_for_date(date)
 
@@ -273,9 +281,10 @@ class Scheduler(object):
             )
             sh.save()
 
-        self.update_scheduled_for_players(mtg)
+        Scheduler.update_scheduled_for_players(mtg)
 
-    def remove_all_couples_from_schedule(self, date):
+    @staticmethod
+    def remove_all_couples_from_schedule(date):
         """
         Remove all couples from the given date.
         """
@@ -283,9 +292,10 @@ class Scheduler(object):
 
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
-        self.update_scheduled_for_players(mtg)
+        Scheduler.update_scheduled_for_players(mtg)
 
-    def get_partner_id(self, player):
+    @staticmethod
+    def get_partner_id(player):
 
         if player.gender == 'f':
             c = Couple.objects.filter(female=player)
@@ -298,7 +308,8 @@ class Scheduler(object):
 
         return None
 
-    def _mkData(self, player):
+    @staticmethod
+    def _mkData(player):
         if player is not None:
             return {
                 'name': player.name,
@@ -308,7 +319,8 @@ class Scheduler(object):
             }
         return {'name': '----'}
 
-    def _query_scheduled_players(self, mtg):
+    @staticmethod
+    def _query_scheduled_players(mtg):
         """
         Call the stored procedure that does a low-level complex
         full outer join of our players.
@@ -319,8 +331,8 @@ class Scheduler(object):
 
         data = [
             {
-                'guy': self._mkData(guy.player),
-                'gal': self._mkData(guy.partner)
+                'guy': Scheduler._mkData(guy.player),
+                'gal': Scheduler._mkData(guy.partner)
             } for guy in guys
         ]
 
@@ -336,7 +348,8 @@ class Scheduler(object):
 
         return data
 
-    def query_schedule(self, date=None):
+    @staticmethod
+    def query_schedule(date=None):
         """
         Query the schedule of players for the given date.
         """
@@ -360,7 +373,7 @@ class Scheduler(object):
             gals = []
             couples = []
 
-            results = self._query_scheduled_players(mtg)
+            results = Scheduler._query_scheduled_players(mtg)
             for result in results:
                 couple = {
                     'guy': {'name': '----'},
@@ -411,7 +424,8 @@ class Scheduler(object):
 
         return data
 
-    def update_schedule_players(self, meeting, couples):
+    @staticmethod
+    def update_schedule_players(meeting, couples):
 
         schedule_player_ids = []
         for cpl in couples:
@@ -419,16 +433,16 @@ class Scheduler(object):
             fd = cpl['gal']
             msub, fsub = md.get('issub', False), fd.get('issub', False)
             mverified, fverified = md.get('verified', False), fd.get('verified', False)
-            player, partner = self.get_players(md, fd)
+            player, partner = Scheduler.get_players(md, fd)
 
             if player:
-                self.add_or_update_schedule(meeting, player, partner,
+                Scheduler.add_or_update_schedule(meeting, player, partner,
                                             is_sub=msub,
                                             verified=mverified
                                             )
                 schedule_player_ids.append(player.id)
             if partner:
-                self.add_or_update_schedule(meeting, partner, player,
+                Scheduler.add_or_update_schedule(meeting, partner, player,
                                             is_sub=fsub,
                                             verified=fverified
                                             )
@@ -439,7 +453,7 @@ class Scheduler(object):
             ~Q(player_id__in=schedule_player_ids)).delete()
 
         # Update the player availability arrays.
-        self.update_scheduled_for_players(meeting)
+        Scheduler.update_scheduled_for_players(meeting)
 
     @staticmethod
     def update_scheduled_for_players(meeting, scheduled_pks=None):
@@ -511,7 +525,8 @@ class Scheduler(object):
                 av.scheduled[idx] = False
                 av.save()
 
-    def get_players(self, player, partner):
+    @staticmethod
+    def get_players(player, partner):
         """ Get the player and partner objects from dict """
 
         try:
@@ -526,7 +541,8 @@ class Scheduler(object):
 
         return player_obj, partner_obj
 
-    def add_or_update_schedule(self, meeting, player, partner,
+    @staticmethod
+    def add_or_update_schedule(meeting, player, partner,
                                is_sub=False, verified=False):
         """
         Add or update the schedule
@@ -569,7 +585,8 @@ class Scheduler(object):
 
         return False
 
-    def _add_to_schedule(self, mtg, player, partner):
+    @staticmethod
+    def _add_to_schedule(mtg, player, partner):
         """
         Add a player to the schedule.
 
@@ -598,19 +615,21 @@ class Scheduler(object):
         except ObjectDoesNotExist:
             pass
 
-    def update_schedule(self, date, couples):
+    @staticmethod
+    def update_schedule(date, couples):
         """
         Update the schedule with the given list.
         """
         mtg = get_meeting_for_date(date)
 
         if mtg:
-            self.update_schedule_players(mtg, couples)
+            Scheduler.update_schedule_players(mtg, couples)
             return "Schedule updated"
         else:
             return "Could not update schedule."
 
-    def get_block_email_list(self):
+    @staticmethod
+    def get_block_email_list():
         """
         Return a list of all e-mail addresses for block players.
         """
@@ -627,7 +646,8 @@ class Scheduler(object):
 
         return addresses
 
-    def get_notify_email_lists(self, date=None):
+    @staticmethod
+    def get_notify_email_lists(date=None):
         """
         Return an email list for scheduled players,
         and a CC list for players that are not scheduled
@@ -652,15 +672,3 @@ class Scheduler(object):
         return email_list, cc_list
 
 
-def main():
-    tb = Scheduler()
-
-    group = tb.get_next_group()
-
-    tb.add_couples_to_schedule(group)
-
-    print("Cool")
-
-
-if __name__ == '__main__':
-    main()

@@ -7,7 +7,7 @@ from django.urls import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 from TBLib.schedule import Scheduler
 
-from api.blockschedule import ScheduleNotifyView
+from api.notify import ScheduleNotifyView
 
 from blockdb.models import Schedule, ScheduleVerify
 

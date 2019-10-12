@@ -1,3 +1,18 @@
+"""
+Test the Scheduling Algorithm
+
+Here are the goals:
+    - Schedule a full set of players from the current set of block players
+    - Do not schedule players that are not available
+    - Prioritize players with the least amount of plays
+    - Schedule couples together
+    - Schedule single players in the schedule with equal priority as copules
+    - Boost priority of players that are not available for the next schedule
+    - 2X Boost priority of players that are not available for next 2 schedules
+    - Maximum boost for any players that are available this week, and not next 3+ weeks
+
+
+"""
 from django.test import tag
 from django.urls import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
@@ -8,6 +23,7 @@ from blockdb.models import (
 
 from blockdb.tests.db_utils import BlockDBTestBase
 from api.notify import ScheduleNotifyView
+from TBLib.schedule import Scheduler
 
 
 factory = APIRequestFactory()
@@ -27,7 +43,7 @@ class TestBlockSchedule(BlockDBTestBase):
 
     @classmethod
     def setUpTestData(cls):
-        guys, girls, season, meetings = cls.staticCoreSetup()
+        guys, girls, season, meetings = cls.staticCoreSetup(num_players=16)
         players = cls.staticPlayersSetup(season, girls, guys)
         guys[0].user.is_staff = True
         guys[0].user.save()
@@ -43,36 +59,6 @@ class TestBlockSchedule(BlockDBTestBase):
     def setUp(self):
         pass
 
-    def test_sub_list(self):
+    def test_get_available_couples(self):
         pass
 
-    def test_build_meetings(self):
-        self.assertEqual(1, Season.objects.all().count(), "Should have had 16 meetings")
-        self.assertEqual(16, Meeting.objects.all().count(), "Should have had 16 meetings")
-        self.assertEqual(16, SeasonPlayer.objects.all().count())
-        avlist = PlayerAvailability.objects.all()
-        for av in avlist:
-            self.assertEqual(len(av.available), 16, 'Expected availability to have 16 items')
-
-    def test_schedule_notify(self):
-        response = notify_post('This is a test message', user=self.admin_user)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, {'status': 'success'})
-
-    def test_block_players_get(self):
-        pass
-
-    def test_block_players_post(self):
-        pass
-
-    def test_block_dates_query(self):
-        pass
-
-    def test_block_schedule_query(self):
-        pass
-
-    def test_block_schedule_update(self):
-        pass
-
-    def test_block_schedule_delete(self):
-        pass

@@ -62,17 +62,19 @@ class TestBlockSchedule(BlockDBTestBase):
             'couples': [
                 {
                     'name': 'Hendersons',
-                    'guy_id': self.guys[0].id,
-                    'girl_id': self.girls[0].id,
+                    'guy': self.guys[0].id,
+                    'girl': self.girls[0].id,
                     'fulltime': True,
                     'as_singles': False,
+                    'blockcouple': True,
                 },
                 {
                     'name': 'Hendersons',
-                    'guy_id': self.guys[1].id,
-                    'girl_id': self.girls[1].id,
+                    'guy': self.guys[1].id,
+                    'girl': self.girls[1].id,
                     'fulltime': False,
                     'as_singles': True,
+                    'blockcouple': True,
                 }
 
             ]
@@ -80,7 +82,9 @@ class TestBlockSchedule(BlockDBTestBase):
 
         gcs = mock.MagicMock(return_value=self.season)
         with mock.patch('api.views.season.gcs', gcs):
-            request = request_factory.post(reverse('api:couples_for_season', kwargs={"season_id": 0}), data, format='json')
+            request = request_factory.post(
+                reverse('api:couples_for_season',
+                        kwargs={"season_id": 0}), data, format='json')
             force_authenticate(request, user=self.user)
             view = CouplesView.as_view()
             result = view(request)

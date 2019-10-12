@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 
 from django.test import TestCase, tag
 from django.http import HttpRequest
@@ -26,9 +27,9 @@ from blockdb.factories import (
 class BlockDBTestBase(TestCase):
 
     @staticmethod
-    def staticCoreSetup():
-        guys = [GuyPlayerFactory() for g in range(8)]
-        girls = [GirlPlayerFactory() for g in range(8)]
+    def staticCoreSetup(num_players=8):
+        guys = [GuyPlayerFactory() for g in range(num_players)]
+        girls = [GirlPlayerFactory() for g in range(num_players)]
         season = MutedSeasonFactory()
         season.ensure_meetings_exist()
         meetings = season.meetings
@@ -46,8 +47,8 @@ class BlockDBTestBase(TestCase):
 
     @staticmethod
     def static_couples_setup(season, girls, guys,
-                             fulltime=None,
-                             singles=None):
+                             fulltime: List[int] = None,
+                             singles: List[int] = None):
         couples = []
         for i, guy in enumerate(guys):
             gal = girls[i]

@@ -1,7 +1,7 @@
 import {put, call, all, takeLatest, select, fork} from 'redux-saga/effects'
-import axios from 'axios'
+import axioscore from 'axios'
 
-const instance = axios.create({
+const instance = axioscore.create({
   // ToDo: need a solution that works for deployed app.
   //baseURL: `${window.location.protocol}//${window.location.host}`,
   xsrfCookieName: 'csrftoken',
@@ -30,10 +30,16 @@ function* fetchCurrentSchedule({payload: {date}}) {
 function* calculateMatchups(action) {
   const {apis: {pickteams}} = moduleConfig
   
+  const axios = axioscore.create({
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFToken',
+    timeout: 10*60*1000,
+  })
+  
   const {date, iterations, tries, fpartner, fteam} = action.payload
   const url = pickteams.replace('0000-00-00', date)
   try {
-    const {data} = yield call(instance.post,
+    const {data} = yield call(axios.post,
       url,
       action.payload)
     if (data.status == 'success') {

@@ -25,6 +25,11 @@ class Teams(APIView):
         fpartners = request.data.get('fpartner', 1.0)
         fteams = request.data.get('fteam', 1.0)
 
+        iterations = iterations or 25
+        tries = tries or 35
+        fpartners = fpartners or 1.0
+        fteams = fteams or 1.5
+
         mgr = TeamManager()
         result = mgr.pick_teams_for_date(date,
                                          iterations=iterations,

@@ -16,9 +16,9 @@ const MeetingMatchups = (props) => {
   
   const [state, setState] = useState({
     iterations: 25,
-    tries: 25,
+    tries: 35,
     fpartner: 1.0,
-    fteam: 1.0,
+    fteam: 1.5,
   })
   
   const ref1 = useRef()
@@ -27,7 +27,14 @@ const MeetingMatchups = (props) => {
   const ref4 = useRef()
   
   const onChange = (e) => {
-    setState({[e.target.name]: e.target.value})
+    const name = e.target.name
+    const value = e.target.value
+    setState((state) => {
+      let newState = {...state}
+      newState[name] = value
+      console.dir(newState)
+      return newState
+    })
   }
   
   const handleFocus = (e) => {
