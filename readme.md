@@ -31,7 +31,7 @@ This file is used by docker, so the values in there configure the docker system.
 
 In DJANGO_ROOT, there are two local files that are used for configuration.
 
-Copy .env.local.example to .env.loocal
+Copy .env.local.example to .env.local
 
 	cd tennisblock
 	cp .env.local.example .env.local
@@ -43,7 +43,9 @@ Finally, get the local config
 	cd tennisblock
 	cp local_config.sample.py local_config.py
 
-Edit
+You will need to edit this file to customize it to your local environment. Collaborate with team leader or other members of the team to get the right values, as the example might not be up-to-date
+
+
 
 
 

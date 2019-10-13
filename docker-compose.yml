@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 
 volumes:
   postgres_data_dev:
@@ -7,24 +7,30 @@ volumes:
 services:
 
   postgres:
-    container_name: tennis-postgres
+    container_name: ${NAME:-tennis}-postgres
     build: ./compose/postgres
     volumes:
       #- postgres_data_dev:/var/lib/postgresql/data
       #- ./database/backups:/backups
       # You can also modify this to point to your local Dropbox location where the shared
       # Update .env file to set a location on your system.
-      - "${SHARED_BACKUPS}:/backups"
+      - "${BACKUP_ROOT}:/backups"
       - "${LOCAL_BACKUPS}:/local_backups"
     environment:
       - POSTGRES_USER=tennisblock
       - POSTGRES_DB=tennisblock
     ports:
-      - "5443:5432"
+      - "${PG_PORT:-5432}:5432"
 
   smtpd:
-    container_name: tennis-smtpd
+    container_name: ${NAME:-tennis}-smtpd
     build: ./compose/smtpd
     ports:
-      - "8026:25"
+      - "${SMTP_PORT:-1035}:25"
 
+  mailhog:
+    container_name: ${NAME:-tennis}-hog
+    build: ./compose/mailhog
+    ports:
+      - "${MAILHOG_SMTP:-1025}:1025"
+      - "${MAILHOG_HTTP:-8025}:8025"

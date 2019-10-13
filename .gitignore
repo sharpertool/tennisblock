@@ -67,3 +67,4 @@ db_learning.txt
 /tennisblock/notebooks/
 /.vscode
 /client/src/pages/Members/modules
+/.envrc

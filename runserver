@@ -1,6 +1,6 @@
 #!/bin/sh
 
-port=8002
+port=${DJPORT:-8000}
 SECURE=0
 while getopts ":p:s" option
 do
