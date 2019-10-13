@@ -176,6 +176,7 @@ APPEND_SLASH = False
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'tennisblock.wsgi.application'
+ASGI_APPLICATION = 'tennisblock.routing.application'
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -232,6 +233,7 @@ INSTALLED_APPS = [
     'confirm',
     'season',
     'availability',
+    'tennis_channels',
     'webpack_loader',
     'pinax_theme_bootstrap',
     'bootstrap_datepicker_plus',
@@ -317,6 +319,15 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'tennisblock_flake'
     }
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [env.str("CHANNELS_REDIS_URI", default="")],
+        },
+    },
 }
 
 # ReactJS Build import

@@ -22,6 +22,12 @@ services:
     ports:
       - "${PG_PORT:-5432}:5432"
 
+  redis:
+    container_name: ${NAME:-tennis}-redis
+    build: ./compose/redis
+    ports:
+      - "${REDIS_PORT:-6479}:6379"
+
   smtpd:
     container_name: ${NAME:-tennis}-smtpd
     build: ./compose/smtpd

@@ -30,6 +30,7 @@ urlpatterns = [
     path('schedule/', include('schedule.urls', namespace='schedule')),
     path('api/', include('api.urls')),
     path('django-admin/', admin.site.urls),
+    path('chat/', include('tennis_channels.urls', namespace='chat')),
 
     path('admin/', include(wagtailadmin_urls)),
     path('', include(wagtail_urls)),
