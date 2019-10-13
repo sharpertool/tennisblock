@@ -19,7 +19,7 @@ const AvailabilityHeader = ({blockdates}) => {
           if (bd.current) {
             classes.push('current')
           }
-          const d = new Date(bd.date)
+          const d = new Date(bd.date.split('-'))
           const dstring = d.toLocaleDateString('en',
             {month: 'short', day: 'numeric'}
           )

@@ -48,6 +48,8 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-select": "^3.0.4",
+    "react-table": "^6.10.3",
+    "react-table-hoc-fixed-columns": "^2.1.1",
     "reactstrap": "^8.0.1",
     "redux": "4.0.4",
     "redux-actions": "^2.6.5",

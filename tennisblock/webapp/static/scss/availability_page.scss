@@ -3,13 +3,31 @@
 
 /* *********** */
 /* LESS Styles */
-
-
 @import '_availability';
 //@import 'common/layout_header';
 //@import 'common/layout_page_header';
 //@import 'nav';
 //@import 'footer';
+
+.scheduled {
+    background-color: #12ff88;
+}
+
+.played {
+    background-color: #ffa28b;
+}
+
+div.rt-td.scheduled {
+    background-color: #12ff88 !important;
+}
+
+div.rt-td.played {
+    background-color: #ffa28b !important;
+}
+
+div.rt-th.holdout {
+    background-color: #aa342d !important;
+}
 
 .availability {
     .gridrow {
@@ -17,6 +35,7 @@
         grid-template-columns: 3fr 16fr 1fr 1fr;
         grid-template-rows: auto;
     }
+
     .items {
         display: flex;
         flex-wrap: nowrap;
@@ -43,9 +62,11 @@
         border: 1px solid lightgray;
 
     }
+
     .heading {
 
     }
+
     .heading_item {
         border: 1px solid lightblue;
     }
@@ -53,14 +74,70 @@
     .name_col {
 
     }
+
     .played_col {
 
     }
+
     .scheduled_col {
 
     }
+
     .avrow .items::-webkit-scrollbar {
         display: none;
     }
+
+    //table {
+    //    position: relative;
+    //    //width: 700px;
+    //    //background-color: #aaa;
+    //    overflow: hidden;
+    //    border-collapse: collapse;
+    //}
+    //
+    //
+    ///*thead*/
+    //thead {
+    //    position: relative;
+    //    display: block; // separates the header from the body allowing it to be positioned
+    //    //width: 700px;
+    //    overflow: visible;
+    //}
+    //
+    //thead th {
+    //    //background-color: #99a;
+    //    //min-width: 120px;
+    //    //height: 32px;
+    //    //border: 1px solid #222;
+    //}
+    //
+    //thead th:nth-child(1) { // first cell in the header
+    //    position: relative;
+    //    display: block; // separates the first cell in the header from the header
+    //    //background-color: #88b;
+    //}
+    //
+    //
+    ///*tbody*/
+    //tbody {
+    //    position: relative;
+    //    display: block; // separates the tbody from the header
+    //    //width: 700px;
+    //    //height: 239px;
+    //    overflow: scroll;
+    //}
+    //
+    //tbody td {
+    //    //background-color: #bbc;
+    //    //min-width: 120px;
+    //    //border: 1px solid #222;
+    //}
+    //
+    //tbody tr td:nth-child(1) { // the first cell in each tr
+    //    position: relative;
+    //    display: block; // separates the first column from the tbody
+    //    //height: 40px;
+    //    //background-color: #99a;
+    //}
 }
 
