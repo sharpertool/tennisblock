@@ -1,4 +1,8 @@
+import logging
 from .Meeting import Meeting
+from tennis_channels.sync_handlers import MixerSyncHandler
+
+logger = logging.getLogger(__name__)
 
 
 class TeamGen(object):
@@ -32,25 +36,33 @@ class TeamGen(object):
                     fpartners=fpartners,
                     fteams=fteams)
                 group_round, min_found_diff, min_q, max_q = results
-                print(f"Quality Stats: min:{min_q} max:{max_q}")
+                status_msg = f"Quality Stats: min:{min_q} max:{max_q}"
+                MixerSyncHandler.mixer_status(status_msg)
+                logger.info(status_msg)
 
                 if group_round is None:
                     # Increase the quality then the diff
                     min_quality = min_quality - 2
-                    print(f"Criteria updated. Q:{min_quality}")
+                    logger.debug(f"Criteria updated. Q:{min_quality}")
 
             if group_round is None:
                 self.meeting.print_check_stats()
-                print("Failed to build the sequence.")
+                logger.info("Failed to build the sequence.")
                 return None
             else:
                 group_round.display()
+
+                status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
+                MixerSyncHandler.mixer_status(status_msg)
+                logger.info(status_msg)
+
                 d_max, d_avg, diff_list = group_round.diff_stats()
                 diffs = ",".join(["%5.3f" % x for x in diff_list])
-                print("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
+                logger.info("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
                     self.diff_max, d_max, d_avg, diffs))
                 self.meeting.add_round(group_round)
 
+        MixerSyncHandler.mixer_status("Able to generate the sequences")
         return self.meeting.get_rounds()
 
     def display_sequences(self, seq):

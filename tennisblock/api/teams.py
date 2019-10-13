@@ -3,6 +3,7 @@ from rest_framework.response import Response
 
 from TBLib.manager import TeamManager
 
+
 class Teams(APIView):
 
     def get(self, request, date=None):

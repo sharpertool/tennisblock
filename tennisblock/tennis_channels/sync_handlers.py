@@ -14,16 +14,16 @@ class MixerSyncHandler:
     """
 
     @staticmethod
-    def mixer_status():
+    def mixer_status(msg: str):
         channel_layer = get_channel_layer()
-        logger.debug("Sending comment updated message")
+        logger.info(f"Sending mixer status: {msg}")
         async_to_sync(channel_layer.group_send)(
             'tennis_mixer_group',
             {
                 "type": "mixer.event",
                 "action": "mixerUpdate",
                 "payload": {
-                    'status': 'something here'
+                    'status_msg': msg
                 }
             }
         )
@@ -37,7 +37,7 @@ class ScheduleSyncHandler:
     @staticmethod
     def schedule_verify_update(schedule_date=None):
         channel_layer = get_channel_layer()
-        logger.debug("Sending schedule verify update")
+        logger.info("Sending schedule verify update")
         group = ScheduleConsumer.calc_group_name(schedule_date)
         async_to_sync(channel_layer.group_send)(
             group,

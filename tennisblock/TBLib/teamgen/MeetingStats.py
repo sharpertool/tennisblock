@@ -1,3 +1,4 @@
+import logging
 import random
 from typing import List
 from collections import Counter, defaultdict
@@ -6,6 +7,8 @@ from TBLib.teamgen.exceptions import NoValidOpponent, NoValidPartner
 from .Match import Match
 from .Team import Team
 from .round import MatchRound
+
+logger = logging.getLogger(__name__)
 
 
 def make_key(m, f):
@@ -63,10 +66,10 @@ class MeetingStats:
 
     def set_see_player_once(self, b_once):
         if b_once:
-            print("Setting the see_player_once setting to True")
+            logger.debug("Setting the see_player_once setting to True")
             # self.maxIterations *= 10
         else:
-            print("Setting the see_player_once setting to False")
+            logger.debug("Setting the see_player_once setting to False")
         self.seePlayerOnlyOnce = b_once
 
     def set_max_iteration(self, n):
@@ -87,7 +90,7 @@ class MeetingStats:
             self.InvalidOpponents[p.name] = set()
             self.InvalidPartners[p.name] = set()
 
-        print("restart Done")
+        logger.debug("restart Done")
 
     def diff_history_min(self):
         return min(self.diff_history)
@@ -205,7 +208,7 @@ class MeetingStats:
                 min_min_q = min(min_min_q, minq)
                 max_max_q = max(max_max_q, maxq)
 
-            print(
+            logger.debug(
                 f"Build a set DiffMax:{diff_max:5.3}({md:5.3})"
                 f" MinQ:{quality_min:5.1f}({minq:5.1f}, {maxq:5.1f}) Try:{tries}.")
 
@@ -385,6 +388,5 @@ class MeetingStats:
         self.n_fails_by_diff = 0
 
     def print_check_stats(self):
-        if self.log_level > 0:
-            print(f"Failed Stats:Partner:{self.n_fails_by_invalid_partner}"
-                  f"Diff:{self.n_fails_by_diff} Mindiff:{min(self.diff_history)}")
+        logger.debug(f"Failed Stats:Partner:{self.n_fails_by_invalid_partner}"
+                    f"Diff:{self.n_fails_by_diff} Mindiff:{min(self.diff_history)}")

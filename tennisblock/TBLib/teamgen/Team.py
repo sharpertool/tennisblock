@@ -1,5 +1,8 @@
-#from blockdb.models import Player
+import logging
 from .player import Player
+
+logger = logging.getLogger(__name__)
+
 
 class Team:
     """
@@ -25,7 +28,7 @@ class Team:
 
         """
         if self.p1.gender == 'F' and self.p1.gender == 'F':
-            combined = 0.92*self.p1.microntrp + self.p2.microntrp
+            combined = 0.92 * self.p1.microntrp + self.p2.microntrp
         elif self.p1.gender == 'M' and self.p1.gender == 'M':
             combined = 1.08 * (self.p1.microntrp + self.p2.microntrp)
         else:
@@ -38,14 +41,14 @@ class Team:
     def quality(self, factor=None):
         """ Range from 100 as best, to zero as worst we calculate """
         factor = factor or self.quality_factor
-        diff = min(self.max_diff, factor*abs(self.p1.microntrp - self.p2.microntrp))
-        Q = round(100 - 100 * (diff/self.max_diff))
+        diff = min(self.max_diff, factor * abs(self.p1.microntrp - self.p2.microntrp))
+        Q = round(100 - 100 * (diff / self.max_diff))
         return Q
 
     def display(self):
         p1 = self.p1
         p2 = self.p2
-        print(
+        logger.info(
             f"{p1 and p1.name} {p1 and p1.ntrp:3.2}/"
             f"{p1 and p1.microntrp:3.2}"
             f" and "
@@ -67,7 +70,7 @@ class Team:
             un2 = self.p2.microntrp
 
         return (f"{name1} and {name2}"
-                f" @ {un1+un2:3.2} {un1}/{un2}")
+                f" @ {un1 + un2:3.2} {un1}/{un2}")
 
     def __repr__(self):
         str(self)

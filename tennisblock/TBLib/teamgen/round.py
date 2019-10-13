@@ -1,7 +1,10 @@
+import logging
 from typing import List
 import math
 
 from .Match import Match
+
+logger = logging.getLogger(__name__)
 
 
 class MatchRound:
@@ -72,11 +75,10 @@ class MatchRound:
     def display(self):
         for match in self.matches:
             match.display()
-            print("")
 
     def show_diffs(self):
         diffs = ["%4.2f" % match.diff() for match in self.matches]
-        print("Diffs: " + "\t".join(diffs))
+        logger.debug("Diffs: " + "\t".join(diffs))
 
     def __str__(self):
         return " ".join([str(m) for m in self.matches])

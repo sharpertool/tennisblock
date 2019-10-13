@@ -1,6 +1,8 @@
 import {put, call, all, takeLatest, select, fork} from 'redux-saga/effects'
 import axioscore from 'axios'
 
+import {connectionManager} from '~/websockets_sagas'
+
 const instance = axioscore.create({
   // ToDo: need a solution that works for deployed app.
   //baseURL: `${window.location.protocol}//${window.location.host}`,
@@ -12,6 +14,20 @@ import {selectors, actions} from '~/redux-page'
 import * as types from './constants'
 import {moduleConfig} from './index'
 
+function* channelsConnectionManager() {
+  //const {comment_group, enable_wss} = moduleConfig
+  
+  // if (!enable_wss) {
+  //   return yield delay(1)
+  // }
+  
+  const url = '/ws/mixer/'
+  
+  console.log('Yielding to the master connection manager')
+  yield connectionManager(url, actions, {
+    onnconnect_send: {'action': 'getMixerStatus'}
+  })
+}
 
 function* fetchCurrentSchedule({payload: {date}}) {
   const {apis: {matchdata}} = moduleConfig
@@ -53,6 +69,7 @@ function* calculateMatchups(action) {
 
 export default function* rootSaga() {
   yield all([
+    fork(channelsConnectionManager),
     takeLatest(types.FETCH_CURRENT_SCHEDULE, fetchCurrentSchedule),
     takeLatest(types.CALCULATE_MATCHUPS, calculateMatchups),
   ])

@@ -1,4 +1,7 @@
+import logging
 from .Team import Team
+
+logger = logging.getLogger(__name__)
 
 
 class Match:
@@ -51,10 +54,10 @@ class Match:
 
     def display(self):
         self.t1.display()
-        print("Versus")
+        logger.debug("Versus")
         self.t2.display()
-        print(f"diff:{self._diff:4.2} "
-              f"Quality:{self._quality:4.2}\n")
+        logger.debug(f"diff:{self._diff:4.2} "
+                    f"Quality:{self._quality:4.2}\n")
 
     def __str__(self):
         return f"{self.t1} vs {self.t2} {self._diff:3.2} {self._quality:3.1}"
