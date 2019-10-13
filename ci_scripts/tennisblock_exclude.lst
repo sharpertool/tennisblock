@@ -9,6 +9,9 @@ zipdir
 reload.me
 uwsgi.ini
 wsgi.py
+asgi.py
+daphne.sock
+daphne.sock.lock
 .env
 .versions.env
 .env.local

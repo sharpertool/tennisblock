@@ -58,5 +58,9 @@ echo -e "\n Reloading uWSGI web service.."
 # Reload with reload.me
 touch reload.me
 
+echo -e "\nRestart Daphne in case there are changes"
+sudo systemctl restart daphne
+sudo systemctl status daphne
+
 rm -f ${APPPATH}/maintenance.on
 
