@@ -30,9 +30,6 @@ def reset_availability_arrays(date=None):
 
 class Scheduler(object):
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def is_player_available(mtg, player):
         """
