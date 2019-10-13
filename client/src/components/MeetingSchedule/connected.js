@@ -16,11 +16,12 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  getBlockPlayers: actions.getBlockPlayers,
-  updateBlockPlayers: actions.updateBlockPlayers,
-  clearSchedule: actions.clearSchedule,
-  onReSchedule: actions.reSchedule,
-  onNotify: actions.scheduleNotify,
+  getBlockPlayers: actions['schedule:getBlockPlayers'],
+  updateBlockPlayers: actions['schedule:updateBlockPlayers'],
+  clearSchedule: actions['schedule:clearSchedule'],
+  onReSchedule: actions['schedule:reSchedule'],
+  onNotify: actions['schedule:scheduleNotify'],
+  onDateChange: actions['schedule:setCurrentDate'],
 }
 
 export default withRouter(connect(

@@ -8,11 +8,12 @@ import ScheduledCouples from '~/components/ScheduledCouples/connected'
 
 const MeetingSchedule = (props) => {
   
-  const {match, getBlockPlayers} = props
+  const {match, getBlockPlayers, onDateChange} = props
   
   useEffect(() => {
     if (match) {
       const {params} = match
+      onDateChange({date: params.id})
       getBlockPlayers({date: params.id})
     }
     

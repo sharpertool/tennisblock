@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import datetime
+import logging
 
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
@@ -8,6 +9,8 @@ from blockdb.models import ScheduleVerify, Schedule
 
 from .signals import player_confirmed, player_rejected
 from .forms import ScheduleRejectForm
+
+logger = logging.getLogger(__name__)
 
 
 class VerifyMixin:
@@ -45,22 +48,27 @@ class ScheduleConfirmed(VerifyMixin, TemplateView):
         return context
 
     def get(self, request, code=None, **kwargs):
-        print(f"Schedule was confirmed with code {code}")
+        logger.debug(f"Schedule was confirmed with code {code}")
         self.code = code
         self.verify = self.get_verify(code)
         verify = self.verify
+        self.already_verifyed = False
 
-        if verify is not None and verify.received_on is None:
-            self.already_verifyed = False
+        if all([
+            verify is not None,
+            verify.received_on is not None,
+            verify.confirmation_type == 'C'
+        ]):
+            self.already_verifyed = True
+
+        else:
             verify.received_on = timezone.now()
             verify.confirmation_type = "C"
             verify.save()
 
             player_confirmed.send(self.verify,
-                                 player=self.verify.schedule.player,
-                                 request=request)
-        else:
-            self.already_verifyed = True
+                                  player=self.verify.schedule.player,
+                                  request=request)
 
         return super().get(request, **kwargs)
 
@@ -73,13 +81,13 @@ class ScheduleRejected(VerifyMixin, FormView):
         return reverse('confirm:reject_done', kwargs={'code': self.code})
 
     def get(self, request, code=None, **kwargs):
-        print(f"Schedule was rejected with code {code}")
+        logger.debug(f"Schedule was rejected with code {code}")
         self.code = code
         self.verify = self.get_verify(code)
         return super().get(request, **kwargs)
 
     def post(self, request, *args, code=None, **kwargs):
-        print(f"Post to schedule rejection code {code}")
+        logger.debug(f"Post to schedule rejection code {code}")
         self.request = request
         self.code = code
         self.verify = self.get_verify(code)
@@ -89,17 +97,17 @@ class ScheduleRejected(VerifyMixin, FormView):
     def form_valid(self, form):
         """If the form is valid, save the associated model."""
         reason = form.cleaned_data.get('reason')
-        print(f"Rejected form is valid. We are done. Reason was {reason}")
+        logger.debug(f"Rejected form is valid. We are done. Reason was {reason}")
         verify = self.get_verify(self.code)
         if verify is not None:
             verify.reject()
 
         player_rejected.send(self.verify,
-                    player=self.verify.schedule.player,
-                    reason=reason,
-                    request=self.request)
+                             player=self.verify.schedule.player,
+                             reason=reason,
+                             request=self.request)
         return super().form_valid(form)
-    
+
 
 class ScheduleRejectedComplete(VerifyMixin, TemplateView):
     template_name = 'confirm/rejected.html'

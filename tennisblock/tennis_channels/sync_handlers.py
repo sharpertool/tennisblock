@@ -1,5 +1,5 @@
 import logging
-
+import typing as t
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
@@ -35,7 +35,10 @@ class ScheduleSyncHandler:
     """
 
     @staticmethod
-    def schedule_verify_update(schedule_date=None):
+    def schedule_verify_update(schedule_date: str = "",
+                               status: bool = True,
+                               player: t.Dict = None,
+                               msg: str = ""):
         channel_layer = get_channel_layer()
         logger.info("Sending schedule verify update")
         group = ScheduleConsumer.calc_group_name(schedule_date)
@@ -46,10 +49,10 @@ class ScheduleSyncHandler:
                 "action": "scheduleVerifyChanged",
                 "payload": {
                     'date': schedule_date,
-                    'user': 'bobby dillon',
-                    'user_id': 23,
-                    'status': 'verified|rejected',
-                    'message': 'I do not want to play this Friday',
+                    'name': player.get('name'),
+                    'user_id': player.get('user_id'),
+                    'status': 'verified' if status else 'rejected',
+                    'message': msg,
                 }
             }
         )

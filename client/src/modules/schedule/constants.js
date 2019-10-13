@@ -5,6 +5,7 @@ export const APP_NAME = `${PARENT_NAME}/${NAME}`
 const mkname = (nm) => `${APP_NAME}/${nm}`
 
 export const SET_BLOCKDATES = mkname('SET_BLOCKDATES')
+export const SET_CURRENT_DATE = mkname('SET_CURRENT_DATE')
 
 export const UPDATE_PLAY_SCHEDULE = mkname('UPDATE_PLAY_SCHEDULE')
 
@@ -34,6 +35,7 @@ export const SCHEDULE_NOTIFY_SUCCESS = mkname('SCHEDULE_NOTIFY_SUCCESS')
 export const SCHEDULE_NOTIFY_FAIL = mkname('SCHEDULE_NOTIFY_FAIL')
 export const SCHEDULE_NOTIFY_STARTED = mkname('SCHEDULE_NOTIFY_STARTED')
 export const SCHEDULE_NOTIFY_MSG_UPDATE = mkname('SCHEDULE_NOTIFY_MSG_UPDATE')
+export const SCHEDULE_VERIFY_CHANGED = mkname('SCHEDULE_VERIFY_CHANGED')
 
 export const NOTIFY_PLAYER = mkname('NOTIFY_PLAYER')
 export const NOTIFY_PLAYER_SUCCESS = mkname('NOTIFY_PLAYER_SUCCESS')

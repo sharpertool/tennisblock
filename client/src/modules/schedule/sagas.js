@@ -3,12 +3,33 @@ import {selectors, actions} from '~/redux-page'
 import axioscore from 'axios'
 import {moduleConfig} from './index'
 
+import {connectionManager} from '~/websockets_sagas'
+
 import * as types from './constants'
 import * as Sentry from '@sentry/browser'
 
 const get_axios = () => {
   const {axios_config} = moduleConfig
   return axioscore.create(axios_config)
+}
+
+function* channelsConnectionManager() {
+  const {currentDate} = selectors
+  const date = yield select(currentDate)
+  //const {comment_group, enable_wss} = moduleConfig
+  
+  // if (!enable_wss) {
+  //   return yield delay(1)
+  // }
+  
+  const url = `/ws/schedule/${date}/`
+  
+  console.log('Sockets URL:', url)
+  
+  console.log('Yielding to the master connection manager')
+  yield connectionManager(url, actions, {
+    onnconnect_send: {'action': 'getScheduleStatus'}
+  })
 }
 
 function* fetchBlockDates() {
@@ -70,6 +91,7 @@ function* requestBlockPlayers({payload: {date}}) {
       const {data} = yield call(axios.get, suburl)
       yield put(actions.setSubs(data))
     }
+    yield fork(channelsConnectionManager)
   } catch (error) {
     yield put(actions.getBlockPlayersFail(error))
     Sentry.captureException(error)
