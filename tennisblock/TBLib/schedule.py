@@ -29,6 +29,7 @@ def reset_availability_arrays(date=None):
 
 
 class Scheduler(object):
+
     def __init__(self):
         pass
 
@@ -194,7 +195,7 @@ class Scheduler(object):
         needed = season.courts * 2
         group = []
 
-        ft = self.get_available_couples(mtg)
+        ft = Scheduler.get_available_couples(mtg)
         if ft:
             for f in ft:
                 group.append(f)
@@ -502,7 +503,7 @@ class Scheduler(object):
                 av.save()
 
     @staticmethod
-    def update_played_for_players(self,  meeting, scheduled_pks=None):
+    def update_played_for_players(meeting, scheduled_pks=None):
         """ Set played PK's to True, others to false """
 
         if scheduled_pks is None:
