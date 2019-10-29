@@ -21,7 +21,7 @@ psycopg2==2.7.6.1
 python-dateutil==2.7.5
 pytz==2018.9
 
-Pillow==5.4.1
+Pillow==6.2.0
 
 # Social login
 django-user-accounts==2.1.0
