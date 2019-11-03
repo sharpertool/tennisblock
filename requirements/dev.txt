@@ -18,3 +18,4 @@ pyOpenSSL
 # For Yaml, JSON parsing
 jq
 yq
+pip-outdated

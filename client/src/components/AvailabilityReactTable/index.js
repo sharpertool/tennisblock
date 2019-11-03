@@ -52,7 +52,7 @@ const Availability = ({
     },
   ]
   blockdates.map((bd, idx) => {
-    const d = new Date(bd.date.split('-'))
+    const d = new Date(...bd.date.split('-'))
     const dstring = d.toLocaleDateString('en',
       {month: 'short', day: 'numeric'}
     )
