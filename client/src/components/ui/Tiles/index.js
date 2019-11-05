@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {Link} from 'react-router-dom'
+import {LocalDate} from '~/utils'
 
 import styles from './styles.local.scss'
 
 const tiles = ({dates}) => {
   return dates && dates.map(({date, holdout}, index) => {
-    const [yy, mm, dd] = date.split('-') //?
-    const localdate = new Date(yy, mm-1, dd)
+    const localdate = LocalDate(date)
     const linkClasses = [styles.tile, 'col-xs-12 col-sm-6 col-md-3 col-lg-2 col-xl-2 pt-2']
     if (holdout) {
       linkClasses.push(styles.holdout)

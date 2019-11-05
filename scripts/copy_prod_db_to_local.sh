@@ -7,7 +7,7 @@ server=localhost
 dt=$(date '+%Y-%m-%d-%H_%M')
 filename="tennisblock_prod_db_${dt}.sql"
 
-shared_path=$(grep SHARED_BACKUPS $root/.env | sed 's/^.*=//')
+shared_path=$(grep BACKUP_ROOT $root/.envrc | sed 's/^.*=//')
 backup_path=$(eval echo ${shared_path})
 echo "Backup Path: ${backup_path}"
 full_filename=${backup_path}/${filename}

@@ -1,5 +1,7 @@
 import React, {useRef, useEffect} from 'react'
 
+import {LocalDate} from '~/utils'
+
 const AvailabilityHeader = ({blockdates, onScroll, scrollLeft}) => {
 
   const itemsRef = useRef(null);
@@ -22,7 +24,7 @@ const AvailabilityHeader = ({blockdates, onScroll, scrollLeft}) => {
             let classes = ['item']
             if (bd.holdout) { classes.push('holdout')}
             if (bd.current) { classes.push('current')}
-            const d = new Date(bd.date)
+            const d = LocalDate(bd.date)
             const dstring = d.toLocaleDateString('en',
                   {month: 'short', day:'numeric'}
                   )

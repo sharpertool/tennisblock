@@ -1,4 +1,5 @@
 import React, {useRef, useEffect} from 'react'
+import {LocalDate} from '~/utils'
 
 const AvailabilityHeader = ({blockdates}) => {
   
@@ -19,7 +20,7 @@ const AvailabilityHeader = ({blockdates}) => {
           if (bd.current) {
             classes.push('current')
           }
-          const d = new Date(bd.date.split('-'))
+          const d = LocalDate(bd.date)
           const dstring = d.toLocaleDateString('en',
             {month: 'short', day: 'numeric'}
           )

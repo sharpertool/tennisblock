@@ -68,3 +68,5 @@ db_learning.txt
 /.vscode
 /client/src/pages/Members/modules
 /.envrc
+/node_modules
+/yarn.lock

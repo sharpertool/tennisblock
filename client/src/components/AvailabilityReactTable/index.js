@@ -1,4 +1,5 @@
 import React from 'react'
+import {LocalDate} from '~/utils'
 
 import ReactTable from 'react-table'
 import withFixedColumns from 'react-table-hoc-fixed-columns'
@@ -52,7 +53,7 @@ const Availability = ({
     },
   ]
   blockdates.map((bd, idx) => {
-    const d = new Date(...bd.date.split('-'))
+    const d = LocalDate(bd.date)
     const dstring = d.toLocaleDateString('en',
       {month: 'short', day: 'numeric'}
     )
