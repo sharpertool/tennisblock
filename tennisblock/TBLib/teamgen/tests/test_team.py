@@ -37,27 +37,27 @@ class TeamTests(TestCase):
         t = self.team1
         q = t.quality()
         qexp = 0
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
 
     def test_bad_spread(self):
         """ 100 - 100*(2.5/3.0)"""
         t = self.team4
         q = t.quality()
         qexp = 50
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
 
     def test_typical_spread(self):
         """ 100 - 100*(2.5/3.0)"""
         t = self.team2
         q = t.quality()
         qexp = 83
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
 
     def test_best_spread(self):
         t = self.team3
         q = t.quality()
         qexp = 100
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for spread of {t.spread()}")
 
     def test_team_quality_low(self):
         t = [self.team1, self.team2]
@@ -65,7 +65,7 @@ class TeamTests(TestCase):
 
         q = m.quality()
         qexp = 58
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")
 
     def test_team_quality_low_factor(self):
         t = [self.team1, self.team2]
@@ -73,7 +73,7 @@ class TeamTests(TestCase):
 
         q = m.quality(fspread=2.0)
         qexp = 67
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")
 
     def test_team_quality_low_factor2(self):
         t = [self.team1, self.team2]
@@ -81,7 +81,7 @@ class TeamTests(TestCase):
 
         q = m.quality(fspread=3.0)
         qexp = 72
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")
 
     def test_team_quality_low_factor3(self):
         t = [self.team1, self.team2]
@@ -89,7 +89,7 @@ class TeamTests(TestCase):
 
         q = m.quality(fpartner=0.5, fspread=1.0)
         qexp = 81
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")
 
     def test_team_quality_spread(self):
         t = [self.team2, self.team3]
@@ -97,7 +97,7 @@ class TeamTests(TestCase):
 
         q = m.quality()
         qexp = 92
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")
 
     def test_team_quality_perfect(self):
         t = [self.team3, self.team3]
@@ -105,18 +105,18 @@ class TeamTests(TestCase):
 
         q = m.quality()
         qexp = 100
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")
 
     def test_match_type(self):
         m = self.buildMatch(3.5, 4.0, 3.5, 4.5)
 
         q = m.quality()
         qexp = 81
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")
 
     def test_match_type_spread_priority(self):
         m = self.buildMatch(3.5, 4.0, 3.5, 4.0)
 
         q = m.quality(fspread=2.0)
         qexp = 92
-        self.assertEquals(q, qexp, f"Expected Q of {qexp} for {m}")
+        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {m}")

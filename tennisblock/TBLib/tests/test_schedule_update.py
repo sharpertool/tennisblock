@@ -51,19 +51,8 @@ class TestScheduleUpdate(BlockDBTestBase):
 
     def build_couples(self):
         couples = []
-        for couple in self.couples:
-            couples.append({
-                'guy': {
-                    'id': couple.male.id,
-                    'issub': False,
-                    'verified': False
-                },
-                'gal': {
-                    'id': couple.female.id,
-                    'issub': False,
-                    'verified': False
-                }
-            })
+        for idx, couple in enumerate(self.couples):
+            couples.append((couple.male.id, couple.female.id, idx))
         return couples
 
     def test_initial_update(self):
