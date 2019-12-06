@@ -22,9 +22,9 @@ class TeamGen(object):
                                fteams: float = 1.0):
         self.meeting.restart()
 
-        self.meeting.set_see_player_once(not b_allow_duplicates)
+        self.meeting.see_player_once = not b_allow_duplicates
         if iterations is not None:
-            self.meeting.set_max_iteration(iterations)
+            self.meeting.max_iterations = iterations
 
         while self.meeting.round_count() < self.n_sequences:
             group_round = None

@@ -32,13 +32,13 @@ class MeetingStats:
 
         self.round_template = None
 
-        self.maxIterations = 100
+        self._max_iterations = 100
         self.n_fails_by_invalid_partner = 0
         self.n_fails_by_diff = 0
 
-        self.seePlayerOnlyOnce = False
+        self._see_player_once = False
         if self.n_courts == 3:
-            self.seePlayerOnlyOnce = False
+            self._see_player_once = False
 
         self.chkMatchups = 0
         self.chkH2H = 0
@@ -64,16 +64,25 @@ class MeetingStats:
         # Should do this only once
         random.seed()
 
-    def set_see_player_once(self, b_once):
-        if b_once:
+    @property
+    def see_player_once(self):
+        return self._see_player_once
+
+    @see_player_once.setter
+    def see_player_once(self, value):
+        if value:
             logger.debug("Setting the see_player_once setting to True")
-            # self.maxIterations *= 10
         else:
             logger.debug("Setting the see_player_once setting to False")
-        self.seePlayerOnlyOnce = b_once
+        self._see_player_once = value
 
-    def set_max_iteration(self, n):
-        self.maxIterations = n
+    @property
+    def max_iterations(self):
+        return self._max_iterations
+
+    @max_iterations.setter
+    def max_iterations(self, n):
+        self._max_iterations = n
 
     def restart(self):
         """
@@ -136,7 +145,7 @@ class MeetingStats:
         for m in self.men:
             self.update_invalids_for_player(
                 m,
-                see_once=self.seePlayerOnlyOnce)
+                see_once=self.see_player_once)
 
     def update_invalids_for_player(self, player, see_once=True):
         """
@@ -192,7 +201,7 @@ class MeetingStats:
         minq = maxq = 0
         min_min_q = 100
         max_max_q = 0
-        max_build_tries = self.maxIterations
+        max_build_tries = self.max_iterations
 
         while new_round is None and tries < max_tries:
             self.diff_history = []

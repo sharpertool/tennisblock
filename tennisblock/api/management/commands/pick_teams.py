@@ -16,7 +16,6 @@ class Command(BaseCommand):
         parser.add_argument('--fpartner', type=float, default=1.0)
         parser.add_argument('--fspread',  type=float, default=1.0)
 
-
     def handle(self, *args, **options):
         mgr = TeamManager()
         mgr.pick_teams_for_date(date=options['date'],
