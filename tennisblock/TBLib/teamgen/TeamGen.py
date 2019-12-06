@@ -1,5 +1,6 @@
 import logging
 from .Meeting import Meeting
+from .round import MatchRound
 from tennis_channels.sync_handlers import MixerSyncHandler
 
 logger = logging.getLogger(__name__)
@@ -50,17 +51,34 @@ class TeamGen(object):
                 logger.info("Failed to build the sequence.")
                 return None
             else:
-                group_round.display()
+                if isinstance(group_round, list):
+                    matches = []
+                    for round in group_round:
+                        matches.extend(round.matches)
+                    round = MatchRound(matches=matches)
 
-                status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
-                MixerSyncHandler.mixer_status(status_msg)
-                logger.info(status_msg)
+                    status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
+                    MixerSyncHandler.mixer_status(status_msg)
+                    logger.info(status_msg)
 
-                d_max, d_avg, diff_list = group_round.diff_stats()
-                diffs = ",".join(["%5.3f" % x for x in diff_list])
-                logger.info("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
-                    self.diff_max, d_max, d_avg, diffs))
-                self.meeting.add_round(group_round)
+                    d_max, d_avg, diff_list = round.diff_stats()
+                    diffs = ",".join(["%5.3f" % x for x in diff_list])
+                    logger.info("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
+                        self.diff_max, d_max, d_avg, diffs))
+                    self.meeting.add_round(round)
+
+                else:
+                    group_round.display()
+
+                    status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
+                    MixerSyncHandler.mixer_status(status_msg)
+                    logger.info(status_msg)
+
+                    d_max, d_avg, diff_list = group_round.diff_stats()
+                    diffs = ",".join(["%5.3f" % x for x in diff_list])
+                    logger.info("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
+                        self.diff_max, d_max, d_avg, diffs))
+                    self.meeting.add_round(group_round)
 
         MixerSyncHandler.mixer_status("Able to generate the sequences")
         return self.meeting.get_rounds()

@@ -195,7 +195,7 @@ class MeetingStats:
         """
         tries = 0
         self.round_template = MatchRound(fpartner=fpartners, fspread=fteams)
-        new_round: MatchRound = None
+        rounds: MatchRound = None
 
         min_diff = 1000.0
         minq = maxq = 0
@@ -203,10 +203,10 @@ class MeetingStats:
         max_max_q = 0
         max_build_tries = self.max_iterations
 
-        while new_round is None and tries < max_tries:
+        while rounds is None and tries < max_tries:
             self.diff_history = []
             self.quality_history = []
-            new_round = self.build_round(max_build_tries, diff_max, quality_min)
+            rounds = self.build_round(max_build_tries, diff_max, quality_min)
             tries += 1
             md = 0.0
             if self.diff_history and self.quality_history:
@@ -221,7 +221,7 @@ class MeetingStats:
                 f"Build a set DiffMax:{diff_max:5.3}({md:5.3})"
                 f" MinQ:{quality_min:5.1f}({minq:5.1f}, {maxq:5.1f}) Try:{tries}.")
 
-        return new_round, min_diff, min_min_q, max_max_q
+        return rounds, min_diff, min_min_q, max_max_q
 
     def build_round(self, iterations, diff_max, quality_min) -> MatchRound:
         """
@@ -231,30 +231,82 @@ class MeetingStats:
         are assigned as later.. they will be assigned
         randomly to the men.
         """
+
+        diff = len(self.men) - len(self.women)
+        if diff % 2:
+            raise Exception("We have an odd number of players!")
+
+        if diff % 4 != 0:
+            return self.build_balanced_round(iterations, diff_max, quality_min)
+
+        if diff > 0:
+            g1 = self.men
+            g2 = self.women
+        else:
+            g1 = self.women
+            g2 = self.men
+
+        n_tries = 0
+
+        while n_tries < iterations:
+            t1 = [x.name for x in g1]
+            t2 = [x.name for x in g2]
+
+            if abs(diff) == 4:
+                """ Hard code this for now... """
+                set1 = set(t1)
+                set2 = set(t2)
+                set1a = set(random.sample(set1, k=4))
+                set1b = set1.copy()
+                set1b -= set1a
+                assert(len(set2) == len(set1b))
+
+                round1, set1a_partners = self.pick_first_group(set1a, courts=1)
+                round2, set1b_partners = self.pick_first_group(set1b, courts=3)
+
+                self.clear_check_stats()
+
+                try:
+                    if all([
+                        self.add_partners(round1, set1a_partners,
+                                          diff_max, quality_min,
+                                          iterations),
+                        self.add_partners(round2, set2,
+                                          diff_max, quality_min,
+                                          iterations),
+                    ]):
+                        return [round1, round2]
+                    self.print_check_stats()
+
+                except NoValidPartner:
+                    # we can continue on here, regenerate the men matchups
+                    pass
+            n_tries = n_tries + 1
+
+        return None
+
+    def build_balanced_round(self, iterations,
+                             diff_max, quality_min,
+                             ):
+        """ Build a round with equal numbers of men and women """
+
         n_tries = 0
 
         while n_tries < iterations:
             t_men, t_women = self.get_temp_list()
 
-            grp_a = t_men
-            grp_b = t_women
-
-            d = len(t_men) - len(t_women)
-            if d != 0:
-                pass
-
             # Build sets of men first.
             # If there is an exception thrown, then just ignore
             # it and try again..
-            new_round = self.pick_first_group(t_men)
+            round = self.pick_first_group(t_men)
 
             self.clear_check_stats()
 
             try:
-                if self.add_partners(new_round, t_women,
+                if self.add_partners(round, t_women,
                                   diff_max, quality_min,
                                   iterations):
-                    return new_round
+                    return round
                 self.print_check_stats()
             except NoValidPartner:
                 # we can continue on here, regenerate the men matchups
@@ -263,10 +315,10 @@ class MeetingStats:
 
         return None
 
-    def add_partners(self, new_round: MatchRound, p_list: list,
+    def add_partners(self, round: MatchRound, p_list: list,
                   diff_max: int, quality_min: int, num_tries: int) -> bool:
         """
-        Upon entry, new_round will be a set that contains
+        Upon entry, round will be a set that contains
         the initial partner, but with no 2nd partner entered. The
         initial pairints pairings will have been done randomly, so
         they should be okay.
@@ -279,7 +331,7 @@ class MeetingStats:
         while num_tries and (curr_diff > diff_max or curr_q < quality_min):
             p_set = set(p_list)
 
-            for m in new_round.matches:
+            for m in round.matches:
                 m1 = m.t1.p1.name
                 m2 = m.t2.p1.name
 
@@ -292,8 +344,8 @@ class MeetingStats:
                 m.t1.p2 = self.pbyname[f1]
                 m.t2.p2 = self.pbyname[f2]
 
-            diffs = new_round.diff()
-            qualities = new_round.quality()
+            diffs = round.diff
+            qualities = round.quality
 
             # We want the worst case values here.
             curr_diff = max(diffs)
@@ -333,15 +385,17 @@ class MeetingStats:
         partner = random.choice(list(tmp))
         return partner
 
-    def get_temp_list(self):
+    def get_temp_list(self, g1=None, g2=None):
+        if g1 is None:
+            g1 = self.men
+        if g2 is None:
+            g2 = self.women
 
-        t_men = [x.name for x in self.men]
-        t_women = [x.name for x in self.women]
+        t_men = [x.name for x in g1]
+        t_women = [x.name for x in g2]
 
         d = len(t_men) - len(t_women)
         if d != 0:
-            if d % 2:
-                raise Exception("We have an odd number of players!")
 
             if d % 4 == 0:
                 # We can work with this.
@@ -361,7 +415,7 @@ class MeetingStats:
 
         return t_men, t_women
 
-    def pick_first_group(self, players):
+    def pick_first_group(self, players, courts=None):
         """
         Build a new set with a list of players from the first group.
         The first group may be men or women, depends on which set is
@@ -373,19 +427,22 @@ class MeetingStats:
         """
         random.seed()
 
+        if courts is None:
+            courts = self.n_courts
+
         while True:
-            new_round = self.round_template.clone()
+            round = self.round_template.clone()
             pset = set(players)
             try:
-                for n in range(0, self.n_courts):
+                for n in range(0, courts):
                     m1 = random.choice(list(pset))
                     pset.remove(m1)
                     m2 = self.get_valid_opponent(m1, pset)
                     pset.remove(m2)
                     m = Match(Team(self.pbyname[m1]),
                               Team(self.pbyname[m2]))
-                    new_round.add_match(m)
-                return new_round
+                    round.add_match(m)
+                return round, pset
             except NoValidOpponent:
                 pass
 

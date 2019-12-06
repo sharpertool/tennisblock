@@ -8,8 +8,12 @@ logger = logging.getLogger(__name__)
 
 
 class MatchRound:
-    def __init__(self, fpartner: float = 1.0, fspread: float = 1.0):
+    def __init__(self, fpartner: float = 1.0,
+                 fspread: float = 1.0,
+                 matches=None):
         self.matches: List[Match] = []
+        if matches:
+            self.matches = matches
         self.fpartner = fpartner
         self.fspread = fspread
 
@@ -21,6 +25,7 @@ class MatchRound:
     def add_match(self, match: Match):
         self.matches.append(match)
 
+    @property
     def diff(self):
         """
         Take all diff values, put them in a list.
@@ -44,30 +49,34 @@ class MatchRound:
         """
         diffs = []
         for m in self.matches:
-            diffs.append(m.diff())
+            diffs.append(m.diff)
 
         diffs.sort()
 
         return diffs
 
+    @property
     def quality(self):
         return [
             m.quality(fpartner=self.fpartner, fspread=self.fspread)
             for m in self.matches
         ]
 
+    @property
     def quality_average(self):
         Q = self.quality()
         return round(sum(Q)/len(Q))
 
+    @property
     def quality_min(self):
         return min(self.quality())
 
+    @property
     def quality_max(self):
         return max(self.quality())
 
     def diff_stats(self):
-        diffs = [m.diff() for m in self.matches]
+        diffs = [m.diff for m in self.matches]
         # qvals = [m.quality() for m in self.matches]
         diffs.sort()
         return max(diffs), sum(diffs) / len(diffs), diffs
@@ -77,7 +86,7 @@ class MatchRound:
             match.display()
 
     def show_diffs(self):
-        diffs = ["%4.2f" % match.diff() for match in self.matches]
+        diffs = ["%4.2f" % match.diff for match in self.matches]
         logger.debug("Diffs: " + "\t".join(diffs))
 
     def __str__(self):

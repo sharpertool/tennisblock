@@ -17,15 +17,16 @@ class Match:
         self._quality = None
         self._diff = None
 
+    @property
     def diff(self):
-        c1 = self.t1.combined_microntrp()
-        c2 = self.t2.combined_microntrp()
+        c1 = self.t1.combined_microntrp
+        c2 = self.t2.combined_microntrp
         self._diff = round(abs(c1 - c2), 1)
         return self._diff
 
     def diff_quality(self, fspread: float = 1.0):
         """ Quality of team play from 0 to 100 """
-        diff = self.diff()
+        diff = self.diff
         return 100 - 100 * (diff / self.diff_max)
 
     def quality(self, fpartner: float = 1.0, fspread: float = 1.0):

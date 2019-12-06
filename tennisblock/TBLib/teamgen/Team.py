@@ -18,6 +18,7 @@ class Team:
         self.p1: Player = player1
         self.p2: Player = player2
 
+    @property
     def combined_microntrp(self):
         """
         Expecting a mixed team.
@@ -27,16 +28,30 @@ class Team:
         If this is 2 men, then make a slight increase.
 
         """
-        if self.p1.gender == 'F' and self.p1.gender == 'F':
-            combined = 0.92 * self.p1.microntrp + self.p2.microntrp
-        elif self.p1.gender == 'M' and self.p1.gender == 'M':
-            combined = 1.08 * (self.p1.microntrp + self.p2.microntrp)
-        else:
+        # if self.p1.gender == 'F' and self.p1.gender == 'F':
+        #     combined = 0.92 * self.p1.microntrp + self.p2.microntrp
+        # elif self.p1.gender == 'M' and self.p1.gender == 'M':
+        #     combined = 1.08 * (self.p1.microntrp + self.p2.microntrp)
+        # else:
+        if self.p1 and self.p2:
             combined = self.p1.microntrp + self.p2.microntrp
-        return combined
+            return combined
+        elif self.p1:
+            return self.p1.microntrp
+        elif self.p2:
+            return self.p2.microntrp
 
+        return 0.0
+
+    @property
     def spread(self):
-        return abs(self.p1.microntrp - self.p2.microntrp)
+        if self.p1 and self.p2:
+            return abs(self.p1.microntrp - self.p2.microntrp)
+        elif self.p1:
+            return self.p1.microntrp
+        elif self.p2:
+            return self.p2.microntrp
+        return 0
 
     def quality(self, factor=None):
         """ Range from 100 as best, to zero as worst we calculate """
@@ -54,7 +69,7 @@ class Team:
             f" and "
             f"{p2 and p2.name} {p2 and p2.ntrp:3.2}/"
             f"{p2 and p2.microntrp:3.2}"
-            f" = {p1 and p2 and self.combined_microntrp():3.2}")
+            f" = {p1 and p2 and self.combined_microntrp:3.2}")
 
     def __str__(self):
         name1 = ''
