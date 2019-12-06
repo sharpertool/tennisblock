@@ -7,24 +7,32 @@ def update_pairs(schedule):
     pairs_by_id = {}
     pair_index = 0
     for sch in schedule:
-        player_id, partner_id, pidx = sch.player.id, sch.partner.id, sch.pair_index
+        player, partner, pidx = sch.player, sch.partner, sch.pair_index
+        player_id = player.id if player else None
+        partner_id = partner.id if partner else None
         if pidx > -1:
-            pairs_by_id[player_id] = pidx
-            pairs_by_id[partner_id] = pidx
+            if player_id:
+                pairs_by_id[player_id] = pidx
+            if partner_id:
+                pairs_by_id[partner_id] = pidx
         else:
-            if player_id in pairs_by_id:
+            if player_id and player_id in pairs_by_id:
                 sch.pair_index = pairs_by_id[player_id]
                 sch.save()
-                pairs_by_id[partner_id] = pairs_by_id[player_id]
+                if partner_id:
+                    pairs_by_id[partner_id] = pairs_by_id[player_id]
                 print(f"Updated {player_id} to {pair_index}")
-            elif partner_id in pairs_by_id:
+            elif partner_id and partner_id in pairs_by_id:
                 sch.pair_index = pairs_by_id[partner_id]
                 sch.save()
-                pairs_by_id[player_id] = pairs_by_id[partner_id]
+                if player_id:
+                    pairs_by_id[player_id] = pairs_by_id[partner_id]
             else:
                 # Add the value to both
-                pairs_by_id[player_id] = pair_index
-                pairs_by_id[partner_id] = pair_index
+                if player_id:
+                    pairs_by_id[player_id] = pair_index
+                if partner_id:
+                    pairs_by_id[partner_id] = pair_index
                 print(f"set {player_id} and {partner_id} to index {pair_index}")
                 sch.pair_index = pair_index
                 sch.save()

@@ -33,8 +33,8 @@ export const getCouples2 = createSelector(
     const dummy = {id: -1, name: '---'}
     let tmp = couples.map(couple => {
       return {
-        'guy': couple[0] ? players_by_id[couple[0]] : dummy,
-        'gal': couple[1] ? players_by_id[couple[1]] : dummy,
+        'guy': couple[0] != -1 ? players_by_id[couple[0]] : dummy,
+        'gal': couple[1] != -1 ? players_by_id[couple[1]] : dummy,
       }
     })
     if (tmp.length < court_count*2) {

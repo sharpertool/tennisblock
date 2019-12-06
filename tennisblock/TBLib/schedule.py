@@ -328,10 +328,18 @@ class Scheduler(object):
 
         clist = []
         for couple in couples:
-            g1, g2 = couple.player.gender, couple.partner.gender
+            g1 = couple.player.gender
+            if couple.partner:
+                g2 = couple.partner.gender
+            else:
+                g2 = ' '
             gpair = g1 + g2
             if gpair in ['MF', 'MM', 'FF']:
                 clist.append((couple.player.id, couple.partner.id, couple.pair_index))
+            elif gpair == 'M ':
+                clist.append((couple.player.id, -1, couple.pair_index))
+            elif gpair == 'F ':
+                clist.append((-1, couple.player.id, couple.pair_index))
             else:  # gpair == 'FM'
                 clist.append((couple.partner.id, couple.player.id, couple.pair_index))
 
