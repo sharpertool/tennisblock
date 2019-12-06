@@ -244,6 +244,20 @@ class MeetingStats:
             g1 = self.women
             g2 = self.men
 
+        return self.build_unbalanced_round(iterations,
+                                           diff_max,
+                                           quality_min,
+                                           g1, g2)
+
+    def build_unbalanced_round(self,
+                               iterations,
+                               diff_max,
+                               quality_min,
+                               g1, g2):
+
+        assert(len(g1) > len(g2))
+        diff = len(g1) - len(g2)
+
         n_tries = 0
 
         while n_tries < iterations:
@@ -467,4 +481,4 @@ class MeetingStats:
 
     def print_check_stats(self):
         logger.debug(f"Failed Stats:Partner:{self.n_fails_by_invalid_partner}"
-                    f"Diff:{self.n_fails_by_diff} Mindiff:{min(self.diff_history)}")
+                    f"Diff:{self.n_fails_by_diff} Mindiff:{self.diff_history and min(self.diff_history)}")

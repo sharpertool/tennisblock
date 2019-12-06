@@ -29,6 +29,7 @@ class TeamManager(object):
                             date,
                             iterations: int = 100,
                             max_tries: int = 20,
+                            testing: bool = False,
                             fpartners: float = 1.0,
                             fteams: float = 1.0):
 
@@ -40,16 +41,18 @@ class TeamManager(object):
         men, women = self.get_players(date)
 
         result = self.pick_teams(men=men, women=women,
-                                iterations=iterations,
-                                max_tries=max_tries)
+                                 iterations=iterations,
+                                 max_tries=max_tries)
 
         if result['status'] == 'success':
             result['match'] = self.query_match(date)
 
         return result
 
-    def pick_teams(self, men=None, women=None, date=None, testing=False,
-                   b_allow_duplicates=False, n_courts=None, n_sequences=3,
+    def pick_teams(self, men=None, women=None,
+                   date=None, testing=False,
+                   b_allow_duplicates=False,
+                   n_courts=None, n_sequences=3,
                    iterations: int = 100,
                    max_tries: int = 20):
 

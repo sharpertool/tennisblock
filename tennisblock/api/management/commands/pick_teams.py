@@ -10,7 +10,7 @@ class Command(BaseCommand):
         parser.add_argument('date')
         parser.add_argument('--nodupes', action='store_true')
         parser.add_argument('--sequences', type=int, default=3)
-        parser.add_argument('--test', '-t', action='store_true')
+        parser.add_argument('--testing', '-t', action='store_true')
         parser.add_argument('--iterations', '-i', type=int, default=20)
         parser.add_argument('--tries', '-r', type=int, default=5)
         parser.add_argument('--fpartner', type=float, default=1.0)
@@ -21,5 +21,6 @@ class Command(BaseCommand):
         mgr.pick_teams_for_date(date=options['date'],
                                 iterations=options['iterations'],
                                 max_tries=options['tries'],
+                                testing=options['testing'],
                                 fpartners=options['fpartner'],
                                 fteams=options['fteams'])
