@@ -14,7 +14,7 @@ class Command(BaseCommand):
         parser.add_argument('--iterations', '-i', type=int, default=20)
         parser.add_argument('--tries', '-r', type=int, default=5)
         parser.add_argument('--fpartner', type=float, default=1.0)
-        parser.add_argument('--fspread',  type=float, default=1.0)
+        parser.add_argument('--fteams',  type=float, default=1.0)
 
     def handle(self, *args, **options):
         mgr = TeamManager()
@@ -22,4 +22,4 @@ class Command(BaseCommand):
                                 iterations=options['iterations'],
                                 max_tries=options['tries'],
                                 fpartners=options['fpartner'],
-                                fteams=options['fspread'])
+                                fteams=options['fteams'])

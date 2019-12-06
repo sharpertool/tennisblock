@@ -20,7 +20,7 @@ class TeamTests(TestCase):
 
     @staticmethod
     def buildRound(ntrp_set=None, fspread=1.0, fpartner=1.0):
-        r = MatchRound(fpartner=fpartner, fspread=fspread)
+        r = MatchRound()
         for ntrp in ntrp_set:
             r.add_match(TeamTests.buildMatch(ntrp))
 

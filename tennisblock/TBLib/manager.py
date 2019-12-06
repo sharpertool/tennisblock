@@ -4,6 +4,8 @@ from .teamgen.TeamGen import TeamGen
 from .teamgen.player import Player as TGPlayer
 from .DBTeams import DBTeams
 from api.apiutils import get_current_season
+from .teamgen.Team import Team
+from .teamgen.Match import Match
 
 
 class TeamManager(object):
@@ -30,15 +32,16 @@ class TeamManager(object):
                             fpartners: float = 1.0,
                             fteams: float = 1.0):
 
+        Team.team_factor = fpartners
+        Match.match_spread_factor = fteams
+
         dbt = self.dbTeams
         dbt.delete_matchup(date)
         men, women = self.get_players(date)
 
         result = self.pick_teams(men=men, women=women,
                                 iterations=iterations,
-                                max_tries=max_tries,
-                                fpartners=fpartners,
-                                fteams=fteams)
+                                max_tries=max_tries)
 
         if result['status'] == 'success':
             result['match'] = self.query_match(date)
@@ -48,9 +51,7 @@ class TeamManager(object):
     def pick_teams(self, men=None, women=None, date=None, testing=False,
                    b_allow_duplicates=False, n_courts=None, n_sequences=3,
                    iterations: int = 100,
-                   max_tries: int = 20,
-                   fpartners: float = 1.0,
-                   fteams: float = 1.0):
+                   max_tries: int = 20):
 
         if men is None or women is None:
             men, women = self.get_players(date)
@@ -70,9 +71,7 @@ class TeamManager(object):
         sequences = tg.generate_set_sequences(
             b_allow_duplicates,
             iterations=iterations,
-            max_tries=max_tries,
-            fpartners=fpartners,
-            fteams=fteams
+            max_tries=max_tries
         )
 
         if sequences is None or len(sequences) < n_sequences:

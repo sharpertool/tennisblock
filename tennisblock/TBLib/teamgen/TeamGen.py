@@ -18,9 +18,7 @@ class TeamGen(object):
     def generate_set_sequences(self,
                                b_allow_duplicates: bool = False,
                                iterations: int = None,
-                               max_tries: int = 20,
-                               fpartners: float = 1.0,
-                               fteams: float = 1.0):
+                               max_tries: int = 20):
         self.meeting.restart()
 
         self.meeting.see_player_once = not b_allow_duplicates
@@ -33,9 +31,8 @@ class TeamGen(object):
 
             while min_quality >= 50 and group_round is None:
                 results = self.meeting.get_new_round(
-                    quality_min=min_quality, max_tries=max_tries,
-                    fpartners=fpartners,
-                    fteams=fteams)
+                    quality_min=min_quality, max_tries=max_tries)
+
                 group_round, min_found_diff, min_q, max_q = results
                 status_msg = f"Quality Stats: min:{min_q} max:{max_q}"
                 MixerSyncHandler.mixer_status(status_msg)

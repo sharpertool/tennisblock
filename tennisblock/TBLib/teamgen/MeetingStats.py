@@ -176,9 +176,7 @@ class MeetingStats:
             self.InvalidOpponents[name] = invalid.union(self.Partners[name])
             self.InvalidPartners[name] = invalid.union(set(self.Opposites[name]))
 
-    def get_new_round(self, diff_max=1.0, quality_min=90, max_tries=20,
-                      fpartners: float = 1.0,
-                      fteams: float = 1.0):
+    def get_new_round(self, diff_max=1.0, quality_min=90, max_tries=20):
         """
         This one needs to use the existing sets and list and pick a new
         randomization of the available sets.
@@ -194,7 +192,7 @@ class MeetingStats:
         set
         """
         tries = 0
-        self.round_template = MatchRound(fpartner=fpartners, fspread=fteams)
+        self.round_template = MatchRound()
         rounds: MatchRound = None
 
         min_diff = 1000.0

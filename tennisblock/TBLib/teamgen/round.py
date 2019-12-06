@@ -8,17 +8,13 @@ logger = logging.getLogger(__name__)
 
 
 class MatchRound:
-    def __init__(self, fpartner: float = 1.0,
-                 fspread: float = 1.0,
-                 matches=None):
+    def __init__(self, matches=None):
         self.matches: List[Match] = []
         if matches:
             self.matches = matches
-        self.fpartner = fpartner
-        self.fspread = fspread
 
     def clone(self):
-        s = MatchRound(fpartner=self.fpartner, fspread=self.fspread)
+        s = MatchRound()
         s.matches = [m for m in self.matches]
         return s
 
@@ -58,22 +54,22 @@ class MatchRound:
     @property
     def quality(self):
         return [
-            m.quality(fpartner=self.fpartner, fspread=self.fspread)
+            m.quality
             for m in self.matches
         ]
 
     @property
     def quality_average(self):
-        Q = self.quality()
+        Q = self.quality
         return round(sum(Q)/len(Q))
 
     @property
     def quality_min(self):
-        return min(self.quality())
+        return min(self.quality)
 
     @property
     def quality_max(self):
-        return max(self.quality())
+        return max(self.quality)
 
     def diff_stats(self):
         diffs = [m.diff for m in self.matches]

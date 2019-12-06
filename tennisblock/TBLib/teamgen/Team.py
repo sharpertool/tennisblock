@@ -11,7 +11,7 @@ class Team:
     max_diff is the maximum variation we would expect,
     so a 2.0 with a 5.0
     """
-    quality_factor = 1.0
+    team_factor = 1.0
     max_diff = 3.0
 
     def __init__(self, player1=None, player2=None):
@@ -53,10 +53,10 @@ class Team:
             return self.p2.microntrp
         return 0
 
-    def quality(self, factor=None):
+    @property
+    def quality(self):
         """ Range from 100 as best, to zero as worst we calculate """
-        factor = factor or self.quality_factor
-        diff = min(self.max_diff, factor * abs(self.p1.microntrp - self.p2.microntrp))
+        diff = min(self.max_diff, self.team_factor * abs(self.p1.microntrp - self.p2.microntrp))
         Q = round(100 - 100 * (diff / self.max_diff))
         return Q
 
