@@ -8,10 +8,10 @@ module.exports = {
     ['\\.local\\.(css|scss)$']: 'identity-obj-proxy'
   },
   roots: [
-    '<rootDir>/__tests__'
+    '<rootDir>'
   ],
   testMatch: [
-    '**/__tests__/**/*.(spec|test).js',
+    './__tests__/**/*.(spec|test).js',
   ],
   collectCoverage: false,
   transformIgnorePatterns: [

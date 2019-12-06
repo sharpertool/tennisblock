@@ -79,7 +79,8 @@ class SeasonFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: f"season_{n}")
     courts = 4
     firstcourt = 9
-    startdate = factory.fuzzy.FuzzyDate(start_date=datetime.date(2019, 9, 1), end_date=datetime.date(2019, 9, 30))
+    #startdate = factory.fuzzy.FuzzyDate(start_date=datetime.date(2019, 9, 1), end_date=datetime.date(2019, 9, 30))
+    startdate = factory.LazyAttribute(lambda o: o.start_date)
     enddate = factory.LazyAttribute(lambda o: o.startdate + o.duration)
     lastdate = factory.LazyAttribute(lambda o: o.startdate + o.duration)
     blockstart = factory.LazyAttribute(lambda o: o.startdate + datetime.timedelta((4 - o.startdate.weekday()) % 7))
@@ -88,6 +89,7 @@ class SeasonFactory(factory.django.DjangoModelFactory):
     class Params:
         start_date = datetime.date(2019, 9, 16)
         duration = datetime.timedelta(weeks=16) + datetime.timedelta(days=-1)
+
 
 @factory.django.mute_signals(post_save)
 class MutedSeasonFactory(SeasonFactory):

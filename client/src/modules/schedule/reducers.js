@@ -8,7 +8,7 @@ import {
   toObjectById
 } from './ramda_utils'
 
-let configInitialState = {
+export let configInitialState = {
   current_meeting: {
     date: null,
     players_by_id: {},
@@ -21,9 +21,12 @@ let configInitialState = {
   curr_gals: [],
   original_guys: [],
   original_gals: [],
+  couples: [],
+  original_couples: [],
   
   originalCouples: [],
   meeting_dates: [],
+  num_courts: null,
   subs_guys: [],
   subs_gals: [],
   
@@ -114,6 +117,7 @@ const reducer = handleActions(
         ...state,
         ...processed,
         couples: couples,
+        original_couples: couples,
         num_courts: num_courts,
         pbyid: players_by_id,
         //originalCouples: [...couples],
@@ -134,27 +138,38 @@ const reducer = handleActions(
     },
     
     [types.BLOCK_PLAYER_CHANGED](state, {payload}) {
-      const {group, index, value, previous} = payload
+      const {group, index, new_id, previous} = payload
       const [key, skey] = [`curr_${group}`, `subs_${group}`]
       
-      console.log(`Change ${group} idx:${index} from ${previous} to ${value}`)
+      console.log(`Change ${group} idx:${index} from ${previous} to ${new_id}`)
       // Making a copy of arrays so result is immutable.
       let curr = state[key].slice()
       let subs = state[skey].slice()
+      let couples = state.couples.slice()
       
       // Use the index from the original value.
       // This may
-      const prev = curr.splice(index, 1, value)
+      const prev = curr.splice(index, 1, new_id)
+      const couple_idx = group == 'guys' ? 0 : 1
+      couples[index][couple_idx] = new_id
       
       // Remove new player from subs
-      subs = subs.filter(id => id != value)
+      subs = subs.filter(id => id != new_id)
+      const subs_gals = state.subs_gals.filter(id => id != new_id)
+      const subs_guys = state.subs_guys.filter(id => id != new_id)
       if (previous != -1) {
-        subs.push(previous)
+        const player = state.players_by_id[previous]
+        player.gender.toLowerCase() == 'm' ?
+          subs_guys.push(previous)
+          : subs_gals.push(previous)
       }
       
       return {
         ...state,
+        couples: couples,
         [key]: curr,
+        subs_gals: subs_gals,
+        subs_guys: subs_guys,
         [skey]: subs
       }
     },

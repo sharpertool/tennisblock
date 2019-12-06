@@ -1,27 +1,52 @@
 import {isEqual} from 'lodash'
 import {createSelector} from 'reselect'
-export const blockUpdates = ({ blockUpdates }) => ({ ...blockUpdates })
 
+export const current_date = state => state.current_date
+export const meeting_dates = state => state.meeting_dates
+export const curr_guys = state => state.curr_guys
+export const curr_gals = state => state.curr_gals
+export const couples = state => state.couples
+
+export const players_by_id = state => state.players_by_id
+export const blockUpdates = ({ blockUpdates }) => ({ ...blockUpdates })
 export const getBlockPlayers = ({ blockplayers }) => (blockplayers)
 export const getVerifyStatus = state => state.verify_status_by_id
-export const currentMeeting = state => {
-  const {current_date, meeting_dates} = state
-  const mtgs = meeting_dates.filter(m => m.date == current_date)
-  if (mtgs.length > 0) {
-    return mtgs[0]
+
+export const court_count = state => state.num_courts
+
+export const currentMeeting = createSelector(
+  [current_date, meeting_dates],
+  (current_date, meeting_dates) => {
+    const mtgs = meeting_dates.filter(m => m.date == current_date)
+    if (mtgs.length > 0) {
+      return mtgs[0]
+    }
+    return null
   }
-  return null
-}
+)
 
 export const verifyCode = (state, id) => getVerifyStatus(state)[id]
 
-export const court_count = state => {
-  const mtg = currentMeeting(state)
-  if (mtg) {
-    return  mtg.num_courts
+export const getCouples2 = createSelector(
+  [players_by_id, couples, court_count],
+  (players_by_id, couples, court_count) => {
+    const dummy = {id: -1, name: '---'}
+    let tmp = couples.map(couple => {
+      return {
+        'guy': couple[0] ? players_by_id[couple[0]] : dummy,
+        'gal': couple[1] ? players_by_id[couple[1]] : dummy,
+      }
+    })
+    if (tmp.length < court_count*2) {
+      const dummies = [...Array(court_count*2-tmp.length).keys()].map(
+        () => { return {'gal': dummy, 'guy': dummy}}
+      )
+      tmp = [...tmp, ...dummies]
+    }
+   return tmp
   }
-  return null
-}
+)
+
 export const getCouples = state => {
   const {players_by_id: pbid,
     curr_guys: guys,
@@ -96,7 +121,6 @@ export const getSubs = state => {
   }
 }
 
-export const players_by_id = state => state.players_by_id
 
 export const isScheduleChanged = state => {
   const {

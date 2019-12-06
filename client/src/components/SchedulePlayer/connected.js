@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React  from 'react'
 import {connect} from 'react-redux'
 import {actions, selectors} from '~/redux-page'
 
@@ -10,12 +10,10 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-console.dir(actions)
 const mapDispatchToProps = {
-  onPlayerChanged: actions.onPlayerChanged,
+  onBlockPlayerChanged: actions['schedule:onBlockPlayerChanged'],
   verifyPlayer: actions['schedule:manualVerifyPlayer'],
   notifyPlayer: actions['schedule:notifyPlayer'],
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(SchedulePlayer)

@@ -97,8 +97,8 @@ function* requestBlockPlayers({payload: {date}}) {
 }
 
 function* updateBlockPlayersRequest({payload}) {
-  const {getCouples, currentDate} = selectors
-  const couples = yield select(getCouples)
+  const {couples, currentDate} = selectors
+  const couples_data = yield select(couples)
   const date = yield select(currentDate)
   
   const {apis: {blockplayers: urlpattern}} = moduleConfig
@@ -106,7 +106,7 @@ function* updateBlockPlayersRequest({payload}) {
   
   const axios = get_axios()
   try {
-    const {data} = yield call(axios.post, url, {couples: couples})
+    const {data} = yield call(axios.post, url, {couples: couples_data})
     
     yield put(actions.getBlockPlayers({date: date}))
   } catch (error) {

@@ -262,9 +262,10 @@ class Scheduler(object):
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
 
-        for cpl in couples:
+        for idx, cpl in enumerate(couples):
             sm = Schedule.objects.create(
                 meeting=mtg,
+                pair_index=idx,
                 player=cpl.male,
                 issub=False,
                 verified=False,
@@ -274,6 +275,7 @@ class Scheduler(object):
 
             sh = Schedule.objects.create(
                 meeting=mtg,
+                pair_index=idx,
                 player=cpl.female,
                 issub=False,
                 verified=False,
@@ -319,6 +321,26 @@ class Scheduler(object):
             }
         return {'name': '----'}
 
+
+    @staticmethod
+    def get_couples(mtg):
+
+        scheduled = Schedule.objects.filter(meeting=mtg)
+
+        couples = Schedule.objects.filter(meeting=mtg).distinct('pair_index').order_by('pair_index')
+
+        #return [(c.player.id, c.partner.id, c.pair_index) for c in couples]
+        guy_ids = scheduled.filter(player__gender='M').values_list(
+            'player__id', 'partner_id')
+        guy_ids_only = scheduled.filter(player__gender='M').values_list(
+            'player__id', flat=True)
+        gal_ids = scheduled.filter(
+            Q(player__gender='F') & ~Q(partner__in=guy_ids_only)).values_list(
+            'partner_id', 'player__id')
+
+        couples = list(set(guy_ids).union(gal_ids))
+        return couples
+
     @staticmethod
     def _query_scheduled_players(mtg):
         """
@@ -333,20 +355,14 @@ class Scheduler(object):
         gals = Player.objects.filter(id__in=scheduled.filter(
             player__gender='F').values('player__id'))
 
-        guy_ids = scheduled.filter(player__gender='M').values_list('player__id', 'partner_id')
-        guy_ids_only = scheduled.filter(player__gender='M').values_list('player__id', flat=True)
-        gal_ids = scheduled.filter(
-            Q(player__gender='F') & ~Q(partner__in=guy_ids_only)).values_list(
-            'partner_id','player__id')
-
-        couples = set(guy_ids).union(gal_ids)
-
         data = [
             {
                 'guy': Scheduler._mkData(guy.player),
                 'gal': Scheduler._mkData(guy.partner),
             } for guy in sched_guys
         ]
+
+        couples = Scheduler.get_couples(mtg)
 
         return {
             "pairs": data,
@@ -361,65 +377,67 @@ class Scheduler(object):
         """
         mtg = get_meeting_for_date(date)
 
+        data = {
+            'status': 'fail',
+            'msg': 'No meeting for date',
+            'date': date,
+            'num_courts': -1,
+            'guys': [],
+            'gals': [],
+            'couples': []
+        }
+
         if mtg is None:
-            return {
-                'guys': [],
-                'gals': [],
-                'couples': []
+            return data
+
+        data['date'] = mtg.date
+        data['num_courts'] = mtg.num_courts
+
+        guys = []
+        gals = []
+        couples = []
+
+        results = Scheduler._query_scheduled_players(mtg)
+        pairs = results.get('pairs')
+        couples = results.get('couples')
+        for pair in pairs:
+            couple = {
+                'guy': {'name': '----'},
+                'gal': {'name': '----'}
             }
-
-        if mtg:
-            data = {
-                'date': mtg.date,
-                'num_courts': mtg.num_courts,
-            }
-
-            guys = []
-            gals = []
-            couples = []
-
-            results = Scheduler._query_scheduled_players(mtg)
-            pairs = results.get('pairs')
-            couples = results.get('couples')
-            for pair in pairs:
-                couple = {
-                    'guy': {'name': '----'},
-                    'gal': {'name': '----'}
+            if pair.get('guy'):
+                guy = pair.get('guy')
+                partner = pair.get('gal')
+                g = {
+                    'name': guy.get('name'),
+                    'id': guy.get('id'),
+                    'ntrp': guy.get('ntrp'),
+                    'untrp': guy.get('untrp'),
+                    'gender': 'm',
+                    'partner': pair.get('gal'),
+                    'partnername': pair.get('gal') or '----'
                 }
-                if pair.get('guy'):
-                    guy = pair.get('guy')
-                    partner = pair.get('gal')
-                    g = {
-                        'name': guy.get('name'),
-                        'id': guy.get('id'),
-                        'ntrp': guy.get('ntrp'),
-                        'untrp': guy.get('untrp'),
-                        'gender': 'm',
-                        'partner': pair.get('gal'),
-                        'partnername': pair.get('gal') or '----'
-                    }
-                    guys.append(g)
-                    couple['guy'] = g
-                if pair.get('gal'):
-                    gal = pair.get('gal')
-                    g = {
-                        'name': gal.get('name'),
-                        'id': gal.get('id'),
-                        'ntrp': gal.get('ntrp'),
-                        'untrp': gal.get('untrp'),
-                        'gender': 'f',
-                        'partner': pair.get('guy'),
-                        'partnername': pair.get('guy') or '----'
-                    }
-                    gals.append(g)
-                    couple['gal'] = g
+                guys.append(g)
+                couple['guy'] = g
+            if pair.get('gal'):
+                gal = pair.get('gal')
+                g = {
+                    'name': gal.get('name'),
+                    'id': gal.get('id'),
+                    'ntrp': gal.get('ntrp'),
+                    'untrp': gal.get('untrp'),
+                    'gender': 'f',
+                    'partner': pair.get('guy'),
+                    'partnername': pair.get('guy') or '----'
+                }
+                gals.append(g)
+                couple['gal'] = g
 
-            data['guys'] = results.get('guys')
-            data['gals'] = results.get('gals')
-            data['couples'] = couples
-        else:
-            data['date'] = "Invalid"
-            data['mtg'] = {'error': 'Could not determine meeting.'}
+        data['guys'] = results.get('guys')
+        data['gals'] = results.get('gals')
+        data['couples'] = couples
+        data['status'] = 'success'
+        data['msg'] = ''
 
         return data
 
@@ -428,23 +446,14 @@ class Scheduler(object):
 
         schedule_player_ids = []
         for cpl in couples:
-            md = cpl['guy']
-            fd = cpl['gal']
-            msub, fsub = md.get('issub', False), fd.get('issub', False)
-            mverified, fverified = md.get('verified', False), fd.get('verified', False)
-            player, partner = Scheduler.get_players(md, fd)
+            p1, p2 = cpl
+            player, partner = Scheduler.get_players(p1, p2)
 
             if player:
-                Scheduler.add_or_update_schedule(meeting, player, partner,
-                                            is_sub=msub,
-                                            verified=mverified
-                                            )
+                Scheduler.add_or_update_schedule(meeting, player, partner)
                 schedule_player_ids.append(player.id)
             if partner:
-                Scheduler.add_or_update_schedule(meeting, partner, player,
-                                            is_sub=fsub,
-                                            verified=fverified
-                                            )
+                Scheduler.add_or_update_schedule(meeting, partner, player)
                 schedule_player_ids.append(partner.id)
 
         # Delete any players that were scheduled.
@@ -525,18 +534,23 @@ class Scheduler(object):
                 av.save()
 
     @staticmethod
+    def get_player_obj(player):
+        """ Retrieve the player object with dict or int """
+        try:
+            if isinstance(player, dict):
+                player_obj = Player.objects.get(id=player.get('id'))
+            elif isinstance(player, int):
+                player_obj = Player.objects.get(id=player)
+        except Player.DoesNotExist:
+            player_obj = None
+        return player_obj
+
+    @staticmethod
     def get_players(player, partner):
         """ Get the player and partner objects from dict """
 
-        try:
-            player_obj = Player.objects.get(id=player.get('id'))
-        except Player.DoesNotExist:
-            player_obj = None
-
-        try:
-            partner_obj = Player.objects.get(id=partner.get('id'))
-        except Player.DoesNotExist:
-            partner_obj = None
+        player_obj = Scheduler.get_player_obj(player)
+        partner_obj = Scheduler.get_player_obj(partner)
 
         return player_obj, partner_obj
 

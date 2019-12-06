@@ -10,9 +10,10 @@ Werkzeug
 ipython
 ipython[notebook]
 jupyter
+django-pdb
 
 sh==1.12.14
-path.py==12.0.1
+path.py==12.4.0
 pyOpenSSL
 
 # For Yaml, JSON parsing

@@ -5,6 +5,7 @@ import SelectBox from '~/components/Form/Fields/SelectBox'
 import styles from './styles.local.scss'
 
 import SchedulePlayer from '~/components/SchedulePlayer/connected'
+import ScheduledCouple from './ScheduledCouple'
 
 const ScheduledCouples = (props) => {
   
@@ -15,38 +16,22 @@ const ScheduledCouples = (props) => {
   
   return (
     <>
-      <Row>
-        <Col xs={12} md={6} lg={6}>
+      <Row className='d-sm-none d-m-block'>
+        <Col xs={6} md={6} lg={6}>
           <h3 className={styles.tableHeader}>Guys</h3>
-          {couples.map((couple, index) => {
-            const {guy} = couple
-            return (
-              <SchedulePlayer
-                key={index}
-                index={index}
-                id={guy.id}
-                player={guy}
-                group='guys'
-                subs={guySubs}
-                altsubs={galSubs}
-              />
-            )
-          })}
         </Col>
         <Col xs={12} md={6} lg={6}>
           <h3 className={styles.tableHeader}>Gals</h3>
-          
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           {couples.map((couple, index) => {
-            const {gal} = couple
             return (
-              <SchedulePlayer
-                key={index}
-                index={index}
-                id={gal.id}
-                player={gal}
-                group='gals'
-                subs={galSubs}
-                altsubs={guySubs}
+              <ScheduledCouple
+                key={index} index={index}
+                couple={couple}
+                guySubs={guySubs} galSubs={galSubs}
               />
             )
           })}

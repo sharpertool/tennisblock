@@ -7,6 +7,7 @@ import MeetingSchedule from '~/components/MeetingSchedule/connected'
 import BlockSchedule from '~/containers/BlockSchedule'
 import MeetingNotify from '~/containers/MeetingNotify'
 import MeetingMatchups from '~/components/MeetingMatchups/connected'
+import ErrorBoundary from '~/components/errorboundary/error_boundary'
 
 const routes = () => (
   <ScheduleContainer>
@@ -15,7 +16,9 @@ const routes = () => (
         <BlockSchedule/>
       </Route>
       <Route exact path="/schedule/:id">
-        <MeetingSchedule/>
+        <ErrorBoundary>
+          <MeetingSchedule/>
+        </ErrorBoundary>
       </Route>
       <Route exact path="/schedule/:id/mixer">
         <MeetingMatchups/>

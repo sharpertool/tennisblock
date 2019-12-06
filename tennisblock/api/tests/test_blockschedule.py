@@ -8,22 +8,15 @@ from blockdb.models import (
 
 from blockdb.tests.db_utils import BlockDBTestBase
 from api.notify import ScheduleNotifyView
+from api.blockschedule import BlockPlayers
+from api.apiutils import get_meeting_for_date
+from TBLib.schedule import Scheduler
 
 
 factory = APIRequestFactory()
 
 
-def notify_post(msg, user=None):
-    request = factory.post(reverse('api:notify', kwargs={'date': '0000-00-00'}),
-                           {"message": msg})
-    if user:
-        force_authenticate(request, user=user)
-    response = ScheduleNotifyView.as_view()(request)
-    return response
-
-
-@tag('medium')
-class TestBlockSchedule(BlockDBTestBase):
+class TestBase(BlockDBTestBase):
 
     @classmethod
     def setUpTestData(cls):
@@ -40,6 +33,19 @@ class TestBlockSchedule(BlockDBTestBase):
         cls.meeting = meetings
         cls.splayers = players
 
+    @staticmethod
+    def notify_post(msg, user=None):
+        request = factory.post(reverse('api:notify', kwargs={'date': '0000-00-00'}),
+                               {"message": msg})
+        if user:
+            force_authenticate(request, user=user)
+        response = ScheduleNotifyView.as_view()(request)
+        return response
+
+
+@tag('medium')
+class TestBlockSchedule(TestBase):
+
     def setUp(self):
         pass
 
@@ -55,7 +61,7 @@ class TestBlockSchedule(BlockDBTestBase):
             self.assertEqual(len(av.available), 16, 'Expected availability to have 16 items')
 
     def test_schedule_notify(self):
-        response = notify_post('This is a test message', user=self.admin_user)
+        response = self.notify_post('This is a test message', user=self.admin_user)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'status': 'success'})
 
@@ -69,9 +75,24 @@ class TestBlockSchedule(BlockDBTestBase):
         pass
 
     def test_block_schedule_query(self):
+        request = factory.get(reverse(
+            'api:blockplayers_for_date', kwargs={'date': '0000-00-00'})
+        )
+        user = self.admin_user
+        if user:
+            force_authenticate(request, user=user)
+        response = BlockPlayers.as_view()(request, date='2019-09-27')
+
         pass
 
     def test_block_schedule_update(self):
+        date = '2019-09-27'
+        mtg = get_meeting_for_date(date)
+        couples = Scheduler.get_couples(mtg)
+
+        result = Scheduler.update_schedule(date, couples)
+        new_couples = Scheduler.get_couples(mtg)
+        self.assertEqual(couples, new_couples)
         pass
 
     def test_block_schedule_delete(self):

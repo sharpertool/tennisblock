@@ -1,7 +1,6 @@
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {Input} from 'reactstrap'
-import SelectBox from '~/components/Form/Fields/SelectBox'
 import styles from './styles.local.scss'
 
 import VerifyButtons from './VerifyButtons'
@@ -16,7 +15,7 @@ const SchedulePlayer = (props) => {
     altsubs,
     verifyPlayer,
     notifyPlayer,
-    onPlayerChanged,
+    onBlockPlayerChanged,
     verifyCode,
   } = props
   
@@ -45,6 +44,18 @@ const SchedulePlayer = (props) => {
     default:
       className = ''
   }
+
+  const onInputChange = (e) => {
+    const new_id = parseInt(e.target.value)
+    const packet = {
+          group: group,
+          index: index,
+          value: new_id,
+          new_id: new_id,
+          previous: player.id
+      }
+    onBlockPlayerChanged(packet)
+  }
   
   return (
     <div className="form-group">
@@ -52,12 +63,7 @@ const SchedulePlayer = (props) => {
         type="select"
         className={className}
         value={player.id}
-        onChange={(e) => onPlayerChanged({
-          group: group,
-          index: index,
-          value: parseInt(e.target.value),
-          previous: player.id
-        })}
+        onChange={onInputChange}
       >
         <option
           value={player.id}>
@@ -99,7 +105,7 @@ SchedulePlayer.propTypes = {
   subs: PropTypes.array,
   altsubs: PropTypes.array,
   verifyStatus: PropTypes.object,
-  onPlayerChanged: PropTypes.func,
+  onBlockPlayerChanged: PropTypes.func.isRequired,
 }
 
 export default SchedulePlayer

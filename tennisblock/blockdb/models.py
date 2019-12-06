@@ -395,6 +395,7 @@ class Schedule(models.Model):
 
     meeting = models.ForeignKey(Meeting,
                                 on_delete=models.CASCADE)
+    pair_index = models.IntegerField(default=-1)
     player = models.ForeignKey(Player,
                                related_name='scheduled', on_delete=models.CASCADE)
     issub = models.BooleanField(default=False)

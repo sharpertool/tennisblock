@@ -25,6 +25,7 @@ describe('Insure selectors return valid stuff', () => {
     }, {})
   
   const state = {
+    num_courts: 2,
     current_date: 'current',
     meeting_dates: [{date: 'current', num_courts: 2}],
     players_by_id: byid,

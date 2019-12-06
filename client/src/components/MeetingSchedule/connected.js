@@ -8,7 +8,7 @@ import MeetingSchedule from './index'
 
 const mapStateToProps = (state) => {
   return {
-    couples: selectors.getCouples(state),
+    couples: selectors['schedule:getCouples2'](state),
     canClearSchedule: selectors.canClearSchedule(state),
     canReSchedule: selectors.canReSchedule(state),
     canUpdateSchedule: selectors.isScheduleChanged(state),
