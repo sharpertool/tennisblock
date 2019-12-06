@@ -74,20 +74,18 @@ function* requestBlockPlayers({payload: {date}}) {
   //console.log(`Requets Block players for date ${date}`)
   const {apis: {blockplayers: urlpattern}} = moduleConfig
   const {apis: {subs: subspattern}} = moduleConfig
-  
-  
-  const url = urlpattern.replace('0000-00-00', date)
-  const suburl = subspattern.replace('0000-00-00', date)
-  
+
   const axios = get_axios()
   try {
     yield fork(requestMatchData, date)
     yield fork(queryVerifyStatus, date)
-    
+
+    const url = urlpattern.replace('0000-00-00', date)
     const {data} = yield call(axios.get, url)
     yield put(actions.fetchBlockPlayersSuccess())
     yield put(actions.setBlockPlayers(data))
     {
+      const suburl = subspattern.replace('0000-00-00', date)
       const {data} = yield call(axios.get, suburl)
       yield put(actions.setSubs(data))
     }

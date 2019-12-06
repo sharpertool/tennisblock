@@ -76,21 +76,15 @@ const reducer = handleActions(
     },
     
     [types.SET_BLOCK_PLAYERS](state, {payload}) {
-      const {date, guys, gals, couples} = payload
+      const {date, num_courts, guys, gals, couples} = payload
       const nCourts = couples.length * 2
       // Some Ramda approaches, just testing for now
       const players_by_id = toObjectById(R.concat(guys, gals))
       //const curr = groupByGenderAndId(players_by_id)
       
       const processed = [...guys, ...gals].reduce((acc, p) => {
-        acc.players_by_id[p.id] = {
-          name: p.name,
-          id: p.id,
-          ntrp: p.ntrp,
-          untrp: p.untrp,
-          gender: p.gender,
-        }
-        if (p.gender === 'm') {
+        acc.players_by_id[p.id] = {...p}
+        if (p.gender.toLowerCase() === 'm') {
           acc.curr_guys.push(p.id)
           acc.original_guys.push(p.id)
         } else {
@@ -119,6 +113,8 @@ const reducer = handleActions(
       return {
         ...state,
         ...processed,
+        couples: couples,
+        num_courts: num_courts,
         pbyid: players_by_id,
         //originalCouples: [...couples],
         guys: guys.map(filter_player),

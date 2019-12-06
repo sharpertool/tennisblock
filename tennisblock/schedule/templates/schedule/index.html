@@ -72,6 +72,12 @@
                     matchdata: '{% url "api:matchdata_for_date" "0000-00-00" %}',
                     pickteams: '{% url "api:pickteams_for_date" "0000-00-00" %}',
                   }
+                },
+                availability_opts: {
+                  apis: {
+                    availability_url: '{% url "api:availability" %}',
+                    blockdates: '{% url 'api:blockdates' %}',
+                  }
                 }
               }
             )

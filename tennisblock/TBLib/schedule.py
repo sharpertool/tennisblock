@@ -12,6 +12,8 @@ from django.utils import timezone
 from blockdb.models import PlayerAvailability, Meeting, Couple, Schedule, Player, SeasonPlayer
 from api.apiutils import get_current_season, get_next_meeting, get_meeting_for_date
 
+from .serializers import PlayerSerializer
+
 
 def reset_availability_arrays(date=None):
     """ Reset availability arrays for given meeting date,
@@ -323,28 +325,34 @@ class Scheduler(object):
         Call the stored procedure that does a low-level complex
         full outer join of our players.
         """
-        scheduled_players = Schedule.objects.filter(meeting=mtg)
-        guys = scheduled_players.filter(player__gender='M')
-        gals = scheduled_players.filter(player__gender='F')
+        scheduled = Schedule.objects.filter(meeting=mtg)
+        sched_guys = scheduled.filter(player__gender='M')
+
+        guys = Player.objects.filter(id__in=scheduled.filter(
+            player__gender='M').values('player__id'))
+        gals = Player.objects.filter(id__in=scheduled.filter(
+            player__gender='F').values('player__id'))
+
+        guy_ids = scheduled.filter(player__gender='M').values_list('player__id', 'partner_id')
+        guy_ids_only = scheduled.filter(player__gender='M').values_list('player__id', flat=True)
+        gal_ids = scheduled.filter(
+            Q(player__gender='F') & ~Q(partner__in=guy_ids_only)).values_list(
+            'partner_id','player__id')
+
+        couples = set(guy_ids).union(gal_ids)
 
         data = [
             {
                 'guy': Scheduler._mkData(guy.player),
-                'gal': Scheduler._mkData(guy.partner)
-            } for guy in guys
+                'gal': Scheduler._mkData(guy.partner),
+            } for guy in sched_guys
         ]
 
-        # cursor = connection.cursor()
-        #
-        # cursor.execute("call scheduled_players({});".format(mtg.pk))
-        #
-        # desc = cursor.description
-        # columns = [d[0] for d in desc]
-        # rows = cursor.fetchall()
-        #
-        # data = [dict(zip(columns, r)) for r in rows]
-
-        return data
+        return {
+            "pairs": data,
+            "guys": PlayerSerializer(guys, many=True).data,
+            "gals": PlayerSerializer(gals, many=True).data,
+            "couples": couples}
 
     @staticmethod
     def query_schedule(date=None):
@@ -360,61 +368,54 @@ class Scheduler(object):
                 'couples': []
             }
 
-        season = get_current_season()
-        num_courts = mtg.num_courts
-
-        data = {}
         if mtg:
-            data = {'date': mtg.date}
+            data = {
+                'date': mtg.date,
+                'num_courts': mtg.num_courts,
+            }
 
             guys = []
             gals = []
             couples = []
 
             results = Scheduler._query_scheduled_players(mtg)
-            for result in results:
+            pairs = results.get('pairs')
+            couples = results.get('couples')
+            for pair in pairs:
                 couple = {
                     'guy': {'name': '----'},
                     'gal': {'name': '----'}
                 }
-                if result.get('guy'):
-                    guy = result.get('guy')
-                    partner = result.get('gal')
+                if pair.get('guy'):
+                    guy = pair.get('guy')
+                    partner = pair.get('gal')
                     g = {
                         'name': guy.get('name'),
                         'id': guy.get('id'),
                         'ntrp': guy.get('ntrp'),
                         'untrp': guy.get('untrp'),
                         'gender': 'm',
-                        'partner': result.get('gal'),
-                        'partnername': result.get('gal') or '----'
+                        'partner': pair.get('gal'),
+                        'partnername': pair.get('gal') or '----'
                     }
                     guys.append(g)
                     couple['guy'] = g
-                if result.get('gal'):
-                    gal = result.get('gal')
+                if pair.get('gal'):
+                    gal = pair.get('gal')
                     g = {
                         'name': gal.get('name'),
                         'id': gal.get('id'),
                         'ntrp': gal.get('ntrp'),
                         'untrp': gal.get('untrp'),
                         'gender': 'f',
-                        'partner': result.get('guy'),
-                        'partnername': result.get('guy') or '----'
+                        'partner': pair.get('guy'),
+                        'partnername': pair.get('guy') or '----'
                     }
                     gals.append(g)
                     couple['gal'] = g
 
-                couples.append(couple)
-
-            while len(couples) < num_courts * 2:
-                couples.append({
-                    'guy': {'name': '----'},
-                    'gal': {'name': '----'}
-                })
-
-            data['guys'] = guys
-            data['gals'] = gals
+            data['guys'] = results.get('guys')
+            data['gals'] = results.get('gals')
             data['couples'] = couples
         else:
             data['date'] = "Invalid"
