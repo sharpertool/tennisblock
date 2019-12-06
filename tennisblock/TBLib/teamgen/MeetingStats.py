@@ -236,15 +236,22 @@ class MeetingStats:
         while n_tries < iterations:
             t_men, t_women = self.get_temp_list()
 
+            grp_a = t_men
+            grp_b = t_women
+
+            d = len(t_men) - len(t_women)
+            if d != 0:
+                pass
+
             # Build sets of men first.
             # If there is an exception thrown, then just ignore
             # it and try again..
-            new_round = self.pick_men(t_men)
+            new_round = self.pick_first_group(t_men)
 
             self.clear_check_stats()
 
             try:
-                if self.add_women(new_round, t_women,
+                if self.add_partners(new_round, t_women,
                                   diff_max, quality_min,
                                   iterations):
                     return new_round
@@ -256,12 +263,12 @@ class MeetingStats:
 
         return None
 
-    def add_women(self, new_round: MatchRound, t_women: set,
+    def add_partners(self, new_round: MatchRound, p_list: list,
                   diff_max: int, quality_min: int, num_tries: int) -> bool:
         """
         Upon entry, new_round will be a set that contains
-        the male pairings, but with no women entered. The
-        male pairings will have been done randomly, so
+        the initial partner, but with no 2nd partner entered. The
+        initial pairints pairings will have been done randomly, so
         they should be okay.
         """
         curr_diff = diff_max + 1
@@ -270,17 +277,17 @@ class MeetingStats:
         max_q = 0
 
         while num_tries and (curr_diff > diff_max or curr_q < quality_min):
-            s_women = set(t_women)
+            p_set = set(p_list)
 
             for m in new_round.matches:
                 m1 = m.t1.p1.name
                 m2 = m.t2.p1.name
 
-                f1 = self.get_valid_partner(m1, m2, s_women, None)
-                s_women.remove(f1)
+                f1 = self.get_valid_partner(m1, m2, p_set, None)
+                p_set.remove(f1)
 
-                f2 = self.get_valid_partner(m2, m1, s_women, f1)
-                s_women.remove(f2)
+                f2 = self.get_valid_partner(m2, m1, p_set, f1)
+                p_set.remove(f2)
 
                 m.t1.p2 = self.pbyname[f1]
                 m.t2.p2 = self.pbyname[f2]
@@ -302,16 +309,16 @@ class MeetingStats:
 
         return curr_diff <= diff_max and curr_q >= quality_min
 
-    def get_valid_partner(self, m1, m2, s_women, f1=None):
+    def get_valid_partner(self, m1, m2, p_set, f1=None):
         """
-        Pick a woman that is a valid partner for the two men specified in m1 and m2.
+        Pick a partner that is a valid partner for the two players specified in m1 and m2.
 
         The rule is -
-        If a woman has played with AND against m2, she is not a valid opponent
-        M2 will have seen her 3 times.
-        Also if she has played against M2 2x already, she can't play against him again.
+        If a player has played with AND against m2, they are not a valid opponent
+        M2 will have seen them 3 times.
+        Also if they have played against M2 2x already, they can't play against them again.
 
-        f1 is set to the first female in the current group if this is the second call.
+        f1 is set to the first player in the current group if this is the second call.
         """
 
         invalid = self.InvalidOpponents[m2].union(self.InvalidPartners[m1])
@@ -319,7 +326,7 @@ class MeetingStats:
         if f1:
             invalid = invalid.union(self.Opponents[f1])
 
-        tmp = s_women.difference(invalid)
+        tmp = p_set.difference(invalid)
         if len(tmp) == 0:
             raise NoValidPartner()
 
@@ -336,6 +343,11 @@ class MeetingStats:
             if d % 2:
                 raise Exception("We have an odd number of players!")
 
+            if d % 4 == 0:
+                # We can work with this.
+                # return t_men, t_women
+                pass
+
             if d > 0:
                 big, sm = t_men, t_women
             else:
@@ -349,25 +361,27 @@ class MeetingStats:
 
         return t_men, t_women
 
-    def pick_men(self, t_men):
+    def pick_first_group(self, players):
         """
-        Build a new set with a list of men that are valid opponents of each other.
+        Build a new set with a list of players from the first group.
+        The first group may be men or women, depends on which set is
+        larger.
 
-        Each time this function is called, a new random set of men should be chosen.
-        The only history used is the history of men that have played against each other
+        Each time this function is called, a new random set of players should be chosen.
+        The only history used is the history of players that have played against each other
         this night. The get_valid_opponent function is used for this determination.
         """
         random.seed()
 
         while True:
             new_round = self.round_template.clone()
-            s_men = set(t_men)
+            pset = set(players)
             try:
                 for n in range(0, self.n_courts):
-                    m1 = random.choice(list(s_men))
-                    s_men.remove(m1)
-                    m2 = self.get_valid_opponent(m1, s_men)
-                    s_men.remove(m2)
+                    m1 = random.choice(list(pset))
+                    pset.remove(m1)
+                    m2 = self.get_valid_opponent(m1, pset)
+                    pset.remove(m2)
                     m = Match(Team(self.pbyname[m1]),
                               Team(self.pbyname[m2]))
                     new_round.add_match(m)
