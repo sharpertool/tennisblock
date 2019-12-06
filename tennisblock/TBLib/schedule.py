@@ -5,7 +5,7 @@ from collections import defaultdict
 import textwrap
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q, Count, F
+from django.db.models import Q, Count, F, Max
 from django.db import connection
 from django.utils import timezone
 
@@ -206,9 +206,9 @@ class Scheduler(object):
         if with_singles:
             as_singles = False
         pt = Scheduler.get_available_couples(mtg,
-                                        fulltime=False,
-                                        as_singles=as_singles
-                                        )
+                                             fulltime=False,
+                                             as_singles=as_singles
+                                             )
 
         stats = Scheduler.get_couple_stats(season, pt)
 
@@ -321,25 +321,21 @@ class Scheduler(object):
             }
         return {'name': '----'}
 
-
     @staticmethod
     def get_couples(mtg):
 
-        scheduled = Schedule.objects.filter(meeting=mtg)
-
         couples = Schedule.objects.filter(meeting=mtg).distinct('pair_index').order_by('pair_index')
 
-        #return [(c.player.id, c.partner.id, c.pair_index) for c in couples]
-        guy_ids = scheduled.filter(player__gender='M').values_list(
-            'player__id', 'partner_id')
-        guy_ids_only = scheduled.filter(player__gender='M').values_list(
-            'player__id', flat=True)
-        gal_ids = scheduled.filter(
-            Q(player__gender='F') & ~Q(partner__in=guy_ids_only)).values_list(
-            'partner_id', 'player__id')
+        clist = []
+        for couple in couples:
+            g1, g2 = couple.player.gender, couple.partner.gender
+            gpair = g1 + g2
+            if gpair in ['MF', 'MM', 'FF']:
+                clist.append((couple.player.id, couple.partner.id, couple.pair_index))
+            else:  # gpair == 'FM'
+                clist.append((couple.partner.id, couple.player.id, couple.pair_index))
 
-        couples = list(set(guy_ids).union(gal_ids))
-        return couples
+        return clist
 
     @staticmethod
     def _query_scheduled_players(mtg):
@@ -395,7 +391,6 @@ class Scheduler(object):
 
         guys = []
         gals = []
-        couples = []
 
         results = Scheduler._query_scheduled_players(mtg)
         pairs = results.get('pairs')
@@ -446,14 +441,14 @@ class Scheduler(object):
 
         schedule_player_ids = []
         for cpl in couples:
-            p1, p2 = cpl
+            p1, p2, pair_index = cpl
             player, partner = Scheduler.get_players(p1, p2)
 
             if player:
-                Scheduler.add_or_update_schedule(meeting, player, partner)
+                Scheduler.add_or_update_schedule(meeting, player, partner, index=pair_index)
                 schedule_player_ids.append(player.id)
             if partner:
-                Scheduler.add_or_update_schedule(meeting, partner, player)
+                Scheduler.add_or_update_schedule(meeting, partner, player, index=pair_index)
                 schedule_player_ids.append(partner.id)
 
         # Delete any players that were scheduled.
@@ -556,7 +551,8 @@ class Scheduler(object):
 
     @staticmethod
     def add_or_update_schedule(meeting, player, partner,
-                               is_sub=False, verified=False):
+                               is_sub=False, verified=False,
+                               index=None):
         """
         Add or update the schedule
         Retain the existing schedule object for a player so that
@@ -569,34 +565,18 @@ class Scheduler(object):
         if player is None:
             return
 
-        try:
-            schedule = Schedule.objects.get(
-                meeting=meeting, player=player
-            )
-            changed = False
-            if schedule.partner != partner:
-                schedule.partner = partner
-                changed = True
-            if schedule.issub != is_sub:
-                schedule.issub = is_sub
-                changed = True
+        obj, created = Schedule.objects.update_or_create(
+            player=player,
+            meeting=meeting,
+            defaults={
+                'issub': is_sub,
+                'verified': verified,
+                'pair_index': index,
+                'partner': partner,
+                'confirmation_status': 'U'}
+        )
 
-            if changed:
-                schedule.save()
-                return True
-
-        except Schedule.DoesNotExist:
-            schedule = Schedule(
-                meeting=meeting,
-                player=player,
-                issub=is_sub,
-                verified=verified,
-                partner=partner
-            )
-            schedule.save()
-            return True
-
-        return False
+        return created
 
     @staticmethod
     def _add_to_schedule(mtg, player, partner):
@@ -683,5 +663,3 @@ class Scheduler(object):
                       for s in players]
 
         return email_list, cc_list
-
-

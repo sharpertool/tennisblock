@@ -14011,10 +14011,13 @@ react-table-hoc-fixed-columns@^2.1.2:
     classnames "^2.2.6"
     uniqid "^5.0.3"
 
-react-table@^7.0.0-beta.28:
-  version "7.0.0-beta.28"
-  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.0.0-beta.28.tgz#f5cd37b09fdbc7f22f472d021c56637d9fae097c"
-  integrity sha512-Ym05FAFNPGU6cid3Uw2W2+tn3mfGqKkLs51dw5FAJyz3fFNV0/i/CrTzHXZbVDA/KO2KNFYUjKGQJxIiDbXb4w==
+react-table@^6.11.4:
+  version "6.11.4"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.11.4.tgz#e9d30b4500d2c1cf8e5ba312227d19a256ec1913"
+  integrity sha512-2b114yTjYyDTAha1vOH33QPupzv/KE3i7diouYqmt7O3NIExaWxNxxvbch26MyvL5YSLN17cK9Zk9Eh3ss+Pcg==
+  dependencies:
+    classnames "^2.2.5"
+    react-is "^16.8.1"
 
 react-test-renderer@^16.0.0-0:
   version "16.6.3"

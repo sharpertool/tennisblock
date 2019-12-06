@@ -1,7 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 
-import Availability from '~/components/Availability/connected'
 import AvailabilityTable from '~/components/AvailabilityReactTable/connected'
 
 const root = ({store}) => {

@@ -70,3 +70,5 @@ db_learning.txt
 /.envrc
 /node_modules
 /yarn.lock
+/ssl/tennisblock.local+2.pem
+/ssl/tennisblock.local+2-key.pem
