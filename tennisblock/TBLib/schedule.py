@@ -299,7 +299,7 @@ class Scheduler(object):
     @staticmethod
     def get_partner_id(player):
 
-        if player.gender == 'f':
+        if player.gender == 'F':
             c = Couple.objects.filter(female=player)
             if len(c):
                 return c[0].male
@@ -438,6 +438,14 @@ class Scheduler(object):
 
     @staticmethod
     def update_schedule_players(meeting, couples):
+        """
+        Iterate over the couples array, which is an array of tuples, where
+        each tuple is (player.id, partner.id, index)
+
+        The index is used to associate the players as a pair.
+        Update or create entries for each player/partner pair in the Schedule
+
+        """
 
         schedule_player_ids = []
         for cpl in couples:
@@ -577,36 +585,6 @@ class Scheduler(object):
         )
 
         return created
-
-    @staticmethod
-    def _add_to_schedule(mtg, player, partner):
-        """
-        Add a player to the schedule.
-
-        If the player does not have an ID, then skip
-        this player.
-
-        If the player has a partner and that ID is valid
-        add their partner.
-        """
-
-        try:
-            player_obj = Player.objects.get(id=player.get('id'))
-            if partner.get('id') is not None:
-                partner = Player.objects.get(id=partner.get('id'))
-            else:
-                partner = None
-
-            sm = Schedule.objects.create(
-                meeting=mtg,
-                player=player_obj,
-                issub=player.get('issub', False),
-                verified=player.get('verified', False),
-                partner=partner
-            )
-            sm.save()
-        except ObjectDoesNotExist:
-            pass
 
     @staticmethod
     def update_schedule(date, couples):
