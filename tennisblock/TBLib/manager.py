@@ -63,13 +63,6 @@ class TeamManager(object):
         if n_courts is None:
             n_courts = (len(men) + len(women)) // 4
 
-        # if len(men) < n_courts * 2 or len(women) < n_courts * 2:
-        #    errmsg = """
-        #    Cannot pick teams, there are not enough men or women.
-        #    Need {0} of both. Have {1} men and {2} women.
-        #    """.format(n_courts * 2, len(men), len(women))
-        #    return {"status": "fail", "error": errmsg}
-
         tg = TeamGen(n_courts, n_sequences, men, women)
         sequences = tg.generate_set_sequences(
             b_allow_duplicates,

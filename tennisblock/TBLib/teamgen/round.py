@@ -13,6 +13,9 @@ class MatchRound:
         if matches:
             self.matches = matches
 
+        self._diff_history = []
+        self._q_history = []
+
     def clone(self):
         s = MatchRound()
         s.matches = [m for m in self.matches]
@@ -21,8 +24,20 @@ class MatchRound:
     def add_match(self, match: Match):
         self.matches.append(match)
 
+    def push_histories(self, diff=None, q=None):
+        if diff: self._diff_history.append(diff)
+        if q: self._q_history.append(q)
+
     @property
-    def diff(self):
+    def diff_history(self):
+        return self._diff_history or [-1]
+
+    @property
+    def q_history(self):
+        return self._q_history or [-1]
+
+    @property
+    def diffs(self):
         """
         Take all diff values, put them in a list.
 
@@ -52,7 +67,7 @@ class MatchRound:
         return diffs
 
     @property
-    def quality(self):
+    def qualitys(self):
         return [
             m.quality
             for m in self.matches

@@ -1,12 +1,14 @@
 import logging
 import random
 from typing import List
+import itertools
 from collections import Counter, defaultdict
 from TBLib.teamgen.exceptions import NoValidOpponent, NoValidPartner
 
 from .Match import Match
 from .Team import Team
 from .round import MatchRound
+from .stats import RoundStats
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +38,10 @@ class MeetingStats:
         self.n_fails_by_invalid_partner = 0
         self.n_fails_by_diff = 0
 
+        self.stats = RoundStats()
+        self.diff_history = []
+        self.q_history = []
+
         self._see_player_once = False
         if self.n_courts == 3:
             self._see_player_once = False
@@ -50,9 +56,6 @@ class MeetingStats:
         self.Opposites = {}
         self.InvalidOpponents = {}
         self.InvalidPartners = {}
-
-        self.diff_history = []
-        self.quality_history = []
 
         # Need a reverse lookup table
         self.pbyname = {}
@@ -92,6 +95,7 @@ class MeetingStats:
         self.Partners = {}
         self.Opponents = {}
         self.Opposites = {}
+        self.stats = RoundStats()
         for p in self.men + self.women:
             self.Partners[p.name] = set()
             self.Opposites[p.name] = Counter()
@@ -100,9 +104,6 @@ class MeetingStats:
             self.InvalidPartners[p.name] = set()
 
         logger.debug("restart Done")
-
-    def diff_history_min(self):
-        return min(self.diff_history)
 
     def add_round(self, new_round):
         """
@@ -193,33 +194,21 @@ class MeetingStats:
         """
         tries = 0
         self.round_template = MatchRound()
-        rounds: MatchRound = None
+        rounds: list[MatchRound] = []
 
-        min_diff = 1000.0
-        minq = maxq = 0
-        min_min_q = 100
-        max_max_q = 0
         max_build_tries = self.max_iterations
 
-        while rounds is None and tries < max_tries:
-            self.diff_history = []
-            self.quality_history = []
+        while not rounds and tries < max_tries:
             rounds = self.build_round(max_build_tries, diff_max, quality_min)
             tries += 1
-            md = 0.0
-            if self.diff_history and self.quality_history:
-                md = min(self.diff_history)
-                maxq = max(self.quality_history)
-                minq = min(self.quality_history)
-                min_diff = min(min_diff, md)
-                min_min_q = min(min_min_q, minq)
-                max_max_q = max(max_max_q, maxq)
+
+            max_diff, min_diff, minq, maxq = self.stats.get_stats()
 
             logger.debug(
-                f"Build a set DiffMax:{diff_max:5.3}({md:5.3})"
+                f"Build a set DiffMax:{diff_max:5.3}({min_diff:5.3})"
                 f" MinQ:{quality_min:5.1f}({minq:5.1f}, {maxq:5.1f}) Try:{tries}.")
 
-        return rounds, min_diff, min_min_q, max_max_q
+        return rounds, self.stats
 
     def build_round(self, iterations, diff_max, quality_min) -> MatchRound:
         """
@@ -255,7 +244,7 @@ class MeetingStats:
                                quality_min,
                                g1, g2):
 
-        assert(len(g1) > len(g2))
+        assert (len(g1) > len(g2))
         diff = len(g1) - len(g2)
 
         n_tries = 0
@@ -271,7 +260,7 @@ class MeetingStats:
                 set1a = set(random.sample(set1, k=4))
                 set1b = set1.copy()
                 set1b -= set1a
-                assert(len(set2) == len(set1b))
+                assert (len(set2) == len(set1b))
 
                 round1, set1a_partners = self.pick_first_group(set1a, courts=1)
                 round2, set1b_partners = self.pick_first_group(set1b, courts=3)
@@ -292,10 +281,11 @@ class MeetingStats:
 
                 except NoValidPartner:
                     # we can continue on here, regenerate the men matchups
+                    self.n_fails_by_invalid_partner += 1
                     pass
             n_tries = n_tries + 1
 
-        return None
+        return []
 
     def build_balanced_round(self, iterations,
                              diff_max, quality_min,
@@ -316,19 +306,19 @@ class MeetingStats:
 
             try:
                 if self.add_partners(round, t_women,
-                                  diff_max, quality_min,
-                                  iterations):
-                    return round
+                                     diff_max, quality_min,
+                                     iterations):
+                    return [round]
                 self.print_check_stats()
             except NoValidPartner:
                 # we can continue on here, regenerate the men matchups
                 pass
             n_tries = n_tries + 1
 
-        return None
+        return []
 
     def add_partners(self, round: MatchRound, p_list: list,
-                  diff_max: int, quality_min: int, num_tries: int) -> bool:
+                     diff_max: int, quality_min: int, num_tries: int) -> bool:
         """
         Upon entry, round will be a set that contains
         the initial partner, but with no 2nd partner entered. The
@@ -356,22 +346,25 @@ class MeetingStats:
                 m.t1.p2 = self.pbyname[f1]
                 m.t2.p2 = self.pbyname[f2]
 
-            diffs = round.diff
-            qualities = round.quality
+            diffs = round.diffs
+            qualities = round.qualitys
 
             # We want the worst case values here.
             curr_diff = max(diffs)
             curr_q = min(qualities)
 
             min_diff = min(min_diff, curr_diff)
+            max_q = max(max_q, curr_q)
 
             num_tries -= 1
 
-        self.diff_history.append(min_diff)
-        # We want the best case value here
-        self.quality_history.extend(qualities)
+        round.push_histories(min_diff, max_q)
+        self.stats.push_histories(min_diff, max_q)
 
-        return curr_diff <= diff_max and curr_q >= quality_min
+        okay = curr_diff <= diff_max and curr_q >= quality_min
+        if not okay:
+            self.n_fails_by_diff += 1
+        return okay
 
     def get_valid_partner(self, m1, m2, p_set, f1=None):
         """
@@ -481,4 +474,4 @@ class MeetingStats:
 
     def print_check_stats(self):
         logger.debug(f"Failed Stats:Partner:{self.n_fails_by_invalid_partner}"
-                    f"Diff:{self.n_fails_by_diff} Mindiff:{self.diff_history and min(self.diff_history)}")
+                     f"Diff:{self.n_fails_by_diff}")

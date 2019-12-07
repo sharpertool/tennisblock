@@ -26,56 +26,48 @@ class TeamGen(object):
             self.meeting.max_iterations = iterations
 
         while self.meeting.round_count() < self.n_sequences:
-            group_round = None
             min_quality = 98
+            rounds = None
 
-            while min_quality >= 50 and group_round is None:
+            while min_quality >= 50 and not rounds:
                 results = self.meeting.get_new_round(
+                    diff_max=0.6,
                     quality_min=min_quality, max_tries=max_tries)
 
-                group_round, min_found_diff, min_q, max_q = results
+                rounds, stats = results
+                min_found_diff = stats.min_diff
+                min_q = stats.min_q
+                max_q = stats.max_q
                 status_msg = f"Quality Stats: min:{min_q} max:{max_q}"
                 MixerSyncHandler.mixer_status(status_msg)
                 logger.info(status_msg)
 
-                if group_round is None:
+                if not rounds:
                     # Increase the quality then the diff
                     min_quality = min_quality - 2
                     logger.debug(f"Criteria updated. Q:{min_quality}")
 
-            if group_round is None:
+            if rounds is None:
                 self.meeting.print_check_stats()
                 logger.info("Failed to build the sequence.")
                 return None
             else:
-                if isinstance(group_round, list):
-                    matches = []
-                    for round in group_round:
-                        matches.extend(round.matches)
-                    round = MatchRound(matches=matches)
+                matches = []
+                for rnd in rounds:
+                    matches.extend(rnd.matches)
+                round = MatchRound(matches=matches)
 
-                    status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
-                    MixerSyncHandler.mixer_status(status_msg)
-                    logger.info(status_msg)
+                round.display()
 
-                    d_max, d_avg, diff_list = round.diff_stats()
-                    diffs = ",".join(["%5.3f" % x for x in diff_list])
-                    logger.info("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
-                        self.diff_max, d_max, d_avg, diffs))
-                    self.meeting.add_round(round)
+                status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
+                MixerSyncHandler.mixer_status(status_msg)
+                logger.info(status_msg)
 
-                else:
-                    group_round.display()
-
-                    status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
-                    MixerSyncHandler.mixer_status(status_msg)
-                    logger.info(status_msg)
-
-                    d_max, d_avg, diff_list = group_round.diff_stats()
-                    diffs = ",".join(["%5.3f" % x for x in diff_list])
-                    logger.info("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
-                        self.diff_max, d_max, d_avg, diffs))
-                    self.meeting.add_round(group_round)
+                d_max, d_avg, diff_list = round.diff_stats()
+                diffs = ",".join(["%5.3f" % x for x in diff_list])
+                logger.info("Found a set sequence with DiffMax:%5.3f Max:%3.3f Avg:%5.3f List:%s" % (
+                    self.diff_max, d_max, d_avg, diffs))
+                self.meeting.add_round(round)
 
         MixerSyncHandler.mixer_status("Able to generate the sequences")
         return self.meeting.get_rounds()
