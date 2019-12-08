@@ -223,7 +223,7 @@ class MeetingStats:
         if diff % 2:
             raise Exception("We have an odd number of players!")
 
-        if diff % 4 != 0:
+        if diff == 0 or diff % 4 != 0:
             return self.build_balanced_round(iterations, diff_max, quality_min)
 
         if diff > 0:
@@ -243,6 +243,12 @@ class MeetingStats:
                                diff_max,
                                quality_min,
                                g1, g2):
+        """
+        Build an unbalanced mixed group, with 1 or more courts of men's, or womens's and
+        the remaining as mixed.
+
+        g1 is to be the large of the two sets
+        """
 
         assert (len(g1) > len(g2))
         diff = len(g1) - len(g2)
@@ -287,25 +293,43 @@ class MeetingStats:
 
         return []
 
+    """
+    ToDo: Refactor the group code to be generic
+    
+    I should be able to pass in 2 groups, and then build the rounds from these
+    two groups. This works for men's, women's or mixed.
+    For men's and women's: Divide the group into equal parts, and pass them in a g1, and g2
+    For mixed, pass in two groups, where g1 and g2 are men/women or women/men.
+    In all cases, the groups are equal.
+    
+    A 2nd I can also take a group and split them into sub-groups, so if I have 8 men and 8 women:
+      1) pull our 4 men and 4 women, split those into equal groups of 2 for each, and the rest (4/4) are
+         spread across a pair of mixed courts.
+     
+    """
+
     def build_balanced_round(self, iterations,
                              diff_max, quality_min,
                              ):
-        """ Build a round with equal numbers of men and women """
+        """
+        Build a round with equal numbers of men and women.
+        g1 and g2 should have the same # of people in them.
+        """
 
         n_tries = 0
 
         while n_tries < iterations:
-            t_men, t_women = self.get_temp_list()
+            t_g1, t_g2 = self.get_temp_list()
 
             # Build sets of men first.
             # If there is an exception thrown, then just ignore
             # it and try again..
-            round = self.pick_first_group(t_men)
+            round, remainder = self.pick_first_group(t_g1)
 
             self.clear_check_stats()
 
             try:
-                if self.add_partners(round, t_women,
+                if self.add_partners(round, t_g2,
                                      diff_max, quality_min,
                                      iterations):
                     return [round]
