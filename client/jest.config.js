@@ -11,7 +11,7 @@ module.exports = {
     '<rootDir>'
   ],
   testMatch: [
-    './__tests__/**/*.(spec|test).js',
+    '<rootDir>/__tests__/**/*.(spec|test).js',
   ],
   collectCoverage: false,
   transformIgnorePatterns: [
