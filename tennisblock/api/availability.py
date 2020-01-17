@@ -6,23 +6,6 @@ from blockdb.models import Player, Couple, Meeting, Availability, Schedule, Seas
 from .apiutils import JSONResponse, get_current_season
 
 
-def _AvailabilityInit(player, meetings):
-    """
-    Add blank availability items for the specified player
-    """
-
-    for mtg in meetings:
-        try:
-            Availability.objects.get(meeting=mtg, player=player)
-
-        except Availability.DoesNotExist:
-            Availability.objects.create(
-                meeting=mtg,
-                player=player,
-                available=True
-            ).save()
-
-
 class AvailabilityView(View):
 
     def get_player_data(self, player, season, mtgs=None, past=None, future=None, single=False):

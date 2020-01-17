@@ -23,7 +23,7 @@ def reset_availability_arrays(date=None):
         meetings = [get_meeting_for_date(date)]
     else:
         season = get_current_season()
-        meetings = Meeting.objects.filter(season=season)
+        meetings = Meeting.objects.filter(season=season).order_by('date')
 
     scheduler = Scheduler()
     for meeting in meetings:

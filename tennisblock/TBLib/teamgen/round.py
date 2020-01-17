@@ -17,8 +17,7 @@ class MatchRound:
         self._q_history = []
 
     def clone(self):
-        s = MatchRound()
-        s.matches = [m for m in self.matches]
+        s = MatchRound(self.matches)
         return s
 
     def add_match(self, match: Match):
@@ -67,7 +66,7 @@ class MatchRound:
         return diffs
 
     @property
-    def qualitys(self):
+    def qualities(self):
         return [
             m.quality
             for m in self.matches

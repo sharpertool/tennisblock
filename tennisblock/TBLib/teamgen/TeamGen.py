@@ -15,11 +15,11 @@ class TeamGen(object):
         self.n_sequences = num_seq
         self.iterLimit = 1000
 
-    def generate_set_sequences(self,
-                               b_allow_duplicates: bool = False,
-                               iterations: int = None,
-                               max_tries: int = 20,
-                               special_requests=None):
+    def generate_rounds(self,
+                        b_allow_duplicates: bool = False,
+                        iterations: int = None,
+                        max_tries: int = 20,
+                        special_requests=None):
         self.meeting.restart()
 
         self.meeting.see_player_once = not b_allow_duplicates
@@ -27,39 +27,14 @@ class TeamGen(object):
             self.meeting.max_iterations = iterations
 
         while self.meeting.round_count() < self.n_sequences:
-            min_quality = 98
-            rounds = None
 
-            while min_quality >= 50 and not rounds:
-                results = self.meeting.get_new_round(
-                    diff_max=0.6,
-                    quality_min=min_quality,
-                    max_tries=max_tries,
-                    special_requests=None)
+            round = self.generate_round(max_tries=max_tries)
 
-                rounds, stats = results
-                min_found_diff = stats.min_diff
-                min_q = stats.min_q
-                max_q = stats.max_q
-                status_msg = f"Quality Stats: min:{min_q} max:{max_q}"
-                MixerSyncHandler.mixer_status(status_msg)
-                logger.info(status_msg)
-
-                if not rounds:
-                    # Increase the quality then the diff
-                    min_quality = min_quality - 2
-                    logger.debug(f"Criteria updated. Q:{min_quality}")
-
-            if rounds is None:
+            if round is None:
                 self.meeting.print_check_stats()
                 logger.info("Failed to build the sequence.")
                 return None
             else:
-                matches = []
-                for rnd in rounds:
-                    matches.extend(rnd.matches)
-                round = MatchRound(matches=matches)
-
                 round.display()
 
                 status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
@@ -75,9 +50,36 @@ class TeamGen(object):
         MixerSyncHandler.mixer_status("Able to generate the sequences")
         return self.meeting.get_rounds()
 
-    def display_sequences(self, seq):
+    def generate_round(self, max_tries: int = 20):
+        min_quality = 98
+        round = None
+
+        while min_quality >= 50 and not round:
+            results = self.meeting.get_new_round(
+                diff_max=0.6,
+                quality_min=min_quality,
+                max_tries=max_tries)
+
+            round, stats = results
+            min_found_diff = stats.min_diff
+            min_q = stats.min_q
+            max_q = stats.max_q
+            status_msg = f"Quality Stats: min:{min_q} max:{max_q}"
+            MixerSyncHandler.mixer_status(status_msg)
+            logger.info(status_msg)
+
+            if not round:
+                # Increase the quality then the diff
+                min_quality = min_quality - 2
+                logger.debug(f"Criteria updated. Q:{min_quality}")
+
+        return round
+
+    @staticmethod
+    def display_sequences(seq):
         for s in seq:
             s.display()
 
-    def show_all_diffs(self, seq):
+    @staticmethod
+    def show_all_diffs(seq):
         [s.show_diffs() for s in seq]

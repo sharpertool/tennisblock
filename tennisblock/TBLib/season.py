@@ -45,9 +45,9 @@ class SeasonManager(object):
 
         meetings = []
         if self.season:
-            meetings = Meeting.objects.filter(season=self.season).order_by('date')
+            meetings = Meeting.objects.filter(season=self.season)
             if not holdouts:
-                meetings = meetings.filter(holdout=False)
+                meetings = meetings.filter(holdout=False).order_by('date')
 
         return meetings
 

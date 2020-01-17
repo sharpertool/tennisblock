@@ -177,7 +177,9 @@ class MeetingStats:
             self.InvalidOpponents[name] = invalid.union(self.Partners[name])
             self.InvalidPartners[name] = invalid.union(set(self.Opposites[name]))
 
-    def get_new_round(self, diff_max=1.0, quality_min=90, max_tries=20,
+    def get_new_round(self, diff_max=1.0,
+                      quality_min=90,
+                      max_tries=20,
                       special_requests=None):
         """
         This one needs to use the existing sets and list and pick a new
@@ -194,13 +196,12 @@ class MeetingStats:
         set
         """
         tries = 0
-        self.round_template = MatchRound()
-        rounds: list[MatchRound] = []
+        round = None
 
         max_build_tries = self.max_iterations
 
-        while not rounds and tries < max_tries:
-            rounds = self.build_round(max_build_tries, diff_max, quality_min)
+        while not round and tries < max_tries:
+            round = self.build_round(max_build_tries, diff_max, quality_min)
             tries += 1
 
             max_diff, min_diff, minq, maxq = self.stats.get_stats()
@@ -209,7 +210,7 @@ class MeetingStats:
                 f"Build a set DiffMax:{diff_max:5.3}({min_diff:5.3})"
                 f" MinQ:{quality_min:5.1f}({minq:5.1f}, {maxq:5.1f}) Try:{tries}.")
 
-        return rounds, self.stats
+        return round, self.stats
 
     def build_round(self, iterations, diff_max, quality_min) -> MatchRound:
         """
@@ -283,7 +284,7 @@ class MeetingStats:
                                           diff_max, quality_min,
                                           iterations),
                     ]):
-                        return [round1, round2]
+                        return MatchRound(matches=[*round1.matches, *round2.matches])
                     self.print_check_stats()
 
                 except NoValidPartner:
@@ -292,7 +293,7 @@ class MeetingStats:
                     pass
             n_tries = n_tries + 1
 
-        return []
+        return None
 
     """
     ToDo: Refactor the group code to be generic
@@ -320,7 +321,7 @@ class MeetingStats:
         n_tries = 0
 
         while n_tries < iterations:
-            t_g1, t_g2 = self.get_temp_list()
+            t_g1, t_g2 = self.get_temp_list(self.men, self.women)
 
             # Build sets of men first.
             # If there is an exception thrown, then just ignore
@@ -333,14 +334,14 @@ class MeetingStats:
                 if self.add_partners(round, t_g2,
                                      diff_max, quality_min,
                                      iterations):
-                    return [round]
+                    return round
                 self.print_check_stats()
             except NoValidPartner:
                 # we can continue on here, regenerate the men matchups
                 pass
             n_tries = n_tries + 1
 
-        return []
+        return None
 
     def add_partners(self, round: MatchRound, p_list: list,
                      diff_max: int, quality_min: int, num_tries: int) -> bool:
@@ -372,7 +373,7 @@ class MeetingStats:
                 m.t2.p2 = self.pbyname[f2]
 
             diffs = round.diffs
-            qualities = round.qualitys
+            qualities = round.qualities
 
             # We want the worst case values here.
             curr_diff = max(diffs)
@@ -415,16 +416,19 @@ class MeetingStats:
         partner = random.choice(list(tmp))
         return partner
 
-    def get_temp_list(self, g1=None, g2=None):
-        if g1 is None:
-            g1 = self.men
-        if g2 is None:
-            g2 = self.women
+    @staticmethod
+    def get_temp_list(g1, g2):
 
-        t_men = [x.name for x in g1]
-        t_women = [x.name for x in g2]
+        t_g1 = [x.name for x in g1]
+        t_g2 = [x.name for x in g2]
 
-        d = len(t_men) - len(t_women)
+        t_g1, t_g2 = MeetingStats.balance_groups(t_g1, t_g2)
+
+        return t_g1, t_g2
+
+    @staticmethod
+    def balance_groups(g1, g2):
+        d = len(g1) - len(g2)
         if d != 0:
 
             if d % 4 == 0:
@@ -433,17 +437,16 @@ class MeetingStats:
                 pass
 
             if d > 0:
-                big, sm = t_men, t_women
+                big, sm = g1, g2
             else:
-                big, sm = t_women, t_men
+                big, sm = g2, g1
 
             while d:
                 p = random.choice(list(big))
                 sm.append(p)
                 big.remove(p)
-                d = len(t_men) - len(t_women)
-
-        return t_men, t_women
+                d = len(g1) - len(g2)
+        return g1, g2
 
     def pick_first_group(self, players, courts=None):
         """
@@ -461,7 +464,7 @@ class MeetingStats:
             courts = self.n_courts
 
         while True:
-            round = self.round_template.clone()
+            round = MatchRound()
             pset = set(players)
             try:
                 for n in range(0, courts):

@@ -90,10 +90,10 @@ def get_meeting_for_date(date=None):
         return get_next_meeting(season)
 
     dt = parser.parse(date)
-    meetings = Meeting.objects \
-        .filter(season=season,
-                holdout=0,
-                date__exact=dt.strftime("%Y-%m-%d"))
+    meetings = Meeting.objects.filter(
+        season=season,
+        holdout=0,
+        date__exact=dt.strftime("%Y-%m-%d"))
 
     if len(meetings) == 1:
         return meetings[0]
@@ -113,6 +113,7 @@ def build_meetings_for_season(season=None, force=False):
             return
 
     season.insure_meetings_exist(recreate=force)
+
 
 def time_to_js(tval):
     """

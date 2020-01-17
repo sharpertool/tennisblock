@@ -64,7 +64,7 @@ class TeamManager(object):
             n_courts = (len(men) + len(women)) // 4
 
         tg = TeamGen(n_courts, n_sequences, men, women)
-        sequences = tg.generate_set_sequences(
+        sequences = tg.generate_rounds(
             b_allow_duplicates,
             iterations=iterations,
             max_tries=max_tries

@@ -16,7 +16,7 @@ def pick_teams(fp, db_manager, n_courts, n_sequences,
         return
 
     tg = TeamGen(n_courts, n_sequences, men, women)
-    sequences = tg.generate_set_sequences(b_allow_duplicates)
+    sequences = tg.generate_rounds(b_allow_duplicates)
 
     if sequences is None or len(sequences) < n_sequences:
         fp.write("Could not generate the required sequences.")

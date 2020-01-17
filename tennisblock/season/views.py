@@ -65,7 +65,7 @@ class SeasonDetailView(TemplateView):
                         season_form=season_form)
                     return self.render_to_response(context)
             elif request.POST.get('update_holdouts', False):
-                meetings = Meeting.objects.filter(season=s)
+                meetings = Meeting.objects.filter(season=s).order_by('date')
                 holdouts = request.POST.getlist('meetings')
                 for m in meetings:
                     m.holdout = False
@@ -94,10 +94,10 @@ class SeasonDetailView(TemplateView):
                     Submit('update_season', 'Update Season')
                 )
 
-            meetings = Meeting.objects.filter(season=s)
+            meetings = Meeting.objects.filter(season=s).order_by('date')
             if len(meetings) == 0:
                 build_meetings_for_season(s)
-                meetings = Meeting.objects.filter(season=s)
+                meetings = Meeting.objects.filter(season=s).order_by('date')
             context['meetings'] = meetings
             context['active'] = self.active_season_players(s)
             context['inactive'] = self.non_season_players(s)

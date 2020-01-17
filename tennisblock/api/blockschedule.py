@@ -26,38 +26,6 @@ from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, ti
 from TBLib.manager import TeamManager
 from TBLib.schedule import Scheduler
 
-from confirm.signals import player_rejected, player_confirmed
-
-
-def _BuildMeetings(force=False):
-    """
-    Build the meetings for the current season if they don't exist..
-
-    """
-
-    current_season = get_current_season()
-    if not current_season:
-        return
-
-    current_season.ensure_meetings_exist(recreate=force)
-
-
-def _AvailabilityInit(player, meetings):
-    """
-    Add blank availability items for the specified player
-    """
-
-    for mtg in meetings:
-        av = Availability.objects.filter(meeting=mtg, player=player)
-
-        if len(av) == 0:
-            av = Availability.objects.create(
-                meeting=mtg,
-                player=player,
-                available=True
-            )
-            av.save()
-
 
 class SubsView(APIView):
 
