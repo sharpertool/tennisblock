@@ -28,7 +28,7 @@ class TeamGen(object):
 
         while self.meeting.round_count() < self.n_sequences:
 
-            round = self.generate_round(max_tries=max_tries)
+            round = self.generate_round(self.meeting, max_tries=max_tries)
 
             if round is None:
                 self.meeting.print_check_stats()
@@ -50,12 +50,24 @@ class TeamGen(object):
         MixerSyncHandler.mixer_status("Able to generate the sequences")
         return self.meeting.get_rounds()
 
-    def generate_round(self, max_tries: int = 20):
+    @staticmethod
+    def generate_round(meeting, max_tries: int = 20):
+        """
+        Generate a new round in the meeting
+
+        It won't matter how many rounds exists, we can just generate a new round given
+        the current meeting statistics.
+
+        ToDo: Isolate the statistics from the meeting, so we can generate them using other methods
+        :param meeting:
+        :param max_tries:
+        :return:
+        """
         min_quality = 98
         round = None
 
         while min_quality >= 50 and not round:
-            results = self.meeting.get_new_round(
+            results = meeting.get_new_round(
                 diff_max=0.6,
                 quality_min=min_quality,
                 max_tries=max_tries)

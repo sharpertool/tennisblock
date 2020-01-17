@@ -116,16 +116,16 @@ class MeetingStats:
             t1p2 = match.t1.p2.name
             t2p1 = match.t2.p1.name
             t2p2 = match.t2.p2.name
-            t1 = [t1p1, t1p2]
-            t2 = [t2p1, t2p2]
+            t1players = [t1p1, t1p2]
+            t2players = [t2p1, t2p2]
             match_players = [t1p1, t1p2, t2p1, t2p2]
 
             # Add all opponents to set
-            [self.Opponents[x].update(t2) for x in t1]
-            [self.Opponents[x].update(t1) for x in t2]
+            [self.Opponents[x].update(t2players) for x in t1players]
+            [self.Opponents[x].update(t1players) for x in t2players]
 
             # Add all partners to set
-            for t in [t1, t2]:
+            for t in [t1players, t2players]:
                 self.Partners[t[0]].add(t[1])
                 self.Partners[t[1]].add(t[0])
 

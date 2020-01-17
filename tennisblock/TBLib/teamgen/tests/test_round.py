@@ -32,7 +32,7 @@ class TeamTests(TestCase):
             [2.5, 4.5, 3.0, 3.5],
             [4.0, 4.0, 3.5, 4.5]])
 
-        q = r.quality_average()
+        q = r.quality_average
         qexp = 82
         self.assertEqual(q, qexp, f"Expected Q of {qexp} for {r}")
 
@@ -42,7 +42,7 @@ class TeamTests(TestCase):
             [3.5, 4.5, 4.0, 3.5],
             [4.0, 4.0, 3.5, 4.5]])
 
-        q = r.quality_average()
+        q = r.quality_average
         qexp = 86
         self.assertEqual(qexp, q, f"Expected Q of {qexp} for {r}")
 
@@ -52,6 +52,6 @@ class TeamTests(TestCase):
             [4.0, 4.0, 4.0, 4.0],
             [4.0, 4.0, 4.0, 4.0]])
 
-        q = r.quality_average()
+        q = r.quality_average
         qexp = 100
         self.assertEqual(qexp, q, f"Expected Q of {qexp} for {r}")

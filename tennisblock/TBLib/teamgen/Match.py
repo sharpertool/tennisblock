@@ -1,4 +1,5 @@
 import logging
+from typing import List
 from .Team import Team
 
 logger = logging.getLogger(__name__)
@@ -12,11 +13,17 @@ class Match:
     diff_max = 6.0
     match_spread_factor = 1.0
 
-    def __init__(self, t1: Team, t2: Team):
-        self.t1 = t1
-        self.t2 = t2
-        self._quality = None
-        self._diff = None
+    def __init__(self, t1: Team, t2: Team, factor=None):
+        self.t1: Team = t1
+        self.t2: Team = t2
+        self._quality: float = None
+        self._diff: float = None
+
+        if factor is not None:
+            self.match_spread_factor = factor
+
+    def set_factor(self, factor):
+        self.match_spread_factor = factor
 
     @property
     def diff(self):
@@ -42,19 +49,20 @@ class Match:
         :return:
         """
         # Calculate weights
-        fpartner = Team.team_factor
-        fspread = Match.match_spread_factor
+        fteam1 = self.t1.team_factor
+        fteam2 = self.t2.team_factor
+        fspread = self.match_spread_factor
 
-        total = fpartner + fpartner + fspread
-        pct_partner = fpartner / total
+        total = fteam1 + fteam2 + fspread
+        pct_team1 = fteam1 / total
+        pct_team2 = fteam2 / total
         pct_spread = fspread / total
-        pct_partner_half = pct_partner / 2
 
         Qd = self.diff_quality
         Q1 = self.t1.quality
         Q2 = self.t2.quality
-        Q = (pct_partner * Q1
-             + pct_partner * Q2
+        Q = (pct_team1 * Q1
+             + pct_team2 * Q2
              + pct_spread * Qd)
         self._quality = Q
         return round(self._quality)

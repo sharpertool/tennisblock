@@ -15,7 +15,7 @@ class TeamManager(object):
         self.matchid = matchid
 
     def get_players(self, date=None):
-        """ Retrive players for given date """
+        """ Retrieve players for given date """
         men, women = self.dbTeams.get_players(date)
 
         make_player = lambda p: TGPlayer(p.pk, p.gender, p.ntrp, p.microntrp, p.phone, p.name)

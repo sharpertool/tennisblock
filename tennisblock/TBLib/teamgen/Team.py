@@ -14,9 +14,14 @@ class Team:
     team_factor = 1.0
     max_diff = 3.0
 
-    def __init__(self, player1=None, player2=None):
+    def __init__(self, player1=None, player2=None, factor=None):
         self.p1: Player = player1
         self.p2: Player = player2
+        if factor is not None:
+            self.team_factor = factor
+
+    def set_factor(self, factor):
+        self.team_factor = factor
 
     @property
     def combined_microntrp(self):

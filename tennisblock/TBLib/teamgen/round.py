@@ -74,7 +74,7 @@ class MatchRound:
 
     @property
     def quality_average(self):
-        Q = self.quality
+        Q = self.qualities
         return round(sum(Q)/len(Q))
 
     @property
