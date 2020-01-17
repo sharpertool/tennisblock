@@ -18,7 +18,8 @@ class TeamGen(object):
     def generate_set_sequences(self,
                                b_allow_duplicates: bool = False,
                                iterations: int = None,
-                               max_tries: int = 20):
+                               max_tries: int = 20,
+                               special_requests=None):
         self.meeting.restart()
 
         self.meeting.see_player_once = not b_allow_duplicates
@@ -32,7 +33,9 @@ class TeamGen(object):
             while min_quality >= 50 and not rounds:
                 results = self.meeting.get_new_round(
                     diff_max=0.6,
-                    quality_min=min_quality, max_tries=max_tries)
+                    quality_min=min_quality,
+                    max_tries=max_tries,
+                    special_requests=None)
 
                 rounds, stats = results
                 min_found_diff = stats.min_diff

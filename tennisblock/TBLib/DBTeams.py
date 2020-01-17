@@ -58,36 +58,29 @@ class DBTeams:
         meeting = self.get_meeting(date)
         self.delete_matchup(meeting)
 
-        # Insert the slots
-        set = 1
-        for s in seq:
-            court = 1
-            for m in s.matches:
+        for set_idx, s in enumerate(seq):
+            for court_idx, m in enumerate(s.matches):
                 t1_p1 = Player.objects.get(pk=m.t1.p1.pk)
                 t1_p2 = Player.objects.get(pk=m.t1.p2.pk)
                 t2_p1 = Player.objects.get(pk=m.t2.p1.pk)
                 t2_p2 = Player.objects.get(pk=m.t2.p2.pk)
-                matchup = Matchup.objects.create(
+                match_up = Matchup.objects.create(
                         meeting=meeting,
-                        set=set,
-                        court=court,
+                        set=set_idx+1,
+                        court=court_idx+1,
                         team1_p1=t1_p1,
                         team1_p2=t1_p2,
                         team2_p1=t2_p1,
                         team2_p2=t2_p2
                 )
-                matchup.save()
-
-                court += 1
-
-            set += 1
+                match_up.save()
 
     def query_match(self, date):
         """
         Query all of the records for the given date.
         """
 
-        def serializeTeam(p1, p2):
+        def serialize_team(p1, p2):
             return {
                 'm': {
                     'name': p1.Name(),
@@ -119,8 +112,8 @@ class DBTeams:
                 currSet = matchup.set
 
             matchData = {
-                'team1': serializeTeam(matchup.team1_p1, matchup.team1_p2),
-                'team2': serializeTeam(matchup.team2_p1, matchup.team2_p2)
+                'team1': serialize_team(matchup.team1_p1, matchup.team1_p2),
+                'team2': serialize_team(matchup.team2_p1, matchup.team2_p2)
             }
             courtArray.append(matchData)
 
