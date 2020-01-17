@@ -33,8 +33,11 @@ class TeamTests(TestCase):
             [4.0, 4.0, 3.5, 4.5]])
 
         q = r.quality_average
-        qexp = 82
-        self.assertEqual(q, qexp, f"Expected Q of {qexp} for {r}")
+        qmax = r.quality_max
+        qmin = r.quality_min
+        self.assertEqual(qexp_min := 69, qmin, f"Expected Q of {qexp_min} for {r}")
+        self.assertEqual(qexp := 82, q, f"Expected Q of {qexp} for {r}")
+        self.assertEqual(qexp_max := 89, qmax, f"Expected Q of {qexp_max} for {r}")
 
     def test_great_round(self):
         r = self.buildRound([
@@ -43,8 +46,11 @@ class TeamTests(TestCase):
             [4.0, 4.0, 3.5, 4.5]])
 
         q = r.quality_average
-        qexp = 86
-        self.assertEqual(qexp, q, f"Expected Q of {qexp} for {r}")
+        qmax = r.quality_max
+        qmin = r.quality_min
+        self.assertEqual(qexp_min := 81, qmin, f"Expected Q of {qexp_min} for {r}")
+        self.assertEqual(qexp := 86, q, f"Expected Q of {qexp} for {r}")
+        self.assertEqual(qexp_max := 89, qmax, f"Expected Q of {qexp_max} for {r}")
 
     def test_perfect_round(self):
         r = self.buildRound([
@@ -53,5 +59,8 @@ class TeamTests(TestCase):
             [4.0, 4.0, 4.0, 4.0]])
 
         q = r.quality_average
-        qexp = 100
-        self.assertEqual(qexp, q, f"Expected Q of {qexp} for {r}")
+        qmax = r.quality_max
+        qmin = r.quality_min
+        self.assertEqual(qexp_min := 100, qmin, f"Expected Q of {qexp_min} for {r}")
+        self.assertEqual(qexp := 100, q, f"Expected Q of {qexp} for {r}")
+        self.assertEqual(qexp_max := 100, qmax, f"Expected Q of {qexp_max} for {r}")

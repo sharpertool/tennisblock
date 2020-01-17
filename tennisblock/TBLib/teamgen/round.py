@@ -79,11 +79,11 @@ class MatchRound:
 
     @property
     def quality_min(self):
-        return min(self.quality)
+        return min(self.qualities)
 
     @property
     def quality_max(self):
-        return max(self.quality)
+        return max(self.qualities)
 
     def diff_stats(self):
         diffs = [m.diff for m in self.matches]
