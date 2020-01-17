@@ -87,6 +87,7 @@ const Availability = ({
     <ReactTableFixed
       data={data}
       columns={columns}
+      defaultPageSize={50}
       className="-striped"
       getTdProps={(state, row, column, instance) => {
         let classes = []
