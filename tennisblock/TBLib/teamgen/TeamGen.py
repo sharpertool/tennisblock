@@ -1,6 +1,8 @@
 import logging
 from .Meeting import Meeting
 from .round import MatchRound
+from .meeting_history import MeetingHistory
+from .random_builder import RandomMeetingBuilder
 from tennis_channels.sync_handlers import MixerSyncHandler
 
 logger = logging.getLogger(__name__)
@@ -9,7 +11,17 @@ logger = logging.getLogger(__name__)
 class TeamGen(object):
     def __init__(self, courts, num_seq, men, women):
         self.n_courts = courts
-        self.meeting = Meeting(courts, num_seq, men, women)
+        self.history = MeetingHistory(
+            group1=men,
+            group2=women
+        )
+        self.builder = RandomMeetingBuilder(
+            courts, num_seq, men, women,
+            history=self.history
+        )
+        self.meeting = Meeting(courts, num_seq, men, women,
+                               history=self.history,
+                               builder=self.builder)
         self.diff_max = 0.1
         self.MaxBadDiff = 1.0
         self.n_sequences = num_seq
@@ -26,7 +38,7 @@ class TeamGen(object):
         if iterations is not None:
             self.meeting.max_iterations = iterations
 
-        while self.meeting.round_count() < self.n_sequences:
+        while self.meeting.round_count < self.n_sequences:
 
             round = self.generate_round(self.meeting, max_tries=max_tries)
 
@@ -37,7 +49,7 @@ class TeamGen(object):
             else:
                 round.display()
 
-                status_msg = f"Generated {self.meeting.round_count()} sequence(s)"
+                status_msg = f"Generated {self.meeting.round_count} sequence(s)"
                 MixerSyncHandler.mixer_status(status_msg)
                 logger.info(status_msg)
 

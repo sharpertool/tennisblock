@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from TBLib.teamgen import (Meeting, MeetingStats, MatchRound, Team, Player)
+from TBLib.teamgen import (Meeting, MatchRound, Team, Player)
 
 
 class TestBalancedRound:

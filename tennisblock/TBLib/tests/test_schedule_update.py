@@ -73,22 +73,25 @@ class TestScheduleUpdate(BlockDBTestBase):
         scheduler.update_schedule(date, couples)
 
         sch = Schedule.objects.filter(meeting=meeting).all()
-        self.assertEqual(len(sch), len(couples)*2)
+        self.assertEqual(len(sch), len(couples) * 2)
         self.assertEqual(ScheduleVerify.objects.all().count(), 0)
 
         for s in sch:
             v = s.get_verification()
 
-        self.assertEqual(ScheduleVerify.objects.all().count(), len(couples)*2)
+        self.assertEqual(len(couples) * 2,
+                         ScheduleVerify.objects.all().count(),
+                         f'Verify object count should have been {len(couples) * 2}')
 
-        self.assertEqual(
-            ScheduleVerify.objects.filter(sent_on__isnull=True).count(), len(couples)*2)
+        self.assertEqual(len(couples) * 2,
+                         ScheduleVerify.objects.filter(sent_on__isnull=True).count(),
+                         f'Verify object sent count should have been {len(couples) * 2}'
+                         )
 
         request = factory.post(reverse('api:scheduleverify_for_date', kwargs={'date': date}))
         force_authenticate(request, user=self.admin_user)
         response = ScheduleNotifyView.as_view()(request, date=date)
         self.assertEqual(response.status_code, 200)
-
 
     def test_udpate_single_player(self):
         pass

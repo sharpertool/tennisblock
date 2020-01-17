@@ -5,5 +5,6 @@ class NoValidOpponent(Exception):
         if player:
             self.message = "No valid opponent for {player}"
 
+
 class NoValidPartner(Exception):
     pass

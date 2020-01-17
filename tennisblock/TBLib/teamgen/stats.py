@@ -58,7 +58,8 @@ class RoundStats:
         if self._q_history:
             return min(self._q_history)
 
-    def print_check_stats(self):
+    @staticmethod
+    def print_check_stats():
         print('')
 
     def __str__(self):
