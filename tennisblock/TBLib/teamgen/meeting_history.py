@@ -94,9 +94,9 @@ class MeetingHistory(HistoryBase):
         """
         previous_partners = self.Partners[player]
 
-        diff_max = 3.0  # Very high
+        diff_max = 3.0  # Start with a value
         if previous_partners:
-            max_diff = max([abs(player.microntrp - p.microntrp)
+            max_diff = max([player.microntrp - p.microntrp
                             for p in previous_partners])
             if max_diff > 0.75:
                 # Limit to closer players from now on..
@@ -104,7 +104,7 @@ class MeetingHistory(HistoryBase):
 
         # Remove any players with a diff > diff_max
         available.difference_update(set([
-            p for p in available if abs(player.microntrp - p.microntrp) > diff_max
+            p for p in available if player.microntrp - p.microntrp > diff_max
         ]))
 
         return available
