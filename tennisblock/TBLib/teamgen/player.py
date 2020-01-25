@@ -15,4 +15,5 @@ class Player:
     def Name(self):
         return self.name
 
-
+    def __hash__(self):
+        return hash((self.pk, self.name))

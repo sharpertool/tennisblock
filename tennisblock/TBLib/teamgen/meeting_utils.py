@@ -11,8 +11,8 @@ def get_temp_list(g1: Player, g2: Player, balance=True):
     :return:
     """
 
-    t_g1 = [x.name for x in g1]
-    t_g2 = [x.name for x in g2]
+    t_g1 = g1.copy()
+    t_g2 = g2.copy()
 
     if balance:
         t_g1, t_g2 = balance_groups(t_g1, t_g2)

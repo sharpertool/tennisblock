@@ -1,6 +1,9 @@
-from blockdb.models import Matchup, Schedule, Player
-from api.apiutils import get_meeting_for_date
+from django.core.exceptions import ObjectDoesNotExist
 
+from blockdb.models import Matchup, Schedule, Player, Meeting
+from api.apiutils import get_meeting_for_date
+from TBLib.teamgen.meeting_history import MeetingHistory
+from TBLib.teamgen import Player as TPlayer, MatchRound, Match, Team
 
 class DBTeams:
     def __init__(self):
@@ -120,3 +123,48 @@ class DBTeams:
         data.append(courtArray)  # Don't forget the last one!
 
         return data
+
+    def get_history(self, date=None, sets=None):
+        """
+        Build a history for the given date and sets.
+
+        If sets is None, use all. If sets is an array of values,
+        used only history data for those sets. This allows the history
+        to be used to build or re-build a particular set
+        :param date:
+        :param sets:
+        :return:
+        """
+
+        meeting = self.get_meeting(date)
+        matchups = Matchup.objects.filter(meeting=meeting)
+        if sets is None:
+            sets = Matchup.objects.filter(meeting=meeting).values_list('set', flat=True)
+
+        rounds = []
+        group1 = []
+        group2 = []
+        history = MeetingHistory(group1, group2)
+        for set in sorted(sets):
+            matches = matchups.filter(set=set).select_related('team1_p1', 'team1_p2', 'team2_p1', 'team2_p2')
+            round = MatchRound()
+
+            for match in matches:
+                print(match.court)
+                group1.extend([match.team1_p1, match.team2_p1])
+                group2.extend([match.team1_p2, match.team2_p2])
+                m = Match(Team(match.team1_p1, match.team1_p2), Team(match.team2_p1, match.team2_p2))
+                round.add_match(m)
+
+            rounds.append(round)
+            history.add_round(round)
+
+        return history
+
+
+
+
+
+
+
+

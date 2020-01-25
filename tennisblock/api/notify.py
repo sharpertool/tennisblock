@@ -203,7 +203,7 @@ class ScheduleNotifyView(BlockNotifierMixin, APIView):
               verification
         """
         message = request.data.get('message')
-        print(f"Message to home: {message}")
+        print(f"Message to home: {message} for date {date}")
 
         mtg = get_meeting_for_date(date)
         scheduled_players = Schedule.objects.filter(

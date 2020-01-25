@@ -24,6 +24,10 @@ class Team:
         self.team_factor = factor
 
     @property
+    def players(self):
+        return [self.p1, self.p2]
+
+    @property
     def combined_microntrp(self):
         """
         Expecting a mixed team.
@@ -69,12 +73,12 @@ class Team:
         p1 = self.p1
         p2 = self.p2
         logger.info(
-            f"{p1 and p1.name} {p1 and p1.ntrp:3.2}/"
-            f"{p1 and p1.microntrp:3.2}"
+            f"{p1 and p1.name} {p1 and p1.ntrp:3.2f}/"
+            f"{p1 and p1.microntrp:3.2f}"
             f" and "
-            f"{p2 and p2.name} {p2 and p2.ntrp:3.2}/"
-            f"{p2 and p2.microntrp:3.2}"
-            f" = {p1 and p2 and self.combined_microntrp:3.2}")
+            f"{p2 and p2.name} {p2 and p2.ntrp:3.2f}/"
+            f"{p2 and p2.microntrp:3.2f}"
+            f" = {p1 and p2 and self.combined_microntrp:3.2f}")
 
     def __str__(self):
         name1 = ''
@@ -90,7 +94,7 @@ class Team:
             un2 = self.p2.microntrp
 
         return (f"{name1} and {name2}"
-                f" @ {un1 + un2:3.2} {un1}/{un2}")
+                f" @ {un1 + un2:3.2f} {un1}/{un2}")
 
     def __repr__(self):
         str(self)

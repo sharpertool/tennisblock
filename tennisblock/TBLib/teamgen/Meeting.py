@@ -21,6 +21,7 @@ class Meeting:
 
     def add_round(self, new_round):
         self.rounds.append(new_round)
+        self.history.add_round(new_round)
 
     def round_count(self):
         return len(self.rounds)

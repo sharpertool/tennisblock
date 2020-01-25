@@ -39,7 +39,7 @@ class TestBase(BlockDBTestBase):
                                {"message": msg})
         if user:
             force_authenticate(request, user=user)
-        response = ScheduleNotifyView.as_view()(request)
+        response = ScheduleNotifyView.as_view()(request, date='0000-00-00')
         return response
 
 

@@ -10,6 +10,7 @@ from .Team import Team
 from .round import MatchRound
 from .stats import RoundStats
 from .builder import BuilderBase
+from .player import Player
 from .meeting_history import MeetingHistory
 
 from .meeting_utils import get_temp_list
@@ -56,11 +57,6 @@ class RandomMeetingBuilder(BuilderBase):
         self.chkMatchups = 0
         self.chkH2H = 0
         self.chkPairs = 0
-
-        # Need a reverse lookup table
-        self.pbyname = {}
-        for p in self.men + self.women:
-            self.pbyname[p.name] = p
 
         self.log_level = 0
 
@@ -248,7 +244,7 @@ class RandomMeetingBuilder(BuilderBase):
 
     def add_partners(self,
                      round: MatchRound,
-                     partners: List[str],
+                     partners: List[Player],
                      diff_max: int, quality_min: int, num_tries: int) -> bool:
         """
         Upon entry, round will be a set that contains
@@ -265,19 +261,21 @@ class RandomMeetingBuilder(BuilderBase):
             partner_set = set(partners)
 
             for m in round.matches:
-                player1 = m.t1.p1.name
-                player2 = m.t2.p1.name
+                player1 = m.t1.p1
+                player2 = m.t2.p1
 
                 partner1 = self.history.get_valid_partner(
-                    [player1, player2], partner_set)
+                    player1,
+                    [player2], partner_set)
                 partner_set.remove(partner1)
 
                 partner2 = self.history.get_valid_partner(
-                    [player2, player1, partner1], partner_set)
+                    player2,
+                    [player1, partner1], partner_set)
                 partner_set.remove(partner2)
 
-                m.t1.p2 = self.pbyname[partner1]
-                m.t2.p2 = self.pbyname[partner2]
+                m.t1.p2 = partner1
+                m.t2.p2 = partner2
 
             diffs = round.diffs
 
@@ -318,12 +316,12 @@ class RandomMeetingBuilder(BuilderBase):
             pset = set(players)
             try:
                 for n in range(0, courts):
-                    m1 = random.choice(list(pset))
-                    pset.remove(m1)
-                    m2 = self.history.get_valid_opponent(m1, pset)
-                    pset.remove(m2)
-                    m = Match(Team(self.pbyname[m1]),
-                              Team(self.pbyname[m2]))
+                    player_one = random.choice(list(pset))
+                    pset.remove(player_one)
+                    player_two = self.history.get_valid_opponent(player_one, pset)
+                    pset.remove(player_two)
+                    m = Match(Team(player_one),
+                              Team(player_two))
                     round.add_match(m)
                 return round, pset
             except NoValidOpponent:

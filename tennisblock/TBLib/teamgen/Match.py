@@ -26,6 +26,20 @@ class Match:
         self.match_spread_factor = factor
 
     @property
+    def teams(self):
+        return [self.t1, self.t2]
+
+    @property
+    def enumerate(self):
+        """ Return a data structure that makes it easy to set history """
+        return [
+            [self.t1.p1, self.t1.p2, self.t2.players],
+            [self.t1.p2, self.t1.p1, self.t2.players],
+            [self.t2.p1, self.t2.p2, self.t1.players],
+            [self.t2.p2, self.t2.p1, self.t1.players],
+        ]
+
+    @property
     def diff(self):
         c1 = self.t1.combined_microntrp
         c2 = self.t2.combined_microntrp
@@ -71,11 +85,11 @@ class Match:
         self.t1.display()
         logger.debug("Versus")
         self.t2.display()
-        logger.debug(f"diff:{self._diff:4.2} "
-                    f"Quality:{self._quality:4.2}\n")
+        logger.debug(f"diff:{self.diff:4.2f} "
+                     f"Quality:{self.quality:4.2f}\n")
 
     def __str__(self):
-        return f"{self.t1} vs {self.t2} {self._diff:3.2} {self._quality:3.1}"
+        return f"{self.t1} vs {self.t2} {self.diff:3.2f} {self.quality:3.1f}"
 
     def __repr__(self):
         return str(self)
