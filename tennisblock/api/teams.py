@@ -21,21 +21,18 @@ class Teams(APIView):
     def post(self, request, date=None):
         # Date can be part of the URL, or the post data.
         date = request.data.get('date', date)
-        iterations = request.data.get('iterations', 10)
-        tries = request.data.get('tries', 5)
+        iterations = request.data.get('iterations', 25)
+        tries = request.data.get('tries', 35)
         fpartners = request.data.get('fpartner', 1.0)
-        fteams = request.data.get('fteam', 1.0)
-
-        iterations = iterations or 25
-        tries = tries or 35
-        fpartners = fpartners or 1.0
-        fteams = fteams or 1.5
+        fteams = request.data.get('fteam', 1.5)
+        low_threshold = request.data.get('low_threshold', 0.75)
 
         mgr = TeamManager()
         result = mgr.pick_teams_for_date(date,
                                          iterations=iterations,
                                          max_tries=tries,
                                          fpartners=fpartners,
-                                         fteams=fteams)
+                                         fteams=fteams,
+                                         low_threshold=low_threshold)
 
         return Response(result)

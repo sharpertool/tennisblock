@@ -258,21 +258,25 @@ class RandomMeetingBuilder(BuilderBase):
         max_q = 0
 
         while num_tries and (curr_diff > diff_max or curr_q < quality_min):
-            partner_set = set(partners)
+            available = set(partners)
 
             for m in round.matches:
                 player1 = m.t1.p1
                 player2 = m.t2.p1
 
+                available.difference_update([player1, player2])
+
                 partner1 = self.history.get_valid_partner(
-                    player1,
-                    [player2], partner_set)
-                partner_set.remove(partner1)
+                    player=player1,
+                    opponents=[player2],
+                    available=available)
+                available.remove(partner1)
 
                 partner2 = self.history.get_valid_partner(
-                    player2,
-                    [player1, partner1], partner_set)
-                partner_set.remove(partner2)
+                    player=player2,
+                    opponents=[player1, partner1],
+                    available=available)
+                available.remove(partner2)
 
                 m.t1.p2 = partner1
                 m.t2.p2 = partner2

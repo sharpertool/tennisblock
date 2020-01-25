@@ -31,7 +31,8 @@ class TeamManager(object):
                             max_tries: int = 20,
                             testing: bool = False,
                             fpartners: float = 1.0,
-                            fteams: float = 1.0):
+                            fteams: float = 1.0,
+                            low_threshold: float = 0.75):
 
         Team.team_factor = fpartners
         Match.match_spread_factor = fteams
@@ -42,7 +43,8 @@ class TeamManager(object):
 
         result = self.pick_teams(men=men, women=women,
                                  iterations=iterations,
-                                 max_tries=max_tries)
+                                 max_tries=max_tries,
+                                 low_threshold=low_threshold)
 
         if result['status'] == 'success':
             result['match'] = self.query_match(date)
@@ -54,7 +56,8 @@ class TeamManager(object):
                    b_allow_duplicates=False,
                    n_courts=None, n_sequences=3,
                    iterations: int = 100,
-                   max_tries: int = 20):
+                   max_tries: int = 20,
+                   low_threshold: float = 0.75):
 
         if men is None or women is None:
             men, women = self.get_players(date)
@@ -63,7 +66,9 @@ class TeamManager(object):
         if n_courts is None:
             n_courts = (len(men) + len(women)) // 4
 
-        tg = TeamGen(n_courts, n_sequences, men, women)
+        tg = TeamGen(n_courts, n_sequences,
+                     men, women,
+                     low_threshold=low_threshold)
         sequences = tg.generate_rounds(
             b_allow_duplicates,
             iterations=iterations,

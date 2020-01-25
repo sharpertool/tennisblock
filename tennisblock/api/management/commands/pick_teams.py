@@ -15,6 +15,7 @@ class Command(BaseCommand):
         parser.add_argument('--tries', '-r', type=int, default=5)
         parser.add_argument('--fpartner', type=float, default=1.0)
         parser.add_argument('--fteams',  type=float, default=1.0)
+        parser.add_argument('--low_threshold',  type=float, default=0.75)
 
     def handle(self, *args, **options):
         mgr = TeamManager()
@@ -23,4 +24,5 @@ class Command(BaseCommand):
                                 max_tries=options['tries'],
                                 testing=options['testing'],
                                 fpartners=options['fpartner'],
-                                fteams=options['fteams'])
+                                fteams=options['fteams'],
+                                low_threshold=options['low_threshold'])

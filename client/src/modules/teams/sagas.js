@@ -52,7 +52,7 @@ function* calculateMatchups(action) {
     timeout: 10*60*1000,
   })
   
-  const {date, iterations, tries, fpartner, fteam} = action.payload
+  const {date, iterations, tries, fpartner, fteam, low_threshold} = action.payload
   const url = pickteams.replace('0000-00-00', date)
   try {
     const {data} = yield call(axios.post,

@@ -27,9 +27,13 @@ def make_sorted_key(a, b):
 
 
 class MeetingHistory(HistoryBase):
-    def __init__(self, group1, group2, see_player_once=False):
+    def __init__(self, group1, group2,
+                 see_player_once=False,
+                 low_threshold=0.75):
 
         super().__init__(see_player_once=see_player_once)
+
+        self.low_threshold = low_threshold
 
         self.group1 = group1
         self.group2 = group2
@@ -80,34 +84,8 @@ class MeetingHistory(HistoryBase):
         opponent for each
         :return:
         """
-        for player in self.group1:
+        for player in [*self.group1, *self.group2]:
             self.update_invalids_for_player(player)
-
-    def limit_partner_differences(self, player, available):
-        """
-        Implement a partner difference limit. This keeps a high player
-        from playing with multiple low players in a night
-
-        :param player:
-        :param available:
-        :return:
-        """
-        previous_partners = self.Partners[player]
-
-        diff_max = 3.0  # Start with a value
-        if previous_partners:
-            max_diff = max([player.microntrp - p.microntrp
-                            for p in previous_partners])
-            if max_diff > 0.75:
-                # Limit to closer players from now on..
-                diff_max = 0.75
-
-        # Remove any players with a diff > diff_max
-        available.difference_update(set([
-            p for p in available if player.microntrp - p.microntrp > diff_max
-        ]))
-
-        return available
 
     def update_invalids_for_player(self, player):
         """
@@ -129,9 +107,58 @@ class MeetingHistory(HistoryBase):
             self.InvalidOpponents[player].update(seen_max_count_times)
             self.InvalidPartners[player].update(seen_max_count_times)
 
-    def get_valid_partner(self, player: Player,
-                          others: List[Player],
-                          available: List[Player]) -> Player:
+    def limit_partner_differences(self, player, available):
+        """
+        Implement a partner difference limit. This keeps a high player
+        from playing with multiple low players in a night
+
+        :param player:
+        :param available:
+        :return:
+        """
+        previous_partners = self.Partners[player]
+
+        diff_max = None
+        if previous_partners:
+            max_diff = max([player.microntrp - p.microntrp
+                            for p in previous_partners])
+            if max_diff > self.low_threshold:
+                # Limit to closer players from now on..
+                diff_max = self.low_threshold
+
+        # Remove any players with a diff > diff_max
+        if diff_max is not None:
+            available.difference_update(set([
+                p for p in available if player.microntrp - p.microntrp > diff_max
+            ]))
+
+        return available
+
+    def get_valid_opponent(self, player, opponents) -> Player:
+        """
+        The difference line retrieves a list of same-sex players that have
+        not been opponents to this player yet.
+
+        Implements the rule that men only play against other men
+        once, and women only play against other women once.
+
+        """
+
+        remaining = opponents.copy()
+        remaining.difference_update(self.Opponents[player])
+        remaining.difference_update(self.InvalidOpponents[player])
+
+        if not remaining:
+            raise NoValidOpponent(player=player)
+
+        opponent = random.choice(list(remaining))
+        return opponent
+
+    def get_valid_partner(self, *, player: Player,
+                          opponents: List[Player],
+                          available: List[Player],
+                          partner: Player = None,
+                          ) -> Player:
         """
         Player is the person we are picking a partner for.
 
@@ -147,8 +174,19 @@ class MeetingHistory(HistoryBase):
         f1 is set to the first player in the current group if this is the second call.
         """
 
+        invalid = [player, *opponents]
+        if partner:
+            invalid.append(partner)
+
         remaining = available.copy()
-        remaining.difference_update([player, *others])
+        remaining.difference_update(invalid)
+
+        # Can't partner with someone more than once
+        remaining.difference_update(self.Partners[player])
+
+        # Remove people that are invalid opponents of the others
+        for p in opponents:
+            remaining.difference_update(self.InvalidOpponents[p])
 
         remaining = self.limit_partner_differences(player, remaining)
 
@@ -158,21 +196,3 @@ class MeetingHistory(HistoryBase):
         partner = random.choice(list(remaining))
         return partner
 
-    def get_valid_opponent(self, player, opponents) -> Player:
-        """
-        The difference line retrieves a list of same-sex players that have
-        not been opponents to this player yet.
-
-        Implements the rule that men only play against other men
-        once, and women only play against other women once.
-
-        """
-
-        remaining = opponents.copy()
-        remaining.difference_update(self.Opponents[player])
-
-        if not remaining:
-            raise NoValidOpponent(player=player)
-
-        opponent = random.choice(list(remaining))
-        return opponent

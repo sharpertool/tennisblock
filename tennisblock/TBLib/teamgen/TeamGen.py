@@ -9,11 +9,14 @@ logger = logging.getLogger(__name__)
 
 
 class TeamGen(object):
-    def __init__(self, courts, num_seq, men, women):
+    def __init__(self, courts, num_seq,
+                 men, women,
+                 low_threshold=0.75):
         self.n_courts = courts
         self.history = MeetingHistory(
             group1=men,
-            group2=women
+            group2=women,
+            low_threshold=low_threshold
         )
         self.builder = RandomMeetingBuilder(
             courts, num_seq, men, women,
