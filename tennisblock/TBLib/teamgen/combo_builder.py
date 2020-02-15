@@ -29,7 +29,7 @@ def make_sorted_key(a, b):
         return make_key(b, a)
 
 
-class RandomMeetingBuilder(BuilderBase):
+class ComboMeetingBuilder(BuilderBase):
     def __init__(self, n_courts, n_sets, men, women, history=None):
         self.men = men
         self.women = women
@@ -162,6 +162,7 @@ class RandomMeetingBuilder(BuilderBase):
 
             if abs(diff) == 4:
                 """ Hard code this for now... """
+
                 set1 = set(t1)
                 set2 = set(t2)
                 set1a = set(random.sample(set1, k=4))
@@ -252,14 +253,12 @@ class RandomMeetingBuilder(BuilderBase):
         initial player pairings will have been done randomly, so
         they should be okay.
         """
-        curr_diff = diff_max + 1.0
-        curr_q = 100.0
-        min_diff = 1000.0
+        curr_diff = diff_max + 1
+        curr_q = 100
+        min_diff = 1000
         max_q = 0
 
-        passed_criteria = False
-
-        while num_tries and not passed_criteria:
+        while num_tries and (curr_diff > diff_max or curr_q < quality_min):
             available = set(partners)
 
             for m in round.matches:
@@ -292,9 +291,6 @@ class RandomMeetingBuilder(BuilderBase):
             min_diff = min(min_diff, curr_diff)
             max_q = max(max_q, round.quality_max)
 
-            passed_criteria = (curr_diff <= diff_max and curr_q >= quality_min)
-            #if not passed_criteria:
-            #    logger.info(f"Failed: {curr_diff} <= {diff_max} {curr_q} >= {quality_min}")
             num_tries -= 1
 
         round.push_histories(min_diff, max_q)

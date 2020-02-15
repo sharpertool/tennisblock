@@ -3,6 +3,7 @@ from .Meeting import Meeting
 from .round import MatchRound
 from .meeting_history import MeetingHistory
 from .random_builder import RandomMeetingBuilder
+from .combo_builder import ComboMeetingBuilder
 from tennis_channels.sync_handlers import MixerSyncHandler
 
 logger = logging.getLogger(__name__)
@@ -78,12 +79,15 @@ class TeamGen(object):
         :param max_tries:
         :return:
         """
-        min_quality = 98
+        quality_range = [98, 35, -5]
+        diff_range = [0.4, 1.0, 0.1]
+        min_quality = quality_range[0]
+        max_diff = diff_range[0]
         round = None
 
-        while min_quality >= 50 and not round:
+        while min_quality >= quality_range[1] and max_diff < diff_range[1] and not round:
             results = meeting.get_new_round(
-                diff_max=0.6,
+                diff_max=max_diff,
                 quality_min=min_quality,
                 max_tries=max_tries)
 
@@ -91,14 +95,18 @@ class TeamGen(object):
             min_found_diff = stats.min_diff
             min_q = stats.min_q
             max_q = stats.max_q
-            status_msg = f"Quality Stats: min:{min_q} max:{max_q}"
+            status_msg = (f"Quality Stats: min:{min_q} max:{max_q}"
+                          f" QThresh:{min_quality} DThresh:{max_diff}")
             MixerSyncHandler.mixer_status(status_msg)
             logger.info(status_msg)
 
             if not round:
                 # Increase the quality then the diff
-                min_quality = min_quality - 2
-                logger.debug(f"Criteria updated. Q:{min_quality}")
+                min_quality += quality_range[2]
+                if min_quality <= quality_range[1]:
+                    min_quality = quality_range[0]
+                    max_diff += diff_range[2]
+                logger.debug(f"Criteria updated. QThres:{min_quality} DThres:{max_diff}")
 
         return round
 

@@ -81,7 +81,7 @@ class TeamManager(object):
 
         else:
             # Put the worst sequences last.
-            sequences.reverse()
+            #sequences.reverse()
             tg.display_sequences(sequences)
             tg.show_all_diffs(sequences)
 

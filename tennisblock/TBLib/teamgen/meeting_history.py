@@ -64,6 +64,12 @@ class MeetingHistory(HistoryBase):
             self.InvalidOpponents[p] = set()
             self.InvalidPartners[p] = set()
 
+            if p.pk == 23:  #  Jonathan
+                for pp in self.group2:
+                    if pp.pk == 39:
+                        logger.info(f"Added special rule for Bloomers!!")
+                        #self.InvalidPartners[p].update([pp])
+
     def add_round(self, round):
         """
         Add the round to the history
@@ -180,6 +186,7 @@ class MeetingHistory(HistoryBase):
 
         remaining = available.copy()
         remaining.difference_update(invalid)
+        remaining.difference_update(self.InvalidPartners[player])
 
         # Can't partner with someone more than once
         remaining.difference_update(self.Partners[player])
