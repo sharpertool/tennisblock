@@ -147,8 +147,8 @@ class TeamManager(object):
                     "error": "Could not generate the required sequences"}
 
         else:
-            # Put the worst sequences last.
-            # sequences.reverse()
+            # Put the worst sequences first
+            sequences.reverse()
             tg.display_sequences(sequences)
             tg.show_all_diffs(sequences)
 
