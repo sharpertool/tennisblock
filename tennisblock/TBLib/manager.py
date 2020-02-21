@@ -81,7 +81,74 @@ class TeamManager(object):
 
         else:
             # Put the worst sequences last.
-            #sequences.reverse()
+            # sequences.reverse()
+            tg.display_sequences(sequences)
+            tg.show_all_diffs(sequences)
+
+            if not testing:
+                self.dbTeams.insert_records(date, sequences)
+
+            return {"status": "success"}
+
+    def pick_match(self,
+                   date,
+                   setnumber=None,
+                   iterations: int = 100,
+                   max_tries: int = 20,
+                   testing: bool = False,
+                   fpartners: float = 1.0,
+                   fteams: float = 1.0,
+                   low_threshold: float = 0.75):
+
+        Team.team_factor = fpartners
+        Match.match_spread_factor = fteams
+
+        dbt = self.dbTeams
+        dbt.delete_match(date, setnumber)
+        men, women = self.get_players(date)
+
+        result = self.pick_new_match(men=men, women=women,
+                                 iterations=iterations,
+                                 max_tries=max_tries,
+                                 low_threshold=low_threshold)
+
+        if result['status'] == 'success':
+            result['match'] = self.query_match(date)
+
+        return result
+
+    def pick_new_match(self, men=None, women=None,
+                       date=None, setnumber=None,
+                       testing=False,
+                       b_allow_duplicates=False,
+                       n_courts=None, n_sequences=3,
+                       iterations: int = 100,
+                       max_tries: int = 20,
+                       low_threshold: float = 0.75):
+
+        if men is None or women is None:
+            men, women = self.get_players(date)
+
+        # Calculate number fo courts from sum
+        if n_courts is None:
+            n_courts = (len(men) + len(women)) // 4
+
+        tg = TeamGen(n_courts, n_sequences,
+                     men, women,
+                     low_threshold=low_threshold)
+        sequences = tg.generate_rounds(
+            b_allow_duplicates,
+            iterations=iterations,
+            max_tries=max_tries
+        )
+
+        if sequences is None or len(sequences) < n_sequences:
+            return {"status": "fail",
+                    "error": "Could not generate the required sequences"}
+
+        else:
+            # Put the worst sequences last.
+            # sequences.reverse()
             tg.display_sequences(sequences)
             tg.show_all_diffs(sequences)
 

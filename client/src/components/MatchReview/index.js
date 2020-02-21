@@ -5,12 +5,19 @@ import Match from '~/components/Match'
 
 const MatchReview = (props) => {
   
-  const {play_schedule} = props
+  const {play_schedule, recalculateMatch, match} = props
+
+  const date = match.params.id
   
   const schedule = play_schedule || []
   const matches = schedule.map((m, i) => {
       return (
-        <Match key={i} idx={i + 1} courts={[...m]}/>
+        <Match key={i}
+               idx={i + 1}
+               courts={[...m]}
+               date={date}
+               onRecalculate={recalculateMatch}
+        />
         )
     })
   

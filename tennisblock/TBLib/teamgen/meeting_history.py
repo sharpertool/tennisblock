@@ -68,7 +68,7 @@ class MeetingHistory(HistoryBase):
                 for pp in self.group2:
                     if pp.pk == 39:
                         logger.info(f"Added special rule for Bloomers!!")
-                        #self.InvalidPartners[p].update([pp])
+                        self.InvalidPartners[p].update([pp])
 
     def add_round(self, round):
         """

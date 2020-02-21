@@ -9,31 +9,44 @@ const initialState = {
   schedule_result: {
     status: '',
     error: null
-  }
+  },
+  iterations: 35,
+  tries: 45,
+  fpartner: 1.5,
+  fteam: 3.5,
+  low_threshold: 0.75,
 }
 
 const mainReducer = (state = initialState, action) => {
-  const { blockplayers, subs } = action
-  switch(action.type) {
+  const {blockplayers, subs} = action
+  switch (action.type) {
     case types.UPDATE_PLAY_SCHEDULE:
       return {...state}
       break
+    case types.UPDATE_CALC_VALUE: {
+      const {name, value} = action.payload
+      const new_state = {...state}
+      new_state[name] = value
+      return new_state
+    }
     case types.UPDATE_CALCULATE_STATUS:
-      return { ...state, schedule_result: action.payload}
+      return {...state, schedule_result: action.payload}
     case types.BLOCK_PLAYERS_FETCHED:
-      return { ...state, blockplayers }
+      return {...state, blockplayers}
       break
     case types.UPDATE_MATCH_DATA:
       return {...state, schedule: action.payload}
     case types.CALCULATE_MATCHUPS:
-      return {...state,
+      return {
+        ...state,
         schedule: [],
         schedule_result: {'status': null, error: null}
       }
     case types.GET_SUBS:
-      return { ...state, subs }
+      return {...state, subs}
       break
-    default: return state
+    default:
+      return state
   }
 }
 

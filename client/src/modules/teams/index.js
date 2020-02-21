@@ -21,6 +21,7 @@ export let moduleConfig = {
   apis: {
     matchdata: '',
     pickteams: '',
+    recalculate_match: '',
   }
 }
 

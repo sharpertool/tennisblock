@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
  * @type {{clickOptions: toggleOptions}}
  */
 const dispatchActions = {
+  recalculateMatch: actions.recalculateMatch
 }
 
 

@@ -14,14 +14,6 @@ const MeetingMatchups = (props) => {
     fetchCurrentSchedule({date: match.params.id})
   }, [])
   
-  const [state, setState] = useState({
-    iterations: 35,
-    tries: 45,
-    fpartner: 1.5,
-    fteam: 3.5,
-    low_threshold: 0.75
-  })
-  
   const ref1 = useRef()
   const ref2 = useRef()
   const ref3 = useRef()
@@ -31,12 +23,7 @@ const MeetingMatchups = (props) => {
   const onChange = (e) => {
     const name = e.target.name
     const value = e.target.value
-    setState((state) => {
-      let newState = {...state}
-      newState[name] = value
-      console.dir(newState)
-      return newState
-    })
+    props.updateCalcValue({name: name, value: value})
   }
   
   const handleFocus = (e) => {
@@ -51,14 +38,13 @@ const MeetingMatchups = (props) => {
   
   const calculateMatchups = () => {
     const {match, calculateMatchups} = props
-    const {iterations, tries, fpartner, fteam, low_threshold} = state
     calculateMatchups({
       date: match.params.id,
-      iterations: Number.parseInt(iterations),
-      tries: Number.parseInt(tries),
-      fpartner: Number.parseFloat(fpartner),
-      fteam: Number.parseFloat(fteam),
-      low_threshold: Number.parseFloat(low_threshold)
+      iterations: Number.parseInt(props.iterations),
+      tries: Number.parseInt(props.tries),
+      fpartner: Number.parseFloat(props.fpartner),
+      fteam: Number.parseFloat(props.fteam),
+      low_threshold: Number.parseFloat(props.low_threshold)
     })
   }
   
@@ -90,7 +76,7 @@ const MeetingMatchups = (props) => {
                  onDoubleClick={handleDoubleClick}
                  type="number"
                  min="1" max="1000"
-                 value={state.iterations}/>
+                 value={props.iterations}/>
           Tries:
           <input name="tries"
                  ref={ref2}
@@ -99,7 +85,7 @@ const MeetingMatchups = (props) => {
                  onDoubleClick={handleDoubleClick}
                  type="number"
                  min="1" max="100"
-                 value={state.tries}/>
+                 value={props.tries}/>
           Fpartner:
           <input name="fpartner"
                  ref={ref3}
@@ -108,7 +94,7 @@ const MeetingMatchups = (props) => {
                  type="number"
                  step="0.1"
                  min="1" max="10"
-                 value={state.fpartner}/>
+                 value={props.fpartner}/>
           Fteam:
           <input name="fteam"
                  ref={ref4}
@@ -117,7 +103,7 @@ const MeetingMatchups = (props) => {
                  type="number"
                  step="0.1"
                  min="1" max="10"
-                 value={state.fteam}/>
+                 value={props.fteam}/>
           Low Threshold:
           <input name="low_threshold"
                  ref={ref5}
@@ -126,7 +112,7 @@ const MeetingMatchups = (props) => {
                  type="number"
                  step="0.01"
                  min="0.0" max="1.5"
-                 value={state.low_threshold}/>
+                 value={props.low_threshold}/>
         </Col>
       </Row>
       <Row>

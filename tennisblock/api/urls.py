@@ -10,7 +10,7 @@ from .blockschedule import (SubsView, BlockPlayers,
 from .notify import (ScheduleNotifyView, PlayerVerifyView, PlayerNotifyView)
 
 from .views.season import get_seasons, get_current_season, CouplesView
-from .teams import Teams
+from .teams import Teams, PickMatch
 
 from . import converters
 
@@ -26,6 +26,8 @@ urlpatterns = (
          name='pickteams_for_date'),
     path('pickteams/', Teams.as_view(),
          name='pickteams'),
+    path('pickmatch/<date:date>/<int:setnumber>/', PickMatch.as_view(),
+         name='pickmatch_for_date'),
     path('blocksheet/<date:date>/', blockSheet,
          name='blocksheet_for_date'),
     path('blocksheet/', blockSheet,

@@ -53,6 +53,14 @@ class DBTeams:
         if meeting:
             Matchup.objects.filter(meeting=meeting).delete()
 
+    def delete_match(self, date, set_number):
+        """
+        Delete the matchup for the given date.
+        """
+        meeting = self.get_meeting(date)
+        if meeting:
+            Matchup.objects.filter(meeting=meeting, set=set_number).delete()
+
     def insert_records(self, date, seq):
         """
         Insert the sequence
