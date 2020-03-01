@@ -17,7 +17,7 @@ fi
 
 BACKUPFILE=$1
 
-docker-compose exec postgres restore ${BACKUPFILE}
+docker-compose exec postgres pgrestore ${BACKUPFILE}
 ./manage migrate
 ./manage localize_sites
 

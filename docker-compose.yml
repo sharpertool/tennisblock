@@ -19,6 +19,7 @@ services:
     environment:
       - POSTGRES_USER=tennisblock
       - POSTGRES_DB=tennisblock
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-foobar}"
     ports:
       - "${PG_PORT:-5432}:5432"
 

@@ -11,10 +11,11 @@ shared_path=$(grep BACKUP_ROOT $root/.envrc | sed 's/^.*=//')
 backup_path=$(eval echo ${shared_path})
 echo "Backup Path: ${backup_path}"
 full_filename=${backup_path}/${filename}
-echo "${full_filename}"
+echo "snapshot: ${filename}"
+echo "fullnae: ${full_filename}"
 
 #ls -al ${backup_path}
 # Can can do this all in one command!
-ssh tb "sudo -u postgres pg_dump tennisblock" > ${full_filename}
+ssh tb "sudo -u postgres pg_dump -Fc tennisblock" > ${full_filename}
 
 

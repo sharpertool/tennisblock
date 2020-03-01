@@ -1,23 +1,23 @@
-wagtail==2.7
-Django ~=2.2, <3.0
+wagtail==2.8
+Django ~=3.0, <3.1
 
 django-contrib-comments==1.9.2
-djangorestframework==3.10.3
-markdown==3.1.1
+djangorestframework==3.11.0
+markdown==3.2.1
 django-filter==2.2.0
 django-bootstrap-datepicker-plus
 
 # Wagtail plugins and addons
-wagtail-autocomplete==0.4
+wagtail-autocomplete==0.5
 
-django-model-utils==3.2.0
-django-cors-headers==3.2.0
+django-model-utils==4.0.0
+django-cors-headers==3.2.1
 
 # Reading environment variables, secure enclaves
 git+git://github.com/sharpertool/django-environ.git@develop
 
-django-sekizai==1.0.0
-django-webpack-loader==0.6.0
+django-sekizai==1.1.0
+django-webpack-loader==0.7.0
 fpdf==1.7.2
 pinax-theme-bootstrap==8.0.1
 
@@ -26,33 +26,33 @@ psycopg2-binary==2.8.4
 python-dateutil==2.8.1
 pytz==2019.3
 
-Pillow==6.2.1
+Pillow==7.0.0
 
 # Channels
-channels==2.3.1
+channels==2.4.0
 service_identity==18.1.0
-channels_redis==2.4.1
+channels_redis==2.4.2
 
 # Social login
-django-user-accounts==2.1.0
-django-allauth==0.40.0
+django-user-accounts==3.0.0
+django-allauth==0.41.0
 social-auth-app-django==3.1.0
 
 # Logging, errors
 raven==6.10.0
-sentry-sdk==0.13.5
+sentry-sdk==0.14.2
 
 # Static and Media files
-django-storages==1.8
-boto3==1.10.34
+django-storages==1.9.1
+boto3==1.12.11
 premailer==3.6.1
 
 # SCSS files
-django-compressor==2.3
-django-pipeline==1.6.14
+django-compressor==2.4
+django-pipeline==1.7.0
 
-reportlab==3.5.32
-django-crispy-forms==1.8.1
+reportlab==3.5.34
+django-crispy-forms==1.9.0
 
 # Email
 django-anymail==7.0.0
