@@ -136,26 +136,27 @@ class TeamManager(object):
         tg = TeamGen(n_courts, n_sequences,
                      men, women,
                      low_threshold=low_threshold)
-        sequences = tg.generate_rounds(
-            b_allow_duplicates,
-            iterations=iterations,
+
+        # ToDo: Read existing data into history
+
+        round = tg.generate_round(
             max_tries=max_tries
         )
 
-        if sequences is None or len(sequences) < n_sequences:
-            return {"status": "fail",
-                    "error": "Could not generate the required sequences"}
+        if round:
+            # ToDo: Insert new round into DB
+            return {"status": "success"}
 
         else:
             # Put the worst sequences first
-            sequences.reverse()
-            tg.display_sequences(sequences)
-            tg.show_all_diffs(sequences)
+            # sequences.reverse()
+            # tg.display_sequences(sequences)
+            # tg.show_all_diffs(sequences)
 
-            if not testing:
-                self.dbTeams.insert_records(date, sequences)
+            # if not testing:
+            #     self.dbTeams.insert_records(date, sequences)
 
-            return {"status": "success"}
+            return {"status": "failed"}
 
     def query_match(self, date=None):
 

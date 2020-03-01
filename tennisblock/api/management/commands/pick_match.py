@@ -4,10 +4,11 @@ from TBLib.manager import TeamManager
 
 
 class Command(BaseCommand):
-    help = 'Pick Teams for the given date'
+    help = 'Pick Match for the given date'
 
     def add_arguments(self, parser):
         parser.add_argument('date')
+        parser.add_argument('match')
         parser.add_argument('--nodupes', action='store_true')
         parser.add_argument('--sequences', type=int, default=3)
         parser.add_argument('--testing', '-t', action='store_true')
@@ -19,10 +20,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         mgr = TeamManager()
-        mgr.pick_teams_for_date(date=options['date'],
-                                iterations=options['iterations'],
-                                max_tries=options['tries'],
-                                testing=options['testing'],
-                                fpartners=options['fpartner'],
-                                fteams=options['fteams'],
-                                low_threshold=options['low_threshold'])
+        mgr.pick_match(date=options['date'],
+                       setnumber=options['match'],
+                       iterations=options['iterations'],
+                       max_tries=options['tries'],
+                       testing=options['testing'],
+                       fpartners=options['fpartner'],
+                       fteams=options['fteams'],
+                       low_threshold=options['low_threshold'])

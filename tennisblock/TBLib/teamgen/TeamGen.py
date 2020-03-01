@@ -80,7 +80,7 @@ class TeamGen(object):
         :return:
         """
         quality_range = [98, 35, -5]
-        diff_range = [0.4, 1.0, 0.1]
+        diff_range = [0.0, 1.0, 0.1]
         min_quality = quality_range[0]
         max_diff = diff_range[0]
         round = None

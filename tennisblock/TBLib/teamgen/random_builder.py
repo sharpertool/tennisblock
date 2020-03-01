@@ -112,7 +112,7 @@ class RandomMeetingBuilder(BuilderBase):
 
         return round, self.stats
 
-    def build_round(self, iterations, diff_max, quality_min) -> MatchRound:
+    def build_round(self, max_build_tries, diff_max, quality_min) -> MatchRound:
         """
         First, build a set of matches with men only.
         Next, add in the women. The men are assigned
@@ -126,7 +126,7 @@ class RandomMeetingBuilder(BuilderBase):
             raise Exception("We have an odd number of players!")
 
         if diff == 0 or diff % 4 != 0:
-            return self.build_balanced_round(iterations, diff_max, quality_min)
+            return self.build_balanced_round(max_build_tries, diff_max, quality_min)
 
         if diff > 0:
             g1 = self.men
@@ -135,13 +135,13 @@ class RandomMeetingBuilder(BuilderBase):
             g1 = self.women
             g2 = self.men
 
-        return self.build_unbalanced_round(iterations,
+        return self.build_unbalanced_round(max_build_tries,
                                            diff_max,
                                            quality_min,
                                            g1, g2)
 
     def build_unbalanced_round(self,
-                               iterations,
+                               max_build_tries,
                                diff_max,
                                quality_min,
                                g1, g2):
@@ -157,7 +157,7 @@ class RandomMeetingBuilder(BuilderBase):
 
         n_tries = 0
 
-        while n_tries < iterations:
+        while n_tries < max_build_tries:
             t1, t2 = get_temp_list(g1, g2, balance=False)
 
             if abs(diff) == 4:
@@ -178,10 +178,10 @@ class RandomMeetingBuilder(BuilderBase):
                     if all([
                         self.add_partners(round1, set1a_partners,
                                           diff_max, quality_min,
-                                          iterations),
+                                          max_build_tries),
                         self.add_partners(round2, set2,
                                           diff_max, quality_min,
-                                          iterations),
+                                          max_build_tries),
                     ]):
                         return MatchRound(matches=[*round1.matches, *round2.matches])
                     self.print_check_stats()
@@ -209,7 +209,7 @@ class RandomMeetingBuilder(BuilderBase):
      
     """
 
-    def build_balanced_round(self, iterations,
+    def build_balanced_round(self, max_build_tries,
                              diff_max, quality_min,
                              ):
         """
@@ -219,7 +219,7 @@ class RandomMeetingBuilder(BuilderBase):
 
         n_tries = 0
 
-        while n_tries < iterations:
+        while n_tries < max_build_tries:
             t_g1, t_g2 = get_temp_list(self.men, self.women)
 
             # Build sets of men first.
@@ -232,7 +232,7 @@ class RandomMeetingBuilder(BuilderBase):
             try:
                 if self.add_partners(round, t_g2,
                                      diff_max, quality_min,
-                                     iterations):
+                                     max_build_tries):
                     return round
                 self.print_check_stats()
             except NoValidPartner:
