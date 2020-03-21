@@ -15,4 +15,7 @@ export const CALCULATION_UPDATE = mkname('CALCULATION_UPDATE')
 
 export const UPDATE_CALC_VALUE = mkname('UPDATE_CALC_VALUE')
 
+export const MIXER_UPDATE = mkname('MIXER_UPDATE')
+
+
 

@@ -15,6 +15,7 @@ const initialState = {
   fpartner: 1.5,
   fteam: 3.5,
   low_threshold: 0.75,
+  mixer_output: [],
 }
 
 const mainReducer = (state = initialState, action) => {
@@ -40,8 +41,16 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         schedule: [],
-        schedule_result: {'status': null, error: null}
+        schedule_result: {'status': null, error: null},
+        mixer_output: []
       }
+    case types.MIXER_UPDATE: {
+      const {status_msg} = action.payload
+      return {
+        ...state,
+        mixer_output: [...state.mixer_output, status_msg]
+      }
+    }
     case types.GET_SUBS:
       return {...state, subs}
       break

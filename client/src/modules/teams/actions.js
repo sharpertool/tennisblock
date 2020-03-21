@@ -11,3 +11,5 @@ export const fetchCurrentSchedule = createAction(types.FETCH_CURRENT_SCHEDULE)
 export const updateCalcValue = createAction(types.UPDATE_CALC_VALUE)
 
 export const recalculateMatch = createAction(types.RECALCULATE_MATCH)
+
+export const mixerUpdate = createAction(types.MIXER_UPDATE)
