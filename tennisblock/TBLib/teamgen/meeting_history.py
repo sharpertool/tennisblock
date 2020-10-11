@@ -58,11 +58,14 @@ class MeetingHistory(HistoryBase):
         self.Opponents = {}
         self.Opposites = {}
         for p in self.group1 + self.group2:
+            bad_match = []
+            if p.pk == 87:
+                bad_match = [p for p in self.group2 if p.pk==71]
             self.Partners[p] = set()
             self.Opposites[p] = Counter()
             self.Opponents[p] = set()
-            self.InvalidOpponents[p] = set()
-            self.InvalidPartners[p] = set()
+            self.InvalidOpponents[p] = set(bad_match)
+            self.InvalidPartners[p] = set(bad_match)
 
             if p.pk == 23:  #  Jonathan
                 for pp in self.group2:

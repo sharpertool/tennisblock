@@ -103,9 +103,10 @@ class TeamGen(object):
             if not round:
                 # Increase the quality then the diff
                 min_quality += quality_range[2]
-                if min_quality <= quality_range[1]:
-                    min_quality = quality_range[0]
-                    max_diff += diff_range[2]
+                max_diff += diff_range[2]
+                # if min_quality <= quality_range[1]:
+                #     min_quality = quality_range[0]
+                #     max_diff += diff_range[2]
                 logger.debug(f"Criteria updated. QThres:{min_quality} DThres:{max_diff}")
 
         return round

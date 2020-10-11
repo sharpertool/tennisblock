@@ -6,6 +6,7 @@ from .DBTeams import DBTeams
 from api.apiutils import get_current_season
 from .teamgen.Team import Team
 from .teamgen.Match import Match
+import jsonpickle
 
 
 class TeamManager(object):
@@ -61,6 +62,21 @@ class TeamManager(object):
 
         if men is None or women is None:
             men, women = self.get_players(date)
+
+        with open('players.json', 'w') as fp:
+            data = {
+                'men': men,
+                'women': women,
+                'n_courts': n_courts,
+                'n_sequences': n_sequences,
+                'iterations': iterations,
+                'max_tries': max_tries,
+                'low_threshold': low_threshold,
+                'date': date,
+                'b_allow_duplicates': b_allow_duplicates
+            }
+            frozen = jsonpickle.encode(data, indent=4)
+            fp.write(frozen)
 
         # Calculate number fo courts from sum
         if n_courts is None:

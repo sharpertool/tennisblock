@@ -1,5 +1,6 @@
 import logging
 import random
+import copy
 from typing import List
 import itertools
 from collections import Counter, defaultdict
@@ -259,6 +260,8 @@ class RandomMeetingBuilder(BuilderBase):
 
         passed_criteria = False
 
+        best_round = None
+
         while num_tries and not passed_criteria:
             available = set(partners)
 
@@ -284,10 +287,15 @@ class RandomMeetingBuilder(BuilderBase):
                 m.t2.p2 = partner2
 
             diffs = round.diffs
+            if best_round is None:
+                best_round = copy.deepcopy(round)
 
             # We want the worst case values here.
             curr_diff = max(diffs)
             curr_q = round.quality_min
+
+            if curr_diff < max(best_round.diffs) and curr_q > best_round.quality_min:
+                best_round = copy.deepcopy(round)
 
             min_diff = min(min_diff, curr_diff)
             max_q = max(max_q, round.quality_max)
@@ -300,10 +308,9 @@ class RandomMeetingBuilder(BuilderBase):
         round.push_histories(min_diff, max_q)
         self.stats.push_histories(min_diff, max_q)
 
-        okay = curr_diff <= diff_max and curr_q >= quality_min
-        if not okay:
+        if not passed_criteria:
             self.n_fails_by_diff += 1
-        return okay
+        return passed_criteria
 
     def pick_first_group(self, players, courts=None):
         """
@@ -334,7 +341,8 @@ class RandomMeetingBuilder(BuilderBase):
                     round.add_match(m)
                 return round, pset
             except NoValidOpponent:
-                pass
+                round = MatchRound()
+                pset = set(players)
 
     def clear_check_stats(self):
         self.n_fails_by_invalid_partner = 0

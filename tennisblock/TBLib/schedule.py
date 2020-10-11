@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import re
 import random
@@ -28,6 +29,15 @@ def reset_availability_arrays(date=None):
     scheduler = Scheduler()
     for meeting in meetings:
         scheduler.update_scheduled_for_players(meeting)
+
+
+def update_availability_played_arrays():
+    """ Set played to true for all past dates where scheduled is true """
+
+    season = get_current_season()
+
+    scheduler = Scheduler()
+    scheduler.update_played_for_season(season)
 
 
 class Scheduler(object):
@@ -519,6 +529,35 @@ class Scheduler(object):
 
             if changed:
                 av.save()
+
+    @staticmethod
+    def update_played_for_season(season):
+        """
+        Set played to true if date is past and scheduled is true
+        :param season:
+        :return:
+        """
+
+        availabilities = PlayerAvailability.objects.filter(
+            season=season
+        )
+        past_meetings = Meeting.objects.filter(
+            season=season
+        ).filter(
+            date__lt=datetime.now()
+        ).count()
+
+        for avail in availabilities:
+            changed = False
+            for x in range(past_meetings):
+                if (avail.played[x] != avail.scheduled[x]):
+                    changed = True
+                    avail.played[x] = avail.scheduled[x]
+
+            if changed:
+                print(f"Save for {avail.player.Name()}")
+                avail.save()
+
 
     @staticmethod
     def update_played_for_players(meeting, scheduled_pks=None):
