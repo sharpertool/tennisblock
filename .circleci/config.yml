@@ -328,7 +328,7 @@ jobs:
       - *attach_workspace
 
 
-      - aws-white-list-circleci-ip/add
+      - aws-white-list-circleci-ip/add:
           description: Add circleci IP to allowed list
           port: 22
           mask: 32
@@ -387,7 +387,7 @@ jobs:
             SENTRY_ORG: sharpertool-vc
             SENTRY_PROJECT: tennisblock
 
-      - aws-white-list-circleci-ip/remove
+      - aws-white-list-circleci-ip/remove:
           description: Remove circleci IP to allowed list
           port: 22
           mask: 32
