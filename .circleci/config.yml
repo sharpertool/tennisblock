@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@1.1.0
+  aws-white-list-circleci-ip: configure/aws-white-list-circleci-ip@1.0.1
 
 executors:
   container_config:
@@ -326,6 +327,14 @@ jobs:
       - *disable_strict_type_checking
       - *attach_workspace
 
+
+      - aws-white-list-circleci-ip/add
+          description: Add circleci IP to allowed list
+          port: 22
+          mask: 32
+          tag-key: circleci_deploy
+          tag-value: deploy_code
+
       - run:
           name: Add Target Host to config to disable strict type checking
           command: |
@@ -340,7 +349,7 @@ jobs:
             fi
 
       - run:
-          name: Copy zipfile to test server
+          name: Copy zipfile to prod server
           command: |
             ls -al zipout
             zipfile=$(ls zipout/)
@@ -355,7 +364,7 @@ jobs:
             SRC_SCRIPT: site_deploy_zip.sh
 
       - run:
-          name: Run deploy script on test server
+          name: Run deploy script on prod server
           command: |
             zipfile=$(ls zipout/)
             echo "Deploying zipfile ${zipfile} on server"
@@ -378,6 +387,12 @@ jobs:
             SENTRY_ORG: sharpertool-vc
             SENTRY_PROJECT: tennisblock
 
+      - aws-white-list-circleci-ip/remove
+          description: Remove circleci IP to allowed list
+          port: 22
+          mask: 32
+          tag-key: circleci_deploy
+          tag-value: deploy_code
 
 workflows:
   version: 2
