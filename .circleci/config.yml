@@ -314,7 +314,7 @@ jobs:
           command: |
             pwd
             ls -al zipout
-            zipfile=$(ls zipout/)xxxxhl
+            zipfile=$(ls zipout/)
             echo "Deploying ${zipfile} to S3"
             VERSION=${CIRCLE_TAG:-${CIRCLE_SHA1}}
             s3path="s3://${DEPLOY_BUCKET}/${DEPLOY_BUCKET_PATH}/${zipfile}"
