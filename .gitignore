@@ -72,3 +72,5 @@ db_learning.txt
 /yarn.lock
 /ssl/tennisblock.local+2.pem
 /ssl/tennisblock.local+2-key.pem
+
+tennisblock/players.json
