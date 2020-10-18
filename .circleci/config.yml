@@ -314,7 +314,7 @@ jobs:
           command: |
             pwd
             ls -al zipout
-            zipfile=$(ls zipout/)
+            zipfile=$(ls zipout/)xxxxhl
             echo "Deploying ${zipfile} to S3"
             VERSION=${CIRCLE_TAG:-${CIRCLE_SHA1}}
             s3path="s3://${DEPLOY_BUCKET}/${DEPLOY_BUCKET_PATH}/${zipfile}"
@@ -329,7 +329,6 @@ jobs:
 
 
       - aws-white-list-circleci-ip/add:
-          description: Add circleci IP to allowed list
           port: 22
           mask: 32
           tag-key: circleci_deploy
@@ -388,7 +387,6 @@ jobs:
             SENTRY_PROJECT: tennisblock
 
       - aws-white-list-circleci-ip/remove:
-          description: Remove circleci IP to allowed list
           port: 22
           mask: 32
           tag-key: circleci_deploy
