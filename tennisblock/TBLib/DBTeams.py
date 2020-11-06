@@ -61,6 +61,29 @@ class DBTeams:
         if meeting:
             Matchup.objects.filter(meeting=meeting, set=set_number).delete()
 
+    def insert_generated_sequence(self, date, seq):
+
+        meeting = self.get_meeting(date)
+        self.delete_matchup(meeting)
+
+        for set_idx, s in enumerate(seq):
+            for court_idx, m in enumerate(s):
+                t1_p1 = Player.objects.get(pk=m.get('t1').get('p1').get('pk'))
+                t1_p2 = Player.objects.get(pk=m.get('t1').get('p2').get('pk'))
+                t2_p1 = Player.objects.get(pk=m.get('t2').get('p1').get('pk'))
+                t2_p2 = Player.objects.get(pk=m.get('t2').get('p2').get('pk'))
+                match_up = Matchup.objects.create(
+                        meeting=meeting,
+                        set=set_idx+1,
+                        court=court_idx+1,
+                        team1_p1=t1_p1,
+                        team1_p2=t1_p2,
+                        team2_p1=t2_p1,
+                        team2_p2=t2_p2
+                )
+                match_up.save()
+
+
     def insert_records(self, date, seq):
         """
         Insert the sequence

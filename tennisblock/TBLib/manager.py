@@ -7,7 +7,7 @@ from api.apiutils import get_current_season
 from .teamgen.Team import Team
 from .teamgen.Match import Match
 import jsonpickle
-
+from datetime import datetime
 
 class TeamManager(object):
     def __init__(self, matchid=None):
@@ -43,6 +43,7 @@ class TeamManager(object):
         men, women = self.get_players(date)
 
         result = self.pick_teams(men=men, women=women,
+                                 date=date,
                                  iterations=iterations,
                                  max_tries=max_tries,
                                  low_threshold=low_threshold)
@@ -63,7 +64,11 @@ class TeamManager(object):
         if men is None or women is None:
             men, women = self.get_players(date)
 
-        with open('players.json', 'w') as fp:
+        if n_courts is None:
+            n_courts = (len(men) + len(women)) // 4
+
+        now = datetime.now()
+        with open(f'../players_{now.strftime("%Y-%m-%d_%H:%M")}.json', 'w') as fp:
             data = {
                 'men': men,
                 'women': women,
