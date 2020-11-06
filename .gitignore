@@ -74,3 +74,5 @@ db_learning.txt
 /ssl/tennisblock.local+2-key.pem
 
 tennisblock/players.json
+players_*.json
+generated_rounds.json
