@@ -68,7 +68,7 @@ class TeamManager(object):
             n_courts = (len(men) + len(women)) // 4
 
         now = datetime.now()
-        with open(f'../players_{now.strftime("%Y-%m-%d_%H:%M")}.json', 'w') as fp:
+        with open(f'../players_{now.strftime("%Y-%m-%d_%H%M")}.json', 'w') as fp:
             data = {
                 'men': men,
                 'women': women,
