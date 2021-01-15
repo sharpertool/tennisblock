@@ -76,3 +76,4 @@ db_learning.txt
 tennisblock/players.json
 players_*.json
 generated_rounds.json
+round*.json

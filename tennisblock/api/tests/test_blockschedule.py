@@ -28,7 +28,7 @@ class TestBase(BlockDBTestBase):
         cls.static_meeting_setup(meetings, girls, guys)
         cls.admin_user = guys[0].user
         cls.guys = guys
-        cls.girls =girls
+        cls.girls = girls
         cls.season = season
         cls.meeting = meetings
         cls.splayers = players

@@ -83,6 +83,75 @@ class DBTeams:
                 )
                 match_up.save()
 
+    def get_current_sequence(self, date):
+        """
+        A match looks like this
+
+                {
+            "t1": {
+                "p1": {
+                    "pk": 135,
+                    "gender": "M",
+                    "ntrp": 4.0,
+                    "microntrp": 4.15,
+                    "phone": "(208) 353-8808",
+                    "name": "Jeff Thompson"
+                },
+                "p2": {
+                    "pk": 149,
+                    "gender": "F",
+                    "ntrp": 3.5,
+                    "microntrp": 3.8,
+                    "phone": "(208) 869-2133",
+                    "name": "Patty ONeill"
+                }
+            },
+            "t2": {
+                "p1": {
+                    "pk": 150,
+                    "gender": "M",
+                    "ntrp": 3.5,
+                    "microntrp": 3.5,
+                    "phone": "(208) 830-9913",
+                    "name": "Derrick ONeill"
+                },
+                "p2": {
+                    "pk": 7,
+                    "gender": "F",
+                    "ntrp": 4.0,
+                    "microntrp": 4.2,
+                    "phone": "(208) 672-9254",
+                    "name": "Jenny Grunke"
+                }
+            }
+        },
+
+        :param date:
+        :return:
+        """
+
+        meeting = self.get_meeting(date)
+
+        matchups = Matchup.objects.filter(meeting=meeting).order_by('set', 'court')
+
+        from django.db.models import Max
+        sets = Matchup.objects.filter(meeting=meeting).aggregate(Max('set'))['set__max']
+        courts = Matchup.objects.filter(meeting=meeting).aggregate(Max('court'))['court__max']
+
+        # Assume 3 sets
+        sequences = []
+        for x in range(sets):
+            sequences.append([])
+            for y in range(courts):
+                sequences[x].append({})
+
+        for matchup in matchups:
+            match = sequences[matchup.set-1][matchup.court-1]
+
+            pass
+
+
+        return sequences
 
     def insert_records(self, date, seq):
         """
