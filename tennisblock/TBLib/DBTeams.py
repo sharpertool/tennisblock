@@ -2,8 +2,9 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from blockdb.models import Matchup, Schedule, Player, Meeting
 from api.apiutils import get_meeting_for_date
-from TBLib.teamgen.meeting_history import MeetingHistory
-from TBLib.teamgen import Player as TPlayer, MatchRound, Match, Team
+from teamgen.meeting_history import MeetingHistory
+from teamgen import Player as TPlayer, MatchRound, Match, Team
+
 
 class DBTeams:
     def __init__(self):

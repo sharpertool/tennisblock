@@ -1,13 +1,13 @@
 # !/usr/bin/env python
 
-from .teamgen.TeamGen import TeamGen
-from .teamgen.player import Player as TGPlayer
+from teamgen.TeamGen import TeamGen
+from teamgen.player import Player as TGPlayer
 from .DBTeams import DBTeams
-from api.apiutils import get_current_season
-from .teamgen.Team import Team
-from .teamgen.Match import Match
+from teamgen.Team import Team
+from teamgen.Match import Match
 import jsonpickle
 from datetime import datetime
+
 
 class TeamManager(object):
     def __init__(self, matchid=None):
