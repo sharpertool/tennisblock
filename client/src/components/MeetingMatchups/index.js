@@ -19,6 +19,7 @@ const MeetingMatchups = (props) => {
   const ref3 = useRef()
   const ref4 = useRef()
   const ref5 = useRef()
+  const ref_match_count = useRef()
   
   const onChange = (e) => {
     const name = e.target.name
@@ -41,6 +42,7 @@ const MeetingMatchups = (props) => {
     calculateMatchups({
       date: match.params.id,
       iterations: Number.parseInt(props.iterations),
+      match_count: Number.parseInt(props.match_count),
       tries: Number.parseInt(props.tries),
       fpartner: Number.parseFloat(props.fpartner),
       fteam: Number.parseFloat(props.fteam),
@@ -68,6 +70,15 @@ const MeetingMatchups = (props) => {
       <HeaderDate classNames="mb-4" link={`/schedule/${match.params.id}`} date={match.params.id}/>
       <Row className="mb-4">
         <Col className="d-flex justify-content-between" xs={3}>
+          Number of Matches:
+          <input name="match_count"
+                 ref={ref_match_count}
+            //onFocus={handleFocus}
+                 onChange={onChange}
+                 onDoubleClick={handleDoubleClick}
+                 type="number"
+                 min="1" max="3"
+                 value={props.match_count}/>
           Iterations:
           <input name="iterations"
                  ref={ref1}

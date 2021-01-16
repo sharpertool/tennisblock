@@ -8,3 +8,4 @@ export const get_tries = state => state.tries
 export const get_fpartner = state => state.fpartner
 export const get_fteam = state => state.fteam
 export const get_low_threshold = state => state.low_threshold
+export const get_match_count = state => state.match_count

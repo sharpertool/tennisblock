@@ -15,6 +15,7 @@ const initialState = {
   fpartner: 1.5,
   fteam: 3.5,
   low_threshold: 0.75,
+  match_count: 3,
   mixer_output: [],
 }
 

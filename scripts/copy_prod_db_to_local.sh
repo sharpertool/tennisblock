@@ -12,7 +12,7 @@ backup_path=$(eval echo ${shared_path})
 echo "Backup Path: ${backup_path}"
 full_filename=${backup_path}/${filename}
 echo "snapshot: ${filename}"
-echo "fullnae: ${full_filename}"
+echo "fullname: ${full_filename}"
 
 #ls -al ${backup_path}
 # Can can do this all in one command!

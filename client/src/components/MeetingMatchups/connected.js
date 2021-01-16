@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
     fpartner: selectors.get_fpartner(state),
     fteam: selectors.get_fteam(state),
     low_threshold: selectors.get_low_threshold(state),
+    match_count: selectors.get_match_count(state),
   }
 }
 

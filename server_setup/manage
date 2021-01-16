@@ -1,0 +1,9 @@
+#!/bin/bash
+
+base=$(cd $(dirname $0);pwd)
+
+export PYTHONPATH=${base}:${base}/django_root
+
+cd ${base}/django_root
+${base}/.venv3/bin/python manage.py "$@"
+
