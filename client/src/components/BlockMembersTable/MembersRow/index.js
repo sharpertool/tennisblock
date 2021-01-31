@@ -14,7 +14,8 @@ const Member = ({
     microntrp,
     email,
     phone,
-    blockmember
+    blockmember,
+    fulltime
   } = member
 
   const {
@@ -29,6 +30,10 @@ const Member = ({
       isavail: !isavail[idx]
     })
   }
+
+  const ftstyle = {
+    backgroundColor: fulltime ? '#6699ff' : '#ffffcc'
+  }
   
   return (
     <tr className={even ? 'even' : 'odd'}>
@@ -40,6 +45,7 @@ const Member = ({
       <td>{email}</td>
       <td>{phone}</td>
       <td>{blockmember ? 'true' : 'false'}</td>
+      <td style={ftstyle}>{fulltime ? 'true' : 'false'}</td>
       <td>
       </td>
     </tr>

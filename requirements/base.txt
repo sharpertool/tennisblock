@@ -2,6 +2,8 @@ wheel
 wagtail==2.8
 Django ~=3.0, <3.1
 
+# My custom teamgen -- use latest version!
+teamgen
 jsonpickle
 
 django-contrib-comments==1.9.2

@@ -347,6 +347,11 @@ LOGGING = {
             'level': 'DEBUG',
             'handlers': ['console'],
             'propagate': True,
+        },
+        'teamgen': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'tg_file'],
+            'propagate': True,
         }
     },
 }

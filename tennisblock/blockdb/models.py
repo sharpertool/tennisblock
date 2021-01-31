@@ -52,6 +52,8 @@ class Player(models.Model):
         ('F', 'Gal'),
         ('M', 'Guy')
     )
+    MALE = 'M'
+    FEMALE = 'F'
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
 
@@ -91,8 +93,8 @@ class Player(models.Model):
             un = self.microntrp
         else:
             un = self.ntrp
-        return "{} {} {:3.1f},{:4.2f}".format(
-            self.first, self.last, self.ntrp, un)
+        return "{}:{} {} {:3.1f},{:4.2f}".format(
+            self.id, self.first, self.last, self.ntrp, un)
 
     def Name(self):
         return self.first + " " + self.last
@@ -223,6 +225,7 @@ class SeasonPlayer(models.Model):
     player = models.ForeignKey(Player,
                                on_delete=models.CASCADE)
     blockmember = models.BooleanField(default=False)
+    fulltime = models.BooleanField(default=False)
 
     def __str__(self):
         return self.player.__str__()
@@ -268,7 +271,7 @@ class Couple(models.Model):
         return (
             f"CID:{self.id} name:{self.name} SID:{self.season.id} "
             f"guy:{self.male.name} girl:{self.female.name}"
-            f" {self.fulltime} {self.as_singles} {self.blockcouple}"
+            f" FT:{self.fulltime} As Single:{self.as_singles} BlockCouple:{self.blockcouple}"
         )
 
     class Meta:
@@ -443,9 +446,9 @@ class ScheduleVerify(models.Model):
     html_template = "verify/email_confirmation_request.html"
 
     schedule = models.OneToOneField(Schedule,
-                                 on_delete=models.CASCADE,
-                                 primary_key=True,
-                                 related_name='verification')
+                                    on_delete=models.CASCADE,
+                                    primary_key=True,
+                                    related_name='verification')
     code = models.UUIDField(default=uuid.uuid4, editable=False)
     created_on = models.DateTimeField(auto_now_add=True)
     confirmation_type = models.CharField(max_length=1, choices=VERIFY_CHOICES,

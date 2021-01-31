@@ -29,7 +29,7 @@ export let configInitialState = {
   num_courts: null,
   subs_guys: [],
   subs_gals: [],
-  
+
   // Notification
   notify_errors: [],
   notify_message: '',
@@ -56,6 +56,7 @@ const player_by_id_update = (pbid, players) => {
       ntrp: p.ntrp,
       untrp: p.untrp,
       gender: p.gender,
+      blockmember: p.blockmember,
     }
     return acc
   }, {})
@@ -128,7 +129,10 @@ const reducer = handleActions(
     
     [types.SET_SUBS](state, {payload}) {
       const subs = payload
-      const {guysubs: guys, galsubs: gals} = payload
+      const {
+        guysubs: guys,
+        galsubs: gals,
+      } = payload
       return {
         ...state,
         subs_guys: guys.map(s => s.id),

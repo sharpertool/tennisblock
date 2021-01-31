@@ -1,5 +1,6 @@
 import random
 import datetime
+import logging
 from textwrap import dedent
 from django.views.generic.base import View
 from django.conf import settings
@@ -26,12 +27,15 @@ from .apiutils import JSONResponse, get_current_season, get_meeting_for_date, ti
 from TBLib.manager import TeamManager
 from TBLib.schedule import Scheduler
 
+logger = logging.getLogger(__name__)
+
 
 class SubsView(APIView):
 
     def get(self, request, format=None, date=None):
         mtg = get_meeting_for_date(date)
-        # print(f"Date: {date} Meeting:{mtg}")
+        season = get_current_season()
+        # logger.info(f"Date: {date} Meeting:{mtg}")
         if mtg:
             data = {'date': mtg.date}
         else:
@@ -45,9 +49,10 @@ class SubsView(APIView):
             schedulePlayers = Schedule.objects.filter(meeting=mtg)
             for p in schedulePlayers:
                 playingIds[p.player.id] = p.player
-                # print("Playing this meeting:%s" % p.player.Name())
+                # logger.info("Playing this meeting:%s" % p.player.Name())
 
             subs = PlayerAvailability.objects.filter(~Q(player__in=playingIds))
+            subs = subs.filter(season_id=season.id)
             subs = subs.filter(**{f'available__{mtg_index}': True})
 
             fsubs = []
@@ -59,7 +64,8 @@ class SubsView(APIView):
                     'id': p.player.id,
                     'ntrp': p.player.ntrp,
                     'untrp': p.player.microntrp,
-                    'gender': p.player.gender.lower()
+                    'gender': p.player.gender.lower(),
+                    'blockmember': True,
                 }
 
                 fsubs.append(s) if p.player.gender == 'F' else msubs.append(s)
@@ -71,19 +77,22 @@ class SubsView(APIView):
                 ~Q(player__in=playingIds)
             )
 
+
             for p in others:
                 s = {
                     'name': p.player.Name(),
                     'id': p.player.id,
                     'ntrp': p.player.ntrp,
                     'untrp': p.player.microntrp,
-                    'gender': p.player.gender.lower()
+                    'gender': p.player.gender.lower(),
+                    'blockmember': False,
                 }
 
                 fsubs.append(s) if p.player.gender == 'F' else msubs.append(s)
 
             data['guysubs'] = msubs
             data['galsubs'] = fsubs
+
         else:
             data['mtg'] = {'error': 'Could not determine meeting.'}
 
@@ -95,7 +104,7 @@ class BlockPlayers(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, date=None):
-        print(f"Getting players for block for date {date}")
+        logger.info(f"Getting players for block for date {date}")
         tb = Scheduler()
         data = tb.query_schedule(date)
         return Response(data)
@@ -153,26 +162,26 @@ class BlockSchedule(APIView):
 
     def post(self, request, date=None):
         # ToDo: Insure is Admin user, not just authenticated
-        tb = Scheduler()
-        print("blockSchedule POST for date:%s" % date)
-        group = tb.get_next_group(date)
-        print("Groups:")
+        scheduler = Scheduler()
+        logger.info("blockSchedule POST for date:%s" % date)
+        group = scheduler.get_next_group(date)
+        logger.info("Groups:")
         for g in group:
-            print("\tHe:%s She:%s" % (g.male.Name(), g.female.Name()))
+            logger.info("\tHe:%s She:%s" % (g.male.Name(), g.female.Name()))
 
-        tb.add_couples_to_schedule(date, group)
+        scheduler.add_group_to_schedule(date, group)
 
         mgr = TeamManager()
         mgr.dbTeams.delete_matchup(date)
 
-        sched = tb.query_schedule(date)
+        sched = scheduler.query_schedule(date)
 
         return Response(sched)
 
     def delete(self, request, date=None):
         # ToDo: Insure is Admin user, not just authenticated
         tb = Scheduler()
-        print("blockSchedule DELETE for date:%s" % date)
+        logger.info("blockSchedule DELETE for date:%s" % date)
         mgr = TeamManager()
         mgr.dbTeams.delete_matchup(date)
         tb.remove_all_couples_from_schedule(date)
@@ -190,7 +199,6 @@ class MatchData(APIView):
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'username', 'email']

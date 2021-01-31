@@ -8,9 +8,8 @@ from .views import (MembersView, MembersViewAngular, MembersViewReact,
 
 app_name = 'members'
 urlpatterns = [
-    re_path(r'^$', MembersViewAngular.as_view(), name='seasonplayers'),
+    re_path(r'^$', MembersViewReact.as_view(), name='block_react'),
     re_path(r'^blockmembers/$', MembersView.as_view(), name='block'),
-    re_path(r'^react/$', MembersViewReact.as_view(), name='block_react'),
     re_path(r'^form/$', SeasonPlayerFormView.as_view(), name='members_form'),
     re_path(r'^update/$', SeasonPlayerUpdate.as_view(), name='members_update'),
     re_path(r'^player/list/$', PlayerListView.as_view(), name='player_list'),

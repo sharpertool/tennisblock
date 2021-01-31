@@ -30,6 +30,9 @@ const MembersHeader = () => {
         Block Member?
       </th>
       <th className='heading_item schedule_col'>
+        FullTime?
+      </th>
+      <th className='heading_item schedule_col'>
         Action
       </th>
     </tr>

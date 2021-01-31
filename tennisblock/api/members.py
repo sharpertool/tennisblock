@@ -76,7 +76,8 @@ class SeasonPlayerView(APIView):
             'microntrp': player.microntrp,
             'email': player.email,
             'phone': player.phone,
-            'blockmember': sp.blockmember
+            'blockmember': sp.blockmember,
+            'fulltime': sp.fulltime,
         }
         return p
 
