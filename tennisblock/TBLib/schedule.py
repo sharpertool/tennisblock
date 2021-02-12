@@ -7,7 +7,7 @@ from typing import List
 from collections import defaultdict
 import logging
 import textwrap
-
+import random
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, Count, F, Max
 from django.db import connection
@@ -154,6 +154,35 @@ class Scheduler(object):
         return guys, gals
 
     @staticmethod
+    def get_plays_by_player(season, players: List[Player]):
+        """
+        Return the count of plays for each player, by id
+        :param players:
+        :return:
+        """
+        flt = Q(meeting__season=season,
+                     meeting__date__lt=datetime.now(),
+                     player__in=players
+                     )
+
+        query = Schedule.objects.filter(flt).order_by('player')
+        query = query.values('player').annotate(plays=Count('player'))
+
+        players_by_plays = defaultdict(list)
+        played_players = set()
+        for q in query:
+            player_id = q['player']
+            played_players.add(player_id)
+            plays = q['plays']
+            players_by_plays[plays].append(player_id)
+
+        for player in players:
+            if player.id not in played_players:
+                players_by_plays[0].append(player.id)
+
+        return players_by_plays, played_players
+
+    @staticmethod
     def order_players(*,
                       couples: List[Couple],
                       men: List[SeasonPlayer],
@@ -165,27 +194,10 @@ class Scheduler(object):
 
         all_players = [p.player for p in men + women]+couple_players
 
-        flt = Q(meeting__season=season,
-                     meeting__date__lt=datetime.now(),
-                     player__in=all_players
-                     )
-        query = Schedule.objects.filter(flt).order_by('player')
-        query = query.values('player').annotate(plays=Count('player'))
+        couple_players_by_plays, couple_played_players = Scheduler.get_plays_by_player(season, couple_players)
+        players_by_plays, played_players = Scheduler.get_plays_by_player(season, [p.player for p in men + women])
 
-        players_by_plays = defaultdict(list)
-        player_plays = {p['player']: p['plays'] for p in query}
-        played_players = set()
-        for q in query:
-            player_id = q['player']
-            played_players.add(player_id)
-            plays = q['plays']
-            players_by_plays[plays].append(player_id)
-
-        for player in all_players:
-            if player.id not in played_players:
-                players_by_plays[0].append(player.id)
-
-        pass
+        return couple_players_by_plays, players_by_plays
 
     @staticmethod
     def calc_play_stats_for_couple(season=None, couple=None):
@@ -311,8 +323,23 @@ class Scheduler(object):
         needed_men -= (len(men) + len(couples))
         needed_women -= (len(women) + len(couples))
 
-        ordered_stats = Scheduler.order_players(
+        couple_players_by_plays, players_by_plays = Scheduler.order_players(
             couples=parttime_couples, men=parttime_men, women=parttime_women)
+
+        nplayed = set(couple_players_by_plays.keys()).union(set(players_by_plays.keys()))
+        sorted_couples = []
+        sorted_men = []
+        sorted_women = []
+        for n in sorted(nplayed):
+            couples = couple_players_by_plays[n]
+            players = players_by_plays[n]
+            random.shuffle(players)
+            random.shuffle(couples)
+            sorted_couples.extend(couples)
+            sorted_men.extend([p for p in players if p.gender == Player.MALE])
+            sorted_women.extend([p for p in players if p.gender == Player.FEMALE])
+
+
 
     @staticmethod
     def get_next_group(date=None):
