@@ -373,18 +373,18 @@ jobs:
             ssh deploy_host \
               "${APP_DIR}/site_deploy_zip.sh ${zipfile} ${VERSION}"
 
-      - run:
-          name: Add Sentry release
-          command: |
-            export VERSION=$(sentry-cli releases propose-version)
-            sentry-cli releases new $VERSION
-            sentry-cli releases set-commits --auto $VERSION
-            sentry-cli releases files $VERSION upload-sourcemaps ./client/dist.prod
-            sentry-cli releases finalize $VERSION
-            sentry-cli releases deploys $VERSION new -e test
-          environment:
-            SENTRY_ORG: sharpertool-vc
-            SENTRY_PROJECT: tennisblock
+#      - run:
+#          name: Add Sentry release
+#          command: |
+#            export VERSION=$(sentry-cli releases propose-version)
+#            sentry-cli releases new $VERSION
+#            sentry-cli releases set-commits --auto $VERSION
+#            sentry-cli releases files $VERSION upload-sourcemaps ./client/dist.prod
+#            sentry-cli releases finalize $VERSION
+#            sentry-cli releases deploys $VERSION new -e test
+#          environment:
+#            SENTRY_ORG: sharpertool-vc
+#            SENTRY_PROJECT: tennisblock
 
       - aws-white-list-circleci-ip/remove:
           port: 22

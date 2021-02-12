@@ -1,5 +1,7 @@
 # !/usr/bin/env python
 
+from django.conf import settings
+from os.path import join
 from teamgen.TeamGen import TeamGen
 from teamgen.player import Player as TGPlayer
 from .DBTeams import DBTeams
@@ -68,7 +70,8 @@ class TeamManager(object):
             n_courts = (len(men) + len(women)) // 4
 
         now = datetime.now()
-        with open(f'../players_{now.strftime("%Y-%m-%d_%H%M")}.json', 'w') as fp:
+        player_file = f'players_{now.strftime("%Y-%m-%d_%H%M")}.json'
+        with open(join(settings.MEDIA_ROOT, player_file)) as fp:
             data = {
                 'men': men,
                 'women': women,
