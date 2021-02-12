@@ -45,7 +45,7 @@ Finally, get the local config
 
 You will need to edit this file to customize it to your local environment. Collaborate with team leader or other members of the team to get the right values, as the example might not be up-to-date
 
-
+Bitbucket sucks!!!
 
 
 
