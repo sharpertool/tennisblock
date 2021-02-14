@@ -32,7 +32,7 @@
     "@redux-beacon/google-tag-manager": "^1.0.1",
     "@sentry/browser": "^5.10.1",
     "@vimeo/player": "2.10.0",
-    "axios": "0.19.0",
+    "axios": "0.21.1",
     "babel-plugin-react-remove-properties": "^0.3.0",
     "d3": "^5.14.2",
     "draft-convert": "^2.1.8",
