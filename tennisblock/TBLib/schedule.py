@@ -392,18 +392,14 @@ class Scheduler(object):
                     return couple_players_by_plays[r].pop(0)
             return None
 
-        def have_players_available():
+        def have_couples_available():
             for r in range(rstart, rstop):
                 if couple_players_by_plays[r]:
-                    return True, True
+                    return True
                 if men_by_plays[r] and women_by_plays[r]:
-                    return True, True
-                if men_by_plays[r]:
-                    return True, False
-                if women_by_plays[r]:
-                    return False, True
+                    return True
 
-        while needed_men or needed_women and have_players_available():
+        while needed_men or needed_women and have_couples_available():
             if needed_women > needed_men:
                 woman = get_next_single_gal()
                 women.append(woman)
