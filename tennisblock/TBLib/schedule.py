@@ -1,7 +1,9 @@
 from datetime import datetime
+import logging
 import os
 import re
 import random
+from typing import List
 from collections import defaultdict
 import logging
 import textwrap
@@ -85,7 +87,7 @@ class Scheduler(object):
                     Scheduler.is_player_available(mtg, couple.female)])
 
     @staticmethod
-    def get_available_couples(mtg, fulltime=True,
+    def get_available_couples(mtg, fulltime=None,
                               as_singles=None):
         """
         Get a list of couples that are available for this meeting
@@ -94,38 +96,96 @@ class Scheduler(object):
         """
 
         flt = Q(season=mtg.season,
-                fulltime=fulltime,
                 blockcouple=True
                 )
-        singles_flt = Q()
+
+        if fulltime is not None:
+            flt = flt & Q(fulltime=fulltime)
+
         if as_singles:
-            singles_flt = Q(as_singles=True)
+            flt = flt & Q(as_singles=True)
 
-        couples = Couple.objects.filter(
-            flt & singles_flt
-        )
+        couples = Couple.objects.filter(flt)
 
-        availableCouples = [
+        available_couples = [
             c for c in couples if Scheduler.is_couple_available(mtg, c)]
 
-        return availableCouples
+        return available_couples
 
     @staticmethod
     def get_available_singles(mtg):
-        couples = Couple.objects.filter(
-            season=mtg.season,
-            as_singles=True,
-            blockcouple=True)
+        """
+        Get Players that are not part of a couple
+        :param mtg:
+        :return:
+        """
+        flt = Q(season=mtg.season, blockmember=True)
+        wflt = flt & Q(player__gender='F')
+        mflt = flt & Q(player__gender='M')
 
-        guys = []
-        girls = []
-        for couple in couples:
-            if Scheduler.is_player_available(mtg, couple.male):
-                guys.append(couple.male)
-            if Scheduler.is_player_available(mtg, couple.female):
-                girls.append(couple.female)
+        men = SeasonPlayer.objects.filter(mflt).exclude(player_id__in=
+        Couple.objects.filter(
+            season=mtg.season).values_list(
+            'male_id', flat=True)
+        )
+        women = SeasonPlayer.objects.filter(wflt).exclude(player_id__in=
+        Couple.objects.filter(
+            season=mtg.season).values_list(
+            'female_id', flat=True)
+        )
 
-        return guys, girls
+        men = [p for p in men if Scheduler.is_player_available(mtg, p.player)]
+        women = [p for p in women if Scheduler.is_player_available(mtg, p.player)]
+
+        return men, women
+
+    @staticmethod
+    def get_available_players(mtg, fulltime: bool = False):
+
+        flt = Q(season=mtg.season,
+                fulltime=fulltime,
+                )
+
+        players = SeasonPlayer.objects.filter(flt)
+
+        guys = [p for p in players if p.player.gender == Player.MALE]
+        gals = [p for p in players if p.player.gender == Player.FEMALE]
+
+        return guys, gals
+
+    @staticmethod
+    def order_players(*,
+                      couples: List[Couple],
+                      men: List[SeasonPlayer],
+                      women: List[SeasonPlayer]):
+
+        season = get_current_season()
+
+        couple_players = [c.male for c in couples] + [c.female for c in couples]
+
+        all_players = [p.player for p in men + women]+couple_players
+
+        flt = Q(meeting__season=season,
+                     meeting__date__lt=datetime.now(),
+                     player__in=all_players
+                     )
+        query = Schedule.objects.filter(flt).order_by('player')
+        query = query.values('player').annotate(plays=Count('player'))
+
+        players_by_plays = defaultdict(list)
+        player_plays = {p['player']: p['plays'] for p in query}
+        played_players = set()
+        for q in query:
+            player_id = q['player']
+            played_players.add(player_id)
+            plays = q['plays']
+            players_by_plays[plays].append(player_id)
+
+        for player in all_players:
+            if player.id not in played_players:
+                players_by_plays[0].append(player.id)
+
+        pass
 
     @staticmethod
     def calc_play_stats_for_couple(season=None, couple=None):
@@ -141,7 +201,8 @@ class Scheduler(object):
         m = Count('player', filter=Q(player__gender='M'))
 
         stats = Schedule.objects.filter(
-            meeting__season=season
+            meeting__season=season,
+            meeting__date__lt=datetime.now()
         ).order_by(
             'meeting__date'
         ).values('meeting').annotate(f=f).annotate(m=m)
@@ -149,10 +210,13 @@ class Scheduler(object):
         they = 0
         he = 0
         she = 0
+        either = 0
 
         for stat in stats:
             f = stat.get('f')
             m = stat.get('m')
+            if f or m:
+                either += 1
             if f and m:
                 they += 1
             if m and not f:
@@ -162,6 +226,7 @@ class Scheduler(object):
 
         cinfo['he_only'] = he
         cinfo['she_only'] = she
+        cinfo['either'] = either
         cinfo['total_plays'] = she + he + they
         cinfo['weight'] = they + he * 0.5 + she * 0.5
 
@@ -205,7 +270,52 @@ class Scheduler(object):
         return couples_by_plays
 
     @staticmethod
-    def get_next_group(date=None, with_singles=None):
+    def generate_group(*,
+                       needed_men: int,
+                       needed_women: int,
+                       fulltime_couples: List[Couple],
+                       parttime_couples: List[Couple],
+                       fulltime_men: List[SeasonPlayer],
+                       parttime_men: List[SeasonPlayer],
+                       fulltime_women: List[SeasonPlayer],
+                       parttime_women: List[SeasonPlayer],
+                       ):
+        """
+        This is where we need to determine who plays.
+        We need N=courts*4 players, generally N/2 men and N/2 women
+
+        We need fulltime couples and fulltime singles first.
+        Then we need to weight singles and couples equally to fill in the rest.
+
+        We need to keep track of couples, men, and women
+
+        Start with FT couples, and ft men/ women
+        Even out the men and women from the part-timers.
+
+        Now, we should order the remaining couples, pt men and pt women
+        -- this is the hard part.
+        We should order by number of plays, and then start with the least.
+
+        :param fulltime_couples:
+        :param parttime_couples:
+        :param fulltime_men:
+        :param parttime_men:
+        :param fulltime_women:
+        :param parttime_women:
+        :return:
+        """
+        couples = fulltime_couples
+        men = fulltime_men
+        women = fulltime_women
+
+        needed_men -= (len(men) + len(couples))
+        needed_women -= (len(women) + len(couples))
+
+        ordered_stats = Scheduler.order_players(
+            couples=parttime_couples, men=parttime_men, women=parttime_women)
+
+    @staticmethod
+    def get_next_group(date=None):
         """
         Get the next group of players.
 
@@ -217,6 +327,7 @@ class Scheduler(object):
         """
 
         season = get_current_season()
+        ncourts = season.courts
 
         if not season:
             logger.info("No current season configured")
@@ -228,43 +339,28 @@ class Scheduler(object):
             return None
         logger.info("Scheduling for date:%s" % mtg.date)
 
-        needed = season.courts * 2
+        needed = season.courts * 4
         group = []
 
-        ft = Scheduler.get_available_couples(mtg)
-        if ft:
-            for f in ft:
-                group.append(f)
-                needed -= 1
+        men, women = Scheduler.get_available_singles(mtg)
+        ft_men = [p for p in men if p.fulltime]
+        ft_women = [p for p in women if p.fulltime]
+        pt_men = [p for p in men if not p.fulltime]
+        pt_women = [p for p in women if not p.fulltime]
 
-        guys, girls = Scheduler.get_available_singles(mtg)
+        couples = Scheduler.get_available_couples(mtg)
+        ft_couples = [c for c in couples if c.fulltime]
+        pt_couples = [c for c in couples if not c.fulltime]
 
-        as_singles = None
-        if with_singles:
-            as_singles = False
-        pt = Scheduler.get_available_couples(mtg,
-                                             fulltime=False,
-                                             as_singles=as_singles
-                                             )
-
-        stats = Scheduler.get_couple_stats(season, pt)
-
-        info_by_plays = Scheduler.sort_info(stats)
-        plays = sorted(info_by_plays.keys())
-        for i in plays:
-            info_data = info_by_plays.get(i)
-            if info_data:
-                info_data = Scheduler.sort_shuffle(info_data)
-
-                while len(info_data) and needed > 0:
-                    info = info_data.pop(0)
-                    group.append(info.get('couple'))
-                    needed -= 1
-
-            if needed == 0:
-                break
-
-        # Should have a full block now..
+        group = Scheduler.generate_group(
+            needed_men=season.courts * 2,
+            needed_women=season.courts * 2,
+            fulltime_couples=ft_couples,
+            parttime_couples=pt_couples,
+            fulltime_men=ft_men,
+            parttime_men=pt_men,
+            fulltime_women=ft_women,
+            parttime_women=pt_women)
         return group
 
     @staticmethod
@@ -292,7 +388,7 @@ class Scheduler(object):
         return cinfosortedshuffled
 
     @staticmethod
-    def add_couples_to_schedule(date, couples):
+    def add_group_to_schedule(date, couples):
 
         mtg = get_meeting_for_date(date)
 
@@ -321,11 +417,6 @@ class Scheduler(object):
             sh.save()
 
         Scheduler.update_scheduled_for_players(mtg)
-
-    @staticmethod
-    def add_group_to_schedule(group):
-        """ Add the group of players to the current schedule """
-        pass
 
     @staticmethod
     def remove_all_couples_from_schedule(date):
