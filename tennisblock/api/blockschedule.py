@@ -162,19 +162,9 @@ class BlockSchedule(APIView):
 
     def post(self, request, date=None):
         # ToDo: Insure is Admin user, not just authenticated
-        scheduler = Scheduler()
         logger.info("blockSchedule POST for date:%s" % date)
-        group = scheduler.get_next_group(date)
-        logger.info("Groups:")
-        for g in group:
-            logger.info("\tHe:%s She:%s" % (g.male.Name(), g.female.Name()))
 
-        scheduler.add_group_to_schedule(date, group)
-
-        mgr = TeamManager()
-        mgr.dbTeams.delete_matchup(date)
-
-        sched = scheduler.query_schedule(date)
+        sched = Scheduler.generate_schedule(date)
 
         return Response(sched)
 

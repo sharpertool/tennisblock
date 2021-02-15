@@ -3,6 +3,7 @@ import os
 import re
 import random
 from collections import defaultdict
+import logging
 import textwrap
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,8 +13,11 @@ from django.utils import timezone
 
 from blockdb.models import PlayerAvailability, Meeting, Couple, Schedule, Player, SeasonPlayer
 from api.apiutils import get_current_season, get_next_meeting, get_meeting_for_date
+from TBLib.manager import TeamManager
 
 from .serializers import PlayerSerializer
+
+logger = logging.getLogger(__name__)
 
 
 def reset_availability_arrays(date=None):
@@ -41,6 +45,26 @@ def update_availability_played_arrays():
 
 
 class Scheduler(object):
+
+    @staticmethod
+    def generate_schedule(date=None):
+        """ Generate a new schedule for the given date, or current date. """
+
+        group = Scheduler.get_next_group(date)
+        if group is None:
+            return None
+
+        logger.info("Groups:")
+        for g in group:
+            logger.info("\tHe:%s She:%s" % (g.male.Name(), g.female.Name()))
+
+        mgr = TeamManager()
+        mgr.dbTeams.delete_matchup(date)
+
+        Scheduler.add_group_to_schedule(date, group)
+
+        sched = Scheduler.query_schedule(date)
+        return sched
 
     @staticmethod
     def is_player_available(mtg, player):
@@ -195,11 +219,14 @@ class Scheduler(object):
         season = get_current_season()
 
         if not season:
-            print("No current season configured")
+            logger.info("No current season configured")
             return None
 
         mtg = get_meeting_for_date(date=date)
-        print("Scheduling for date:%s" % mtg.date)
+        if mtg is None:
+            logger.error(f"Tried to schedule a date that is not a valid meeting.")
+            return None
+        logger.info("Scheduling for date:%s" % mtg.date)
 
         needed = season.courts * 2
         group = []
@@ -294,6 +321,11 @@ class Scheduler(object):
             sh.save()
 
         Scheduler.update_scheduled_for_players(mtg)
+
+    @staticmethod
+    def add_group_to_schedule(group):
+        """ Add the group of players to the current schedule """
+        pass
 
     @staticmethod
     def remove_all_couples_from_schedule(date):
@@ -555,9 +587,8 @@ class Scheduler(object):
                     avail.played[x] = avail.scheduled[x]
 
             if changed:
-                print(f"Save for {avail.player.Name()}")
+                logger.info(f"Save for {avail.player.Name()}")
                 avail.save()
-
 
     @staticmethod
     def update_played_for_players(meeting, scheduled_pks=None):
