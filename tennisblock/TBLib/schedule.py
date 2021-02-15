@@ -6,6 +6,7 @@ import random
 from typing import List
 from collections import defaultdict
 import logging
+import math
 import textwrap
 import random
 from django.core.exceptions import ObjectDoesNotExist
@@ -52,18 +53,11 @@ class Scheduler(object):
     def generate_schedule(date=None):
         """ Generate a new schedule for the given date, or current date. """
 
-        group = Scheduler.get_next_group(date)
-        if group is None:
+        men, women = Scheduler.get_next_group(date)
+        if men is None or women is None:
             return None
 
-        logger.info("Groups:")
-        for g in group:
-            logger.info("\tHe:%s She:%s" % (g.male.Name(), g.female.Name()))
-
-        mgr = TeamManager()
-        mgr.dbTeams.delete_matchup(date)
-
-        Scheduler.add_group_to_schedule(date, group)
+        Scheduler.add_group_to_schedule(date, men, women)
 
         sched = Scheduler.query_schedule(date)
         return sched
@@ -161,26 +155,67 @@ class Scheduler(object):
         :return:
         """
         flt = Q(meeting__season=season,
-                     meeting__date__lt=datetime.now(),
-                     player__in=players
-                     )
+                meeting__date__lt=datetime.now(),
+                player__in=players
+                )
 
         query = Schedule.objects.filter(flt).order_by('player')
         query = query.values('player').annotate(plays=Count('player'))
+        all_players = set(players)
+        player_by_id = {p.id: p for p in players}
 
-        players_by_plays = defaultdict(list)
+        women_by_plays = defaultdict(list)
+        men_by_plays = defaultdict(list)
         played_players = set()
         for q in query:
             player_id = q['player']
-            played_players.add(player_id)
+            player = player_by_id[player_id]
             plays = q['plays']
-            players_by_plays[plays].append(player_id)
 
-        for player in players:
-            if player.id not in played_players:
-                players_by_plays[0].append(player.id)
+            played_players.add(player)
+            if player.gender == Player.MALE:
+                men_by_plays[plays].append(player)
+            else:
+                women_by_plays[plays].append(player)
 
-        return players_by_plays, played_players
+        for player in list(all_players - played_players):
+            if player.gender == Player.MALE:
+                men_by_plays[plays].append(player)
+            else:
+                women_by_plays[plays].append(player)
+
+        return men_by_plays, women_by_plays, played_players
+
+    @staticmethod
+    def get_plays_by_couple(season, couples: List[Couple]):
+        """
+        Return the count of plays for each player, by id
+        :param players:
+        :return:
+        """
+
+        couples_by_plays = defaultdict(list)
+        played_couples = set()
+        all_couples = set({c for c in couples})
+
+        for couple in couples:
+            players = [couple.male, couple.female]
+
+            flt = Q(meeting__season=season,
+                    meeting__date__lt=datetime.now(),
+                    player__in=players
+                    )
+
+            query = Schedule.objects.filter(flt).order_by('player')
+            query = query.values('player').annotate(plays=Count('player'))
+
+            couple_plays = [q.get('plays', 0) for q in query]
+            total_couple_plays = math.floor(min(couple_plays) + 0.5 * (max(couple_plays) - min(couple_plays)))
+            couples_by_plays[total_couple_plays].append(couple)
+            played_couples.add(couple)
+
+        couples_by_plays[0] = list(all_couples - played_couples)
+        return couples_by_plays
 
     @staticmethod
     def order_players(*,
@@ -192,12 +227,13 @@ class Scheduler(object):
 
         couple_players = [c.male for c in couples] + [c.female for c in couples]
 
-        all_players = [p.player for p in men + women]+couple_players
+        all_players = [p.player for p in men + women] + couple_players
 
-        couple_players_by_plays, couple_played_players = Scheduler.get_plays_by_player(season, couple_players)
-        players_by_plays, played_players = Scheduler.get_plays_by_player(season, [p.player for p in men + women])
+        couples_by_plays = Scheduler.get_plays_by_couple(season, couples)
+        men_by_plays, women_by_plays, played_players = Scheduler.get_plays_by_player(season,
+                                                                                     [p.player for p in men + women])
 
-        return couple_players_by_plays, players_by_plays
+        return couples_by_plays, men_by_plays, women_by_plays
 
     @staticmethod
     def calc_play_stats_for_couple(season=None, couple=None):
@@ -317,29 +353,87 @@ class Scheduler(object):
         :return:
         """
         couples = fulltime_couples
-        men = fulltime_men
-        women = fulltime_women
+        men = [p.player for p in fulltime_men]
+        women = [p.player for p in fulltime_women]
 
         needed_men -= (len(men) + len(couples))
         needed_women -= (len(women) + len(couples))
 
-        couple_players_by_plays, players_by_plays = Scheduler.order_players(
+        couple_players_by_plays, men_by_plays, women_by_plays = Scheduler.order_players(
             couples=parttime_couples, men=parttime_men, women=parttime_women)
 
-        nplayed = set(couple_players_by_plays.keys()).union(set(players_by_plays.keys()))
-        sorted_couples = []
-        sorted_men = []
-        sorted_women = []
-        for n in sorted(nplayed):
-            couples = couple_players_by_plays[n]
-            players = players_by_plays[n]
-            random.shuffle(players)
-            random.shuffle(couples)
-            sorted_couples.extend(couples)
-            sorted_men.extend([p for p in players if p.gender == Player.MALE])
-            sorted_women.extend([p for p in players if p.gender == Player.FEMALE])
+        nplayed = set(couple_players_by_plays.keys()).union(
+            set(men_by_plays.keys())).union(
+            set(men_by_plays.keys())
+        )
+        rstart = min(nplayed)
+        rstop = max(nplayed) + 1
 
+        for r in range(rstart, rstop):
+            random.shuffle(men_by_plays[r])
+            random.shuffle(women_by_plays[r])
+            random.shuffle(couple_players_by_plays[r])
 
+        def get_next_single_guy():
+            for r in range(rstart, rstop):
+                if men_by_plays[r]:
+                    return men_by_plays[r].pop(0)
+            return None
+
+        def get_next_single_gal():
+            for r in range(rstart, rstop):
+                if women_by_plays[r]:
+                    return women_by_plays[r].pop(0)
+            return None
+
+        def get_next_couple():
+            for r in range(rstart, rstop):
+                if couple_players_by_plays[r]:
+                    return couple_players_by_plays[r].pop(0)
+            return None
+
+        def have_players_available():
+            for r in range(rstart, rstop):
+                if couple_players_by_plays[r]:
+                    return True, True
+                if men_by_plays[r] and women_by_plays[r]:
+                    return True, True
+                if men_by_plays[r]:
+                    return True, False
+                if women_by_plays[r]:
+                    return False, True
+
+        while needed_men or needed_women and have_players_available():
+            if needed_women > needed_men:
+                woman = get_next_single_gal()
+                women.append(woman)
+                needed_women -= 1
+            elif needed_men > needed_women:
+                man = get_next_single_guy()
+                men.append(man)
+                needed_men -= 1
+            else:
+                # Equal numbers of needed men and women
+                # Pick a couple, or a man+woman.
+                if random.getrandbits(1):
+                    # Use a couple
+                    couple = get_next_couple()
+                    if couple:
+                        men.append(couple.male)
+                        women.append(couple.female)
+                        needed_women -= 1
+                        needed_men -= 1
+                else:
+                    # Use a pair of singles
+                    man = get_next_single_guy()
+                    woman = get_next_single_gal()
+                    if man and woman:
+                        men.append(man)
+                        women.append(woman)
+                        needed_women -= 1
+                        needed_men -= 1
+
+        return men, women
 
     @staticmethod
     def get_next_group(date=None):
@@ -379,7 +473,7 @@ class Scheduler(object):
         ft_couples = [c for c in couples if c.fulltime]
         pt_couples = [c for c in couples if not c.fulltime]
 
-        group = Scheduler.generate_group(
+        men, women = Scheduler.generate_group(
             needed_men=season.courts * 2,
             needed_women=season.courts * 2,
             fulltime_couples=ft_couples,
@@ -388,7 +482,7 @@ class Scheduler(object):
             parttime_men=pt_men,
             fulltime_women=ft_women,
             parttime_women=pt_women)
-        return group
+        return men, women
 
     @staticmethod
     def sort_shuffle(cinfo):
@@ -415,31 +509,32 @@ class Scheduler(object):
         return cinfosortedshuffled
 
     @staticmethod
-    def add_group_to_schedule(date, couples):
+    def add_group_to_schedule(date, men, women):
 
         mtg = get_meeting_for_date(date)
 
         # Clear any existing one first.
         Schedule.objects.filter(meeting=mtg).delete()
 
-        for idx, cpl in enumerate(couples):
+        for idx, couple in enumerate(zip(men, women)):
+            man, woman = couple
             sm = Schedule.objects.create(
                 meeting=mtg,
                 pair_index=idx,
-                player=cpl.male,
+                player=man,
                 issub=False,
                 verified=False,
-                partner=cpl.female
+                partner=woman
             )
             sm.save()
 
             sh = Schedule.objects.create(
                 meeting=mtg,
                 pair_index=idx,
-                player=cpl.female,
+                player=woman,
                 issub=False,
                 verified=False,
-                partner=cpl.male
+                partner=man
             )
             sh.save()
 
