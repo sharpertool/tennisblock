@@ -7,6 +7,29 @@ import CoupleTarget from './CoupleTarget'
 
 export const dndContext = createContext()
 
+export const Draggable = (props) => {
+  const {children} = props
+  
+  return (
+    children()
+  )
+}
+
+export const Droppable = (props) => {
+  const {children, droppableId} = props
+  
+  const provided = {
+    droppableProps: {
+    
+    }
+  }
+  
+  return (
+    children(provided)
+  )
+}
+
+
 const DragDrop = (props) => {
   
   const {children} = props

@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import classes from './styles.local.scss'
 import styled from 'styled-components'
 
 import Couples from './Couples'
 import CoupleTarget from './CoupleTarget'
+import DragDrop, {dndContext, Draggable, Droppable} from './dragdrop'
 
 const PlayerList = styled.ul`
   list-style: none;
@@ -45,6 +46,7 @@ const CouplesEditor = ({
   saveChanges,
                        }) => {
   
+  const dndValue = useContext(dndContext)
   const default_couple = {
     name: '',
     guy: null,
@@ -109,6 +111,7 @@ const CouplesEditor = ({
       setGuys(remaining)
       mycouple = {...mycouple, guy: obj}
     }
+    setDragObj(null)
     if (mycouple.girl && mycouple.guy) {
       const girl = mycouple.girl
       const guy = mycouple.guy
@@ -150,42 +153,56 @@ const CouplesEditor = ({
       <h1>Couples Editor</h1>
       <div className={classes.container}>
         <div className={classes.guys}>
-          <PlayerList>
-            {_guys.map((g, idx) => {
-                return (
-                  <ListItem
-                    key={idx}
-                    draggable
-                    onDragStart={(e) => onDragStart(e, g)}
-                    onDragEnd={onDragEnd}
-                  >{`${g.first} ${g.last}`}</ListItem>
-                )
-              }
+          <Draggable>
+            {() => (
+              <PlayerList>
+                {_guys.map((g, idx) => {
+                    return (
+                      <ListItem
+                        key={idx}
+                        draggable
+                        onDragStart={(e) => onDragStart(e, g)}
+                        onDragEnd={onDragEnd}
+                      >{`${g.first} ${g.last}`}</ListItem>
+                    )
+                  }
+                )}
+              </PlayerList>
             )}
-          </PlayerList>
+          </Draggable>
         </div>
         <div className={classes.girls}>
-          <PlayerList>
-            {_girls.map((g, idx) => {
-                return (
-                  <ListItem
-                    key={idx}
-                    draggable
-                    onDragStart={(e) => onDragStart(e, g)}
-                    onDragEnd={onDragEnd}
-                  >{`${g.first} ${g.last}`}</ListItem>
-                )
-              }
+          <Draggable>
+            {() => (
+              <PlayerList>
+                {_girls.map((g, idx) => {
+                    return (
+                      <ListItem
+                        key={idx}
+                        draggable
+                        onDragStart={(e) => onDragStart(e, g)}
+                        onDragEnd={onDragEnd}
+                      >{`${g.first} ${g.last}`}</ListItem>
+                    )
+                  }
+                )}
+              </PlayerList>
             )}
-          </PlayerList>
+          </Draggable>
         </div>
-        <CoupleTarget
-          grid_class={classes.couple}
-          guy={couple.guy} girl={couple.girl}
-          onDragEnter={onDragEnter}
-          onDragOver={onDragOver}
-          onDrop={onDrop}
-        />
+        <Droppable droppableId={1}>
+          {(provided) => (
+            <CoupleTarget
+              grid_class={classes.couple}
+              guy={couple.guy} girl={couple.girl}
+              {...provided.droppableProps}
+              onDragEnter={onDragEnter}
+              onDragOver={onDragOver}
+              onDrop={onDrop}
+            />
+          
+          )}
+        </Droppable>
         <Couples
           div_class={classes.couples}
           couples={couples}
