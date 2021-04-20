@@ -1,5 +1,5 @@
 wheel
-wagtail==2.8
+wagtail==2.11.6
 Django ~=3.0, <3.1
 
 # My custom teamgen -- use latest version!
